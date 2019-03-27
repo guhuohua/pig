@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pig4cloud.pig.goods.manage.mapper.GoodsTypeMapper">
+
+	<resultMap id="goodsTypeMap" type="com.pig4cloud.pig.goods.api.entity.GoodsType">
+		<id property="id" column="Id"/>
+		<result property="shopId" column="shop_id"/>
+		<result property="status" column="status"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="delFlag" column="del_flag"/>
+		<result property="title" column="title"/>
+		<result property="icon" column="icon"/>
+		<result property="parentId" column="parent_id"/>
+		<result property="sort" column="sort"/>
+		<result property="ad" column="ad"/>
+	</resultMap>
+
+	<!--goodsType简单分页查询-->
+	<select id="getGoodsTypePage" resultMap="goodsTypeMap">
+		SELECT
+		Id,
+		shop_id,
+		status,
+		create_time,
+		update_time,
+		del_flag,
+		title,
+		icon,
+		parent_id,
+		sort,
+		ad
+		FROM goods_type
+		<where>
+			<if test="goodsType.id != null and goodsType.id.trim() != ''">
+				AND Id = #{goodsType.id}
+			</if>
+			<if test="goodsType.shopId != null and goodsType.shopId.trim() != ''">
+				AND shop_id = #{goodsType.shopId}
+			</if>
+			<if test="goodsType.status != null and goodsType.status.trim() != ''">
+				AND status = #{goodsType.status}
+			</if>
+			<if test="goodsType.createTime != null and goodsType.createTime.trim() != ''">
+				AND create_time = #{goodsType.createTime}
+			</if>
+			<if test="goodsType.updateTime != null and goodsType.updateTime.trim() != ''">
+				AND update_time = #{goodsType.updateTime}
+			</if>
+			<if test="goodsType.delFlag != null and goodsType.delFlag.trim() != ''">
+				AND del_flag = #{goodsType.delFlag}
+			</if>
+			<if test="goodsType.title != null and goodsType.title.trim() != ''">
+				AND title = #{goodsType.title}
+			</if>
+			<if test="goodsType.icon != null and goodsType.icon.trim() != ''">
+				AND icon = #{goodsType.icon}
+			</if>
+			<if test="goodsType.parentId != null and goodsType.parentId.trim() != ''">
+				AND parent_id = #{goodsType.parentId}
+			</if>
+			<if test="goodsType.sort != null and goodsType.sort.trim() != ''">
+				AND sort = #{goodsType.sort}
+			</if>
+			<if test="goodsType.ad != null and goodsType.ad.trim() != ''">
+				AND ad = #{goodsType.ad}
+			</if>
+		</where>
+	</select>
+
+
+	<!-- 根据 -->
+	<select id="getTypeList" resultMap="goodsTypeMap">
+		SELECT id, title  FROM goods_type
+		WHERE shop_id = #{shopId}
+			AND parent_id = 0
+			AND del_flag = 0
+	</select>
+
+
+</mapper>

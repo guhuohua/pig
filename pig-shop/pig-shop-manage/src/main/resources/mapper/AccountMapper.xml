@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pig4cloud.pig.shop.manage.mapper.AccountMapper">
+
+  <resultMap id="accountMap" type="com.pig4cloud.pig.shop.api.entity.Account">
+                  <id property="id" column="Id"/>
+                        <result property="flag" column="Flag"/>
+                        <result property="desc" column="Desc"/>
+                        <result property="status" column="Status"/>
+                        <result property="delFlag" column="Del_Flag"/>
+                        <result property="endDate" column="End_Date"/>
+                        <result property="createTime" column="Create_time"/>
+                        <result property="updateTime" column="UpDate_time"/>
+            </resultMap>
+
+  <!--account简单分页查询-->
+  <select id="getAccountPage" resultMap="accountMap">
+    SELECT
+                  Id,
+                        Flag,
+                        Desc,
+                        Status,
+                        Del_Flag,
+                        End_Date,
+                        Create_time,
+                        UpDate_time
+              FROM shop_account
+    <where>
+              <if test="account.id != null and account.id.trim() != ''">
+          AND Id = #{account.id}
+        </if>
+              <if test="account.flag != null and account.flag.trim() != ''">
+          AND Flag = #{account.flag}
+        </if>
+              <if test="account.desc != null and account.desc.trim() != ''">
+          AND Desc = #{account.desc}
+        </if>
+              <if test="account.status != null and account.status.trim() != ''">
+          AND Status = #{account.status}
+        </if>
+              <if test="account.delFlag != null and account.delFlag.trim() != ''">
+          AND Del_Flag = #{account.delFlag}
+        </if>
+              <if test="account.endDate != null and account.endDate.trim() != ''">
+          AND End_Date = #{account.endDate}
+        </if>
+              <if test="account.createTime != null and account.createTime.trim() != ''">
+          AND Create_time = #{account.createTime}
+        </if>
+              <if test="account.updateTime != null and account.updateTime.trim() != ''">
+          AND UpDate_time = #{account.updateTime}
+        </if>
+          </where>
+  </select>
+
+
+
+</mapper>

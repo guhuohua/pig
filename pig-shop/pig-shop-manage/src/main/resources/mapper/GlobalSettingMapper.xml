@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pig4cloud.pig.shop.manage.mapper.GlobalSettingMapper">
+
+  <resultMap id="globalSettingMap" type="com.pig4cloud.pig.shop.api.entity.GlobalSetting">
+                  <id property="id" column="Id"/>
+                        <result property="shopId" column="shop_id"/>
+                        <result property="status" column="status"/>
+                        <result property="createTime" column="create_time"/>
+                        <result property="updateTime" column="update_time"/>
+                        <result property="delFlag" column="del_flag"/>
+                        <result property="indexRecommend" column="index_recommend"/>
+                        <result property="indexCoupon" column="index_coupon"/>
+                        <result property="shopcarRecommend" column="shopcar_recommend"/>
+                        <result property="orderRecommend" column="order_recommend"/>
+                        <result property="searchKey" column="search_key"/>
+            </resultMap>
+
+  <!--globalSetting简单分页查询-->
+  <select id="getGlobalSettingPage" resultMap="globalSettingMap">
+    SELECT
+                  Id,
+                        shop_id,
+                        status,
+                        create_time,
+                        update_time,
+                        del_flag,
+                        index_recommend,
+                        index_coupon,
+                        shopcar_recommend,
+                        order_recommend,
+                        search_key
+              FROM shop_global_setting
+    <where>
+              <if test="globalSetting.id != null and globalSetting.id.trim() != ''">
+          AND Id = #{globalSetting.id}
+        </if>
+              <if test="globalSetting.shopId != null and globalSetting.shopId.trim() != ''">
+          AND shop_id = #{globalSetting.shopId}
+        </if>
+              <if test="globalSetting.status != null and globalSetting.status.trim() != ''">
+          AND status = #{globalSetting.status}
+        </if>
+              <if test="globalSetting.createTime != null and globalSetting.createTime.trim() != ''">
+          AND create_time = #{globalSetting.createTime}
+        </if>
+              <if test="globalSetting.updateTime != null and globalSetting.updateTime.trim() != ''">
+          AND update_time = #{globalSetting.updateTime}
+        </if>
+              <if test="globalSetting.delFlag != null and globalSetting.delFlag.trim() != ''">
+          AND del_flag = #{globalSetting.delFlag}
+        </if>
+              <if test="globalSetting.indexRecommend != null and globalSetting.indexRecommend.trim() != ''">
+          AND index_recommend = #{globalSetting.indexRecommend}
+        </if>
+              <if test="globalSetting.indexCoupon != null and globalSetting.indexCoupon.trim() != ''">
+          AND index_coupon = #{globalSetting.indexCoupon}
+        </if>
+              <if test="globalSetting.shopcarRecommend != null and globalSetting.shopcarRecommend.trim() != ''">
+          AND shopcar_recommend = #{globalSetting.shopcarRecommend}
+        </if>
+              <if test="globalSetting.orderRecommend != null and globalSetting.orderRecommend.trim() != ''">
+          AND order_recommend = #{globalSetting.orderRecommend}
+        </if>
+              <if test="globalSetting.searchKey != null and globalSetting.searchKey.trim() != ''">
+          AND search_key = #{globalSetting.searchKey}
+        </if>
+          </where>
+  </select>
+
+
+
+</mapper>

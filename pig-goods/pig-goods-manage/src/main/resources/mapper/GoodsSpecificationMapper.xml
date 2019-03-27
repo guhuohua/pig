@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pig4cloud.pig.goods.manage.mapper.GoodsSpecificationMapper">
+
+  <resultMap id="goodsSpecificationMap" type="com.pig4cloud.pig.goods.api.entity.GoodsSpecification">
+                  <id property="id" column="Id"/>
+                        <result property="shopId" column="shop_id"/>
+                        <result property="status" column="status"/>
+                        <result property="createTime" column="create_time"/>
+                        <result property="updateTime" column="update_time"/>
+                        <result property="delFlag" column="del_flag"/>
+                        <result property="attrs" column="attrs"/>
+                        <result property="originalPrice" column="original_price"/>
+                        <result property="presentPrice" column="present_price"/>
+                        <result property="inventory" column="inventory"/>
+                        <result property="sn" column="sn"/>
+            </resultMap>
+
+  <!--goodsSpecification简单分页查询-->
+  <select id="getGoodsSpecificationPage" resultMap="goodsSpecificationMap">
+    SELECT
+                  Id,
+                        shop_id,
+                        status,
+                        create_time,
+                        update_time,
+                        del_flag,
+                        attrs,
+                        original_price,
+                        present_price,
+                        inventory,
+                        sn
+              FROM goods_specification
+    <where>
+              <if test="goodsSpecification.id != null and goodsSpecification.id.trim() != ''">
+          AND Id = #{goodsSpecification.id}
+        </if>
+              <if test="goodsSpecification.shopId != null and goodsSpecification.shopId.trim() != ''">
+          AND shop_id = #{goodsSpecification.shopId}
+        </if>
+              <if test="goodsSpecification.status != null and goodsSpecification.status.trim() != ''">
+          AND status = #{goodsSpecification.status}
+        </if>
+              <if test="goodsSpecification.createTime != null and goodsSpecification.createTime.trim() != ''">
+          AND create_time = #{goodsSpecification.createTime}
+        </if>
+              <if test="goodsSpecification.updateTime != null and goodsSpecification.updateTime.trim() != ''">
+          AND update_time = #{goodsSpecification.updateTime}
+        </if>
+              <if test="goodsSpecification.delFlag != null and goodsSpecification.delFlag.trim() != ''">
+          AND del_flag = #{goodsSpecification.delFlag}
+        </if>
+              <if test="goodsSpecification.attrs != null and goodsSpecification.attrs.trim() != ''">
+          AND attrs = #{goodsSpecification.attrs}
+        </if>
+              <if test="goodsSpecification.originalPrice != null and goodsSpecification.originalPrice.trim() != ''">
+          AND original_price = #{goodsSpecification.originalPrice}
+        </if>
+              <if test="goodsSpecification.presentPrice != null and goodsSpecification.presentPrice.trim() != ''">
+          AND present_price = #{goodsSpecification.presentPrice}
+        </if>
+              <if test="goodsSpecification.inventory != null and goodsSpecification.inventory.trim() != ''">
+          AND inventory = #{goodsSpecification.inventory}
+        </if>
+              <if test="goodsSpecification.sn != null and goodsSpecification.sn.trim() != ''">
+          AND sn = #{goodsSpecification.sn}
+        </if>
+          </where>
+  </select>
+
+
+
+</mapper>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pig4cloud.pig.goods.manage.mapper.GoodsImageMapper">
+
+  <resultMap id="goodsImageMap" type="com.pig4cloud.pig.goods.api.entity.GoodsImage">
+                  <id property="id" column="Id"/>
+                        <result property="shopId" column="shop_id"/>
+                        <result property="status" column="status"/>
+                        <result property="createTime" column="create_time"/>
+                        <result property="updateTime" column="update_time"/>
+                        <result property="delFlag" column="del_flag"/>
+                        <result property="goodsId" column="goods_id"/>
+                        <result property="url" column="url"/>
+                        <result property="sort" column="sort"/>
+            </resultMap>
+
+  <!--goodsImage简单分页查询-->
+  <select id="getGoodsImagePage" resultMap="goodsImageMap">
+    SELECT
+                  Id,
+                        shop_id,
+                        status,
+                        create_time,
+                        update_time,
+                        del_flag,
+                        goods_id,
+                        url,
+                        sort
+              FROM goods_image
+    <where>
+              <if test="goodsImage.id != null and goodsImage.id.trim() != ''">
+          AND Id = #{goodsImage.id}
+        </if>
+              <if test="goodsImage.shopId != null and goodsImage.shopId.trim() != ''">
+          AND shop_id = #{goodsImage.shopId}
+        </if>
+              <if test="goodsImage.status != null and goodsImage.status.trim() != ''">
+          AND status = #{goodsImage.status}
+        </if>
+              <if test="goodsImage.createTime != null and goodsImage.createTime.trim() != ''">
+          AND create_time = #{goodsImage.createTime}
+        </if>
+              <if test="goodsImage.updateTime != null and goodsImage.updateTime.trim() != ''">
+          AND update_time = #{goodsImage.updateTime}
+        </if>
+              <if test="goodsImage.delFlag != null and goodsImage.delFlag.trim() != ''">
+          AND del_flag = #{goodsImage.delFlag}
+        </if>
+              <if test="goodsImage.goodsId != null and goodsImage.goodsId.trim() != ''">
+          AND goods_id = #{goodsImage.goodsId}
+        </if>
+              <if test="goodsImage.url != null and goodsImage.url.trim() != ''">
+          AND url = #{goodsImage.url}
+        </if>
+              <if test="goodsImage.sort != null and goodsImage.sort.trim() != ''">
+          AND sort = #{goodsImage.sort}
+        </if>
+          </where>
+  </select>
+
+
+
+</mapper>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pig4cloud.pig.goods.manage.mapper.GoodsShareMapper">
+
+  <resultMap id="goodsShareMap" type="com.pig4cloud.pig.goods.api.entity.GoodsShare">
+                  <id property="id" column="Id"/>
+                        <result property="shopId" column="shop_id"/>
+                        <result property="status" column="status"/>
+                        <result property="createTime" column="create_time"/>
+                        <result property="updateTime" column="update_time"/>
+                        <result property="delFlag" column="del_flag"/>
+                        <result property="type" column="type"/>
+                        <result property="open" column="open"/>
+            </resultMap>
+
+  <!--goodsShare简单分页查询-->
+  <select id="getGoodsSharePage" resultMap="goodsShareMap">
+    SELECT
+                  Id,
+                        shop_id,
+                        status,
+                        create_time,
+                        update_time,
+                        del_flag,
+                        type,
+                        open
+              FROM goods_share
+    <where>
+              <if test="goodsShare.id != null and goodsShare.id.trim() != ''">
+          AND Id = #{goodsShare.id}
+        </if>
+              <if test="goodsShare.shopId != null and goodsShare.shopId.trim() != ''">
+          AND shop_id = #{goodsShare.shopId}
+        </if>
+              <if test="goodsShare.status != null and goodsShare.status.trim() != ''">
+          AND status = #{goodsShare.status}
+        </if>
+              <if test="goodsShare.createTime != null and goodsShare.createTime.trim() != ''">
+          AND create_time = #{goodsShare.createTime}
+        </if>
+              <if test="goodsShare.updateTime != null and goodsShare.updateTime.trim() != ''">
+          AND update_time = #{goodsShare.updateTime}
+        </if>
+              <if test="goodsShare.delFlag != null and goodsShare.delFlag.trim() != ''">
+          AND del_flag = #{goodsShare.delFlag}
+        </if>
+              <if test="goodsShare.type != null and goodsShare.type.trim() != ''">
+          AND type = #{goodsShare.type}
+        </if>
+              <if test="goodsShare.open != null and goodsShare.open.trim() != ''">
+          AND open = #{goodsShare.open}
+        </if>
+          </where>
+  </select>
+
+
+
+</mapper>

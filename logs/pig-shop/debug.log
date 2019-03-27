@@ -1,0 +1,75 @@
+2019-03-15 10:59:09,078 [main] INFO  [o.s.c.a.AnnotationConfigApplicationContext] AbstractApplicationContext.java:588 - Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@791f145a: startup date [Fri Mar 15 10:59:09 CST 2019]; root of context hierarchy
+2019-03-15 10:59:09,378 [main] INFO  [c.u.j.c.EnableEncryptablePropertiesBeanFactoryPostProcessor] EnableEncryptablePropertiesBeanFactoryPostProcessor.java:50 - Post-processing PropertySource instances
+2019-03-15 10:59:09,462 [main] INFO  [c.u.j.EncryptablePropertySourceConverter] EncryptablePropertySourceConverter.java:38 - Converting PropertySource configurationProperties [org.springframework.boot.context.properties.source.ConfigurationPropertySourcesPropertySource] to AOP Proxy
+2019-03-15 10:59:09,464 [main] INFO  [c.u.j.EncryptablePropertySourceConverter] EncryptablePropertySourceConverter.java:38 - Converting PropertySource bootstrap [org.springframework.core.env.MapPropertySource] to EncryptableMapPropertySourceWrapper
+2019-03-15 10:59:09,464 [main] INFO  [c.u.j.EncryptablePropertySourceConverter] EncryptablePropertySourceConverter.java:38 - Converting PropertySource systemProperties [org.springframework.core.env.MapPropertySource] to EncryptableMapPropertySourceWrapper
+2019-03-15 10:59:09,465 [main] INFO  [c.u.j.EncryptablePropertySourceConverter] EncryptablePropertySourceConverter.java:38 - Converting PropertySource systemEnvironment [org.springframework.boot.env.SystemEnvironmentPropertySourceEnvironmentPostProcessor$OriginAwareSystemEnvironmentPropertySource] to EncryptableMapPropertySourceWrapper
+2019-03-15 10:59:09,465 [main] INFO  [c.u.j.EncryptablePropertySourceConverter] EncryptablePropertySourceConverter.java:38 - Converting PropertySource random [org.springframework.boot.env.RandomValuePropertySource] to EncryptablePropertySourceWrapper
+2019-03-15 10:59:09,465 [main] INFO  [c.u.j.EncryptablePropertySourceConverter] EncryptablePropertySourceConverter.java:38 - Converting PropertySource springCloudClientHostInfo [org.springframework.core.env.MapPropertySource] to EncryptableMapPropertySourceWrapper
+2019-03-15 10:59:09,466 [main] INFO  [c.u.j.EncryptablePropertySourceConverter] EncryptablePropertySourceConverter.java:38 - Converting PropertySource applicationConfig: [classpath:/bootstrap.yml] [org.springframework.boot.env.OriginTrackedMapPropertySource] to EncryptableMapPropertySourceWrapper
+2019-03-15 10:59:09,479 [main] INFO  [o.s.b.f.a.AutowiredAnnotationBeanPostProcessor] AutowiredAnnotationBeanPostProcessor.java:153 - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-03-15 10:59:09,509 [main] INFO  [o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker] PostProcessorRegistrationDelegate.java:326 - Bean 'configurationPropertiesRebinderAutoConfiguration' of type [org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$ddaf1f82] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-03-15 10:59:09,539 [main] INFO  [c.u.j.filter.DefaultLazyPropertyFilter] DefaultLazyPropertyFilter.java:31 - Property Filter custom Bean not found with name 'encryptablePropertyFilter'. Initializing Default Property Filter
+2019-03-15 10:59:09,549 [main] INFO  [c.u.j.resolver.DefaultLazyPropertyResolver] DefaultLazyPropertyResolver.java:31 - Property Resolver custom Bean not found with name 'encryptablePropertyResolver'. Initializing Default Property Resolver
+2019-03-15 10:59:09,549 [main] INFO  [c.u.j.detector.DefaultLazyPropertyDetector] DefaultLazyPropertyDetector.java:30 - Property Detector custom Bean not found with name 'encryptablePropertyDetector'. Initializing Default Property Detector
+2019-03-15 10:59:09,929 [main] INFO  [o.s.cloud.netflix.eureka.InstanceInfoFactory] InstanceInfoFactory.java:71 - Setting initial instance status as: STARTING
+2019-03-15 10:59:10,009 [main] INFO  [com.netflix.discovery.DiscoveryClient] DiscoveryClient.java:349 - Initializing Eureka in region us-east-1
+2019-03-15 10:59:10,399 [main] INFO  [c.n.discovery.provider.DiscoveryJerseyProvider] DiscoveryJerseyProvider.java:70 - Using JSON encoding codec LegacyJacksonJson
+2019-03-15 10:59:10,399 [main] INFO  [c.n.discovery.provider.DiscoveryJerseyProvider] DiscoveryJerseyProvider.java:71 - Using JSON decoding codec LegacyJacksonJson
+2019-03-15 10:59:10,519 [main] INFO  [c.n.discovery.provider.DiscoveryJerseyProvider] DiscoveryJerseyProvider.java:80 - Using XML encoding codec XStreamXml
+2019-03-15 10:59:10,519 [main] INFO  [c.n.discovery.provider.DiscoveryJerseyProvider] DiscoveryJerseyProvider.java:81 - Using XML decoding codec XStreamXml
+2019-03-15 10:59:10,689 [main] INFO  [c.n.d.shared.resolver.aws.ConfigClusterResolver] ConfigClusterResolver.java:43 - Resolving eureka endpoints via configuration
+2019-03-15 10:59:10,889 [main] INFO  [com.netflix.discovery.DiscoveryClient] DiscoveryClient.java:958 - Disable delta property : false
+2019-03-15 10:59:10,889 [main] INFO  [com.netflix.discovery.DiscoveryClient] DiscoveryClient.java:959 - Single vip registry refresh property : null
+2019-03-15 10:59:10,889 [main] INFO  [com.netflix.discovery.DiscoveryClient] DiscoveryClient.java:960 - Force full registry fetch : false
+2019-03-15 10:59:10,889 [main] INFO  [com.netflix.discovery.DiscoveryClient] DiscoveryClient.java:961 - Application is null : false
+2019-03-15 10:59:10,889 [main] INFO  [com.netflix.discovery.DiscoveryClient] DiscoveryClient.java:962 - Registered Applications size is zero : true
+2019-03-15 10:59:10,889 [main] INFO  [com.netflix.discovery.DiscoveryClient] DiscoveryClient.java:964 - Application version is -1: true
+2019-03-15 10:59:10,889 [main] INFO  [com.netflix.discovery.DiscoveryClient] DiscoveryClient.java:1047 - Getting all instance registry info from the eureka server
+2019-03-15 10:59:11,219 [main] INFO  [com.netflix.discovery.DiscoveryClient] DiscoveryClient.java:1056 - The response status is 200
+2019-03-15 10:59:11,219 [main] INFO  [com.netflix.discovery.DiscoveryClient] DiscoveryClient.java:1311 - Not registering with Eureka server per configuration
+2019-03-15 10:59:11,229 [main] INFO  [com.netflix.discovery.DiscoveryClient] DiscoveryClient.java:449 - Discovery Client initialized at timestamp 1552618751229 with initial instances count: 5
+2019-03-15 10:59:11,650 [main] INFO  [o.s.c.c.client.ConfigServicePropertySourceLocator] ConfigServicePropertySourceLocator.java:205 - Fetching config from server at : http://172.31.138.103:8888/
+2019-03-15 10:59:32,715 [main] INFO  [o.s.c.c.client.ConfigServicePropertySourceLocator] ConfigServicePropertySourceLocator.java:227 - Connect Timeout Exception on Url - http://172.31.138.103:8888/. Will be trying the next url if available
+2019-03-15 10:59:32,765 [main] ERROR [org.springframework.boot.SpringApplication] SpringApplication.java:837 - Application run failed
+java.lang.IllegalStateException: Could not locate PropertySource and the fail fast property is set, failing
+	at org.springframework.cloud.config.client.ConfigServicePropertySourceLocator.locate(ConfigServicePropertySourceLocator.java:136)
+	at org.springframework.cloud.bootstrap.config.PropertySourceBootstrapConfiguration.initialize(PropertySourceBootstrapConfiguration.java:94)
+	at org.springframework.boot.SpringApplication.applyInitializers(SpringApplication.java:628)
+	at org.springframework.boot.SpringApplication.prepareContext(SpringApplication.java:364)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:305)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1242)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1230)
+	at com.pig4cloud.pig.shop.manage.PigShopManageApplication.main(PigShopManageApplication.java:12)
+Caused by: org.springframework.web.client.ResourceAccessException: I/O error on GET request for "http://172.31.138.103:8888/pig-shop/dev": Connection timed out: connect; nested exception is java.net.ConnectException: Connection timed out: connect
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:696)
+	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:644)
+	at org.springframework.web.client.RestTemplate.exchange(RestTemplate.java:564)
+	at org.springframework.cloud.config.client.ConfigServicePropertySourceLocator.getRemoteEnvironment(ConfigServicePropertySourceLocator.java:218)
+	at org.springframework.cloud.config.client.ConfigServicePropertySourceLocator.locate(ConfigServicePropertySourceLocator.java:96)
+	... 7 common frames omitted
+Caused by: java.net.ConnectException: Connection timed out: connect
+	at java.net.DualStackPlainSocketImpl.connect0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:79)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at java.net.Socket.connect(Socket.java:538)
+	at sun.net.NetworkClient.doConnect(NetworkClient.java:180)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:463)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:558)
+	at sun.net.www.http.HttpClient.<init>(HttpClient.java:242)
+	at sun.net.www.http.HttpClient.New(HttpClient.java:339)
+	at sun.net.www.http.HttpClient.New(HttpClient.java:357)
+	at sun.net.www.protocol.http.HttpURLConnection.getNewHttpClient(HttpURLConnection.java:1220)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1156)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:1050)
+	at sun.net.www.protocol.http.HttpURLConnection.connect(HttpURLConnection.java:984)
+	at org.springframework.http.client.SimpleBufferingClientHttpRequest.executeInternal(SimpleBufferingClientHttpRequest.java:76)
+	at org.springframework.http.client.AbstractBufferingClientHttpRequest.executeInternal(AbstractBufferingClientHttpRequest.java:48)
+	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:53)
+	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:687)
+	... 11 common frames omitted

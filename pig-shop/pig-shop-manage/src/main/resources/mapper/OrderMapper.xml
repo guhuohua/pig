@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pig4cloud.pig.shop.manage.mapper.OrderMapper">
+
+  <resultMap id="orderMap" type="com.pig4cloud.pig.shop.api.entity.Order">
+                  <id property="id" column="id"/>
+                        <result property="shopId" column="shop_id"/>
+                        <result property="status" column="status"/>
+                        <result property="createTime" column="create_time"/>
+                        <result property="updateTime" column="update_time"/>
+                        <result property="delFlag" column="del_flag"/>
+                        <result property="freeShipping" column="free_shipping"/>
+                        <result property="orderCloseNormal" column="order_close_normal"/>
+                        <result property="orderCloseActive" column="order_close_active"/>
+                        <result property="confirmDay" column="confirm_day"/>
+                        <result property="templateCancel" column="template_cancel"/>
+                        <result property="templateDelivery" column="template_delivery"/>
+                        <result property="templateEvaluation" column="template_evaluation"/>
+                        <result property="templateComplete" column="template_complete"/>
+            </resultMap>
+
+  <!--order简单分页查询-->
+  <select id="getOrderPage" resultMap="orderMap">
+    SELECT
+                  id,
+                        shop_id,
+                        status,
+                        create_time,
+                        update_time,
+                        del_flag,
+                        free_shipping,
+                        order_close_normal,
+                        order_close_active,
+                        confirm_day,
+                        template_cancel,
+                        template_delivery,
+                        template_evaluation,
+                        template_complete
+              FROM shop_order
+    <where>
+              <if test="order.id != null and order.id.trim() != ''">
+          AND id = #{order.id}
+        </if>
+              <if test="order.shopId != null and order.shopId.trim() != ''">
+          AND shop_id = #{order.shopId}
+        </if>
+              <if test="order.status != null and order.status.trim() != ''">
+          AND status = #{order.status}
+        </if>
+              <if test="order.createTime != null and order.createTime.trim() != ''">
+          AND create_time = #{order.createTime}
+        </if>
+              <if test="order.updateTime != null and order.updateTime.trim() != ''">
+          AND update_time = #{order.updateTime}
+        </if>
+              <if test="order.delFlag != null and order.delFlag.trim() != ''">
+          AND del_flag = #{order.delFlag}
+        </if>
+              <if test="order.freeShipping != null and order.freeShipping.trim() != ''">
+          AND free_shipping = #{order.freeShipping}
+        </if>
+              <if test="order.orderCloseNormal != null and order.orderCloseNormal.trim() != ''">
+          AND order_close_normal = #{order.orderCloseNormal}
+        </if>
+              <if test="order.orderCloseActive != null and order.orderCloseActive.trim() != ''">
+          AND order_close_active = #{order.orderCloseActive}
+        </if>
+              <if test="order.confirmDay != null and order.confirmDay.trim() != ''">
+          AND confirm_day = #{order.confirmDay}
+        </if>
+              <if test="order.templateCancel != null and order.templateCancel.trim() != ''">
+          AND template_cancel = #{order.templateCancel}
+        </if>
+              <if test="order.templateDelivery != null and order.templateDelivery.trim() != ''">
+          AND template_delivery = #{order.templateDelivery}
+        </if>
+              <if test="order.templateEvaluation != null and order.templateEvaluation.trim() != ''">
+          AND template_evaluation = #{order.templateEvaluation}
+        </if>
+              <if test="order.templateComplete != null and order.templateComplete.trim() != ''">
+          AND template_complete = #{order.templateComplete}
+        </if>
+          </where>
+  </select>
+
+
+
+</mapper>

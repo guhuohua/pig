@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pig4cloud.pig.shop.manage.mapper.OrderDistributionMapper">
+
+  <resultMap id="orderDistributionMap" type="com.pig4cloud.pig.shop.api.entity.OrderDistribution">
+                  <id property="id" column="Id"/>
+                        <result property="shopId" column="shop_id"/>
+                        <result property="status" column="status"/>
+                        <result property="createTime" column="create_time"/>
+                        <result property="updateTime" column="update_time"/>
+                        <result property="delFlag" column="del_flag"/>
+                        <result property="typeName" column="type_name"/>
+                        <result property="freeShipping" column="free_shipping"/>
+                        <result property="valuation" column="valuation"/>
+                        <result property="minCount" column="min_count"/>
+                        <result property="maxCount" column="max_count"/>
+                        <result property="minPrice" column="min_price"/>
+                        <result property="maxPrice" column="max_price"/>
+                        <result property="minWeight" column="min_weight"/>
+                        <result property="maxWeight" column="max_weight"/>
+                        <result property="defaulty" column="defaulty"/>
+            </resultMap>
+
+  <!--orderDistribution简单分页查询-->
+  <select id="getOrderDistributionPage" resultMap="orderDistributionMap">
+    SELECT
+                  Id,
+                        shop_id,
+                        status,
+                        create_time,
+                        update_time,
+                        del_flag,
+                        type_name,
+                        free_shipping,
+                        valuation,
+                        min_count,
+                        max_count,
+                        min_price,
+                        max_price,
+                        min_weight,
+                        max_weight,
+                        defaulty
+              FROM shop_order_distribution
+    <where>
+              <if test="orderDistribution.id != null and orderDistribution.id.trim() != ''">
+          AND Id = #{orderDistribution.id}
+        </if>
+              <if test="orderDistribution.shopId != null and orderDistribution.shopId.trim() != ''">
+          AND shop_id = #{orderDistribution.shopId}
+        </if>
+              <if test="orderDistribution.status != null and orderDistribution.status.trim() != ''">
+          AND status = #{orderDistribution.status}
+        </if>
+              <if test="orderDistribution.createTime != null and orderDistribution.createTime.trim() != ''">
+          AND create_time = #{orderDistribution.createTime}
+        </if>
+              <if test="orderDistribution.updateTime != null and orderDistribution.updateTime.trim() != ''">
+          AND update_time = #{orderDistribution.updateTime}
+        </if>
+              <if test="orderDistribution.delFlag != null and orderDistribution.delFlag.trim() != ''">
+          AND del_flag = #{orderDistribution.delFlag}
+        </if>
+              <if test="orderDistribution.typeName != null and orderDistribution.typeName.trim() != ''">
+          AND type_name = #{orderDistribution.typeName}
+        </if>
+              <if test="orderDistribution.freeShipping != null and orderDistribution.freeShipping.trim() != ''">
+          AND free_shipping = #{orderDistribution.freeShipping}
+        </if>
+              <if test="orderDistribution.valuation != null and orderDistribution.valuation.trim() != ''">
+          AND valuation = #{orderDistribution.valuation}
+        </if>
+              <if test="orderDistribution.minCount != null and orderDistribution.minCount.trim() != ''">
+          AND min_count = #{orderDistribution.minCount}
+        </if>
+              <if test="orderDistribution.maxCount != null and orderDistribution.maxCount.trim() != ''">
+          AND max_count = #{orderDistribution.maxCount}
+        </if>
+              <if test="orderDistribution.minPrice != null and orderDistribution.minPrice.trim() != ''">
+          AND min_price = #{orderDistribution.minPrice}
+        </if>
+              <if test="orderDistribution.maxPrice != null and orderDistribution.maxPrice.trim() != ''">
+          AND max_price = #{orderDistribution.maxPrice}
+        </if>
+              <if test="orderDistribution.minWeight != null and orderDistribution.minWeight.trim() != ''">
+          AND min_weight = #{orderDistribution.minWeight}
+        </if>
+              <if test="orderDistribution.maxWeight != null and orderDistribution.maxWeight.trim() != ''">
+          AND max_weight = #{orderDistribution.maxWeight}
+        </if>
+              <if test="orderDistribution.defaulty != null and orderDistribution.defaulty.trim() != ''">
+          AND defaulty = #{orderDistribution.defaulty}
+        </if>
+          </where>
+  </select>
+
+
+
+</mapper>

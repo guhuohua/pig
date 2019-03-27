@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pig4cloud.pig.shop.manage.mapper.MiniProgramMapper">
+
+  <resultMap id="miniProgramMap" type="com.pig4cloud.pig.shop.api.entity.MiniProgram">
+                  <id property="id" column="id"/>
+                        <result property="shopId" column="shop_id"/>
+                        <result property="appId" column="app_id"/>
+                        <result property="secret" column="secret"/>
+                        <result property="backUrl" column="back_url"/>
+                        <result property="mchIdd" column="mch_idd"/>
+                        <result property="appKey" column="app_key"/>
+                        <result property="status" column="status"/>
+                        <result property="createTime" column="create_time"/>
+                        <result property="updateTime" column="update_time"/>
+            </resultMap>
+
+  <!--miniProgram简单分页查询-->
+  <select id="getMiniProgramPage" resultMap="miniProgramMap">
+    SELECT
+                  id,
+                        shop_id,
+                        app_id,
+                        secret,
+                        back_url,
+                        mch_idd,
+                        app_key,
+                        status,
+                        create_time,
+                        update_time
+              FROM shop_mini_program
+    <where>
+              <if test="miniProgram.id != null and miniProgram.id.trim() != ''">
+          AND id = #{miniProgram.id}
+        </if>
+              <if test="miniProgram.shopId != null and miniProgram.shopId.trim() != ''">
+          AND shop_id = #{miniProgram.shopId}
+        </if>
+              <if test="miniProgram.appId != null and miniProgram.appId.trim() != ''">
+          AND app_id = #{miniProgram.appId}
+        </if>
+              <if test="miniProgram.secret != null and miniProgram.secret.trim() != ''">
+          AND secret = #{miniProgram.secret}
+        </if>
+              <if test="miniProgram.backUrl != null and miniProgram.backUrl.trim() != ''">
+          AND back_url = #{miniProgram.backUrl}
+        </if>
+              <if test="miniProgram.mchIdd != null and miniProgram.mchIdd.trim() != ''">
+          AND mch_idd = #{miniProgram.mchIdd}
+        </if>
+              <if test="miniProgram.appKey != null and miniProgram.appKey.trim() != ''">
+          AND app_key = #{miniProgram.appKey}
+        </if>
+              <if test="miniProgram.status != null and miniProgram.status.trim() != ''">
+          AND status = #{miniProgram.status}
+        </if>
+              <if test="miniProgram.createTime != null and miniProgram.createTime.trim() != ''">
+          AND create_time = #{miniProgram.createTime}
+        </if>
+              <if test="miniProgram.updateTime != null and miniProgram.updateTime.trim() != ''">
+          AND update_time = #{miniProgram.updateTime}
+        </if>
+          </where>
+  </select>
+
+
+
+</mapper>
