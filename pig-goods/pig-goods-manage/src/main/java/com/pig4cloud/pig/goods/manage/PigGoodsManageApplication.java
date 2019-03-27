@@ -1,11 +1,13 @@
 package com.pig4cloud.pig.goods.manage;
 
-import com.pig4cloud.pig.common.security.annotation.EnablePigFeignClients;
+import com.pig4cloud.pig.common.security.annotation.EnablePigResourceServer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.cloud.client.SpringCloudApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
-@EnablePigFeignClients
+@EnableFeignClients
 @SpringCloudApplication
+@EnablePigResourceServer
 public class PigGoodsManageApplication {
 
 	public static void main(String[] args) {
