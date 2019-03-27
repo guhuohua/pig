@@ -172,3 +172,20 @@
 2019-03-27 17:34:24,238 [RMI TCP Connection(2)-192.168.1.105] INFO  [o.s.c.c.client.ConfigServicePropertySourceLocator] ConfigServicePropertySourceLocator.java:149 - Located environment: name=pig-auth, profiles=[dev], label=null, version=null, state=null
 2019-03-27 17:34:24,783 [RMI TCP Connection(2)-192.168.1.105] INFO  [io.lettuce.core.EpollProvider] EpollProvider.java:68 - Starting without optional epoll library
 2019-03-27 17:34:24,785 [RMI TCP Connection(2)-192.168.1.105] INFO  [io.lettuce.core.KqueueProvider] KqueueProvider.java:70 - Starting without optional kqueue library
+2019-03-27 17:37:48,362 [Thread-32] INFO  [o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext] AbstractApplicationContext.java:991 - Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@3f4cd155: startup date [Wed Mar 27 17:34:05 CST 2019]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@53aac487
+2019-03-27 17:37:48,373 [Thread-32] INFO  [o.s.c.n.e.serviceregistry.EurekaServiceRegistry] EurekaServiceRegistry.java:65 - Unregistering application PIG-AUTH with eureka with status DOWN
+2019-03-27 17:37:48,374 [Thread-32] WARN  [com.netflix.discovery.DiscoveryClient] DiscoveryClient.java:1297 - Saw local status change event StatusChangeEvent [timestamp=1553679468373, current=DOWN, previous=UP]
+2019-03-27 17:37:48,375 [DiscoveryClient-InstanceInfoReplicator-0] INFO  [com.netflix.discovery.DiscoveryClient] DiscoveryClient.java:826 - DiscoveryClient_PIG-AUTH/192.168.1.105:pig-auth:3000: registering service...
+2019-03-27 17:37:48,395 [DiscoveryClient-InstanceInfoReplicator-0] INFO  [com.netflix.discovery.DiscoveryClient] DiscoveryClient.java:835 - DiscoveryClient_PIG-AUTH/192.168.1.105:pig-auth:3000 - registration status: 204
+2019-03-27 17:37:48,409 [Thread-32] INFO  [o.s.context.support.DefaultLifecycleProcessor] DefaultLifecycleProcessor.java:369 - Stopping beans in phase 0
+2019-03-27 17:37:48,419 [Thread-32] INFO  [o.s.jmx.export.annotation.AnnotationMBeanExporter] MBeanExporter.java:451 - Unregistering JMX-exposed beans on shutdown
+2019-03-27 17:37:48,422 [Thread-32] INFO  [o.s.jmx.export.annotation.AnnotationMBeanExporter] MBeanRegistrationSupport.java:185 - Unregistering JMX-exposed beans
+2019-03-27 17:37:48,460 [Thread-32] INFO  [o.s.c.a.AnnotationConfigApplicationContext] AbstractApplicationContext.java:991 - Closing FeignContext-pig-upms: startup date [Wed Mar 27 17:34:09 CST 2019]; parent: org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@3f4cd155
+2019-03-27 17:37:49,593 [Thread-32] INFO  [com.netflix.discovery.DiscoveryClient] DiscoveryClient.java:888 - Shutting down DiscoveryClient ...
+2019-03-27 17:37:49,598 [Thread-32] INFO  [o.s.cloud.netflix.eureka.InstanceInfoFactory] InstanceInfoFactory.java:71 - Setting initial instance status as: STARTING
+2019-03-27 17:37:52,601 [Thread-32] INFO  [com.netflix.discovery.DiscoveryClient] DiscoveryClient.java:922 - Unregistering ...
+2019-03-27 17:37:52,632 [Thread-32] INFO  [com.netflix.discovery.DiscoveryClient] DiscoveryClient.java:924 - DiscoveryClient_PIG-AUTH/192.168.1.105:pig-auth:3000 - deregister  status: 200
+2019-03-27 17:37:52,650 [Thread-32] INFO  [com.netflix.discovery.DiscoveryClient] DiscoveryClient.java:911 - Completed shut down of DiscoveryClient
+2019-03-27 17:37:52,651 [Thread-32] INFO  [com.zaxxer.hikari.HikariDataSource] HikariDataSource.java:381 - HikariPool-1 - Shutdown initiated...
+2019-03-27 17:37:52,696 [Thread-32] INFO  [com.zaxxer.hikari.HikariDataSource] HikariDataSource.java:383 - HikariPool-1 - Shutdown completed.
+2019-03-27 17:37:52,699 [Thread-32] INFO  [io.undertow.servlet] ServletContextImpl.java:360 - Destroying Spring FrameworkServlet 'dispatcherServlet'
