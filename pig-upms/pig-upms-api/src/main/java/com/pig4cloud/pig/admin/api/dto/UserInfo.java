@@ -30,6 +30,7 @@ import java.io.Serializable;
  * commit('SET_AVATAR', data)
  * commit('SET_INTRODUCTION', data)
  * commit('SET_PERMISSIONS', data)
+ * commit('SET_SHOPID', data)
  */
 @Data
 public class UserInfo implements Serializable {
@@ -48,7 +49,7 @@ public class UserInfo implements Serializable {
 	private Integer[] roles;
 
 	/**
-	 * 商铺ID
+	 * 角色所属店铺
 	 */
 	private Integer shopId;
 }

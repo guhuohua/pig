@@ -3,7 +3,7 @@
 
 <mapper namespace="com.pig4cloud.pig.shop.manage.mapper.MiniProgramMapper">
 
-  <resultMap id="miniProgramMap" type="com.pig4cloud.pig.shop.api.entity.MiniProgram">
+  <resultMap id="miniProgramMap" type="com.pig4cloud.shop.api.entity.MiniProgram">
                   <id property="id" column="id"/>
                         <result property="shopId" column="shop_id"/>
                         <result property="appId" column="app_id"/>

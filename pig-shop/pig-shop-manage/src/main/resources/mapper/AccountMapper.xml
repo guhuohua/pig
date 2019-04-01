@@ -3,7 +3,7 @@
 
 <mapper namespace="com.pig4cloud.pig.shop.manage.mapper.AccountMapper">
 
-  <resultMap id="accountMap" type="com.pig4cloud.pig.shop.api.entity.Account">
+  <resultMap id="accountMap" type="com.pig4cloud.shop.api.entity.Account">
                   <id property="id" column="Id"/>
                         <result property="flag" column="Flag"/>
                         <result property="desc" column="Desc"/>

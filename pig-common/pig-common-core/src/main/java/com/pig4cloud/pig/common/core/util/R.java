@@ -71,6 +71,6 @@ public class R<T> implements Serializable {
 	}
 
 	public static <T> R ok(T t){
-	    return new R<>(t);
+		return new R<>(t);
 	}
 }

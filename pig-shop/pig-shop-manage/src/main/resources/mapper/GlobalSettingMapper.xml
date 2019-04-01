@@ -3,7 +3,7 @@
 
 <mapper namespace="com.pig4cloud.pig.shop.manage.mapper.GlobalSettingMapper">
 
-  <resultMap id="globalSettingMap" type="com.pig4cloud.pig.shop.api.entity.GlobalSetting">
+  <resultMap id="globalSettingMap" type="com.pig4cloud.shop.api.entity.GlobalSetting">
                   <id property="id" column="Id"/>
                         <result property="shopId" column="shop_id"/>
                         <result property="status" column="status"/>

@@ -37,7 +37,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -63,7 +62,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 	private final SysDeptService sysDeptService;
 	private final SysUserRoleService sysUserRoleService;
 	private final SysDeptRelationService sysDeptRelationService;
-	private final SysShopService sysShopService;
 
 	/**
 	 * 保存用户信息
@@ -105,10 +103,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 			.map(SysRole::getRoleId)
 			.collect(Collectors.toList());
 		userInfo.setRoles(ArrayUtil.toArray(roleIds, Integer.class));
-
-		// 设置 店铺id
-		Integer shopId = sysShopService.findByUserId(sysUser.getUserId());
-		userInfo.setShopId(shopId);
 
 		//设置权限列表（menu.permission）
 		Set<String> permissions = new HashSet<>();

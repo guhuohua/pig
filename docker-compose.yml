@@ -69,17 +69,6 @@ services:
     hostname: pig-upms
     image: pig-upms
 
-  pig-goods:
-      build:
-        context: ./
-        dockerfile: ./pig-goods/pig-goods-manage/Dockerfile
-      restart: always
-      ports:
-        - 5050:5050
-      container_name: pig-goods
-      hostname: pig-goods
-      image: pig-goods
-
   pig-monitor:
     build:
       context: ./

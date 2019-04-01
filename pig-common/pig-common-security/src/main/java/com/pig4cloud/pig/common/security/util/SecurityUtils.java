@@ -20,7 +20,6 @@ package com.pig4cloud.pig.common.security.util;
 import cn.hutool.core.util.StrUtil;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.exception.UnloginException;
-import com.pig4cloud.pig.common.security.exception.UnauthorizedException;
 import com.pig4cloud.pig.common.security.service.LoginUser;
 import com.pig4cloud.pig.common.security.service.PigUser;
 import lombok.experimental.UtilityClass;
@@ -95,7 +94,6 @@ public class SecurityUtils {
 		}
 		return loginUser != null ? loginUser.getId() : null;
 	}
-
 
 	/**
 	 * 获取用户角色信息

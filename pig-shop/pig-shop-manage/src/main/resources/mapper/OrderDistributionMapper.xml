@@ -3,7 +3,7 @@
 
 <mapper namespace="com.pig4cloud.pig.shop.manage.mapper.OrderDistributionMapper">
 
-  <resultMap id="orderDistributionMap" type="com.pig4cloud.pig.shop.api.entity.OrderDistribution">
+  <resultMap id="orderDistributionMap" type="com.pig4cloud.shop.api.entity.OrderDistribution">
                   <id property="id" column="Id"/>
                         <result property="shopId" column="shop_id"/>
                         <result property="status" column="status"/>

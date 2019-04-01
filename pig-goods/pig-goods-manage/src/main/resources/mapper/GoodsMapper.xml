@@ -3,7 +3,7 @@
 
 <mapper namespace="com.pig4cloud.pig.goods.manage.mapper.GoodsMapper">
 
-  <resultMap id="goodsMap" type="com.pig4cloud.pig.goods.api.entity.Goods">
+  <resultMap id="goodsMap" type="com.pig4cloud.goods.api.entity.Goods">
                   <id property="id" column="Id"/>
                         <result property="shopId" column="shop_id"/>
                         <result property="status" column="status"/>
