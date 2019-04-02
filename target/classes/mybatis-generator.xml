@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <!-- mysql-connector-java-5.1.46.jar的绝对路径 -->
+    <classPathEntry location="/Users/changhan/Downloads/repository/repository/mysql/mysql-connector-java/8.0.15/mysql-connector-java-8.0.15.jar" />
+
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <!-- 配置数据源 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://192.168.1.118:3306/batu?useUnicode=true&amp;characterEncoding=UTF-8&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"
+                        userId="root"
+                        password="root">
+        </jdbcConnection>
+
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!-- 配置生成的javabean所存放的路径和包（使用绝对路径） -->
+        <javaModelGenerator targetPackage="com.ch.entity" targetProject="/Users/changhan/batu/batu/src/main/java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!-- 配置生成的**Mapper.xml文件所存放的路径和包（使用绝对路径） -->
+        <sqlMapGenerator targetPackage="mapper"  targetProject="/Users/changhan/batu/batu/src/main/resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <!-- 配置生成的**Mapper.java接口文件所存放的路径和包（使用绝对路径） -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.ch.dao"  targetProject="/Users/changhan/batu/batu/src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <!-- 指定我们要操作的表明和生成的javabean类名 -->
+        <!--<table tableName="bt_sys_permission" domainObjectName="BtSysPermission" >-->
+        <!--</table>-->
+        <!--<table tableName="bt_sys_role" domainObjectName="BtSysRole" >-->
+        <!--</table>-->
+        <!--<table tableName="bt_sys_role_permission" domainObjectName="BtSysRolePermission" >-->
+        <!--</table>-->
+        <!--<table tableName="bt_sys_user" domainObjectName="BtSysUser" >-->
+        <!--</table>-->
+        <!--<table tableName="bt_sys_user_role" domainObjectName="BtSysUserRole" >-->
+        <!--</table>-->
+        <!--<table tableName="bt_view_blog" domainObjectName="BtViewBlog" >-->
+        <!--</table>-->
+        <!--<table tableName="bt_view_menu" domainObjectName="BtViewMenu" >-->
+        <!--</table>-->
+        <!--<table tableName="bt_view_message" domainObjectName="BtViewMessage" >-->
+        <!--</table>-->
+        <table tableName="bt_view_menu_fan" domainObjectName="BtViewMenuFan" enableCountByExample="true" enableUpdateByExample="true"
+               enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true"/>
+        <table tableName="bt_view_news_fan" domainObjectName="BtViewNewsFan" enableCountByExample="true" enableUpdateByExample="true"
+               enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true"/>
+        <!--<table tableName="bt_view_news_category" domainObjectName="BtViewNewsCategory" >-->
+        <!--</table>-->
+    </context>
+</generatorConfiguration>

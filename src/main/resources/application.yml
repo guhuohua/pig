@@ -1,0 +1,42 @@
+server:
+  port: 8080
+
+## �����ýڵ�Ϊ�����Ľڵ㣬�кܶ�ͬѧ���׽�������÷���spring�Ľڵ��£����������޷���ʶ��
+mybatis:
+  mapper-locations: classpath:mapper/*.xml  #ע�⣺һ��Ҫ��Ӧmapperӳ��xml�ļ�������·��
+  type-aliases-package: com.ch.entity  # ע�⣺��Ӧʵ�����·��
+  configuration:
+    map-underscore-to-camel-case: true
+
+
+oss:
+  ossaddress: oss-cn-beijing.aliyuncs.com
+  accessKeyId: LTAIp0FkxlxtAIKO
+  accessKeySecret:  AQu82DEcK2S75DlAR3BXUDbEva938q
+  bucketName: batu-gaoma
+  filehost: batu
+
+baidu:
+  accessKeyId: 20190321000279610
+  accessKeySecret: 9CP6u0S76T1fnoui_UTn
+
+spring:
+  redis:
+      #数据库索引
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password:
+    jedis:
+      pool:
+          #最大连接数
+        max-active: 8
+          #最大阻塞等待时间(负数表示没限制)
+        max-wait: -1
+          #最大空闲
+        max-idle: 8
+          #最小空闲
+        min-idle: 0
+      #连接超时时间
+    timeout: 10000
+

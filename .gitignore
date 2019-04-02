@@ -29,3 +29,7 @@ pig-upms/pig-upms-api/target/classes/com/pig4cloud/pig/admin/api/vo/LogVO.class
 pig-upms/pig-upms-api/target/classes/com/pig4cloud/pig/admin/api/vo/MenuVO.class
 pig-upms/pig-upms-api/target/classes/com/pig4cloud/pig/admin/api/vo/TreeUtil.class
 pig-upms/pig-upms-api/target/classes/com/pig4cloud/pig/admin/api/vo/UserVO.class
+target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst
+target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst
