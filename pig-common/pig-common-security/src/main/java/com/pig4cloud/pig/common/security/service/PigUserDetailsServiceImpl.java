@@ -53,7 +53,7 @@ public class PigUserDetailsServiceImpl implements UserDetailsService {
 	private final CacheManager cacheManager;
 
 	/**
-	 * 用户密码登录
+	 * 用户密码登录撒开会时
 	 *
 	 * @param username 用户名
 	 * @return
