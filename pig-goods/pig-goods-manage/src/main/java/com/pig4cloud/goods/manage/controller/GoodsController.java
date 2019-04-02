@@ -24,6 +24,10 @@ public class GoodsController {
 
   private final GoodsService goodsService;
 
+
+
+  
+
   /**
    * 简单分页查询
    * @param page 分页对象
