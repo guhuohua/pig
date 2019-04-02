@@ -1,7 +1,5 @@
 package com.ch.base;
 
-import com.ch.model.UserDTO;
-import com.ch.service.BtSysUserService;
 import com.ch.util.TokenUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,12 +19,12 @@ public class MyRealm extends AuthorizingRealm {
 
     private static final Logger LOGGER = LogManager.getLogger(MyRealm.class);
 
-    private BtSysUserService btSysUserService;
-
-    @Autowired
-    public void setBtSysUserService(BtSysUserService btSysUserService) {
-        this.btSysUserService = btSysUserService;
-    }
+//    private BtSysUserService btSysUserService;
+//
+//    @Autowired
+//    public void setBtSysUserService(BtSysUserService btSysUserService) {
+//        this.btSysUserService = btSysUserService;
+//    }
 
     /**
      * 大坑！，必须重写此方法，不然Shiro会报错
@@ -42,14 +40,14 @@ public class MyRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         String userId = TokenUtil.getUserId(principals.toString());
-        UserDTO userDTO = btSysUserService.findById(userId);
+//        UserDTO userDTO = btSysUserService.findById(userId);
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        if (userDTO.getRoles().size() > 0) {
-            simpleAuthorizationInfo.setRoles(userDTO.getRoles());
-        }
-        if (userDTO.getPermissions().size() > 0) {
-            simpleAuthorizationInfo.setStringPermissions(userDTO.getPermissions());
-        }
+//        if (userDTO.getRoles().size() > 0) {
+//            simpleAuthorizationInfo.setRoles(userDTO.getRoles());
+//        }
+//        if (userDTO.getPermissions().size() > 0) {
+//            simpleAuthorizationInfo.setStringPermissions(userDTO.getPermissions());
+//        }
         return simpleAuthorizationInfo;
     }
     /**
@@ -64,14 +62,14 @@ public class MyRealm extends AuthorizingRealm {
             throw new AuthenticationException("token invalid");
         }
 
-        UserDTO userDTO = btSysUserService.findById(userId);
-        if (userDTO == null) {
-            throw new AuthenticationException("User didn't existed!");
-        }
-
-        if (! TokenUtil.verify(token)) {
-            throw new AuthenticationException("Username or password error");
-        }
+//        UserDTO userDTO = btSysUserService.findById(userId);
+//        if (userDTO == null) {
+//            throw new AuthenticationException("User didn't existed!");
+//        }
+//
+//        if (! TokenUtil.verify(token)) {
+//            throw new AuthenticationException("Username or password error");
+//        }
 
         return new SimpleAuthenticationInfo(token, token, "my_realm");
     }

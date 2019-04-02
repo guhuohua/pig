@@ -1,6 +1,9 @@
 package com;
 
+import com.ch.config.FlywayConfig;
+import org.flywaydb.core.Flyway;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,20 +15,16 @@ import org.springframework.context.annotation.Bean;
 @ServletComponentScan
 public class ChApplication {
 
-	@Value("${spring.datasource.url}")
-	private String url;
-	@Value("${spring.datasource.username}")
-	private String username;
-	@Value("${spring.datasource.password}")
-	private String password;
+	@Autowired
+	FlywayConfig flywayConfig;
 
-//	@Bean(initMethod = "migrate")
-//	Flyway flyway() {
-//		Flyway flyway = new Flyway();
-//		flyway.setBaselineOnMigrate(true);
-//		flyway.setDataSource(url, username, password);
-//		return flyway;
-//	}
+	@Bean(initMethod = "migrate")
+	Flyway flyway() {
+		Flyway flyway = new Flyway();
+		flyway.setBaselineOnMigrate(true);
+		flyway.setDataSource(flywayConfig.getUrl(), flywayConfig.getUsername(), flywayConfig.getPassword());
+		return flyway;
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(ChApplication.class, args);
