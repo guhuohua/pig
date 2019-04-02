@@ -37,10 +37,13 @@
         </javaClientGenerator>
 
 
-        <table tableName="coupon" domainObjectName="Coupon" enableCountByExample="true" enableUpdateByExample="true"
-               enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true"/>
-        <table tableName="goods" domainObjectName="Goods" enableCountByExample="true" enableUpdateByExample="true"
-               enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true"/>
+<!--        <table tableName="coupon" domainObjectName="Coupon" enableCountByExample="true" enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true"/>-->
+<!--        <table tableName="goods" domainObjectName="Goods" enableCountByExample="true" enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true"/>-->
+<!--        <table tableName="goods_details" domainObjectName="GoodsDetails" enableCountByExample="true" enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true"/>-->
+
         <table tableName="goods_details" domainObjectName="GoodsDetails" enableCountByExample="true" enableUpdateByExample="true"
                enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true"/>
 

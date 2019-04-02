@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ch.dao.ShopOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.ch.entity.ShopOrder" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="shop_id" property="shopId" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="del_flag" property="delFlag" jdbcType="INTEGER" />
+    <result column="free_shipping" property="freeShipping" jdbcType="DOUBLE" />
+    <result column="order_close_normal" property="orderCloseNormal" jdbcType="INTEGER" />
+    <result column="order_close_active" property="orderCloseActive" jdbcType="INTEGER" />
+    <result column="confirm_day" property="confirmDay" jdbcType="INTEGER" />
+    <result column="template_cancel" property="templateCancel" jdbcType="VARCHAR" />
+    <result column="template_delivery" property="templateDelivery" jdbcType="VARCHAR" />
+    <result column="template_evaluation" property="templateEvaluation" jdbcType="VARCHAR" />
+    <result column="template_complete" property="templateComplete" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, shop_id, status, create_time, update_time, del_flag, free_shipping, order_close_normal, 
+    order_close_active, confirm_day, template_cancel, template_delivery, template_evaluation, 
+    template_complete
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.ShopOrderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from shop_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from shop_order
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from shop_order
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ch.entity.ShopOrderExample" >
+    delete from shop_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ch.entity.ShopOrder" >
+    insert into shop_order (id, shop_id, status, 
+      create_time, update_time, del_flag, 
+      free_shipping, order_close_normal, order_close_active, 
+      confirm_day, template_cancel, template_delivery, 
+      template_evaluation, template_complete)
+    values (#{id,jdbcType=INTEGER}, #{shopId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=INTEGER}, 
+      #{freeShipping,jdbcType=DOUBLE}, #{orderCloseNormal,jdbcType=INTEGER}, #{orderCloseActive,jdbcType=INTEGER}, 
+      #{confirmDay,jdbcType=INTEGER}, #{templateCancel,jdbcType=VARCHAR}, #{templateDelivery,jdbcType=VARCHAR}, 
+      #{templateEvaluation,jdbcType=VARCHAR}, #{templateComplete,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ch.entity.ShopOrder" >
+    insert into shop_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="shopId != null" >
+        shop_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+      <if test="freeShipping != null" >
+        free_shipping,
+      </if>
+      <if test="orderCloseNormal != null" >
+        order_close_normal,
+      </if>
+      <if test="orderCloseActive != null" >
+        order_close_active,
+      </if>
+      <if test="confirmDay != null" >
+        confirm_day,
+      </if>
+      <if test="templateCancel != null" >
+        template_cancel,
+      </if>
+      <if test="templateDelivery != null" >
+        template_delivery,
+      </if>
+      <if test="templateEvaluation != null" >
+        template_evaluation,
+      </if>
+      <if test="templateComplete != null" >
+        template_complete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="shopId != null" >
+        #{shopId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="freeShipping != null" >
+        #{freeShipping,jdbcType=DOUBLE},
+      </if>
+      <if test="orderCloseNormal != null" >
+        #{orderCloseNormal,jdbcType=INTEGER},
+      </if>
+      <if test="orderCloseActive != null" >
+        #{orderCloseActive,jdbcType=INTEGER},
+      </if>
+      <if test="confirmDay != null" >
+        #{confirmDay,jdbcType=INTEGER},
+      </if>
+      <if test="templateCancel != null" >
+        #{templateCancel,jdbcType=VARCHAR},
+      </if>
+      <if test="templateDelivery != null" >
+        #{templateDelivery,jdbcType=VARCHAR},
+      </if>
+      <if test="templateEvaluation != null" >
+        #{templateEvaluation,jdbcType=VARCHAR},
+      </if>
+      <if test="templateComplete != null" >
+        #{templateComplete,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ch.entity.ShopOrderExample" resultType="java.lang.Integer" >
+    select count(*) from shop_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update shop_order
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.shopId != null" >
+        shop_id = #{record.shopId,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="record.freeShipping != null" >
+        free_shipping = #{record.freeShipping,jdbcType=DOUBLE},
+      </if>
+      <if test="record.orderCloseNormal != null" >
+        order_close_normal = #{record.orderCloseNormal,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderCloseActive != null" >
+        order_close_active = #{record.orderCloseActive,jdbcType=INTEGER},
+      </if>
+      <if test="record.confirmDay != null" >
+        confirm_day = #{record.confirmDay,jdbcType=INTEGER},
+      </if>
+      <if test="record.templateCancel != null" >
+        template_cancel = #{record.templateCancel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.templateDelivery != null" >
+        template_delivery = #{record.templateDelivery,jdbcType=VARCHAR},
+      </if>
+      <if test="record.templateEvaluation != null" >
+        template_evaluation = #{record.templateEvaluation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.templateComplete != null" >
+        template_complete = #{record.templateComplete,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update shop_order
+    set id = #{record.id,jdbcType=INTEGER},
+      shop_id = #{record.shopId,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      del_flag = #{record.delFlag,jdbcType=INTEGER},
+      free_shipping = #{record.freeShipping,jdbcType=DOUBLE},
+      order_close_normal = #{record.orderCloseNormal,jdbcType=INTEGER},
+      order_close_active = #{record.orderCloseActive,jdbcType=INTEGER},
+      confirm_day = #{record.confirmDay,jdbcType=INTEGER},
+      template_cancel = #{record.templateCancel,jdbcType=VARCHAR},
+      template_delivery = #{record.templateDelivery,jdbcType=VARCHAR},
+      template_evaluation = #{record.templateEvaluation,jdbcType=VARCHAR},
+      template_complete = #{record.templateComplete,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ch.entity.ShopOrder" >
+    update shop_order
+    <set >
+      <if test="shopId != null" >
+        shop_id = #{shopId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="freeShipping != null" >
+        free_shipping = #{freeShipping,jdbcType=DOUBLE},
+      </if>
+      <if test="orderCloseNormal != null" >
+        order_close_normal = #{orderCloseNormal,jdbcType=INTEGER},
+      </if>
+      <if test="orderCloseActive != null" >
+        order_close_active = #{orderCloseActive,jdbcType=INTEGER},
+      </if>
+      <if test="confirmDay != null" >
+        confirm_day = #{confirmDay,jdbcType=INTEGER},
+      </if>
+      <if test="templateCancel != null" >
+        template_cancel = #{templateCancel,jdbcType=VARCHAR},
+      </if>
+      <if test="templateDelivery != null" >
+        template_delivery = #{templateDelivery,jdbcType=VARCHAR},
+      </if>
+      <if test="templateEvaluation != null" >
+        template_evaluation = #{templateEvaluation,jdbcType=VARCHAR},
+      </if>
+      <if test="templateComplete != null" >
+        template_complete = #{templateComplete,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ch.entity.ShopOrder" >
+    update shop_order
+    set shop_id = #{shopId,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      del_flag = #{delFlag,jdbcType=INTEGER},
+      free_shipping = #{freeShipping,jdbcType=DOUBLE},
+      order_close_normal = #{orderCloseNormal,jdbcType=INTEGER},
+      order_close_active = #{orderCloseActive,jdbcType=INTEGER},
+      confirm_day = #{confirmDay,jdbcType=INTEGER},
+      template_cancel = #{templateCancel,jdbcType=VARCHAR},
+      template_delivery = #{templateDelivery,jdbcType=VARCHAR},
+      template_evaluation = #{templateEvaluation,jdbcType=VARCHAR},
+      template_complete = #{templateComplete,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
