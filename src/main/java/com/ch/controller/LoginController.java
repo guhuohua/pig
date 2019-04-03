@@ -16,19 +16,21 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("/webShop")
-@Api(value = "登录接口")
+@RequestMapping(value = "user")
+//@Api(value = "登录接口")
 public class LoginController {
    @Autowired
     SysUserService sysUserService;
     private static final Logger LOGGER = LogManager.getLogger(LoginController.class);
-   @ApiOperation("登录")
-   @RequestMapping("/login")
+   //@ApiOperation("登录")
+   @PostMapping(value = "login")
     public ResponseResult login(@RequestBody UserDto dto){
        ResponseResult result = new ResponseResult();
        try {
@@ -44,5 +46,20 @@ public class LoginController {
            result.setError_description("登录失败，请稍后再试");
        }
        return result;
+    }
+
+    @GetMapping(value = "info")
+    public ResponseResult getUserInfo(HttpServletRequest req, HttpServletResponse res) {
+        String token = req.getHeader("Authorization");
+        Integer userId = TokenUtil.getUserId(token);
+        ResponseResult result = new ResponseResult();
+        try {
+            result.setData(sysUserService.findById(userId));
+        } catch (Exception e) {
+            result.setCode(404);
+            result.setError(e.getMessage());
+            result.setError_description("获取用户信息失败");
+        }
+        return result;
     }
 }
