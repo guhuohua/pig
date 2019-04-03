@@ -65,10 +65,10 @@ public class TokenUtil {
      * @param **token**
      * @return
      */
-    public static String getUserId(String token){
+    public static Integer getUserId(String token){
         try {
             DecodedJWT jwt = JWT.decode(token);
-            return jwt.getClaim("userId").asString();
+            return jwt.getClaim("userId").asInt();
         } catch (JWTDecodeException e){
             e.printStackTrace();
             return null;

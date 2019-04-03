@@ -4,22 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PageQuery {
-    private int index;
-    private int size;
+    private int currentPage;
+    private int pageSize;
 
-    public int getIndex() {
-        return index;
+    public int getCurrentPage() {
+        return currentPage;
     }
 
-    public void setIndex(int index) {
-        this.index = index;
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
     }
 
-    public int getSize() {
-        return size;
+    public int getPageSize() {
+        return pageSize;
     }
 
-    public void setSize(int size) {
-        this.size = size;
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
     }
 }

@@ -1,5 +1,7 @@
 package com.ch.base;
 
+import com.ch.model.UserDto;
+import com.ch.service.SysUserService;
 import com.ch.util.TokenUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,12 +21,8 @@ public class MyRealm extends AuthorizingRealm {
 
     private static final Logger LOGGER = LogManager.getLogger(MyRealm.class);
 
-//    private BtSysUserService btSysUserService;
-//
-//    @Autowired
-//    public void setBtSysUserService(BtSysUserService btSysUserService) {
-//        this.btSysUserService = btSysUserService;
-//    }
+    @Autowired
+    SysUserService sysUserService;
 
     /**
      * 大坑！，必须重写此方法，不然Shiro会报错
@@ -39,15 +37,15 @@ public class MyRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        String userId = TokenUtil.getUserId(principals.toString());
-//        UserDTO userDTO = btSysUserService.findById(userId);
+        Integer userId = TokenUtil.getUserId(principals.toString());
+        UserDto userDto = sysUserService.findById(userId);
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-//        if (userDTO.getRoles().size() > 0) {
-//            simpleAuthorizationInfo.setRoles(userDTO.getRoles());
-//        }
-//        if (userDTO.getPermissions().size() > 0) {
-//            simpleAuthorizationInfo.setStringPermissions(userDTO.getPermissions());
-//        }
+        if (userDto.getRoles().size() > 0) {
+            simpleAuthorizationInfo.setRoles(userDto.getRoles());
+        }
+        if (userDto.getPremissions().size() > 0) {
+            simpleAuthorizationInfo.setStringPermissions(userDto.getPremissions());
+        }
         return simpleAuthorizationInfo;
     }
     /**
@@ -57,19 +55,19 @@ public class MyRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken auth) throws AuthenticationException {
         String token = (String) auth.getCredentials();
         // 解密获得username，用于和数据库进行对比
-        String userId = TokenUtil.getUserId(token);
+        Integer userId = TokenUtil.getUserId(token);
         if (userId == null) {
             throw new AuthenticationException("token invalid");
         }
 
-//        UserDTO userDTO = btSysUserService.findById(userId);
-//        if (userDTO == null) {
-//            throw new AuthenticationException("User didn't existed!");
-//        }
-//
-//        if (! TokenUtil.verify(token)) {
-//            throw new AuthenticationException("Username or password error");
-//        }
+        UserDto userDto = sysUserService.findById(userId);
+        if (userDto == null) {
+            throw new AuthenticationException("User didn't existed!");
+        }
+
+        if (! TokenUtil.verify(token)) {
+            throw new AuthenticationException("Username or password error");
+        }
 
         return new SimpleAuthenticationInfo(token, token, "my_realm");
     }

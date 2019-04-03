@@ -1,6 +1,7 @@
 package com.ch.entity;
 
 import java.util.Date;
+import java.util.List;
 
 public class SysMenu {
     private Integer menuId;
@@ -30,6 +31,16 @@ public class SysMenu {
     private String delFlag;
 
     private Integer shopId;
+
+    private List<SysMenu> children;
+
+    public List<SysMenu> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<SysMenu> children) {
+        this.children = children;
+    }
 
     public Integer getMenuId() {
         return menuId;

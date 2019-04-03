@@ -15,7 +15,7 @@ public class SysUser {
 
     private String avatar;
 
-    private Long shopId;
+    private Integer shopId;
 
     private Date createTime;
 
@@ -87,11 +87,11 @@ public class SysUser {
         this.avatar = avatar == null ? null : avatar.trim();
     }
 
-    public Long getShopId() {
+    public Integer getShopId() {
         return shopId;
     }
 
-    public void setShopId(Long shopId) {
+    public void setShopId(Integer shopId) {
         this.shopId = shopId;
     }
 
