@@ -4,7 +4,9 @@ import com.ch.entity.SysRole;
 import com.ch.entity.SysRoleExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface SysRoleMapper {
     int countByExample(SysRoleExample example);
 

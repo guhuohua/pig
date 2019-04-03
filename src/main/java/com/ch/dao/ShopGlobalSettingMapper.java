@@ -4,7 +4,9 @@ import com.ch.entity.ShopGlobalSetting;
 import com.ch.entity.ShopGlobalSettingExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ShopGlobalSettingMapper {
     int countByExample(ShopGlobalSettingExample example);
 

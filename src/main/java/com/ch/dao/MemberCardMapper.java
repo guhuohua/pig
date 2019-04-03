@@ -4,7 +4,9 @@ import com.ch.entity.MemberCard;
 import com.ch.entity.MemberCardExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface MemberCardMapper {
     int countByExample(MemberCardExample example);
 

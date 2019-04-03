@@ -1,10 +1,13 @@
 package com.ch.dao;
 
+import com.ch.entity.SysRoleMenu;
 import com.ch.entity.SysRoleMenuExample;
 import com.ch.entity.SysRoleMenuKey;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface SysRoleMenuMapper {
     int countByExample(SysRoleMenuExample example);
 
@@ -12,13 +15,19 @@ public interface SysRoleMenuMapper {
 
     int deleteByPrimaryKey(SysRoleMenuKey key);
 
-    int insert(SysRoleMenuKey record);
+    int insert(SysRoleMenu record);
 
-    int insertSelective(SysRoleMenuKey record);
+    int insertSelective(SysRoleMenu record);
 
-    List<SysRoleMenuKey> selectByExample(SysRoleMenuExample example);
+    List<SysRoleMenu> selectByExample(SysRoleMenuExample example);
 
-    int updateByExampleSelective(@Param("record") SysRoleMenuKey record, @Param("example") SysRoleMenuExample example);
+    SysRoleMenu selectByPrimaryKey(SysRoleMenuKey key);
 
-    int updateByExample(@Param("record") SysRoleMenuKey record, @Param("example") SysRoleMenuExample example);
+    int updateByExampleSelective(@Param("record") SysRoleMenu record, @Param("example") SysRoleMenuExample example);
+
+    int updateByExample(@Param("record") SysRoleMenu record, @Param("example") SysRoleMenuExample example);
+
+    int updateByPrimaryKeySelective(SysRoleMenu record);
+
+    int updateByPrimaryKey(SysRoleMenu record);
 }

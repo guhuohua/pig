@@ -4,7 +4,9 @@ import com.ch.entity.ShopMiniProgram;
 import com.ch.entity.ShopMiniProgramExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ShopMiniProgramMapper {
     int countByExample(ShopMiniProgramExample example);
 

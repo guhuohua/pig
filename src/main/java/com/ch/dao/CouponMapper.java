@@ -4,7 +4,9 @@ import com.ch.entity.Coupon;
 import com.ch.entity.CouponExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface CouponMapper {
     int countByExample(CouponExample example);
 

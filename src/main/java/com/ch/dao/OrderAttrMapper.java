@@ -4,7 +4,9 @@ import com.ch.entity.OrderAttr;
 import com.ch.entity.OrderAttrExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface OrderAttrMapper {
     int countByExample(OrderAttrExample example);
 

@@ -4,7 +4,9 @@ import com.ch.entity.ShopMemberSet;
 import com.ch.entity.ShopMemberSetExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ShopMemberSetMapper {
     int countByExample(ShopMemberSetExample example);
 

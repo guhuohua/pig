@@ -23,6 +23,8 @@ public class SysOauthClientDetails {
 
     private String autoapprove;
 
+    private Integer shopId;
+
     public String getClientId() {
         return clientId;
     }
@@ -109,5 +111,13 @@ public class SysOauthClientDetails {
 
     public void setAutoapprove(String autoapprove) {
         this.autoapprove = autoapprove == null ? null : autoapprove.trim();
+    }
+
+    public Integer getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Integer shopId) {
+        this.shopId = shopId;
     }
 }

@@ -4,7 +4,9 @@ import com.ch.entity.SysUser;
 import com.ch.entity.SysUserExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface SysUserMapper {
     int countByExample(SysUserExample example);
 

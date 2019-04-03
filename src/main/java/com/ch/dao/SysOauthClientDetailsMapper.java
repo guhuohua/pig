@@ -4,7 +4,9 @@ import com.ch.entity.SysOauthClientDetails;
 import com.ch.entity.SysOauthClientDetailsExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface SysOauthClientDetailsMapper {
     int countByExample(SysOauthClientDetailsExample example);
 

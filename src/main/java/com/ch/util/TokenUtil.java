@@ -22,7 +22,7 @@ public class TokenUtil {
      * @param **password**
      * @return
      */
-    public static String sign(String userId) {
+    public static String sign(Integer userId) {
         try {
             // 设置过期时间
             Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);

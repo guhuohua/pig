@@ -5,7 +5,9 @@ import com.ch.entity.SysLogExample;
 import com.ch.entity.SysLogWithBLOBs;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface SysLogMapper {
     int countByExample(SysLogExample example);
 

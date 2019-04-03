@@ -4,7 +4,9 @@ import com.ch.entity.SysRoleDept;
 import com.ch.entity.SysRoleDeptExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface SysRoleDeptMapper {
     int countByExample(SysRoleDeptExample example);
 

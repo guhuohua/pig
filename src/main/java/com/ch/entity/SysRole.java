@@ -17,6 +17,8 @@ public class SysRole {
 
     private String delFlag;
 
+    private Integer shopId;
+
     public Integer getRoleId() {
         return roleId;
     }
@@ -71,5 +73,13 @@ public class SysRole {
 
     public void setDelFlag(String delFlag) {
         this.delFlag = delFlag == null ? null : delFlag.trim();
+    }
+
+    public Integer getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Integer shopId) {
+        this.shopId = shopId;
     }
 }

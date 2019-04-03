@@ -4,7 +4,9 @@ import com.ch.entity.UserTag;
 import com.ch.entity.UserTagExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface UserTagMapper {
     int countByExample(UserTagExample example);
 

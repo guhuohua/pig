@@ -7,6 +7,8 @@ public class SysRoleDept {
 
     private Integer deptId;
 
+    private Integer shopId;
+
     public Integer getId() {
         return id;
     }
@@ -29,5 +31,13 @@ public class SysRoleDept {
 
     public void setDeptId(Integer deptId) {
         this.deptId = deptId;
+    }
+
+    public Integer getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Integer shopId) {
+        this.shopId = shopId;
     }
 }

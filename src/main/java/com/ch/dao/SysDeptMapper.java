@@ -4,7 +4,9 @@ import com.ch.entity.SysDept;
 import com.ch.entity.SysDeptExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface SysDeptMapper {
     int countByExample(SysDeptExample example);
 

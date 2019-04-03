@@ -4,7 +4,9 @@ import com.ch.entity.Specification;
 import com.ch.entity.SpecificationExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface SpecificationMapper {
     int countByExample(SpecificationExample example);
 

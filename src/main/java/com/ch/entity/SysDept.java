@@ -17,6 +17,8 @@ public class SysDept {
 
     private Integer parentId;
 
+    private Integer shopId;
+
     public Integer getDeptId() {
         return deptId;
     }
@@ -71,5 +73,13 @@ public class SysDept {
 
     public void setParentId(Integer parentId) {
         this.parentId = parentId;
+    }
+
+    public Integer getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Integer shopId) {
+        this.shopId = shopId;
     }
 }

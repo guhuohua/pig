@@ -4,7 +4,9 @@ import com.ch.entity.ShopOrder;
 import com.ch.entity.ShopOrderExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ShopOrderMapper {
     int countByExample(ShopOrderExample example);
 

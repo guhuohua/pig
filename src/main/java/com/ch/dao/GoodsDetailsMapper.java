@@ -2,9 +2,10 @@ package com.ch.dao;
 import com.ch.entity.GoodsDetails;
 import com.ch.entity.GoodsDetailsExample;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface GoodsDetailsMapper {
     int countByExample(GoodsDetailsExample example);
 

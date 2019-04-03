@@ -29,6 +29,8 @@ public class SysMenu {
 
     private String delFlag;
 
+    private Integer shopId;
+
     public Integer getMenuId() {
         return menuId;
     }
@@ -131,5 +133,13 @@ public class SysMenu {
 
     public void setDelFlag(String delFlag) {
         this.delFlag = delFlag == null ? null : delFlag.trim();
+    }
+
+    public Integer getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Integer shopId) {
+        this.shopId = shopId;
     }
 }

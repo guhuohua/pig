@@ -12,6 +12,7 @@
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="remarks" property="remarks" jdbcType="VARCHAR" />
     <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+    <result column="shop_id" property="shopId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -72,7 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, value, label, type, description, sort, create_time, update_time, remarks, del_flag
+    id, value, label, type, description, sort, create_time, update_time, remarks, del_flag, 
+    shop_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.SysDictExample" >
     select
@@ -109,11 +111,11 @@
     insert into sys_dict (id, value, label, 
       type, description, sort, 
       create_time, update_time, remarks, 
-      del_flag)
+      del_flag, shop_id)
     values (#{id,jdbcType=INTEGER}, #{value,jdbcType=VARCHAR}, #{label,jdbcType=VARCHAR}, 
       #{type,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, 
-      #{delFlag,jdbcType=CHAR})
+      #{delFlag,jdbcType=CHAR}, #{shopId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ch.entity.SysDict" >
     insert into sys_dict
@@ -148,6 +150,9 @@
       <if test="delFlag != null" >
         del_flag,
       </if>
+      <if test="shopId != null" >
+        shop_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -179,6 +184,9 @@
       </if>
       <if test="delFlag != null" >
         #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="shopId != null" >
+        #{shopId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -221,6 +229,9 @@
       <if test="record.delFlag != null" >
         del_flag = #{record.delFlag,jdbcType=CHAR},
       </if>
+      <if test="record.shopId != null" >
+        shop_id = #{record.shopId,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -237,7 +248,8 @@
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       remarks = #{record.remarks,jdbcType=VARCHAR},
-      del_flag = #{record.delFlag,jdbcType=CHAR}
+      del_flag = #{record.delFlag,jdbcType=CHAR},
+      shop_id = #{record.shopId,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -272,6 +284,9 @@
       <if test="delFlag != null" >
         del_flag = #{delFlag,jdbcType=CHAR},
       </if>
+      <if test="shopId != null" >
+        shop_id = #{shopId,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -285,7 +300,8 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       remarks = #{remarks,jdbcType=VARCHAR},
-      del_flag = #{delFlag,jdbcType=CHAR}
+      del_flag = #{delFlag,jdbcType=CHAR},
+      shop_id = #{shopId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

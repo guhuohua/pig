@@ -3,7 +3,9 @@ import com.ch.entity.MemberLevel;
 import com.ch.entity.MemberLevelExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface MemberLevelMapper {
     int countByExample(MemberLevelExample example);
 

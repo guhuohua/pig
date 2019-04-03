@@ -4,7 +4,9 @@ import com.ch.entity.SysShop;
 import com.ch.entity.SysShopExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface SysShopMapper {
     int countByExample(SysShopExample example);
 

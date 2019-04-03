@@ -14,6 +14,7 @@
     <result column="request_uri" property="requestUri" jdbcType="VARCHAR" />
     <result column="method" property="method" jdbcType="VARCHAR" />
     <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+    <result column="shop_id" property="shopId" jdbcType="INTEGER" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.ch.entity.SysLogWithBLOBs" extends="BaseResultMap" >
     <result column="params" property="params" jdbcType="LONGVARCHAR" />
@@ -80,7 +81,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, type, title, service_id, create_by, create_time, update_time, remote_addr, user_agent, 
-    request_uri, method, del_flag
+    request_uri, method, del_flag, shop_id
   </sql>
   <sql id="Blob_Column_List" >
     params, time, exception
@@ -140,14 +141,14 @@
       service_id, create_by, create_time, 
       update_time, remote_addr, user_agent, 
       request_uri, method, del_flag, 
-      params, time, exception
-      )
+      shop_id, params, time, 
+      exception)
     values (#{id,jdbcType=BIGINT}, #{type,jdbcType=CHAR}, #{title,jdbcType=VARCHAR}, 
       #{serviceId,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{remoteAddr,jdbcType=VARCHAR}, #{userAgent,jdbcType=VARCHAR}, 
       #{requestUri,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR}, 
-      #{params,jdbcType=LONGVARCHAR}, #{time,jdbcType=LONGVARCHAR}, #{exception,jdbcType=LONGVARCHAR}
-      )
+      #{shopId,jdbcType=INTEGER}, #{params,jdbcType=LONGVARCHAR}, #{time,jdbcType=LONGVARCHAR}, 
+      #{exception,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.ch.entity.SysLogWithBLOBs" >
     insert into sys_log
@@ -187,6 +188,9 @@
       </if>
       <if test="delFlag != null" >
         del_flag,
+      </if>
+      <if test="shopId != null" >
+        shop_id,
       </if>
       <if test="params != null" >
         params,
@@ -234,6 +238,9 @@
       </if>
       <if test="delFlag != null" >
         #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="shopId != null" >
+        #{shopId,jdbcType=INTEGER},
       </if>
       <if test="params != null" >
         #{params,jdbcType=LONGVARCHAR},
@@ -291,6 +298,9 @@
       <if test="record.delFlag != null" >
         del_flag = #{record.delFlag,jdbcType=CHAR},
       </if>
+      <if test="record.shopId != null" >
+        shop_id = #{record.shopId,jdbcType=INTEGER},
+      </if>
       <if test="record.params != null" >
         params = #{record.params,jdbcType=LONGVARCHAR},
       </if>
@@ -319,6 +329,7 @@
       request_uri = #{record.requestUri,jdbcType=VARCHAR},
       method = #{record.method,jdbcType=VARCHAR},
       del_flag = #{record.delFlag,jdbcType=CHAR},
+      shop_id = #{record.shopId,jdbcType=INTEGER},
       params = #{record.params,jdbcType=LONGVARCHAR},
       time = #{record.time,jdbcType=LONGVARCHAR},
       exception = #{record.exception,jdbcType=LONGVARCHAR}
@@ -339,7 +350,8 @@
       user_agent = #{record.userAgent,jdbcType=VARCHAR},
       request_uri = #{record.requestUri,jdbcType=VARCHAR},
       method = #{record.method,jdbcType=VARCHAR},
-      del_flag = #{record.delFlag,jdbcType=CHAR}
+      del_flag = #{record.delFlag,jdbcType=CHAR},
+      shop_id = #{record.shopId,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -380,6 +392,9 @@
       <if test="delFlag != null" >
         del_flag = #{delFlag,jdbcType=CHAR},
       </if>
+      <if test="shopId != null" >
+        shop_id = #{shopId,jdbcType=INTEGER},
+      </if>
       <if test="params != null" >
         params = #{params,jdbcType=LONGVARCHAR},
       </if>
@@ -405,6 +420,7 @@
       request_uri = #{requestUri,jdbcType=VARCHAR},
       method = #{method,jdbcType=VARCHAR},
       del_flag = #{delFlag,jdbcType=CHAR},
+      shop_id = #{shopId,jdbcType=INTEGER},
       params = #{params,jdbcType=LONGVARCHAR},
       time = #{time,jdbcType=LONGVARCHAR},
       exception = #{exception,jdbcType=LONGVARCHAR}
@@ -422,7 +438,8 @@
       user_agent = #{userAgent,jdbcType=VARCHAR},
       request_uri = #{requestUri,jdbcType=VARCHAR},
       method = #{method,jdbcType=VARCHAR},
-      del_flag = #{delFlag,jdbcType=CHAR}
+      del_flag = #{delFlag,jdbcType=CHAR},
+      shop_id = #{shopId,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

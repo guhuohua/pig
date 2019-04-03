@@ -27,6 +27,8 @@ public class SysLog {
 
     private String delFlag;
 
+    private Integer shopId;
+
     public Long getId() {
         return id;
     }
@@ -121,5 +123,13 @@ public class SysLog {
 
     public void setDelFlag(String delFlag) {
         this.delFlag = delFlag == null ? null : delFlag.trim();
+    }
+
+    public Integer getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Integer shopId) {
+        this.shopId = shopId;
     }
 }

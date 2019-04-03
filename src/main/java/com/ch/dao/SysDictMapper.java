@@ -4,7 +4,9 @@ import com.ch.entity.SysDict;
 import com.ch.entity.SysDictExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface SysDictMapper {
     int countByExample(SysDictExample example);
 

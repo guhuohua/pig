@@ -4,7 +4,9 @@ import com.ch.entity.UserMember;
 import com.ch.entity.UserMemberExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface UserMemberMapper {
     int countByExample(UserMemberExample example);
 
