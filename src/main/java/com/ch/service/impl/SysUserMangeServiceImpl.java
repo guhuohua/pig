@@ -30,4 +30,9 @@ public class SysUserMangeServiceImpl implements SysUserMangeService {
         result.setData(page);
         return result;
     }
+
+    @Override
+    public ResponseResult insertUser() {
+        return null;
+    }
 }
