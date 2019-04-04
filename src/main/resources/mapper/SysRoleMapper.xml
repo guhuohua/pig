@@ -103,7 +103,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.ch.entity.SysRole" >
+  <insert id="insert" parameterType="com.ch.entity.SysRole" keyProperty="role_id" useGeneratedKeys="true" >
     insert into sys_role (role_id, role_name, role_code, 
       role_desc, create_time, update_time, 
       del_flag, shop_id)
