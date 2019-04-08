@@ -7,6 +7,7 @@
 
 package com.ch.service.impl;
 
+import com.ch.base.BeanUtils;
 import com.ch.base.ResponseResult;
 import com.ch.dao.*;
 import com.ch.entity.*;
@@ -61,7 +62,9 @@ public class SysUserServiceImpl implements SysUserService {
                     List<SysRolePermission> sysRolePermissions = sysRolePermissionMapper.selectByExample(example1);
                     for (SysRolePermission rolePermission: sysRolePermissions ){
                         SysPermission sysPermission = sysPermissionMapper.selectByPrimaryKey(rolePermission.getPermissionId());
-                     permissions.add(sysPermission.getDesc());
+                        if (BeanUtils.isNotEmpty(sysPermission)) {
+                            permissions.add(sysPermission.getDesc());
+                        }
                     }
                     roles.add(sysRole.getRoleName());
                 }

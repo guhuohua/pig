@@ -8,10 +8,7 @@ import com.ch.service.SysMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -122,5 +119,37 @@ public class SysMenuServiceImpl implements SysMenuService {
             }
         };
         return comparator;
+    }
+
+    @Override
+    public ResponseResult addSysMenu(SysMenu sysMenu) {
+        ResponseResult result = new ResponseResult();
+        sysMenu.setCreateTime(new Date());
+        sysMenuMapper.insert(sysMenu);
+        return result;
+    }
+
+    @Override
+    public ResponseResult updateSysMenu(SysMenu sysMenu) {
+        ResponseResult result = new ResponseResult();
+        sysMenu.setUpdateTime(new Date());
+        sysMenuMapper.updateByPrimaryKey(sysMenu);
+        return result;
+    }
+
+    @Override
+    public ResponseResult deleteSysMenu(Integer menuId) {
+        ResponseResult result = new ResponseResult();
+        SysMenu sysMenu = sysMenuMapper.selectByPrimaryKey(menuId);
+        if (sysMenu.getParentId() == 0) {
+            SysMenuExample sysMenuExample = new SysMenuExample();
+            sysMenuExample.createCriteria().andParentIdEqualTo(menuId);
+            List<SysMenu> sysMenus = sysMenuMapper.selectByExample(sysMenuExample);
+            for (SysMenu menu : sysMenus) {
+                sysMenuMapper.deleteByPrimaryKey(menu.getMenuId());
+            }
+        }
+        sysMenuMapper.deleteByPrimaryKey(menuId);
+        return result;
     }
 }

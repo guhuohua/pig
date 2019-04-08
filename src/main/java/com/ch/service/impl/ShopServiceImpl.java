@@ -19,6 +19,8 @@ import com.ch.entity.SysShopExample;
 import com.ch.service.ShopService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.sun.org.apache.xml.internal.security.Init;
+import org.apache.solr.client.solrj.SolrClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +40,12 @@ public class ShopServiceImpl implements ShopService {
     @Autowired
     SysUserMapper sysUserMapper;
 
+    @Autowired
+    SolrClient solrClient;
+
+
+    public void init(){
+    }
 
 
     @Override

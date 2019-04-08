@@ -6,7 +6,7 @@ import java.util.List;
 public class SysMenu {
     private Integer menuId;
 
-    private String name;
+    private String label;
 
     private String permission;
 
@@ -50,12 +50,12 @@ public class SysMenu {
         this.menuId = menuId;
     }
 
-    public String getName() {
-        return name;
+    public String getLabel() {
+        return label;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public String getPermission() {
