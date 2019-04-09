@@ -4,9 +4,7 @@ import com.ch.entity.GoodsImage;
 import com.ch.entity.GoodsImageExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public interface GoodsImageMapper {
     int countByExample(GoodsImageExample example);
 

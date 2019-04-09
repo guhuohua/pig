@@ -14,6 +14,7 @@
     <result column="inventory" property="inventory" jdbcType="INTEGER" />
     <result column="sn" property="sn" jdbcType="VARCHAR" />
     <result column="sale" property="sale" jdbcType="INTEGER" />
+    <result column="goods_image" property="goodsImage" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -75,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, shop_id, status, create_time, update_time, del_flag, attrs, original_price, present_price, 
-    inventory, sn, sale
+    inventory, sn, sale, goods_image
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.GoodsSpecificationExample" >
     select
@@ -112,13 +113,13 @@
     insert into goods_specification (id, shop_id, status, 
       create_time, update_time, del_flag, 
       attrs, original_price, present_price, 
-      inventory, sn, sale
-      )
+      inventory, sn, sale, 
+      goods_image)
     values (#{id,jdbcType=INTEGER}, #{shopId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=INTEGER}, 
       #{attrs,jdbcType=VARCHAR}, #{originalPrice,jdbcType=DECIMAL}, #{presentPrice,jdbcType=DECIMAL}, 
-      #{inventory,jdbcType=INTEGER}, #{sn,jdbcType=VARCHAR}, #{sale,jdbcType=INTEGER}
-      )
+      #{inventory,jdbcType=INTEGER}, #{sn,jdbcType=VARCHAR}, #{sale,jdbcType=INTEGER}, 
+      #{goodsImage,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.ch.entity.GoodsSpecification" >
     insert into goods_specification
@@ -159,6 +160,9 @@
       <if test="sale != null" >
         sale,
       </if>
+      <if test="goodsImage != null" >
+        goods_image,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -196,6 +200,9 @@
       </if>
       <if test="sale != null" >
         #{sale,jdbcType=INTEGER},
+      </if>
+      <if test="goodsImage != null" >
+        #{goodsImage,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -244,6 +251,9 @@
       <if test="record.sale != null" >
         sale = #{record.sale,jdbcType=INTEGER},
       </if>
+      <if test="record.goodsImage != null" >
+        goods_image = #{record.goodsImage,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -262,7 +272,8 @@
       present_price = #{record.presentPrice,jdbcType=DECIMAL},
       inventory = #{record.inventory,jdbcType=INTEGER},
       sn = #{record.sn,jdbcType=VARCHAR},
-      sale = #{record.sale,jdbcType=INTEGER}
+      sale = #{record.sale,jdbcType=INTEGER},
+      goods_image = #{record.goodsImage,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -303,6 +314,9 @@
       <if test="sale != null" >
         sale = #{sale,jdbcType=INTEGER},
       </if>
+      <if test="goodsImage != null" >
+        goods_image = #{goodsImage,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -318,7 +332,8 @@
       present_price = #{presentPrice,jdbcType=DECIMAL},
       inventory = #{inventory,jdbcType=INTEGER},
       sn = #{sn,jdbcType=VARCHAR},
-      sale = #{sale,jdbcType=INTEGER}
+      sale = #{sale,jdbcType=INTEGER},
+      goods_image = #{goodsImage,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

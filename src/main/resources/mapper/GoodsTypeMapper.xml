@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ch.dao.GoodsAdvertMapper" >
-  <resultMap id="BaseResultMap" type="com.ch.entity.GoodsAdvert" >
+<mapper namespace="com.ch.dao.GoodsTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.ch.entity.GoodsType" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="title" property="title" jdbcType="VARCHAR" />
-    <result column="path" property="path" jdbcType="VARCHAR" />
-    <result column="picture_url" property="pictureUrl" jdbcType="VARCHAR" />
-    <result column="status" property="status" jdbcType="INTEGER" />
-    <result column="sort_order" property="sortOrder" jdbcType="INTEGER" />
     <result column="shop_id" property="shopId" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-    <result column="creater" property="creater" jdbcType="VARCHAR" />
-    <result column="browse_number" property="browseNumber" jdbcType="INTEGER" />
+    <result column="del_flag" property="delFlag" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="ad" property="ad" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -73,18 +73,17 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, title, 
-path, picture_url, status, sort_order, shop_id, create_time, update_time, 
-    creater, browse_number
+    id, shop_id, status, create_time, update_time, del_flag, title, icon, parent_id, 
+    sort, ad
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.GoodsAdvertExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.GoodsTypeExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     'true' as QUERYID,
     <include refid="Base_Column_List" />
-    from goods_advert
+    from goods_type
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -95,56 +94,40 @@ path, picture_url, status, sort_order, shop_id, create_time, update_time,
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from goods_advert
+    from goods_type
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from goods_advert
+    delete from goods_type
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.ch.entity.GoodsAdvertExample" >
-    delete from goods_advert
+  <delete id="deleteByExample" parameterType="com.ch.entity.GoodsTypeExample" >
+    delete from goods_type
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.ch.entity.GoodsAdvert" >
-    insert into goods_advert (id, title, 
-path, 
-      picture_url, status, sort_order, 
-      shop_id, create_time, update_time, 
-      creater, browse_number)
-    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{
-path,jdbcType=VARCHAR}, 
-      #{pictureUrl,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{sortOrder,jdbcType=INTEGER}, 
-      #{shopId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{creater,jdbcType=VARCHAR}, #{browseNumber,jdbcType=INTEGER})
+  <insert id="insert" parameterType="com.ch.entity.GoodsType" >
+    insert into goods_type (id, shop_id, status, 
+      create_time, update_time, del_flag, 
+      title, icon, parent_id, 
+      sort, ad)
+    values (#{id,jdbcType=INTEGER}, #{shopId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=INTEGER}, 
+      #{title,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, 
+      #{sort,jdbcType=INTEGER}, #{ad,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.ch.entity.GoodsAdvert" >
-    insert into goods_advert
+  <insert id="insertSelective" parameterType="com.ch.entity.GoodsType" >
+    insert into goods_type
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
       </if>
-      <if test="title != null" >
-        title,
-      </if>
-      <if test="
-path != null" >
-        
-path,
-      </if>
-      <if test="pictureUrl != null" >
-        picture_url,
+      <if test="shopId != null" >
+        shop_id,
       </if>
       <if test="status != null" >
         status,
-      </if>
-      <if test="sortOrder != null" >
-        sort_order,
-      </if>
-      <if test="shopId != null" >
-        shop_id,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -152,36 +135,34 @@ path,
       <if test="updateTime != null" >
         update_time,
       </if>
-      <if test="creater != null" >
-        creater,
+      <if test="delFlag != null" >
+        del_flag,
       </if>
-      <if test="browseNumber != null" >
-        browse_number,
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="icon != null" >
+        icon,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="ad != null" >
+        ad,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="title != null" >
-        #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="
-path != null" >
-        #{
-path,jdbcType=VARCHAR},
-      </if>
-      <if test="pictureUrl != null" >
-        #{pictureUrl,jdbcType=VARCHAR},
+      <if test="shopId != null" >
+        #{shopId,jdbcType=INTEGER},
       </if>
       <if test="status != null" >
         #{status,jdbcType=INTEGER},
-      </if>
-      <if test="sortOrder != null" >
-        #{sortOrder,jdbcType=INTEGER},
-      </if>
-      <if test="shopId != null" >
-        #{shopId,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -189,46 +170,43 @@ path,jdbcType=VARCHAR},
       <if test="updateTime != null" >
         #{updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="creater != null" >
-        #{creater,jdbcType=VARCHAR},
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=INTEGER},
       </if>
-      <if test="browseNumber != null" >
-        #{browseNumber,jdbcType=INTEGER},
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="ad != null" >
+        #{ad,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.ch.entity.GoodsAdvertExample" resultType="java.lang.Integer" >
-    select count(*) from goods_advert
+  <select id="countByExample" parameterType="com.ch.entity.GoodsTypeExample" resultType="java.lang.Integer" >
+    select count(*) from goods_type
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update goods_advert
+    update goods_type
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.title != null" >
-        title = #{record.title,jdbcType=VARCHAR},
-      </if>
-      <if test="record.
-path != null" >
-        
-path = #{record.
-path,jdbcType=VARCHAR},
-      </if>
-      <if test="record.pictureUrl != null" >
-        picture_url = #{record.pictureUrl,jdbcType=VARCHAR},
+      <if test="record.shopId != null" >
+        shop_id = #{record.shopId,jdbcType=INTEGER},
       </if>
       <if test="record.status != null" >
         status = #{record.status,jdbcType=INTEGER},
-      </if>
-      <if test="record.sortOrder != null" >
-        sort_order = #{record.sortOrder,jdbcType=INTEGER},
-      </if>
-      <if test="record.shopId != null" >
-        shop_id = #{record.shopId,jdbcType=INTEGER},
       </if>
       <if test="record.createTime != null" >
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
@@ -236,11 +214,23 @@ path,jdbcType=VARCHAR},
       <if test="record.updateTime != null" >
         update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.creater != null" >
-        creater = #{record.creater,jdbcType=VARCHAR},
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=INTEGER},
       </if>
-      <if test="record.browseNumber != null" >
-        browse_number = #{record.browseNumber,jdbcType=INTEGER},
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.icon != null" >
+        icon = #{record.icon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentId != null" >
+        parent_id = #{record.parentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.sort != null" >
+        sort = #{record.sort,jdbcType=INTEGER},
+      </if>
+      <if test="record.ad != null" >
+        ad = #{record.ad,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -248,47 +238,30 @@ path,jdbcType=VARCHAR},
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update goods_advert
+    update goods_type
     set id = #{record.id,jdbcType=INTEGER},
-      title = #{record.title,jdbcType=VARCHAR},
-      
-path = #{record.
-path,jdbcType=VARCHAR},
-      picture_url = #{record.pictureUrl,jdbcType=VARCHAR},
-      status = #{record.status,jdbcType=INTEGER},
-      sort_order = #{record.sortOrder,jdbcType=INTEGER},
       shop_id = #{record.shopId,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-      creater = #{record.creater,jdbcType=VARCHAR},
-      browse_number = #{record.browseNumber,jdbcType=INTEGER}
+      del_flag = #{record.delFlag,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR},
+      icon = #{record.icon,jdbcType=VARCHAR},
+      parent_id = #{record.parentId,jdbcType=INTEGER},
+      sort = #{record.sort,jdbcType=INTEGER},
+      ad = #{record.ad,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.ch.entity.GoodsAdvert" >
-    update goods_advert
+  <update id="updateByPrimaryKeySelective" parameterType="com.ch.entity.GoodsType" >
+    update goods_type
     <set >
-      <if test="title != null" >
-        title = #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="
-path != null" >
-        
-path = #{
-path,jdbcType=VARCHAR},
-      </if>
-      <if test="pictureUrl != null" >
-        picture_url = #{pictureUrl,jdbcType=VARCHAR},
+      <if test="shopId != null" >
+        shop_id = #{shopId,jdbcType=INTEGER},
       </if>
       <if test="status != null" >
         status = #{status,jdbcType=INTEGER},
-      </if>
-      <if test="sortOrder != null" >
-        sort_order = #{sortOrder,jdbcType=INTEGER},
-      </if>
-      <if test="shopId != null" >
-        shop_id = #{shopId,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -296,29 +269,39 @@ path,jdbcType=VARCHAR},
       <if test="updateTime != null" >
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="creater != null" >
-        creater = #{creater,jdbcType=VARCHAR},
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=INTEGER},
       </if>
-      <if test="browseNumber != null" >
-        browse_number = #{browseNumber,jdbcType=INTEGER},
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="ad != null" >
+        ad = #{ad,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.ch.entity.GoodsAdvert" >
-    update goods_advert
-    set title = #{title,jdbcType=VARCHAR},
-      
-path = #{
-path,jdbcType=VARCHAR},
-      picture_url = #{pictureUrl,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.ch.entity.GoodsType" >
+    update goods_type
+    set shop_id = #{shopId,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
-      sort_order = #{sortOrder,jdbcType=INTEGER},
-      shop_id = #{shopId,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
-      creater = #{creater,jdbcType=VARCHAR},
-      browse_number = #{browseNumber,jdbcType=INTEGER}
+      del_flag = #{delFlag,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      sort = #{sort,jdbcType=INTEGER},
+      ad = #{ad,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
