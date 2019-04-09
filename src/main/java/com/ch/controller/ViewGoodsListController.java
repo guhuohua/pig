@@ -12,9 +12,12 @@ import com.ch.dto.GoodsDto;
 import com.ch.dto.SolrDto;
 import com.ch.service.ViewGoodsListService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,7 +30,10 @@ public class ViewGoodsListController {
     ViewGoodsListService viewGoodsListService;
 
     private static final Logger LOGGER = LogManager.getLogger(ViewGoodsListController.class);
-    public ResponseResult findGoodsList(SolrDto solrDto){
+
+    @PostMapping("viewList")
+    @ApiOperation("展示商品列表")
+    public ResponseResult findGoodsList(@RequestBody SolrDto solrDto){
         ResponseResult result = new ResponseResult();
         try {
             result = viewGoodsListService.findGoodsList(solrDto);
