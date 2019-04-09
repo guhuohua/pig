@@ -4,7 +4,9 @@ import com.ch.entity.GoodsType;
 import com.ch.entity.GoodsTypeExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface GoodsTypeMapper {
     int countByExample(GoodsTypeExample example);
 
