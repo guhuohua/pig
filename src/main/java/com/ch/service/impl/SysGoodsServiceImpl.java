@@ -5,9 +5,8 @@ import com.ch.base.ResponseResult;
 import com.ch.dao.GoodsImageMapper;
 import com.ch.dao.GoodsMapper;
 import com.ch.dao.SysUserMapper;
-import com.ch.entity.Goods;
-import com.ch.entity.GoodsExample;
-import com.ch.entity.SysUser;
+import com.ch.entity.*;
+import com.ch.model.SysGoodsListModel;
 import com.ch.model.SysGoodsParam;
 import com.ch.service.SysGoodsService;
 import com.github.pagehelper.PageHelper;
@@ -56,7 +55,10 @@ public class SysGoodsServiceImpl implements SysGoodsService {
         List<Goods> goodsList = goodsMapper.selectByExample(goodsExample);
         PageInfo<Goods> page = new PageInfo<>(goodsList);
         for (Goods goods:page.getList()) {
-
+            GoodsImageExample goodsImageExample = new GoodsImageExample();
+            goodsImageExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andGoodsIdEqualTo(goods.getId());
+            GoodsImage goodsImage = goodsImageMapper.selectByExample(goodsImageExample).stream().findFirst().get();
+            goods.setGoodsImgUrl(goodsImage.getUrl());
         }
         result.setData(page);
         return result;
