@@ -110,7 +110,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.ch.entity.SysUser" keyProperty="user_id" useGeneratedKeys="true">
+  <insert id="insert" parameterType="com.ch.entity.SysUser" >
     insert into sys_user (user_id, username, password, 
       salt, phone, avatar, 
       shop_id, create_time, update_time, 

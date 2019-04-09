@@ -41,15 +41,9 @@ public class Goods {
 
     private Integer salesVolume;
 
-    private String name;
+    private Integer categoryId;
 
-    private Integer catrgoryId;
-
-    private String keyWords;
-
-    private Long freight;
-
-    private String units;
+    private Long price;
 
     public Integer getId() {
         return id;
@@ -203,43 +197,19 @@ public class Goods {
         this.salesVolume = salesVolume;
     }
 
-    public String getName() {
-        return name;
+    public Integer getCategoryId() {
+        return categoryId;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public Integer getCatrgoryId() {
-        return catrgoryId;
+    public Long getPrice() {
+        return price;
     }
 
-    public void setCatrgoryId(Integer catrgoryId) {
-        this.catrgoryId = catrgoryId;
-    }
-
-    public String getKeyWords() {
-        return keyWords;
-    }
-
-    public void setKeyWords(String keyWords) {
-        this.keyWords = keyWords == null ? null : keyWords.trim();
-    }
-
-    public Long getFreight() {
-        return freight;
-    }
-
-    public void setFreight(Long freight) {
-        this.freight = freight;
-    }
-
-    public String getUnits() {
-        return units;
-    }
-
-    public void setUnits(String units) {
-        this.units = units == null ? null : units.trim();
+    public void setPrice(Long price) {
+        this.price = price;
     }
 }

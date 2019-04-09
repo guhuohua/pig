@@ -76,8 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    permission_id, `name`, path, parent_id, icon, component, sort, keep_status, `type`, create_time,
-    update_time, del_flag, `desc`, shop_id
+    permission_id, name, path, parent_id, icon, component, sort, keep_status, type, create_time, 
+    update_time, del_flag, desc, shop_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.SysPermissionExample" >
     select
