@@ -3,7 +3,7 @@
 <mapper namespace="com.ch.dao.SysMenuMapper" >
   <resultMap id="BaseResultMap" type="com.ch.entity.SysMenu" >
     <id column="menu_id" property="menuId" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="label" property="label" jdbcType="VARCHAR" />
     <result column="permission" property="permission" jdbcType="VARCHAR" />
     <result column="path" property="path" jdbcType="VARCHAR" />
     <result column="parent_id" property="parentId" jdbcType="INTEGER" />
@@ -76,7 +76,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    menu_id, name, permission, path, parent_id, icon, component, sort, keep_alive, type, 
+    menu_id, label, permission, path, parent_id, icon, component, sort, keep_alive, type,
     create_time, update_time, del_flag, shop_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.SysMenuExample" >
@@ -111,12 +111,12 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ch.entity.SysMenu" >
-    insert into sys_menu (menu_id, name, permission, 
+    insert into sys_menu (menu_id, label, permission,
       path, parent_id, icon, 
       component, sort, keep_alive, 
       type, create_time, update_time, 
       del_flag, shop_id)
-    values (#{menuId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{permission,jdbcType=VARCHAR}, 
+    values (#{menuId,jdbcType=INTEGER}, #{label,jdbcType=VARCHAR}, #{permission,jdbcType=VARCHAR},
       #{path,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, #{icon,jdbcType=VARCHAR}, 
       #{component,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, #{keepAlive,jdbcType=CHAR}, 
       #{type,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
@@ -128,8 +128,8 @@
       <if test="menuId != null" >
         menu_id,
       </if>
-      <if test="name != null" >
-        name,
+      <if test="label != null" >
+        label,
       </if>
       <if test="permission != null" >
         permission,
@@ -172,8 +172,8 @@
       <if test="menuId != null" >
         #{menuId,jdbcType=INTEGER},
       </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
+      <if test="label != null" >
+        #{label,jdbcType=VARCHAR},
       </if>
       <if test="permission != null" >
         #{permission,jdbcType=VARCHAR},
@@ -225,8 +225,8 @@
       <if test="record.menuId != null" >
         menu_id = #{record.menuId,jdbcType=INTEGER},
       </if>
-      <if test="record.name != null" >
-        name = #{record.name,jdbcType=VARCHAR},
+      <if test="record.label != null" >
+        label = #{record.label,jdbcType=VARCHAR},
       </if>
       <if test="record.permission != null" >
         permission = #{record.permission,jdbcType=VARCHAR},
@@ -272,7 +272,7 @@
   <update id="updateByExample" parameterType="map" >
     update sys_menu
     set menu_id = #{record.menuId,jdbcType=INTEGER},
-      name = #{record.name,jdbcType=VARCHAR},
+    label = #{record.label,jdbcType=VARCHAR},
       permission = #{record.permission,jdbcType=VARCHAR},
       path = #{record.path,jdbcType=VARCHAR},
       parent_id = #{record.parentId,jdbcType=INTEGER},
@@ -292,8 +292,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.ch.entity.SysMenu" >
     update sys_menu
     <set >
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
+      <if test="label != null" >
+        label = #{label,jdbcType=VARCHAR},
       </if>
       <if test="permission != null" >
         permission = #{permission,jdbcType=VARCHAR},
@@ -336,7 +336,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.ch.entity.SysMenu" >
     update sys_menu
-    set name = #{name,jdbcType=VARCHAR},
+    set label = #{label,jdbcType=VARCHAR},
       permission = #{permission,jdbcType=VARCHAR},
       path = #{path,jdbcType=VARCHAR},
       parent_id = #{parentId,jdbcType=INTEGER},

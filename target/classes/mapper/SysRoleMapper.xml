@@ -103,12 +103,12 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.ch.entity.SysRole" >
-    insert into sys_role (role_id, role_name, role_code, 
-      role_desc, create_time, update_time, 
+  <insert id="insert" parameterType="com.ch.entity.SysRole" keyProperty="role_id" useGeneratedKeys="true">
+    insert into sys_role (role_id, role_name, role_code,
+      role_desc, create_time, update_time,
       del_flag, shop_id)
-    values (#{roleId,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, #{roleCode,jdbcType=VARCHAR}, 
-      #{roleDesc,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+    values (#{roleId,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, #{roleCode,jdbcType=VARCHAR},
+      #{roleDesc,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
       #{delFlag,jdbcType=CHAR}, #{shopId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ch.entity.SysRole" >

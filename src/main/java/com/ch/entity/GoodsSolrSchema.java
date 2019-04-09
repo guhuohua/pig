@@ -41,6 +41,9 @@ public class GoodsSolrSchema implements Serializable {
     private List<String> goodsSalesArea;
 
     @Field
+    private List goodsSpecification;
+
+    @Field
     private String img;
 
 }
