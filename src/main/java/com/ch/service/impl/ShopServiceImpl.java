@@ -1,161 +1,154 @@
-/**
- * Author: 常富文
- * Date:   2019/4/2 16:08
- * Description: shop实现类
- */
-
-
 package com.ch.service.impl;
 
+import com.ch.base.BeanUtils;
 import com.ch.base.ResponseResult;
-import com.ch.dao.ShopMapper;
-import com.ch.dao.SysShopMapper;
+import com.ch.dao.SysRoleMapper;
 import com.ch.dao.SysUserMapper;
-import com.ch.dto.ShopParam;
-import com.ch.entity.Shop;
-import com.ch.entity.ShopExample;
-import com.ch.entity.SysShop;
-import com.ch.entity.SysShopExample;
+import com.ch.dao.SysUserRoleMapper;
+import com.ch.entity.*;
+import com.ch.model.PersonMangeParam;
+import com.ch.model.ShopPersonMange;
 import com.ch.service.ShopService;
+import com.ch.util.PasswordUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.sun.org.apache.xml.internal.security.Init;
-import org.apache.solr.client.solrj.SolrClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
-@Transactional
 public class ShopServiceImpl implements ShopService {
-
-    @Autowired
-    ShopMapper shopMapper;
-
-    @Autowired
-    SysShopMapper sysShopMapper;
 
     @Autowired
     SysUserMapper sysUserMapper;
 
     @Autowired
-    SolrClient solrClient;
+    SysRoleMapper sysRoleMapper;
 
-
-    public void init(){
-    }
-
+    @Autowired
+    SysUserRoleMapper sysUserRoleMapper;
 
     @Override
-    public Shop findShopById(Integer Id) {
-        return shopMapper.selectByPrimaryKey(Id);
-    }
-
-    @Override
-    public ResponseResult findAll(ShopParam shopParam) {
+    public ResponseResult PersonMangeList(PersonMangeParam param, Integer userId) {
         ResponseResult result = new ResponseResult();
-        PageHelper.startPage(shopParam.getPageNum(), shopParam.getPageSize());
-        List<Shop> shops = shopMapper.selectByExample(null);
-        PageInfo<Shop> page = new PageInfo<>(shops);
-        result.setData(page);
-        return result;
-    }
-
-    @Override
-    public ResponseResult updateByPrimaryKey(Shop record) {
-        ResponseResult result = new ResponseResult();
-        ShopExample example = new ShopExample();
-        ShopExample.Criteria criteria = example.createCriteria();
-        criteria.andTitleEqualTo(record.getTitle());
-        List<Shop> shops = shopMapper.selectByExample(example);
-        if (shops.size()>0){
-            result.setCode(500);
-            result.setError("店铺名不能重复");
-            result.setError_description("店铺名不能重复");
-            return  result;
+        SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
+        SysUserExample sysUserExample = new SysUserExample();
+        SysUserExample.Criteria criteria = sysUserExample.createCriteria();
+        criteria.andShopIdEqualTo(Long.valueOf(sysUser.getShopId()));
+        if (BeanUtils.isNotEmpty(param.getUsername())) {
+            criteria.andUsernameLike(param.getUsername());
         }
-        ShopExample example1 = new ShopExample();
-        ShopExample.Criteria criteria1 = example.createCriteria();
-        criteria.andTelEqualTo(record.getTel());
-        List<Shop> shops1 = shopMapper.selectByExample(example);
-        if (shops1.size()>0){
-            result.setCode(500);
-            result.setError("手机好不能重复");
-            result.setError_description("手机号不能重复");
-            return  result;
+        if (BeanUtils.isNotEmpty(param.getPhone())) {
+            criteria.andPhoneEqualTo(param.getPhone());
         }
-        shopMapper.updateByPrimaryKey(record);
-        return result;
-    }
-
-    @Override
-    public ResponseResult deleteByPrimaryKey(Integer id) {
-        ResponseResult result = new ResponseResult();
-        Shop shop = shopMapper.selectByPrimaryKey(id);
-        SysShopExample example = new SysShopExample();
-        SysShopExample.Criteria criteria = example.createCriteria();
-        criteria.andShopIdEqualTo(shop.getId());
-        List<SysShop> sysShops = sysShopMapper.selectByExample(example);
-        if(sysShops.size()>0){
-            for (SysShop sysShop : sysShops){
-                sysUserMapper.deleteByPrimaryKey(sysShop.getUserId());
+        PageHelper.startPage(param.getCurrentPage(), param.getPageSize());
+        List<SysUser> sysUsers = sysUserMapper.selectByExample(sysUserExample);
+        PageInfo<SysUser> sysUserPageInfo = new PageInfo<>(sysUsers);
+        for (SysUser user:sysUserPageInfo.getList()) {
+            user.setPassword("");
+            SysUserRoleExample sysUserRoleExample = new SysUserRoleExample();
+            sysUserRoleExample.createCriteria().andUserIdEqualTo(user.getUserId()).andShopIdEqualTo(user.getShopId());
+            List<SysUserRole> sysUserRoles = sysUserRoleMapper.selectByExample(sysUserRoleExample);
+            for (SysUserRole sysUserRole:sysUserRoles) {
+                SysRoleExample sysRoleExample = new SysRoleExample();
+                sysRoleExample.createCriteria().andRoleIdEqualTo(sysUserRole.getRoleId()).andShopIdEqualTo(user.getShopId());
+                List<SysRole> sysRoles = sysRoleMapper.selectByExample(sysRoleExample);
+                if (sysRoles.size() > 0) {
+                    user.setRoleName(sysRoles.get(0).getRoleName());
+                }
             }
         }
-        shopMapper.deleteByPrimaryKey(id);
+        result.setData(sysUserPageInfo);
         return result;
     }
 
     @Override
-    public ResponseResult insert(Shop record) {
+    public ResponseResult PersonMange(PersonMangeParam param, Integer userId) {
         ResponseResult result = new ResponseResult();
-        ShopExample example = new ShopExample();
-        ShopExample.Criteria criteria = example.createCriteria();
-        System.out.println(record.getTitle());
-        criteria.andTitleEqualTo(record.getTitle());
-        List<Shop> shops = shopMapper.selectByExample(example);
-
-        if (shops.size()>0){
-            result.setCode(500);
-            result.setError("店铺名不能重复");
-            result.setError_description("店铺名不能重复");
-            return  result;
+        SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
+        if (BeanUtils.isNotEmpty(param.getUserId())) {
+            SysUserExample sysUserExample = new SysUserExample();
+            sysUserExample.createCriteria().andPhoneEqualTo(param.getPhone()).andUserIdNotEqualTo(param.getUserId());
+            List<SysUser> sysUsers = sysUserMapper.selectByExample(sysUserExample);
+            if (sysUsers.size() > 0) {
+                result.setCode(500);
+                result.setError("手机号不能重复");
+                result.setError_description("手机号不能重复");
+                return result;
+            }
+            SysUserExample sysUserExample2 = new SysUserExample();
+            sysUserExample2.createCriteria().andUsernameEqualTo(param.getUsername()).andUserIdNotEqualTo(param.getUserId());
+            List<SysUser> sysUsers2 = sysUserMapper.selectByExample(sysUserExample2);
+            if (sysUsers2.size() > 0) {
+                result.setCode(500);
+                result.setError("用户名不能重复");
+                result.setError_description("用户名不能重复");
+                return result;
+            }
+            SysUserExample userExample = new SysUserExample();
+            userExample.createCriteria().andShopIdEqualTo(Long.valueOf(sysUser.getShopId())).andUserIdEqualTo(param.getUserId());
+            SysUser br = sysUserMapper.selectByExample(userExample).stream().findFirst().get();
+            br.setUpdateTime(new Date());
+            br.setPhone(param.getPhone());
+            br.setUsername(param.getUsername());
+            if (BeanUtils.isNotEmpty(param.getPassword())) {
+                String salt = UUID.randomUUID().toString();
+                PasswordUtil encoderMd5 = new PasswordUtil(salt, "sha-256");
+                String encodedPassword = encoderMd5.encode(param.getPassword());
+                br.setSalt(salt);
+                br.setPassword(encodedPassword);
+            }
+            sysUserMapper.insert(br);
+            sysUserRoleMapper.updateRole(param.getRoleId(), param.getUserId(), sysUser.getShopId());
+        } else {
+            SysUserExample sysUserExample = new SysUserExample();
+            sysUserExample.createCriteria().andPhoneEqualTo(param.getPhone());
+            List<SysUser> sysUsers = sysUserMapper.selectByExample(sysUserExample);
+            if (sysUsers.size() > 0) {
+                result.setCode(500);
+                result.setError("手机号不能重复");
+                result.setError_description("手机号不能重复");
+                return result;
+            }
+            SysUserExample sysUserExample2 = new SysUserExample();
+            sysUserExample2.createCriteria().andUsernameEqualTo(param.getUsername());
+            List<SysUser> sysUsers2 = sysUserMapper.selectByExample(sysUserExample2);
+            if (sysUsers2.size() > 0) {
+                result.setCode(500);
+                result.setError("用户名不能重复");
+                result.setError_description("用户名不能重复");
+                return result;
+            }
+            SysUser user = new SysUser();
+            user.setUsername(param.getUsername());
+            user.setShopId(sysUser.getShopId());
+            String salt = UUID.randomUUID().toString();
+            PasswordUtil encoderMd5 = new PasswordUtil(salt, "sha-256");
+            String encodedPassword = encoderMd5.encode(param.getPassword());
+            user.setSalt(salt);
+            user.setPassword(encodedPassword);
+            user.setPhone(param.getPhone());
+            user.setCreateTime(new Date());
+            user.setStatus(0);
+            sysUserMapper.insert(user);
+            SysUserRole sysUserRole = new SysUserRole();
+            sysUserRole.setShopId(sysUser.getShopId());
+            sysUserRole.setRoleId(param.getRoleId());
+            sysUserRole.setUserId(user.getUserId());
+            sysUserRoleMapper.insert(sysUserRole);
         }
-        ShopExample example1 = new ShopExample();
-        ShopExample.Criteria criteria1 = example.createCriteria();
-        criteria.andTelEqualTo(record.getTel());
-        List<Shop> shops1 = shopMapper.selectByExample(example);
-        if (shops1.size()>0){
-            result.setCode(500);
-            result.setError("手机好不能重复");
-            result.setError_description("手机号不能重复");
-            return  result;
-        }
-
-        shopMapper.insert(record);
         return result;
     }
 
     @Override
-    public ResponseResult serach(ShopParam shopParam) {
+    public ResponseResult resetPassword(Integer userId, Integer tokenUserId) {
         ResponseResult result = new ResponseResult();
-        PageHelper.startPage(shopParam.getPageNum(), shopParam.getPageSize());
-        ShopExample example = new ShopExample();
-        ShopExample.Criteria criteria = example.createCriteria();
-        if (shopParam!=null){
-            if (shopParam.getTitle()!=null && shopParam.getTitle().length()>0 ){
-                criteria.andTitleLike("%"+shopParam.getTitle()+"%");
-            }
-            if (shopParam.getTel()!=null && shopParam.getTel().length()>0){
-                criteria.andTelEqualTo(shopParam.getTel());
-            }
-        }
-        List<Shop> shops = shopMapper.selectByExample(example);
-        PageInfo<Shop> page = new PageInfo<>(shops);
-        result.setData(page);
+        SysUser sysUser = sysUserMapper.selectByPrimaryKey(tokenUserId);
+        sysUserMapper.resetPassword(userId, sysUser.getShopId());
         return result;
     }
-
-
 }

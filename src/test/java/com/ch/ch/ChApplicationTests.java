@@ -29,7 +29,9 @@ public class ChApplicationTests {
     @Test
     public void testUploadImage(){
         Map<String, String> params = new HashMap<String, String>();
-        params.put("q", "title:测试");
+        params.put("q", "*:*");
+        params.put("start", "1");
+        params.put("rows", "1");
         SolrParams mapSolrParams = new MapSolrParams(params);
         try {
             QueryResponse query = solrClient.query(mapSolrParams);

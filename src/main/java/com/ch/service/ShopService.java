@@ -1,21 +1,30 @@
 package com.ch.service;
 
 import com.ch.base.ResponseResult;
-import com.ch.dto.ShopParam;
-import com.ch.entity.Shop;
-
-import java.util.List;
+import com.ch.model.PersonMangeParam;
 
 public interface ShopService {
 
-     Shop findShopById( Integer id);
+    /**
+     * 店铺下的人员管理列表
+     * @param param
+     * @return
+     */
+    ResponseResult PersonMangeList(PersonMangeParam param, Integer userId);
 
-     ResponseResult findAll(ShopParam shopParam);
 
-     ResponseResult updateByPrimaryKey(Shop record);
+    /**
+     * 店铺下的人员管理增或编辑
+     * @param param
+     * @return
+     */
+    ResponseResult PersonMange(PersonMangeParam param, Integer userId);
 
-     ResponseResult deleteByPrimaryKey(Integer id);
-
-     ResponseResult insert(Shop record);
-     ResponseResult serach(ShopParam shopParam);
+    /**
+     * 重置密码
+     * @param userId
+     * @param tokenUserId
+     * @return
+     */
+    ResponseResult resetPassword(Integer userId, Integer tokenUserId);
 }
