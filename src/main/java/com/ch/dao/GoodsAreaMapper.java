@@ -1,4 +1,4 @@
-package mapper;
+package com.ch.dao;
 
 import com.ch.entity.GoodsArea;
 import com.ch.entity.GoodsAreaExample;
