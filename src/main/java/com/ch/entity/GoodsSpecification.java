@@ -27,6 +27,8 @@ public class GoodsSpecification {
 
     private Integer sale;
 
+    private String goodsImage;
+
     public Integer getId() {
         return id;
     }
@@ -121,5 +123,13 @@ public class GoodsSpecification {
 
     public void setSale(Integer sale) {
         this.sale = sale;
+    }
+
+    public String getGoodsImage() {
+        return goodsImage;
+    }
+
+    public void setGoodsImage(String goodsImage) {
+        this.goodsImage = goodsImage == null ? null : goodsImage.trim();
     }
 }

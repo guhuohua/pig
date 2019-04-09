@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ch.dao.GoodsSpecificationMapper" >
-  <resultMap id="BaseResultMap" type="com.ch.entity.GoodsSpecification" >
+<mapper namespace="com.ch.dao.GoodsTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.ch.entity.GoodsType" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="shop_id" property="shopId" jdbcType="INTEGER" />
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="del_flag" property="delFlag" jdbcType="INTEGER" />
-    <result column="attrs" property="attrs" jdbcType="VARCHAR" />
-    <result column="original_price" property="originalPrice" jdbcType="DECIMAL" />
-    <result column="present_price" property="presentPrice" jdbcType="DECIMAL" />
-    <result column="inventory" property="inventory" jdbcType="INTEGER" />
-    <result column="sn" property="sn" jdbcType="VARCHAR" />
-    <result column="sale" property="sale" jdbcType="INTEGER" />
-    <result column="goods_image" property="goodsImage" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="ad" property="ad" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -75,17 +73,17 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, shop_id, status, create_time, update_time, del_flag, attrs, original_price, present_price, 
-    inventory, sn, sale, goods_image
+    id, shop_id, status, create_time, update_time, del_flag, title, icon, parent_id, 
+    sort, ad
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.GoodsSpecificationExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.GoodsTypeExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     'true' as QUERYID,
     <include refid="Base_Column_List" />
-    from goods_specification
+    from goods_type
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -96,33 +94,31 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from goods_specification
+    from goods_type
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from goods_specification
+    delete from goods_type
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.ch.entity.GoodsSpecificationExample" >
-    delete from goods_specification
+  <delete id="deleteByExample" parameterType="com.ch.entity.GoodsTypeExample" >
+    delete from goods_type
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.ch.entity.GoodsSpecification" >
-    insert into goods_specification (id, shop_id, status, 
+  <insert id="insert" parameterType="com.ch.entity.GoodsType" >
+    insert into goods_type (id, shop_id, status, 
       create_time, update_time, del_flag, 
-      attrs, original_price, present_price, 
-      inventory, sn, sale, 
-      goods_image)
+      title, icon, parent_id, 
+      sort, ad)
     values (#{id,jdbcType=INTEGER}, #{shopId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=INTEGER}, 
-      #{attrs,jdbcType=VARCHAR}, #{originalPrice,jdbcType=DECIMAL}, #{presentPrice,jdbcType=DECIMAL}, 
-      #{inventory,jdbcType=INTEGER}, #{sn,jdbcType=VARCHAR}, #{sale,jdbcType=INTEGER}, 
-      #{goodsImage,jdbcType=VARCHAR})
+      #{title,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, 
+      #{sort,jdbcType=INTEGER}, #{ad,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.ch.entity.GoodsSpecification" >
-    insert into goods_specification
+  <insert id="insertSelective" parameterType="com.ch.entity.GoodsType" >
+    insert into goods_type
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
@@ -142,26 +138,20 @@
       <if test="delFlag != null" >
         del_flag,
       </if>
-      <if test="attrs != null" >
-        attrs,
+      <if test="title != null" >
+        title,
       </if>
-      <if test="originalPrice != null" >
-        original_price,
+      <if test="icon != null" >
+        icon,
       </if>
-      <if test="presentPrice != null" >
-        present_price,
+      <if test="parentId != null" >
+        parent_id,
       </if>
-      <if test="inventory != null" >
-        inventory,
+      <if test="sort != null" >
+        sort,
       </if>
-      <if test="sn != null" >
-        sn,
-      </if>
-      <if test="sale != null" >
-        sale,
-      </if>
-      <if test="goodsImage != null" >
-        goods_image,
+      <if test="ad != null" >
+        ad,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -183,37 +173,31 @@
       <if test="delFlag != null" >
         #{delFlag,jdbcType=INTEGER},
       </if>
-      <if test="attrs != null" >
-        #{attrs,jdbcType=VARCHAR},
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
       </if>
-      <if test="originalPrice != null" >
-        #{originalPrice,jdbcType=DECIMAL},
+      <if test="icon != null" >
+        #{icon,jdbcType=VARCHAR},
       </if>
-      <if test="presentPrice != null" >
-        #{presentPrice,jdbcType=DECIMAL},
+      <if test="parentId != null" >
+        #{parentId,jdbcType=INTEGER},
       </if>
-      <if test="inventory != null" >
-        #{inventory,jdbcType=INTEGER},
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
       </if>
-      <if test="sn != null" >
-        #{sn,jdbcType=VARCHAR},
-      </if>
-      <if test="sale != null" >
-        #{sale,jdbcType=INTEGER},
-      </if>
-      <if test="goodsImage != null" >
-        #{goodsImage,jdbcType=VARCHAR},
+      <if test="ad != null" >
+        #{ad,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.ch.entity.GoodsSpecificationExample" resultType="java.lang.Integer" >
-    select count(*) from goods_specification
+  <select id="countByExample" parameterType="com.ch.entity.GoodsTypeExample" resultType="java.lang.Integer" >
+    select count(*) from goods_type
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update goods_specification
+    update goods_type
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
@@ -233,26 +217,20 @@
       <if test="record.delFlag != null" >
         del_flag = #{record.delFlag,jdbcType=INTEGER},
       </if>
-      <if test="record.attrs != null" >
-        attrs = #{record.attrs,jdbcType=VARCHAR},
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=VARCHAR},
       </if>
-      <if test="record.originalPrice != null" >
-        original_price = #{record.originalPrice,jdbcType=DECIMAL},
+      <if test="record.icon != null" >
+        icon = #{record.icon,jdbcType=VARCHAR},
       </if>
-      <if test="record.presentPrice != null" >
-        present_price = #{record.presentPrice,jdbcType=DECIMAL},
+      <if test="record.parentId != null" >
+        parent_id = #{record.parentId,jdbcType=INTEGER},
       </if>
-      <if test="record.inventory != null" >
-        inventory = #{record.inventory,jdbcType=INTEGER},
+      <if test="record.sort != null" >
+        sort = #{record.sort,jdbcType=INTEGER},
       </if>
-      <if test="record.sn != null" >
-        sn = #{record.sn,jdbcType=VARCHAR},
-      </if>
-      <if test="record.sale != null" >
-        sale = #{record.sale,jdbcType=INTEGER},
-      </if>
-      <if test="record.goodsImage != null" >
-        goods_image = #{record.goodsImage,jdbcType=VARCHAR},
+      <if test="record.ad != null" >
+        ad = #{record.ad,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -260,26 +238,24 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update goods_specification
+    update goods_type
     set id = #{record.id,jdbcType=INTEGER},
       shop_id = #{record.shopId,jdbcType=INTEGER},
       status = #{record.status,jdbcType=INTEGER},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       del_flag = #{record.delFlag,jdbcType=INTEGER},
-      attrs = #{record.attrs,jdbcType=VARCHAR},
-      original_price = #{record.originalPrice,jdbcType=DECIMAL},
-      present_price = #{record.presentPrice,jdbcType=DECIMAL},
-      inventory = #{record.inventory,jdbcType=INTEGER},
-      sn = #{record.sn,jdbcType=VARCHAR},
-      sale = #{record.sale,jdbcType=INTEGER},
-      goods_image = #{record.goodsImage,jdbcType=VARCHAR}
+      title = #{record.title,jdbcType=VARCHAR},
+      icon = #{record.icon,jdbcType=VARCHAR},
+      parent_id = #{record.parentId,jdbcType=INTEGER},
+      sort = #{record.sort,jdbcType=INTEGER},
+      ad = #{record.ad,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.ch.entity.GoodsSpecification" >
-    update goods_specification
+  <update id="updateByPrimaryKeySelective" parameterType="com.ch.entity.GoodsType" >
+    update goods_type
     <set >
       <if test="shopId != null" >
         shop_id = #{shopId,jdbcType=INTEGER},
@@ -296,44 +272,36 @@
       <if test="delFlag != null" >
         del_flag = #{delFlag,jdbcType=INTEGER},
       </if>
-      <if test="attrs != null" >
-        attrs = #{attrs,jdbcType=VARCHAR},
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
       </if>
-      <if test="originalPrice != null" >
-        original_price = #{originalPrice,jdbcType=DECIMAL},
+      <if test="icon != null" >
+        icon = #{icon,jdbcType=VARCHAR},
       </if>
-      <if test="presentPrice != null" >
-        present_price = #{presentPrice,jdbcType=DECIMAL},
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=INTEGER},
       </if>
-      <if test="inventory != null" >
-        inventory = #{inventory,jdbcType=INTEGER},
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
       </if>
-      <if test="sn != null" >
-        sn = #{sn,jdbcType=VARCHAR},
-      </if>
-      <if test="sale != null" >
-        sale = #{sale,jdbcType=INTEGER},
-      </if>
-      <if test="goodsImage != null" >
-        goods_image = #{goodsImage,jdbcType=VARCHAR},
+      <if test="ad != null" >
+        ad = #{ad,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.ch.entity.GoodsSpecification" >
-    update goods_specification
+  <update id="updateByPrimaryKey" parameterType="com.ch.entity.GoodsType" >
+    update goods_type
     set shop_id = #{shopId,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       del_flag = #{delFlag,jdbcType=INTEGER},
-      attrs = #{attrs,jdbcType=VARCHAR},
-      original_price = #{originalPrice,jdbcType=DECIMAL},
-      present_price = #{presentPrice,jdbcType=DECIMAL},
-      inventory = #{inventory,jdbcType=INTEGER},
-      sn = #{sn,jdbcType=VARCHAR},
-      sale = #{sale,jdbcType=INTEGER},
-      goods_image = #{goodsImage,jdbcType=VARCHAR}
+      title = #{title,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      sort = #{sort,jdbcType=INTEGER},
+      ad = #{ad,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

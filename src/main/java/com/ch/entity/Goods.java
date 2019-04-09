@@ -1,5 +1,6 @@
 package com.ch.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Goods {
@@ -29,9 +30,9 @@ public class Goods {
 
     private Integer inventory;
 
-    private Long originalPrice;
+    private BigDecimal originalPrice;
 
-    private Long presentPrice;
+    private BigDecimal presentPrice;
 
     private String sn;
 
@@ -41,9 +42,15 @@ public class Goods {
 
     private Integer salesVolume;
 
-    private Integer categoryId;
+    private String name;
 
-    private Long price;
+    private Integer catrgoryId;
+
+    private String keyWords;
+
+    private Long freight;
+
+    private String units;
 
     public Integer getId() {
         return id;
@@ -149,19 +156,19 @@ public class Goods {
         this.inventory = inventory;
     }
 
-    public Long getOriginalPrice() {
+    public BigDecimal getOriginalPrice() {
         return originalPrice;
     }
 
-    public void setOriginalPrice(Long originalPrice) {
+    public void setOriginalPrice(BigDecimal originalPrice) {
         this.originalPrice = originalPrice;
     }
 
-    public Long getPresentPrice() {
+    public BigDecimal getPresentPrice() {
         return presentPrice;
     }
 
-    public void setPresentPrice(Long presentPrice) {
+    public void setPresentPrice(BigDecimal presentPrice) {
         this.presentPrice = presentPrice;
     }
 
@@ -197,19 +204,43 @@ public class Goods {
         this.salesVolume = salesVolume;
     }
 
-    public Integer getCategoryId() {
-        return categoryId;
+    public String getName() {
+        return name;
     }
 
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
-    public Long getPrice() {
-        return price;
+    public Integer getCatrgoryId() {
+        return catrgoryId;
     }
 
-    public void setPrice(Long price) {
-        this.price = price;
+    public void setCatrgoryId(Integer catrgoryId) {
+        this.catrgoryId = catrgoryId;
+    }
+
+    public String getKeyWords() {
+        return keyWords;
+    }
+
+    public void setKeyWords(String keyWords) {
+        this.keyWords = keyWords == null ? null : keyWords.trim();
+    }
+
+    public Long getFreight() {
+        return freight;
+    }
+
+    public void setFreight(Long freight) {
+        this.freight = freight;
+    }
+
+    public String getUnits() {
+        return units;
+    }
+
+    public void setUnits(String units) {
+        this.units = units == null ? null : units.trim();
     }
 }

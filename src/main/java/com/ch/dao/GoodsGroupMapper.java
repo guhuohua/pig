@@ -4,9 +4,7 @@ import com.ch.entity.GoodsGroup;
 import com.ch.entity.GoodsGroupExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public interface GoodsGroupMapper {
     int countByExample(GoodsGroupExample example);
 
