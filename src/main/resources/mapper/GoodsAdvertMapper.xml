@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="mapper.GoodsAdvertMapper" >
+<mapper namespace="com.ch.dao.GoodsAdvertMapper" >
   <resultMap id="BaseResultMap" type="com.ch.entity.GoodsAdvert" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="title" property="title" jdbcType="VARCHAR" />
-    <result column="
-path" property="
-path" jdbcType="VARCHAR" />
+    <result column="path" property="path" jdbcType="VARCHAR" />
     <result column="picture_url" property="pictureUrl" jdbcType="VARCHAR" />
-    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
     <result column="sort_order" property="sortOrder" jdbcType="INTEGER" />
     <result column="shop_id" property="shopId" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
@@ -75,8 +73,7 @@ path" jdbcType="VARCHAR" />
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, title, 
-path, picture_url, status, sort_order, shop_id, create_time, update_time, 
+    id, title, path, picture_url, status, sort_order, shop_id, create_time, update_time,
     creater, browse_number
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.GoodsAdvertExample" >
@@ -111,14 +108,12 @@ path, picture_url, status, sort_order, shop_id, create_time, update_time,
     </if>
   </delete>
   <insert id="insert" parameterType="com.ch.entity.GoodsAdvert" >
-    insert into goods_advert (id, title, 
-path, 
+    insert into goods_advert (id, title, path,
       picture_url, status, sort_order, 
       shop_id, create_time, update_time, 
       creater, browse_number)
-    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{
-path,jdbcType=VARCHAR}, 
-      #{pictureUrl,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{sortOrder,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR},
+      #{pictureUrl,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{sortOrder,jdbcType=INTEGER},
       #{shopId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{creater,jdbcType=VARCHAR}, #{browseNumber,jdbcType=INTEGER})
   </insert>
@@ -131,10 +126,8 @@ path,jdbcType=VARCHAR},
       <if test="title != null" >
         title,
       </if>
-      <if test="
-path != null" >
-        
-path,
+      <if test="path != null" >
+        path,
       </if>
       <if test="pictureUrl != null" >
         picture_url,
@@ -168,16 +161,14 @@ path,
       <if test="title != null" >
         #{title,jdbcType=VARCHAR},
       </if>
-      <if test="
-path != null" >
-        #{
-path,jdbcType=VARCHAR},
+      <if test="path != null" >
+        #{path,jdbcType=VARCHAR},
       </if>
       <if test="pictureUrl != null" >
         #{pictureUrl,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
-        #{status,jdbcType=VARCHAR},
+        #{status,jdbcType=INTEGER},
       </if>
       <if test="sortOrder != null" >
         #{sortOrder,jdbcType=INTEGER},
@@ -214,17 +205,14 @@ path,jdbcType=VARCHAR},
       <if test="record.title != null" >
         title = #{record.title,jdbcType=VARCHAR},
       </if>
-      <if test="record.
-path != null" >
-        
-path = #{record.
-path,jdbcType=VARCHAR},
+      <if test="record.path != null" >
+        path = #{record.path,jdbcType=VARCHAR},
       </if>
       <if test="record.pictureUrl != null" >
         picture_url = #{record.pictureUrl,jdbcType=VARCHAR},
       </if>
       <if test="record.status != null" >
-        status = #{record.status,jdbcType=VARCHAR},
+        status = #{record.status,jdbcType=INTEGER},
       </if>
       <if test="record.sortOrder != null" >
         sort_order = #{record.sortOrder,jdbcType=INTEGER},
@@ -253,11 +241,9 @@ path,jdbcType=VARCHAR},
     update goods_advert
     set id = #{record.id,jdbcType=INTEGER},
       title = #{record.title,jdbcType=VARCHAR},
-      
-path = #{record.
-path,jdbcType=VARCHAR},
+      path = #{record.path,jdbcType=VARCHAR},
       picture_url = #{record.pictureUrl,jdbcType=VARCHAR},
-      status = #{record.status,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER},
       sort_order = #{record.sortOrder,jdbcType=INTEGER},
       shop_id = #{record.shopId,jdbcType=INTEGER},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
@@ -274,17 +260,14 @@ path,jdbcType=VARCHAR},
       <if test="title != null" >
         title = #{title,jdbcType=VARCHAR},
       </if>
-      <if test="
-path != null" >
-        
-path = #{
-path,jdbcType=VARCHAR},
+      <if test="path != null" >
+        path = #{path,jdbcType=VARCHAR},
       </if>
       <if test="pictureUrl != null" >
         picture_url = #{pictureUrl,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
-        status = #{status,jdbcType=VARCHAR},
+        status = #{status,jdbcType=INTEGER},
       </if>
       <if test="sortOrder != null" >
         sort_order = #{sortOrder,jdbcType=INTEGER},
@@ -310,11 +293,9 @@ path,jdbcType=VARCHAR},
   <update id="updateByPrimaryKey" parameterType="com.ch.entity.GoodsAdvert" >
     update goods_advert
     set title = #{title,jdbcType=VARCHAR},
-      
-path = #{
-path,jdbcType=VARCHAR},
+      path = #{path,jdbcType=VARCHAR},
       picture_url = #{pictureUrl,jdbcType=VARCHAR},
-      status = #{status,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
       sort_order = #{sortOrder,jdbcType=INTEGER},
       shop_id = #{shopId,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},

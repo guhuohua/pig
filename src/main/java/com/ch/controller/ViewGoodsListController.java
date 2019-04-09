@@ -7,5 +7,40 @@
 
 package com.ch.controller;
 
+import com.ch.base.ResponseResult;
+import com.ch.dto.GoodsDto;
+import com.ch.dto.SolrDto;
+import com.ch.service.ViewGoodsListService;
+import io.swagger.annotations.Api;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@Api(value = "展示商品列表",description = "展示商品列表")
+@RequestMapping("goods")
 public class ViewGoodsListController {
+
+    @Autowired
+    ViewGoodsListService viewGoodsListService;
+
+    private static final Logger LOGGER = LogManager.getLogger(ViewGoodsListController.class);
+
+   @PostMapping("viewList")
+    public ResponseResult findGoodsList(@RequestBody SolrDto solrDto){
+        ResponseResult result = new ResponseResult();
+        try {
+            result = viewGoodsListService.findGoodsList(solrDto);
+        } catch (Exception e) {
+            LOGGER.error("展示商品列表失败" + e.getMessage(), e);
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("展示商品列表失败");
+        }
+        return result;
+    }
 }

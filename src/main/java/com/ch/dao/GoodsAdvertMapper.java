@@ -1,10 +1,12 @@
-package mapper;
+package com.ch.dao;
 
 import com.ch.entity.GoodsAdvert;
 import com.ch.entity.GoodsAdvertExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface GoodsAdvertMapper {
     int countByExample(GoodsAdvertExample example);
 

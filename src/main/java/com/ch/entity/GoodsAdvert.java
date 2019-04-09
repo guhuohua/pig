@@ -7,12 +7,11 @@ public class GoodsAdvert {
 
     private String title;
 
-    private String 
-path;
+    private String path;
 
     private String pictureUrl;
 
-    private String status;
+    private Integer status;
 
     private Integer sortOrder;
 
@@ -42,21 +41,12 @@ path;
         this.title = title == null ? null : title.trim();
     }
 
-    public String get
-path() {
-        return 
-path;
+    public String getPath() {
+        return path;
     }
-
-    public void set
-path(String 
-path) {
-        this.
-path = 
-path == null ? null : 
-path.trim();
+    public void setPath(String path) {
+        this.path = path == null ? null : path.trim();
     }
-
     public String getPictureUrl() {
         return pictureUrl;
     }
@@ -65,12 +55,12 @@ path.trim();
         this.pictureUrl = pictureUrl == null ? null : pictureUrl.trim();
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status == null ? null : status.trim();
+    public void setStatus(Integer status) {
+        this.status = status ;
     }
 
     public Integer getSortOrder() {

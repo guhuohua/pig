@@ -7,11 +7,35 @@
 
 package com.ch.dto;
 
-public class Condition {
+public class SolrDto {
 
     private Integer start;
 
     private Integer rows;
 
-    private  String 
+    private  String condition;
+
+    public Integer getStart() {
+        return start;
+    }
+
+    public void setStart(Integer start) {
+        this.start = start;
+    }
+
+    public Integer getRows() {
+        return rows;
+    }
+
+    public void setRows(Integer rows) {
+        this.rows = rows;
+    }
+
+    public String getCondition() {
+        return condition;
+    }
+
+    public void setCondition(String condition) {
+        this.condition = condition;
+    }
 }

@@ -1,4 +1,7 @@
 package com.ch.service;
 
-public interface ViewGoodsDetails {
+import com.ch.base.ResponseResult;
+
+public interface ViewGoodsDetailsService {
+    ResponseResult findGoodsDetailsByGoodsId(Integer goodsId);
 }
