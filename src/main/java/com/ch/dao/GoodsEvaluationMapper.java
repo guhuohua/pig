@@ -4,7 +4,9 @@ import com.ch.entity.GoodsEvaluation;
 import com.ch.entity.GoodsEvaluationExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface GoodsEvaluationMapper {
     int countByExample(GoodsEvaluationExample example);
 
