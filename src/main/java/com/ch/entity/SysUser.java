@@ -31,6 +31,16 @@ public class SysUser {
 
     private Integer status;
 
+    private String roleName;
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
     public Integer getStatus() {
         return status;
     }

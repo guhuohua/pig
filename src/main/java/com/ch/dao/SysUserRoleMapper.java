@@ -5,6 +5,7 @@ import com.ch.entity.SysUserRoleExample;
 import com.ch.entity.SysUserRoleKey;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -30,4 +31,7 @@ public interface SysUserRoleMapper {
     int updateByPrimaryKeySelective(SysUserRole record);
 
     int updateByPrimaryKey(SysUserRole record);
+
+    @Update("update sys_user_role set role_id = #{roleId} where user_id = #{userId} and shop_id = #{shopId}")
+    int updateRole(@Param("roleId") Integer roleId, @Param("userId") Integer userId, @Param("shopId") Integer shopId);
 }

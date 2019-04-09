@@ -7,11 +7,11 @@
 
 package com.ch.dto;
 
-public class ShopParam {
+import com.ch.base.PageQuery;
+
+public class ShopParam extends PageQuery {
     private String title;
     private String tel;
-    private Integer pageNum;
-    private Integer pageSize;
 
     public String getTitle() {
         return title;
@@ -19,22 +19,6 @@ public class ShopParam {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public Integer getPageNum() {
-        return pageNum;
-    }
-
-    public void setPageNum(Integer pageNum) {
-        this.pageNum = pageNum;
-    }
-
-    public Integer getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
     }
 
     public String getTel() {
