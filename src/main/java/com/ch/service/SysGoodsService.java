@@ -1,6 +1,8 @@
 package com.ch.service;
 
 import com.ch.base.ResponseResult;
+import com.ch.dto.GoodsParam;
+import com.ch.model.SysGoodsModel;
 import com.ch.model.SysGoodsParam;
 
 public interface SysGoodsService {
@@ -12,4 +14,28 @@ public interface SysGoodsService {
      * @return
      */
     ResponseResult goodsList(SysGoodsParam param, Integer userId);
+
+    /**
+     * 新增或编辑商品
+     * @param model
+     * @param userId
+     * @return
+     */
+    ResponseResult goodsMange(SysGoodsModel model, Integer userId);
+
+    /**
+     * 改变商品状态
+     * @param param
+     * @param userId
+     * @return
+     */
+    ResponseResult goodsStatus(GoodsParam param, Integer userId);
+
+    /**
+     * 删除商品
+     * @param goodsId
+     * @param userId
+     * @return
+     */
+    ResponseResult deleteGoods(Integer goodsId, Integer userId);
 }

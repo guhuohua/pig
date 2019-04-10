@@ -52,6 +52,16 @@ public class Goods {
 
     private String units;
 
+    private String goodsImgUrl;
+
+    public String getGoodsImgUrl() {
+        return goodsImgUrl;
+    }
+
+    public void setGoodsImgUrl(String goodsImgUrl) {
+        this.goodsImgUrl = goodsImgUrl;
+    }
+
     public Integer getId() {
         return id;
     }

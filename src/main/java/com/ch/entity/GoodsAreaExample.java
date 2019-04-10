@@ -239,6 +239,11 @@ public class GoodsAreaExample {
             return (Criteria) this;
         }
 
+        public Criteria andStatusEqualTo(Integer value) {
+            addCriterion("status =", value, "status");
+            return (Criteria) this;
+        }
+
         public Criteria andShopIdNotEqualTo(Integer value) {
             addCriterion("shop_id <>", value, "shopId");
             return (Criteria) this;
