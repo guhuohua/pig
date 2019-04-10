@@ -2,18 +2,20 @@ package com.ch.service.impl;
 
 import com.ch.base.BeanUtils;
 import com.ch.base.ResponseResult;
-import com.ch.dao.SysRoleMapper;
-import com.ch.dao.SysUserMapper;
-import com.ch.dao.SysUserRoleMapper;
+import com.ch.dao.*;
 import com.ch.entity.*;
 import com.ch.model.PersonMangeParam;
-import com.ch.model.ShopPersonMange;
+import com.ch.model.SysGoodAvdModel;
+import com.ch.model.SysShopInfoParam;
 import com.ch.service.ShopService;
+import com.ch.service.SolrService;
 import com.ch.util.PasswordUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,6 +33,16 @@ public class ShopServiceImpl implements ShopService {
 
     @Autowired
     SysUserRoleMapper sysUserRoleMapper;
+
+    @Autowired
+    ShopMapper shopMapper;
+
+    @Autowired
+    ModelMapper modelMapper;
+
+    @Autowired
+    GoodsAdvertMapper goodsAdvertMapper;
+
 
     @Override
     public ResponseResult PersonMangeList(PersonMangeParam param, Integer userId) {
@@ -149,6 +161,42 @@ public class ShopServiceImpl implements ShopService {
         ResponseResult result = new ResponseResult();
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(tokenUserId);
         sysUserMapper.resetPassword(userId, sysUser.getShopId());
+        return result;
+    }
+
+    @Override
+    public ResponseResult shopInfo(Integer userId) {
+        ResponseResult result = new ResponseResult();
+        SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
+        Shop shop = shopMapper.selectByPrimaryKey(sysUser.getShopId());
+        SysShopInfoParam sysShopInfoParam = new SysShopInfoParam();
+        modelMapper.map(shop, sysShopInfoParam);
+        GoodsAdvertExample goodsAdvertExample = new GoodsAdvertExample();
+        goodsAdvertExample.createCriteria().andShopIdEqualTo(sysUser.getShopId());
+        List<GoodsAdvert> goodsAdverts = goodsAdvertMapper.selectByExample(goodsAdvertExample);
+        List<SysGoodAvdModel> sysGoodAvdModels = new ArrayList<>();
+        for (GoodsAdvert goodsAdvert:goodsAdverts) {
+            SysGoodAvdModel sysGoodAvdModel = new SysGoodAvdModel();
+            modelMapper.map(goodsAdvert, sysGoodAvdModel);
+            sysGoodAvdModels.add(sysGoodAvdModel);
+        }
+        sysShopInfoParam.setSysGoodAvdModels(sysGoodAvdModels);
+        result.setData(sysShopInfoParam);
+        return result;
+    }
+
+    @Override
+    @Transactional
+    public ResponseResult mange(SysShopInfoParam sysShopInfoParam) {
+        ResponseResult result = new ResponseResult();
+        Shop shop = new Shop();
+        modelMapper.map(sysShopInfoParam, shop);
+        shopMapper.updateByPrimaryKey(shop);
+        for (SysGoodAvdModel sysGoodAvdModel:sysShopInfoParam.getSysGoodAvdModels()) {
+            GoodsAdvert goodsAdvert = new GoodsAdvert();
+            modelMapper.map(sysGoodAvdModel, goodsAdvert);
+            goodsAdvertMapper.updateByPrimaryKey(goodsAdvert);
+        }
         return result;
     }
 }

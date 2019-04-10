@@ -34,48 +34,45 @@ public class ChApplicationTests {
 
     @Test
     public void testUploadImage() {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("q", "*:*");
-        params.put("start", "1");
-        params.put("rows", "1");
-        SolrParams mapSolrParams = new MapSolrParams(params);
-        try {
-            QueryResponse query = solrClient.query(mapSolrParams);
-            SolrDocumentList results = query.getResults();
-            for (SolrDocument result : results) {
-                // SolrDocument 数据结构为Map
-                System.out.println(result);
-//                GoodsSolrSchema goodsSolrSchema = new GoodsSolrSchema();
-//                goodsSolrSchema.setGoodsId((Integer.valueOf((String)result.getFieldValue("goodsId"))));
-//                System.out.println(goodsSolrSchema.getGoodsId());
-            }
-
-        } catch (SolrServerException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        GoodsSpecification goodsSpecification1 = goodsSpecificationMapper.selectByPrimaryKey(1);
-        GoodsSpecification goodsSpecification2 = goodsSpecificationMapper.selectByPrimaryKey(1);
-        GoodsSpecification goodsSpecification3 = goodsSpecificationMapper.selectByPrimaryKey(1);
-        GoodsSpecification goodsSpecification4 = goodsSpecificationMapper.selectByPrimaryKey(1);
-        Map specMap = JSON.parseObject(goodsSpecification1.getAttrs());
-        List<String> strings = new ArrayList<>();
-        strings.add("HOT");
-        GoodsSolrSchema goodsSolrSchema = new GoodsSolrSchema();
-        goodsSolrSchema.setGoodsId(234);
-        goodsSolrSchema.setGoodsSalesArea(strings);
-        goodsSolrSchema.setTitle("测试");
-        goodsSolrSchema.setImg("换个手机壳");
-        goodsSolrSchema.setShopId(123);
-        goodsSolrSchema.setInventory(123);
-        goodsSolrSchema.setName("测试商品");
-        goodsSolrSchema.setPrice(28.22);
-        //goodsSolrSchema.setGoodsSpecification(goodsSpecification1.getAttrs());
+//        Map<String, String> params = new HashMap<String, String>();
+//        params.put("q", "*:*");
+//        params.put("start", "1");
+//        params.put("rows", "1");
+//        SolrParams mapSolrParams = new MapSolrParams(params);
+//        try {
+//            QueryResponse query = solrClient.query(mapSolrParams);
+//            SolrDocumentList results = query.getResults();
+//            for (SolrDocument result : results) {
+//                // SolrDocument 数据结构为Map
+//                System.out.println(result);
+////                GoodsSolrSchema goodsSolrSchema = new GoodsSolrSchema();
+////                goodsSolrSchema.setGoodsId((Integer.valueOf((String)result.getFieldValue("goodsId"))));
+////                System.out.println(goodsSolrSchema.getGoodsId());
+//            }
+//
+//        } catch (SolrServerException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        GoodsSpecification goodsSpecification1 = goodsSpecificationMapper.selectByPrimaryKey(1);
+//        GoodsSpecification goodsSpecification2 = goodsSpecificationMapper.selectByPrimaryKey(1);
+//        GoodsSpecification goodsSpecification3 = goodsSpecificationMapper.selectByPrimaryKey(1);
+//        GoodsSpecification goodsSpecification4 = goodsSpecificationMapper.selectByPrimaryKey(1);
+//        Map specMap = JSON.parseObject(goodsSpecification1.getAttrs());
+//        List<String> strings = new ArrayList<>();
+//        strings.add("HOT");
+//        GoodsSolrSchema goodsSolrSchema = new GoodsSolrSchema();
+//        goodsSolrSchema.setGoodsSalesArea(strings);
+//        goodsSolrSchema.setTitle("测试");
+//        goodsSolrSchema.setShopId(123);
+//        goodsSolrSchema.setInventory(123);
+//        goodsSolrSchema.setName("测试商品");
+//        //goodsSolrSchema.setGoodsSpecification(goodsSpecification1.getAttrs());
 
 
         try {
-            solrClient.addBean(goodsSolrSchema);
+            solrClient.deleteById("123");
             solrClient.commit();
         } catch (IOException e) {
             e.printStackTrace();

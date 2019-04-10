@@ -157,10 +157,11 @@ public class SysUserMangeServiceImpl implements SysUserMangeService {
     }
 
     @Override
-    public ResponseResult deleteUser(Integer userId, Integer shopId) {
+    public ResponseResult deleteUser(Integer userId, Integer tokenUserId) {
         ResponseResult result = new ResponseResult();
+        SysUser sysUser = sysUserMapper.selectByPrimaryKey(tokenUserId);
         SysRoleExample sysRoleExample = new SysRoleExample();
-        sysRoleExample.createCriteria().andShopIdEqualTo(shopId);
+        sysRoleExample.createCriteria().andShopIdEqualTo(sysUser.getShopId());
         List<SysRole> sysRoles = sysRoleMapper.selectByExample(sysRoleExample);
         for (SysRole sysRole:sysRoles) {
             if ("管理员".equals(sysRole.getRoleName())) {
@@ -171,7 +172,7 @@ public class SysUserMangeServiceImpl implements SysUserMangeService {
             }
         }
         SysUserExample sysUserExample = new SysUserExample();
-        sysUserExample.createCriteria().andShopIdEqualTo(Long.valueOf(shopId)).andUserIdEqualTo(userId);
+        sysUserExample.createCriteria().andShopIdEqualTo(Long.valueOf(sysUser.getShopId())).andUserIdEqualTo(userId);
         sysUserMapper.deleteByExample(sysUserExample);
         return result;
     }

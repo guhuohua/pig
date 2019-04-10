@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.solr.core.mapping.SolrDocument;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Data
@@ -14,7 +15,8 @@ public class GoodsSolrSchema implements Serializable {
 
     @Id
     @Field
-    private Integer goodsId;
+    private Integer id;
+
 
     @Field
     private String title;
@@ -23,10 +25,16 @@ public class GoodsSolrSchema implements Serializable {
     private String name;
 
     @Field
-    private Double price;
+    private BigDecimal originalPrice;
 
     @Field
-    private Integer sale;
+    private BigDecimal presentPrice;
+
+    @Field
+    private Integer salesVolume;
+
+    @Field
+    private Integer catrgoryId;
 
     /**
      * 库存
@@ -41,9 +49,15 @@ public class GoodsSolrSchema implements Serializable {
     private List<String> goodsSalesArea;
 
     @Field
-    private List goodsSpecification;
+    private String goodsImgUrl;
 
     @Field
-    private String img;
+    private Integer boutiqueSort;
+
+    @Field
+    private Integer newSort;
+
+    @Field
+    private Integer hotSort;
 
 }
