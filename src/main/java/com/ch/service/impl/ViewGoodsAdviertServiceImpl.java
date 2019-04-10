@@ -12,7 +12,6 @@ import com.ch.dao.GoodsAdvertMapper;
 import com.ch.entity.GoodsAdvert;
 import com.ch.entity.GoodsAdvertExample;
 import com.ch.service.ViewGoodsAdvertService;
-import io.swagger.annotations.Example;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

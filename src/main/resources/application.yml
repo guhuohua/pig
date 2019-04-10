@@ -41,7 +41,8 @@ spring:
     timeout: 10000
   data:
     solr:
-      host: http://127.0.0.1:8983/solr/shop
+      #host: http://127.0.0.1:8983/solr/shop
+       host: http://192.168.1.104:8983/solr/shop
 
 
 

@@ -1,6 +1,7 @@
 package com.ch.ch;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ch.dao.GoodsSpecificationMapper;
 import com.ch.entity.GoodsSolrSchema;
@@ -56,14 +57,14 @@ public class ChApplicationTests {
             e.printStackTrace();
         }
         GoodsSpecification goodsSpecification1 = goodsSpecificationMapper.selectByPrimaryKey(1);
-        GoodsSpecification goodsSpecification2 = goodsSpecificationMapper.selectByPrimaryKey(1);
-        GoodsSpecification goodsSpecification3 = goodsSpecificationMapper.selectByPrimaryKey(1);
-        GoodsSpecification goodsSpecification4 = goodsSpecificationMapper.selectByPrimaryKey(1);
-        Map specMap = JSON.parseObject(goodsSpecification1.getAttrs());
+       // GoodsSpecification goodsSpecification2 = goodsSpecificationMapper.selectByPrimaryKey(1);
+        //GoodsSpecification goodsSpecification3 = goodsSpecificationMapper.selectByPrimaryKey(1);
+       // GoodsSpecification goodsSpecification4 = goodsSpecificationMapper.selectByPrimaryKey(1);
+       // Map specMap = JSON.parseObject(goodsSpecification1.getAttrs());
         List<String> strings = new ArrayList<>();
         strings.add("HOT");
         GoodsSolrSchema goodsSolrSchema = new GoodsSolrSchema();
-        goodsSolrSchema.setGoodsId(234);
+        goodsSolrSchema.setGoodsId(112233);
         goodsSolrSchema.setGoodsSalesArea(strings);
         goodsSolrSchema.setTitle("测试");
         goodsSolrSchema.setImg("换个手机壳");
@@ -71,7 +72,9 @@ public class ChApplicationTests {
         goodsSolrSchema.setInventory(123);
         goodsSolrSchema.setName("测试商品");
         goodsSolrSchema.setPrice(28.22);
-        //goodsSolrSchema.setGoodsSpecification(goodsSpecification1.getAttrs());
+        String attrs = goodsSpecification1.getAttrs();
+        List list = JSONArray.parseArray(attrs);
+        goodsSolrSchema.setGoodsSpecification(list);
 
 
         try {
@@ -88,9 +91,12 @@ public class ChApplicationTests {
 
     @Test
     public void testUploadImage1(){
-        String str = "[{\"attributeName\":\"网络制式\",\"attributeValue\":[\"移动3G\",\"移动4G\"]},{\"attributeName\":\"屏幕尺寸\",\"attributeValue\":[\"6寸\",\"5寸\"]}]";
-        Map map = JSON.parseObject(str);
-        System.out.println(map);
+        GoodsSpecification goodsSpecification1 = goodsSpecificationMapper.selectByPrimaryKey(1);
+        String attrs = goodsSpecification1.getAttrs();
+        System.out.println(attrs);
+        List jsonArray = JSONArray.parseArray(attrs);
+        System.out.println(jsonArray);
+
     }
 
 

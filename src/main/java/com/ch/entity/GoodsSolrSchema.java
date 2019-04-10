@@ -46,4 +46,7 @@ public class GoodsSolrSchema implements Serializable {
     @Field
     private String img;
 
+    @Field
+    private Integer sort;
+
 }
