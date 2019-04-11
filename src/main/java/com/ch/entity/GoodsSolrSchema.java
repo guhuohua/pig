@@ -10,14 +10,16 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Data
-@SolrDocument(solrCoreName = "shop")
+@SolrDocument(solrCoreName = "")
 public class GoodsSolrSchema implements Serializable {
 
     @Id
     @Field
-    private Integer id;
+    private String id;
 
 
+   @Field
+    private Integer goodsId;
     @Field
     private String title;
 

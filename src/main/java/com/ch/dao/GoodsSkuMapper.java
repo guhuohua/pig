@@ -4,7 +4,9 @@ import com.ch.entity.GoodsSku;
 import com.ch.entity.GoodsSkuExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface GoodsSkuMapper {
     int countByExample(GoodsSkuExample example);
 

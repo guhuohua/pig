@@ -35,8 +35,8 @@ public class SysGoodsServiceImpl implements SysGoodsService {
     @Autowired
     GoodsImageMapper goodsImageMapper;
 
-    @Autowired
-    GoodsSpecificationMapper goodsSpecificationMapper;
+   /* @Autowired
+    GoodsSpecificationMapper goodsSpecificationMapper;*/
 
     @Autowired
     SolrService solrService;
@@ -94,14 +94,14 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                 modelMapper.map(sysGoodAvdModel, goodsImage);
                 goodsImageMapper.insert(goodsImage);
             }
-            for (SysGoodsSkuModel skuModel:model.getSysGoodsSkuModelList()) {
+           /* for (SysGoodsSkuModel skuModel:model.getSysGoodsSkuModelList()) {
                 GoodsSpecification goodsSpecification = new GoodsSpecification();
                 goodsSpecification.setCreateTime(new Date());
                 goodsSpecification.setShopId(sysUser.getShopId());
                 goodsSpecification.setSn(sn.toString());
                 modelMapper.map(skuModel, goodsSpecification);
                 goodsSpecificationMapper.insert(goodsSpecification);
-            }
+            }*/
         }
         return result;
     }

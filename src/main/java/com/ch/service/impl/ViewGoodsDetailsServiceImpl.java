@@ -24,8 +24,8 @@ import java.util.Map;
 public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
     @Autowired
     GoodsMapper goodsMapper;
-    @Autowired
-    GoodsSpecificationMapper goodsSpecificationMapper;
+   /* @Autowired
+    GoodsSpecificationMapper goodsSpecificationMapper;*/
     @Autowired
     GoodsEvaluationMapper goodsEvaluationMapper;
     @Autowired
@@ -38,14 +38,14 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
         Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
         goodsDetailsMap.put("goods",goods);
         //查询商品规格表
-        GoodsSpecificationExample example = new GoodsSpecificationExample();
+       /* GoodsSpecificationExample example = new GoodsSpecificationExample();
         GoodsSpecificationExample.Criteria criteria = example.createCriteria();
         criteria.andSnEqualTo(goods.getSn());
         List<GoodsSpecification> goodsSpecifications = goodsSpecificationMapper.selectByExample(example);
         if(goodsSpecifications.size()>0){
             GoodsSpecification goodsSpecification = goodsSpecifications.get(0);
             goodsDetailsMap.put("Spec",goodsSpecification);
-        }
+        }*/
         //查询商品评价表
         GoodsEvaluationExample example1 = new GoodsEvaluationExample();
         GoodsEvaluationExample.Criteria criteria1 = example1.createCriteria();

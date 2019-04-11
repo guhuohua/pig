@@ -1,6 +1,8 @@
 package com.ch.ch;
 
 import com.alibaba.fastjson.JSON;
+import com.ch.entity.GoodsSolrSchema;
+import com.ch.util.IdUtil;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -23,18 +25,18 @@ public class ChApplicationTests {
 
     @Autowired
     SolrClient solrClient;
-    @Autowired
+  /*  @Autowired
     GoodsSpecificationMapper goodsSpecificationMapper;
-
+*/
 
     @Test
     public void testUploadImage() {
 
 
-        Map<String, String> params = new HashMap<String, String>();
+       /* Map<String, String> params = new HashMap<String, String>();
                Integer shopId = 1;
-                params.put("q", "shopId :"+shopId+"and status :1");
-
+                params.put("q", "shopId :"+shopId);
+                params.put("q", "status :"+shopId);
                 params.put("start", "0");
                 params.put("rows", "10");
                 params.put("sort","sort asc");
@@ -54,28 +56,30 @@ public class ChApplicationTests {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
-           }
+           }*/
                // goodsSpecificationMapper.selectByPrimaryKey(1);
         //GoodsSpecification goodsSpecification2 = goodsSpecificationMapper.selectByPrimaryKey(1);
         //GoodsSpecification goodsSpecification3 = goodsSpecificationMapper.selectByPrimaryKey(1);
         //GoodsSpecification goodsSpecification4 = goodsSpecificationMapper.selectByPrimaryKey(1);
         //Map specMap = JSON.parseObject(goodsSpecification1.getAttrs());
-       /* List<String> strings = new ArrayList<>();
+        List<String> strings = new ArrayList<>();
         strings.add("HOT");
         GoodsSolrSchema goodsSolrSchema = new GoodsSolrSchema();
-        goodsSolrSchema.setId(5);
+        goodsSolrSchema.setId(IdUtil.createIdByUUID());
         goodsSolrSchema.setGoodsSalesArea(strings);
+        goodsSolrSchema.setGoodsId(1);
         goodsSolrSchema.setTitle("测试");
         goodsSolrSchema.setShopId(1);
         goodsSolrSchema.setStatus(1);
         goodsSolrSchema.setInventory(1);
         goodsSolrSchema.setName("测试商品");
-        goodsSolrSchema.setSort(5);*/
+        goodsSolrSchema.setSort(1);
+        goodsSolrSchema.setNewSort(1);
 
         //goodsSolrSchema.setGoodsSpecification(goodsSpecification1.getAttrs());
 
 
-        /*try {
+        try {
           //solrClient.deleteById("516a4cf5-3af5-42b1-9416-d4d580a96bfd");
             solrClient.addBean(goodsSolrSchema);
             solrClient.commit();
@@ -83,7 +87,7 @@ public class ChApplicationTests {
             e.printStackTrace();
         } catch (SolrServerException e) {
             e.printStackTrace();
-        }*/
+        }
 
 
     }
