@@ -4,6 +4,7 @@ import com.ch.base.BeanUtils;
 import com.ch.base.ResponseResult;
 import com.ch.dao.GoodsImageMapper;
 import com.ch.dao.GoodsMapper;
+import com.ch.dao.GoodsSkuMapper;
 import com.ch.dao.SysUserMapper;
 import com.ch.dto.GoodsParam;
 import com.ch.entity.*;
@@ -16,8 +17,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -36,7 +35,7 @@ public class SysGoodsServiceImpl implements SysGoodsService {
     GoodsImageMapper goodsImageMapper;
 
     @Autowired
-    GoodsSpecificationMapper goodsSpecificationMapper;
+    GoodsSkuMapper goodsSkuMapper;
 
     @Autowired
     SolrService solrService;
@@ -114,6 +113,14 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                 goodsMapper.deleteByExample(goodsExample);
             }
         }
+        return result;
+    }
+
+    @Override
+    public ResponseResult skuList(Integer categoryId, Integer userId) {
+        ResponseResult result = new ResponseResult();
+        SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
+
         return result;
     }
 }

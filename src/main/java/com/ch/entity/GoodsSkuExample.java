@@ -925,11 +925,6 @@ public class GoodsSkuExample {
             return (Criteria) this;
         }
 
-        public Criteria andGoodsIdEqualTo(Integer value) {
-            addCriterion("goods_id =", value, "goodsId");
-            return (Criteria) this;
-        }
-
         public Criteria andGoodsIdNotEqualTo(Integer value) {
             addCriterion("goods_id <>", value, "goodsId");
             return (Criteria) this;
@@ -982,11 +977,6 @@ public class GoodsSkuExample {
 
         public Criteria andCategoryIdIsNotNull() {
             addCriterion("category_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryIdEqualTo(Integer value) {
-            addCriterion("category_id =", value, "categoryId");
             return (Criteria) this;
         }
 

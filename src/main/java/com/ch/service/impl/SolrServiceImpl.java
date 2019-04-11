@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class SolrServiceImpl implements SolrService {
@@ -42,7 +43,6 @@ public class SolrServiceImpl implements SolrService {
     @Override
     @Async
     public void releaseGoods(Integer goodsId, Integer userId) {
-        List<String> areaList = new ArrayList<>();
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         GoodsExample goodsExample = new GoodsExample();
         goodsExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andIdEqualTo(goodsId);
@@ -55,19 +55,19 @@ public class SolrServiceImpl implements SolrService {
             goodsAreaExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andGoodsIdEqualTo(goods.getId());
             goodsAreaMapper.selectByExample(goodsAreaExample).forEach(item -> {
                 if (item.getStatus() == 1) {
-                    areaList.add(item.getGoodsClassification());
-                }
-                if (GoodsSaleAreaEnum.BOUTIQUE.equals(item.getGoodsClassification())) {
-                    goodsSolrSchema.setBoutiqueSort(item.getSort());
-                }
-                if (GoodsSaleAreaEnum.HOT.equals(item.getGoodsClassification())) {
-                    goodsSolrSchema.setHotSort(item.getSort());
-                }
-                if (GoodsSaleAreaEnum.NEW.equals(item.getGoodsClassification())) {
-                    goodsSolrSchema.setNewSort(item.getSort());
+                    goodsSolrSchema.setId(UUID.randomUUID().toString());
+                    goodsSolrSchema.setGoodsSalesArea(item.getGoodsClassification());
+                    if (GoodsSaleAreaEnum.BOUTIQUE.equals(item.getGoodsClassification())) {
+                        goodsSolrSchema.setBoutiqueSort(item.getSort());
+                    }
+                    if (GoodsSaleAreaEnum.HOT.equals(item.getGoodsClassification())) {
+                        goodsSolrSchema.setHotSort(item.getSort());
+                    }
+                    if (GoodsSaleAreaEnum.NEW.equals(item.getGoodsClassification())) {
+                        goodsSolrSchema.setNewSort(item.getSort());
+                    }
                 }
             });
-            goodsSolrSchema.setGoodsSalesArea(areaList);
             try {
                 solrClient.addBean(goodsSolrSchema);
                 solrClient.commit();

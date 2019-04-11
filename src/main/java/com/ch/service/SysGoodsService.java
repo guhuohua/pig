@@ -29,4 +29,11 @@ public interface SysGoodsService {
      * @return
      */
     ResponseResult deleteGoods(Integer goodsId, Integer userId);
+
+    /**
+     * 新增商品时sku列表
+     * @param categoryId
+     * @return
+     */
+    ResponseResult skuList(Integer categoryId, Integer userId);
 }
