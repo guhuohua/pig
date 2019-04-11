@@ -15,6 +15,8 @@
     <result column="sn" property="sn" jdbcType="VARCHAR" />
     <result column="sale" property="sale" jdbcType="INTEGER" />
     <result column="goods_image" property="goodsImage" jdbcType="VARCHAR" />
+    <result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+    <result column="category_id" property="categoryId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -76,7 +78,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, shop_id, status, create_time, update_time, del_flag, attrs, original_price, present_price, 
-    inventory, sn, sale, goods_image
+    inventory, sn, sale, goods_image, goods_id,category_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.GoodsSpecificationExample" >
     select
@@ -114,12 +116,12 @@
       create_time, update_time, del_flag, 
       attrs, original_price, present_price, 
       inventory, sn, sale, 
-      goods_image)
+      goods_image, goods_id,category_id)
     values (#{id,jdbcType=INTEGER}, #{shopId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=INTEGER}, 
       #{attrs,jdbcType=VARCHAR}, #{originalPrice,jdbcType=DECIMAL}, #{presentPrice,jdbcType=DECIMAL}, 
       #{inventory,jdbcType=INTEGER}, #{sn,jdbcType=VARCHAR}, #{sale,jdbcType=INTEGER}, 
-      #{goodsImage,jdbcType=VARCHAR})
+      #{goodsImage,jdbcType=VARCHAR},#{goodsId,jdbcType=INTEGER},#{categoryId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ch.entity.GoodsSpecification" >
     insert into goods_specification
@@ -273,7 +275,9 @@
       inventory = #{record.inventory,jdbcType=INTEGER},
       sn = #{record.sn,jdbcType=VARCHAR},
       sale = #{record.sale,jdbcType=INTEGER},
-      goods_image = #{record.goodsImage,jdbcType=VARCHAR}
+      goods_image = #{record.goodsImage,jdbcType=VARCHAR},
+    goods_id = #{record.goodsId,jdbcType=INTEGER},
+    category_id = #{record.categoryId,jdbcType=INTEGER},
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -333,7 +337,9 @@
       inventory = #{inventory,jdbcType=INTEGER},
       sn = #{sn,jdbcType=VARCHAR},
       sale = #{sale,jdbcType=INTEGER},
-      goods_image = #{goodsImage,jdbcType=VARCHAR}
+      goods_image = #{goodsImage,jdbcType=VARCHAR},
+      goods_id = #{goodsId,jdbcType=INTEGER},
+      category_id = #{categoryId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

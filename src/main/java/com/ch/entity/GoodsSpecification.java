@@ -29,6 +29,26 @@ public class GoodsSpecification {
 
     private String goodsImage;
 
+    private Integer goodsId;
+
+    private Integer categoryId;
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public Integer getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(Integer goodsId) {
+        this.goodsId = goodsId;
+    }
+
     public Integer getId() {
         return id;
     }

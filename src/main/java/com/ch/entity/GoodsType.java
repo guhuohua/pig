@@ -1,6 +1,7 @@
 package com.ch.entity;
 
 import java.util.Date;
+import java.util.List;
 
 public class GoodsType {
     private Integer id;
@@ -24,6 +25,16 @@ public class GoodsType {
     private Integer sort;
 
     private String ad;
+
+    private List<GoodsType> children;
+
+    public List<GoodsType> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<GoodsType> children) {
+        this.children = children;
+    }
 
     public Integer getId() {
         return id;

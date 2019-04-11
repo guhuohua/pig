@@ -74,38 +74,7 @@ public class SysGoodsServiceImpl implements SysGoodsService {
         return result;
     }
 
-    @Override
-    @Transactional
-    public ResponseResult goodsMange(SysGoodsModel model, Integer userId) {
-        ResponseResult result = new ResponseResult();
-        SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
-        StringBuilder sn = new StringBuilder("xxx");
-        sn.append(new Date().getTime());
-        if (BeanUtils.isEmpty(model.getId())) {
-            Goods goods = new Goods();
-            goods.setShopId(sysUser.getShopId());
-            goods.setCreateTime(new Date());
-            goods.setSn(sn.toString());
-            modelMapper.map(model, goods);
-            goodsMapper.insert(goods);
-            for (SysGoodAvdModel sysGoodAvdModel :model.getGoodsImageModelList()) {
-                GoodsImage goodsImage = new GoodsImage();
-                goodsImage.setShopId(sysUser.getShopId());
-                goodsImage.setCreateTime(new Date());
-                modelMapper.map(sysGoodAvdModel, goodsImage);
-                goodsImageMapper.insert(goodsImage);
-            }
-            for (SysGoodsSkuModel skuModel:model.getSysGoodsSkuModelList()) {
-                GoodsSpecification goodsSpecification = new GoodsSpecification();
-                goodsSpecification.setCreateTime(new Date());
-                goodsSpecification.setShopId(sysUser.getShopId());
-                goodsSpecification.setSn(sn.toString());
-                modelMapper.map(skuModel, goodsSpecification);
-                goodsSpecificationMapper.insert(goodsSpecification);
-            }
-        }
-        return result;
-    }
+
 
     @Override
     @Transactional
