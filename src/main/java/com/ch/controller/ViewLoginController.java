@@ -35,8 +35,7 @@ public class ViewLoginController {
 
         JSONObject res = WXUtil.getUserOpenId(appId, shopInfo.getSecret(), code);
         String openid = res.getString("openid");
-        System.out.println(openid);
-
+       // System.out.println(openid);
         try {
             //获取微信openid
             if (openid == null) {
@@ -54,7 +53,6 @@ public class ViewLoginController {
             e.printStackTrace();
         }
         return result;
-
     }
 }
 

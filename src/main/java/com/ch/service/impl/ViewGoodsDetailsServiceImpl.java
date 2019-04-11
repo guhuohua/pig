@@ -11,7 +11,6 @@ import com.ch.base.ResponseResult;
 import com.ch.dao.GoodsEvaluationMapper;
 import com.ch.dao.GoodsMapper;
 import com.ch.dao.GoodsSTypeMapper;
-import com.ch.dao.GoodsSpecificationMapper;
 import com.ch.entity.*;
 import com.ch.service.ViewGoodsDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;

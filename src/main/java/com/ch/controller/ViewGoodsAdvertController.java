@@ -10,12 +10,10 @@ package com.ch.controller;
 import com.ch.base.ResponseResult;
 import com.ch.dao.UserMapper;
 import com.ch.entity.User;
-import com.ch.entity.UserExample;
 import com.ch.service.ViewGoodsAdvertService;
 import com.ch.util.TokenUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.Example;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @RestController
 @RequestMapping("view")

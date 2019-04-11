@@ -4,7 +4,6 @@ import com.ch.base.BeanUtils;
 import com.ch.base.ResponseResult;
 import com.ch.dao.GoodsImageMapper;
 import com.ch.dao.GoodsMapper;
-import com.ch.dao.GoodsSpecificationMapper;
 import com.ch.dao.SysUserMapper;
 import com.ch.dto.GoodsParam;
 import com.ch.entity.*;
