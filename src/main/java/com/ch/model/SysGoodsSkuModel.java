@@ -13,12 +13,6 @@ public class SysGoodsSkuModel {
 
     private Integer status;
 
-    private Date createTime;
-
-    private Date updateTime;
-
-    private Integer delFlag;
-
     private String attrs;
 
     private Long originalPrice;
@@ -32,4 +26,8 @@ public class SysGoodsSkuModel {
     private Integer sale;
 
     private String goodsImage;
+
+    private Integer goodsId;
+
+    private Integer categoryId;
 }

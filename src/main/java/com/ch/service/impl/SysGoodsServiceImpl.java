@@ -4,6 +4,7 @@ import com.ch.base.BeanUtils;
 import com.ch.base.ResponseResult;
 import com.ch.dao.GoodsImageMapper;
 import com.ch.dao.GoodsMapper;
+import com.ch.dao.GoodsSkuMapper;
 import com.ch.dao.SysUserMapper;
 import com.ch.dto.GoodsParam;
 import com.ch.entity.*;
@@ -16,8 +17,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -35,8 +34,8 @@ public class SysGoodsServiceImpl implements SysGoodsService {
     @Autowired
     GoodsImageMapper goodsImageMapper;
 
-   /* @Autowired
-    GoodsSpecificationMapper goodsSpecificationMapper;*/
+    @Autowired
+    GoodsSkuMapper goodsSkuMapper;
 
     @Autowired
     SolrService solrService;
@@ -73,38 +72,7 @@ public class SysGoodsServiceImpl implements SysGoodsService {
         return result;
     }
 
-    @Override
-    @Transactional
-    public ResponseResult goodsMange(SysGoodsModel model, Integer userId) {
-        ResponseResult result = new ResponseResult();
-        SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
-        StringBuilder sn = new StringBuilder("xxx");
-        sn.append(new Date().getTime());
-        if (BeanUtils.isEmpty(model.getId())) {
-            Goods goods = new Goods();
-            goods.setShopId(sysUser.getShopId());
-            goods.setCreateTime(new Date());
-            goods.setSn(sn.toString());
-            modelMapper.map(model, goods);
-            goodsMapper.insert(goods);
-            for (SysGoodAvdModel sysGoodAvdModel :model.getGoodsImageModelList()) {
-                GoodsImage goodsImage = new GoodsImage();
-                goodsImage.setShopId(sysUser.getShopId());
-                goodsImage.setCreateTime(new Date());
-                modelMapper.map(sysGoodAvdModel, goodsImage);
-                goodsImageMapper.insert(goodsImage);
-            }
-           /* for (SysGoodsSkuModel skuModel:model.getSysGoodsSkuModelList()) {
-                GoodsSpecification goodsSpecification = new GoodsSpecification();
-                goodsSpecification.setCreateTime(new Date());
-                goodsSpecification.setShopId(sysUser.getShopId());
-                goodsSpecification.setSn(sn.toString());
-                modelMapper.map(skuModel, goodsSpecification);
-                goodsSpecificationMapper.insert(goodsSpecification);
-            }*/
-        }
-        return result;
-    }
+
 
     @Override
     @Transactional
@@ -145,6 +113,14 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                 goodsMapper.deleteByExample(goodsExample);
             }
         }
+        return result;
+    }
+
+    @Override
+    public ResponseResult skuList(Integer categoryId, Integer userId) {
+        ResponseResult result = new ResponseResult();
+        SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
+
         return result;
     }
 }

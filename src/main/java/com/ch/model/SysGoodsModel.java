@@ -56,7 +56,7 @@ public class SysGoodsModel {
 
     private String units;
 
-    private List<SysGoodAvdModel> goodsImageModelList;
+    private List<SysGoodsImageModel> goodsImageModelList;
 
     private List<SysGoodsSkuModel> sysGoodsSkuModelList;
 }
