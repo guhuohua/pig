@@ -2,7 +2,7 @@ package com.ch.entity;
 
 import java.util.Date;
 
-public class GoodsSpecification {
+public class GoodsSku {
     private Integer id;
 
     private Integer shopId;
@@ -15,7 +15,7 @@ public class GoodsSpecification {
 
     private Integer delFlag;
 
-    private String attrs;
+    private Integer attrs;
 
     private Long originalPrice;
 
@@ -32,22 +32,6 @@ public class GoodsSpecification {
     private Integer goodsId;
 
     private Integer categoryId;
-
-    public Integer getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public Integer getGoodsId() {
-        return goodsId;
-    }
-
-    public void setGoodsId(Integer goodsId) {
-        this.goodsId = goodsId;
-    }
 
     public Integer getId() {
         return id;
@@ -97,12 +81,12 @@ public class GoodsSpecification {
         this.delFlag = delFlag;
     }
 
-    public String getAttrs() {
+    public Integer getAttrs() {
         return attrs;
     }
 
-    public void setAttrs(String attrs) {
-        this.attrs = attrs == null ? null : attrs.trim();
+    public void setAttrs(Integer attrs) {
+        this.attrs = attrs;
     }
 
     public Long getOriginalPrice() {
@@ -151,5 +135,21 @@ public class GoodsSpecification {
 
     public void setGoodsImage(String goodsImage) {
         this.goodsImage = goodsImage == null ? null : goodsImage.trim();
+    }
+
+    public Integer getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(Integer goodsId) {
+        this.goodsId = goodsId;
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 }

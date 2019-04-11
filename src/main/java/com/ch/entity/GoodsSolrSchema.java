@@ -60,4 +60,10 @@ public class GoodsSolrSchema implements Serializable {
     @Field
     private Integer hotSort;
 
+    @Field
+    private Integer sort;
+
+    @Field
+    private  Integer status;
+
 }

@@ -11,6 +11,7 @@ import com.ch.base.ResponseResult;
 import com.ch.dto.GoodsDto;
 import com.ch.dto.SolrDto;
 import com.ch.service.ViewGoodsListService;
+import com.ch.util.TokenUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @Api(value = "展示商品列表",description = "展示商品列表")
@@ -33,10 +36,13 @@ public class ViewGoodsListController {
 
     @PostMapping("viewList")
     @ApiOperation("展示商品列表")
-    public ResponseResult findGoodsList(@RequestBody SolrDto solrDto){
+    public ResponseResult findGoodsList(@RequestBody SolrDto solrDto, HttpServletRequest req){
         ResponseResult result = new ResponseResult();
+        String token = req.getHeader("Authorization");
+        Integer userId = TokenUtil.getUserId(token);
+
         try {
-            result = viewGoodsListService.findGoodsList(solrDto);
+            result = viewGoodsListService.findGoodsList(solrDto, userId);
         } catch (Exception e) {
             LOGGER.error("展示商品列表" + e.getMessage(), e);
             result.setCode(500);
