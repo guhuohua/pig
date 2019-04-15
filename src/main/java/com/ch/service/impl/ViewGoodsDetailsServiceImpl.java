@@ -8,18 +8,14 @@
 package com.ch.service.impl;
 
 import com.ch.base.ResponseResult;
-import com.ch.dao.GoodsEvaluationMapper;
-import com.ch.dao.GoodsMapper;
-import com.ch.dao.GoodsSTypeMapper;
-import com.ch.dao.GoodsSkuMapper;
+import com.ch.dao.*;
 import com.ch.entity.*;
+import com.ch.model.GoodsCategory;
 import com.ch.service.ViewGoodsDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
@@ -29,32 +25,99 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
     GoodsSkuMapper goodsSkuMapper;
     @Autowired
     GoodsEvaluationMapper goodsEvaluationMapper;
+
     @Autowired
-    GoodsSTypeMapper goodsSTypeMapper;
+    SysUserMapper sysUserMapper;
+    @Autowired
+    GoodsSkuAttributeMapper goodsSkuAttributeMapper;
+    @Autowired
+    SpecificationMapper specificationMapper;
+    @Autowired
+    SpecificationAttributeMapper specificationAttributeMapper;
+    @Autowired
+    GoodsImageMapper goodsImageMapper;
+
     @Override
-    public ResponseResult findGoodsDetailsByGoodsId(Integer goodsId) {
-        //List goodsDatils = new ArrayList();
-//        Map goodsDetailsMap = new HashMap();
-//        //查询商品表
-//        Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
-//        goodsDetailsMap.put("goods",goods);
-//        //查询商品规格表
-//        GoodsSpecificationExample example = new GoodsSpecificationExample();
-//        GoodsSpecificationExample.Criteria criteria = example.createCriteria();
-//        criteria.andSnEqualTo(goods.getSn());
-//        List<GoodsSpecification> goodsSpecifications = goodsSpecificationMapper.selectByExample(example);
-//        if(goodsSpecifications.size()>0){
-//            GoodsSpecification goodsSpecification = goodsSpecifications.get(0);
-//            goodsDetailsMap.put("Spec",goodsSpecification);
-//        }
-//        //查询商品评价表
-//        GoodsEvaluationExample example1 = new GoodsEvaluationExample();
-//        GoodsEvaluationExample.Criteria criteria1 = example1.createCriteria();
-//        criteria1.andGoodsIdEqualTo(goods.getId());
-//        List<GoodsEvaluation> goodsEvaluations = goodsEvaluationMapper.selectByExample(example1);
-//        goodsDetailsMap.put("goodsEvaluations",goodsEvaluations);
+    public ResponseResult findGoodsDetailsByGoodsId(Integer goodsId, Integer userId) {
+        SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
+        //商品详情的map
+        Map goodsDetailsMap = new HashMap();
+        //查询商品表
+        Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
+        goodsDetailsMap.put("goods", goods);
+        if (sysUser.getShopId() == goods.getShopId()) {
+            //查询sku列表
+            GoodsSkuExample exampleSku = new GoodsSkuExample();
+            GoodsSkuExample.Criteria criteria2 = exampleSku.createCriteria();
+            criteria2.andGoodsIdEqualTo(goodsId);
+            List<GoodsSku> goodsSkus = goodsSkuMapper.selectByExample(exampleSku);
+            goodsDetailsMap.put("goodsSkus", goodsSkus);
+
+            GoodsSkuAttributeExample example = new GoodsSkuAttributeExample();
+            GoodsSkuAttributeExample.Criteria criteria = example.createCriteria();
+            criteria.andGoodsIdEqualTo(goodsId);
+            criteria.andShopIdEqualTo(goods.getShopId());
+            List<GoodsSkuAttribute> goodsSkuAttributes = goodsSkuAttributeMapper.selectByExample(example);
+            //商品规格属性map
+            // List goodsArrList = new ArrayList();
+            List<GoodsCategory> goodsCategories = new ArrayList<>();
+            if (goodsSkuAttributes.size() > 0) {
+                List<String> list = new ArrayList<>();
+                List<Integer> listInt = new ArrayList();
+                Set<String> set = new HashSet<>();
+                Set<Integer> setInt = new HashSet<>();
+                Specification specification = null;
+                for (GoodsSkuAttribute goodsSkuAttribute : goodsSkuAttributes) {
+                    Integer specificationId = goodsSkuAttribute.getSpecificationId();
+                    specification = specificationMapper.selectByPrimaryKey(specificationId);
+                    set.add(specification.getTitle());
+                    setInt.add(specification.getId());
+                }
+                list.addAll(set);
+                listInt.addAll(setInt);
+                // System.out.println(listInt);
+                for (Integer integer : listInt) {
+                    GoodsCategory goodsCategory = new GoodsCategory();
+                    //查询商品规格表
+                    Specification specification1 = specificationMapper.selectByPrimaryKey(integer);
+                    goodsCategory.setAttrName(specification1.getTitle());
+                    List<SpecificationAttribute> specificationAttributes = null;
+                    //查询商品规格属性表
+                    SpecificationAttributeExample exampleAttr = new SpecificationAttributeExample();
+                    SpecificationAttributeExample.Criteria criteria3 = exampleAttr.createCriteria();
+                    criteria3.andSpecificationIdEqualTo(integer);
+                    specificationAttributes = specificationAttributeMapper.selectByExample(exampleAttr);
+                    List<String> specNames = new ArrayList<>();
+                    for (SpecificationAttribute specAttrs : specificationAttributes) {
+                        String name = specAttrs.getName();
+                        specNames.add(name);
+                        goodsCategory.setAttrValue(specNames);
+                    }
+
+                    goodsCategories.add(goodsCategory);
+
+                }
+            }
+            goodsDetailsMap.put("goodAttr", goodsCategories);
+
+        }
+
+        //查询商品评价表
+        GoodsEvaluationExample example1 = new GoodsEvaluationExample();
+        GoodsEvaluationExample.Criteria criteria1 = example1.createCriteria();
+        criteria1.andGoodsIdEqualTo(goods.getId());
+        List<GoodsEvaluation> goodsEvaluations = goodsEvaluationMapper.selectByExample(example1);
+
+        //查询商品图片表
+
+        GoodsImageExample exampleImg = new GoodsImageExample();
+        GoodsImageExample.Criteria criteriaImg = exampleImg.createCriteria();
+        criteriaImg.andGoodsIdEqualTo(goodsId);
+        List<GoodsImage> goodsImages = goodsImageMapper.selectByExample(exampleImg);
+        goodsDetailsMap.put("goodsImages", goodsImages);
+        goodsDetailsMap.put("goodsEvaluations", goodsEvaluations);
         ResponseResult result = new ResponseResult();
-//        result.setData(goodsDetailsMap);
+        result.setData(goodsDetailsMap);
         return result;
     }
 }

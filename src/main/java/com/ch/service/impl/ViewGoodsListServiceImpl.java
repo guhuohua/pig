@@ -12,7 +12,6 @@ import com.ch.dao.SysUserMapper;
 import com.ch.dto.SolrDto;
 import com.ch.entity.SysUser;
 import com.ch.service.ViewGoodsListService;
-import io.swagger.models.auth.In;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
@@ -33,35 +32,43 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
 
     @Override
     public ResponseResult findGoodsList(SolrDto solrDto, Integer userId) {
-        SysUser sysUser = userMapper.selectByPrimaryKey(userId);
+       SysUser sysUser = userMapper.selectByPrimaryKey(userId);
         ResponseResult result1 = new ResponseResult();
         Map params = new HashMap<>();
         String str = null;
+     if (solrDto.getCategoryId()!=null ){
+         params.put("q", "categoryId :"+solrDto.getCategoryId());
 
-        params.put("q", "shopId :" + sysUser.getShopId() );
-        params.put("q", "status : 1");
+     }
+
+
+        //System.out.println("categoryId :"+solrDto.getCategoryId()+" AND "+"shopId:"+sysUser.getShopId());
+        //params.put("q","*:*");
+        params.put("q","shopId:"+sysUser.getShopId());
         params.put("start", solrDto.getStart());
         params.put("rows", solrDto.getRows());
         params.put("sort", "sort asc");
         if (solrDto.getCondition() != null) {
-            if ("新品".equals(solrDto.getCondition())) {
+            if ("NEW".equals(solrDto.getCondition())) {
                 str = "goodsSalesArea:" + "\"" + solrDto.getCondition() + "\"" + " OR name:" + "\"" + solrDto.getCondition() + "\"" + " OR title:" + "\"" + solrDto.getCondition() + "\"";
+                System.out.println(str);
                 params.put("fq", str);
                 params.remove("sort");
                 params.put("sort", "newSort asc");
             }
-            if ("热品".equals(solrDto.getCondition())) {
+            if ("HOT".equals(solrDto.getCondition())) {
                 str = "goodsSalesArea:" + "\"" + solrDto.getCondition() + "\"" + " OR name:" + "\"" + solrDto.getCondition() + "\"" + " OR title:" + "\"" + solrDto.getCondition() + "\"";
                 params.put("fq", str);
                 params.remove("sort");
                 params.put("sort", "hotSort asc");
             }
-            if ("精品".equals(solrDto.getCondition())) {
+            if ("BOUTIQUE".equals(solrDto.getCondition())) {
                 str = "goodsSalesArea:" + "\"" + solrDto.getCondition() + "\"" + " OR name:" + "\"" + solrDto.getCondition() + "\"" + " OR title:" + "\"" + solrDto.getCondition() + "\"";
                 params.put("fq", str);
                 params.remove("sort");
                 params.put("sort", "boutiqueSort asc");
             }
+
         }
         SolrParams mapSolrParams = new MapSolrParams(params);
         QueryResponse query1 = null;
@@ -79,6 +86,7 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return result1;
     }
 }

@@ -1,14 +1,8 @@
 package com.ch.ch;
 
-import com.alibaba.fastjson.JSON;
 import com.ch.entity.GoodsSolrSchema;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.response.QueryResponse;
-import org.apache.solr.common.SolrDocument;
-import org.apache.solr.common.SolrDocumentList;
-import org.apache.solr.common.params.MapSolrParams;
-import org.apache.solr.common.params.SolrParams;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -73,9 +69,15 @@ public class ChApplicationTests {
 //        goodsSolrSchema.setName("测试商品");
 //        goodsSolrSchema.setSort(5);
         goodsSolrSchema.setId(UUID.randomUUID().toString());
-        goodsSolrSchema.setGoodsId(6543);
-        goodsSolrSchema.setShopId(245788);
-//        goodsSolrSchema.setGoodsSpecification(goodsSpecification1.getAttrs());
+        goodsSolrSchema.setGoodsId(1);
+        goodsSolrSchema.setShopId(1);
+        goodsSolrSchema.setSort(1);
+        goodsSolrSchema.setNewSort(1);
+        goodsSolrSchema.setStatus(1);
+        goodsSolrSchema.setGoodsSalesArea("NEW");
+        goodsSolrSchema.setCategoryId(1);
+
+        //        goodsSolrSchema.setGoodsSpecification(goodsSpecification1.getAttrs());
 
 
         try {

@@ -19,6 +19,8 @@ public class GoodsSkuAttribute {
 
     private Date modifyDate;
 
+    private Integer goodsId;
+
     public Integer getId() {
         return id;
     }
@@ -81,5 +83,13 @@ public class GoodsSkuAttribute {
 
     public void setModifyDate(Date modifyDate) {
         this.modifyDate = modifyDate;
+    }
+
+    public Integer getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(Integer goodsId) {
+        this.goodsId = goodsId;
     }
 }

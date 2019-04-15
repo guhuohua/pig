@@ -14,6 +14,8 @@ public class SolrDto {
 
     private  String condition;
 
+    private  Integer categoryId;
+
     public Integer getStart() {
         return start;
     }
@@ -36,5 +38,13 @@ public class SolrDto {
 
     public void setCondition(String condition) {
         this.condition = condition;
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 }
