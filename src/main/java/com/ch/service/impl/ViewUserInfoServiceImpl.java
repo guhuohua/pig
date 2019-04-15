@@ -15,6 +15,7 @@ import com.ch.entity.SysUserExample;
 import com.ch.entity.User;
 import com.ch.entity.UserExample;
 import com.ch.service.ViewUserInfoService;
+import io.swagger.annotations.Example;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,10 @@ import java.util.List;
 public class ViewUserInfoServiceImpl implements ViewUserInfoService {
 
     @Autowired
-    SysUserMapper userMapper;
+    SysUserMapper sysUserMapper;
+
+    @Autowired
+    UserMapper userMapper;
 
     @Override
     public UserInfos findByOpenId(String openId) {
@@ -32,7 +36,7 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
         SysUserExample example = new SysUserExample();
         SysUserExample.Criteria criteria = example.createCriteria();
         criteria.andWxOpenidEqualTo(openId);
-        List<SysUser> users = userMapper.selectByExample(example);
+        List<SysUser> users = sysUserMapper.selectByExample(example);
         UserInfos userInfos = new UserInfos();
         if(users.size()>0){
             SysUser user = users.get(0);
@@ -42,5 +46,25 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
         }
 
         return userInfos;
+    }
+
+    @Override
+    public User findUserByOpenId(String openId) {
+        UserExample example = new UserExample();
+        UserExample.Criteria criteria = example.createCriteria();
+        criteria.andWxOpenidEqualTo(openId);
+        List<User> users = userMapper.selectByExample(example);
+        User user = null;
+        if(users.size()>0){
+             user = users.get(0);
+
+        }
+        return user;
+    }
+
+    @Override
+    public void updateByPrimaryKey(User record) {
+       userMapper.updateByPrimaryKey(record);
+
     }
 }

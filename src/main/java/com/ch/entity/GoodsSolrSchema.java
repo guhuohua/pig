@@ -21,10 +21,10 @@ public class GoodsSolrSchema implements Serializable {
     private Integer goodsId;
 
     @Field
-    private String title;
+    private String goodTitle;
 
     @Field
-    private String name;
+    private String goodName;
 
     @Field
     private BigDecimal originalPrice;
@@ -36,7 +36,7 @@ public class GoodsSolrSchema implements Serializable {
     private Integer salesVolume;
 
     @Field
-    private Integer catrgoryId;
+    private Integer categoryId;
 
     /**
      * 库存
