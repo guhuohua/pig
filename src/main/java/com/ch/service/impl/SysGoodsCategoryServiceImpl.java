@@ -26,11 +26,15 @@ public class SysGoodsCategoryServiceImpl implements SysGoodsCategoryService {
     GoodsMapper goodsMapper;
 
     @Override
-    public ResponseResult list(Integer userId) {
+    public ResponseResult list(Integer userId, String name) {
         ResponseResult result = new ResponseResult();
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         GoodsTypeExample goodsTypeExample = new GoodsTypeExample();
-        goodsTypeExample.createCriteria().andShopIdEqualTo(sysUser.getShopId());
+        GoodsTypeExample.Criteria criteria = goodsTypeExample.createCriteria();
+        criteria.andShopIdEqualTo(sysUser.getShopId());
+        if (BeanUtils.isNotEmpty(name)) {
+            criteria.andTitleLike(name);
+        }
         List<GoodsType> goodsTypes = goodsTypeMapper.selectByExample(goodsTypeExample);
         List<GoodsType> rootMenu = new ArrayList<GoodsType>();
         for (GoodsType nav : goodsTypes) {

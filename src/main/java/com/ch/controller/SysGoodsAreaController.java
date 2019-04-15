@@ -22,7 +22,7 @@ public class SysGoodsAreaController {
     SysRecommendService sysRecommendService;
 
     @GetMapping("list")
-    public ResponseResult list(HttpServletRequest req, @RequestBody SysRecommendParam param) {
+    public ResponseResult list(HttpServletRequest req, SysRecommendParam param) {
         ResponseResult result = new ResponseResult();
         try {
             String token = req.getHeader("Authorization");

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PageQuery {
-    private int currentPage;
-    private int pageSize;
+    protected int currentPage;
+    protected int pageSize;
 
     public int getCurrentPage() {
         return currentPage;
