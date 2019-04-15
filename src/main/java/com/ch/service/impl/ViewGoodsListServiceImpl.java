@@ -12,6 +12,7 @@ import com.ch.dao.SysUserMapper;
 import com.ch.dto.SolrDto;
 import com.ch.entity.SysUser;
 import com.ch.service.ViewGoodsListService;
+import io.swagger.models.auth.In;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
@@ -36,7 +37,9 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
         ResponseResult result1 = new ResponseResult();
         Map params = new HashMap<>();
         String str = null;
-        params.put("q", "shopId :" + sysUser.getShopId() + "and status :1");
+
+        params.put("q", "shopId :" + sysUser.getShopId() );
+        params.put("q", "status : 1");
         params.put("start", solrDto.getStart());
         params.put("rows", solrDto.getRows());
         params.put("sort", "sort asc");
