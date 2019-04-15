@@ -1,9 +1,13 @@
 package com.ch.dao;
 
+import com.ch.dao.provider.SpecificationProvider;
 import com.ch.entity.Specification;
 import com.ch.entity.SpecificationExample;
 import java.util.List;
+
+import com.ch.model.SpecificationModel;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.SelectProvider;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -29,4 +33,7 @@ public interface SpecificationMapper {
     int updateByPrimaryKeySelective(Specification record);
 
     int updateByPrimaryKey(Specification record);
+
+    @SelectProvider(type = SpecificationProvider.class, method = "getList")
+    List<SpecificationModel> findPage(@Param("name") String name, @Param("shopId") Integer shopId);
 }

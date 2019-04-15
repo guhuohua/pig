@@ -105,7 +105,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.ch.entity.Specification" >
+  <insert id="insert" parameterType="com.ch.entity.Specification" useGeneratedKeys="true" keyProperty="id">
     insert into specification (id, shop_id, status, 
       create_time, update_time, del_flag, 
       title, type, icon, 

@@ -35,9 +35,6 @@ public class GoodsSolrSchema implements Serializable {
     @Field
     private Integer salesVolume;
 
-    @Field
-    private Integer catrgoryId;
-
     /**
      * 库存
      */
@@ -67,5 +64,8 @@ public class GoodsSolrSchema implements Serializable {
 
     @Field
     private  Integer status;
+
+    @Field
+    private Integer categoryId;
 
 }

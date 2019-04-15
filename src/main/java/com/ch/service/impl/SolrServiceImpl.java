@@ -57,13 +57,13 @@ public class SolrServiceImpl implements SolrService {
                 if (item.getStatus() == 1) {
                     goodsSolrSchema.setId(UUID.randomUUID().toString());
                     goodsSolrSchema.setGoodsSalesArea(item.getGoodsClassification());
-                    if (GoodsSaleAreaEnum.BOUTIQUE.equals(item.getGoodsClassification())) {
+                    if (GoodsSaleAreaEnum.BOUTIQUE.name().equals(item.getGoodsClassification())) {
                         goodsSolrSchema.setBoutiqueSort(item.getSort());
                     }
-                    if (GoodsSaleAreaEnum.HOT.equals(item.getGoodsClassification())) {
+                    if (GoodsSaleAreaEnum.HOT.name().equals(item.getGoodsClassification())) {
                         goodsSolrSchema.setHotSort(item.getSort());
                     }
-                    if (GoodsSaleAreaEnum.NEW.equals(item.getGoodsClassification())) {
+                    if (GoodsSaleAreaEnum.NEW.name().equals(item.getGoodsClassification())) {
                         goodsSolrSchema.setNewSort(item.getSort());
                     }
                 }

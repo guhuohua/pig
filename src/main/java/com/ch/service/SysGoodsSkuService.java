@@ -1,6 +1,7 @@
 package com.ch.service;
 
 import com.ch.base.ResponseResult;
+import com.ch.model.SysGoodsSkuParam;
 
 public interface SysGoodsSkuService {
 
@@ -11,4 +12,22 @@ public interface SysGoodsSkuService {
      * @return
      */
     ResponseResult list(String name, Integer userId, Integer currentPage, Integer pageSize);
+
+
+    /**
+     * 管理商品规格
+     * @param param
+     * @param userId
+     * @return
+     */
+    ResponseResult mange(SysGoodsSkuParam param, Integer userId);
+
+
+    /**
+     * 删除商品规格
+     * @param id
+     * @param userId
+     * @return
+     */
+    ResponseResult delete(Integer id, Integer userId);
 }

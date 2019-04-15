@@ -56,7 +56,7 @@ public class SysRecommendServiceImpl implements SysRecommendService {
             if (goodsList.stream().findFirst().isPresent()) {
                 Goods goods = goodsList.stream().findFirst().get();
                 GoodsArea goodsArea = new GoodsArea();
-                goodsArea.setGoodsClassification(param.getArea());
+                goodsArea.setGoodsClassification(param.getRecommend());
                 goodsArea.setGoodsId(goods.getId());
                 goodsArea.setShopId(sysUser.getShopId());
                 goodsArea.setSort(param.getSort());
@@ -78,7 +78,7 @@ public class SysRecommendServiceImpl implements SysRecommendService {
                     goodsArea.setGoodsId(goods.getId());
                     goodsArea.setStatus(param.getStatus());
                     goodsArea.setSort(param.getSort());
-                    goodsArea.setGoodsClassification(param.getArea());
+                    goodsArea.setGoodsClassification(param.getRecommend());
                     goodsAreaMapper.updateByPrimaryKey(goodsArea);
                     solrService.releaseGoods(goodsArea.getGoodsId(), userId);
                 }

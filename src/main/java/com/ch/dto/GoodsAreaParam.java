@@ -9,7 +9,7 @@ public class GoodsAreaParam {
 
     private String sn;
 
-    private String area;
+    private String recommend;
 
     private Integer status;
 

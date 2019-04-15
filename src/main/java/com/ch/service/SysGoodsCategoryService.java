@@ -10,7 +10,7 @@ public interface SysGoodsCategoryService {
      * @param userId
      * @return
      */
-    ResponseResult list(Integer userId);
+    ResponseResult list(Integer userId, String name);
 
 
     /**
