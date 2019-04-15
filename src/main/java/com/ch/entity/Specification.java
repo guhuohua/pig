@@ -23,6 +23,16 @@ public class Specification {
 
     private Integer sort;
 
+    private Integer categoryId;
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+
     public Integer getId() {
         return id;
     }

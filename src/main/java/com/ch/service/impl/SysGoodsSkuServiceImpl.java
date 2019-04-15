@@ -69,6 +69,7 @@ public class SysGoodsSkuServiceImpl implements SysGoodsSkuService {
             specification.setSort(param.getSort());
             specification.setTitle(param.getTitle());
             specification.setStatus(0);
+            specification.setCategoryId(param.getCategoryId());
             specificationMapper.insert(specification);
             for (SysGoodsSkuValueParam goodsSkuValueParam:param.getParamList()) {
                 SpecificationAttribute specificationAttribute = new SpecificationAttribute();
@@ -89,6 +90,7 @@ public class SysGoodsSkuServiceImpl implements SysGoodsSkuService {
                 specification.setTitle(param.getTitle());
                 specification.setSort(param.getSort());
                 specification.setUpdateTime(new Date());
+                specification.setCategoryId(param.getCategoryId());
                 specificationMapper.updateByPrimaryKey(specification);
             }
             for (SysGoodsSkuValueParam goodsSkuValueParam:param.getParamList()) {

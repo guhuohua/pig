@@ -29,5 +29,4 @@ public class SysGoodsSkuModel {
 
     private Integer goodsId;
 
-    private Integer categoryId;
 }
