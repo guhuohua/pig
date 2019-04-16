@@ -46,7 +46,7 @@ public class SysGoodsController {
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-//            result = sysGoodsService.goodsMange(param, userId);
+            result = sysGoodsService.mange(param, userId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());
