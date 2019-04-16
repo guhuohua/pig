@@ -87,10 +87,11 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
                     SpecificationAttributeExample.Criteria criteria3 = exampleAttr.createCriteria();
                     criteria3.andSpecificationIdEqualTo(integer);
                     specificationAttributes = specificationAttributeMapper.selectByExample(exampleAttr);
-                    List<String> specNames = new ArrayList<>();
+                    goodsDetailsMap.put("specificationAttributes", specificationAttributes);
+                    List<SpecificationAttribute> specNames = new ArrayList<>();
                     for (SpecificationAttribute specAttrs : specificationAttributes) {
-                        String name = specAttrs.getName();
-                        specNames.add(name);
+
+                        specNames.add(specAttrs);
                         goodsCategory.setAttrValue(specNames);
                     }
 
@@ -100,22 +101,27 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
             }
             goodsDetailsMap.put("goodAttr", goodsCategories);
 
+            //查询商品评价表
+            GoodsEvaluationExample example1 = new GoodsEvaluationExample();
+            GoodsEvaluationExample.Criteria criteria1 = example1.createCriteria();
+            criteria1.andGoodsIdEqualTo(goods.getId());
+            List<GoodsEvaluation> goodsEvaluations = goodsEvaluationMapper.selectByExample(example1);
+
+            //查询商品图片表
+
+            GoodsImageExample exampleImg = new GoodsImageExample();
+            GoodsImageExample.Criteria criteriaImg = exampleImg.createCriteria();
+            criteriaImg.andGoodsIdEqualTo(goodsId);
+            List<GoodsImage> goodsImages = goodsImageMapper.selectByExample(exampleImg);
+            goodsDetailsMap.put("goodsImages", goodsImages);
+            goodsDetailsMap.put("goodsEvaluations", goodsEvaluations);
+
+
         }
 
-        //查询商品评价表
-        GoodsEvaluationExample example1 = new GoodsEvaluationExample();
-        GoodsEvaluationExample.Criteria criteria1 = example1.createCriteria();
-        criteria1.andGoodsIdEqualTo(goods.getId());
-        List<GoodsEvaluation> goodsEvaluations = goodsEvaluationMapper.selectByExample(example1);
 
-        //查询商品图片表
 
-        GoodsImageExample exampleImg = new GoodsImageExample();
-        GoodsImageExample.Criteria criteriaImg = exampleImg.createCriteria();
-        criteriaImg.andGoodsIdEqualTo(goodsId);
-        List<GoodsImage> goodsImages = goodsImageMapper.selectByExample(exampleImg);
-        goodsDetailsMap.put("goodsImages", goodsImages);
-        goodsDetailsMap.put("goodsEvaluations", goodsEvaluations);
+
         ResponseResult result = new ResponseResult();
         result.setData(goodsDetailsMap);
         return result;

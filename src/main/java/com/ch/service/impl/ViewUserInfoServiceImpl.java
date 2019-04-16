@@ -8,14 +8,11 @@
 package com.ch.service.impl;
 
 import com.ch.dao.SysUserMapper;
+import com.ch.dao.UserInfoMapper;
 import com.ch.dao.UserMapper;
 import com.ch.dto.UserInfos;
-import com.ch.entity.SysUser;
-import com.ch.entity.SysUserExample;
-import com.ch.entity.User;
-import com.ch.entity.UserExample;
+import com.ch.entity.*;
 import com.ch.service.ViewUserInfoService;
-import io.swagger.annotations.Example;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +26,9 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    UserInfoMapper userInfoMapper;
 
     @Override
     public UserInfos findByOpenId(String openId) {
@@ -64,7 +64,22 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
 
     @Override
     public void updateByPrimaryKey(User record) {
-       userMapper.updateByPrimaryKey(record);
+
+
+        userMapper.updateByPrimaryKey(record);
 
     }
+
+    @Override
+    public UserInfo findByUserId(Integer userId) {
+        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
+        return  userInfo;
+    }
+
+    @Override
+    public void insert(UserInfo record) {
+        userInfoMapper.insert(record);
+    }
+
+
 }

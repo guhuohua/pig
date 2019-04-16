@@ -21,7 +21,16 @@ public class UserInfo {
 
     private String realname;
 
-    private Integer gender;
+    private String gender;
+
+    private String userHead;
+
+    private String userCity;
+
+    private String povince;
+
+    private String openId;
+
 
     public Integer getId() {
         return id;
@@ -95,11 +104,43 @@ public class UserInfo {
         this.realname = realname == null ? null : realname.trim();
     }
 
-    public Integer getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Integer gender) {
+    public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getUserHead() {
+        return userHead;
+    }
+
+    public void setUserHead(String userHead) {
+        this.userHead = userHead == null ? null : userHead.trim();
+    }
+
+    public String getUserCity() {
+        return userCity;
+    }
+
+    public void setUserCity(String userCity) {
+        this.userCity = userCity == null ? null : userCity.trim();
+    }
+
+    public String getPovince() {
+        return povince;
+    }
+
+    public void setPovince(String povince) {
+        this.povince = povince == null ? null : povince.trim();
+    }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
     }
 }

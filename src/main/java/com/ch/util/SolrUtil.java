@@ -58,7 +58,7 @@ public class SolrUtil {
             goodsSolrSchema.setGoodsId(good.getId());
             goodsSolrSchema.setCategoryId(good.getCatrgoryId());
             goodsSolrSchema.setShopId(good.getShopId());
-            goodsSolrSchema.setGoodName(good.getName());
+           // goodsSolrSchema.setGoodName(good.getName());
            // goodsSolrSchema.setGoodsImgUrl();
 
         }
