@@ -3,7 +3,7 @@ package com.ch.entity;
 import java.util.Date;
 
 public class Order {
-    private Integer id;
+    private String id;
 
     private Integer shopId;
 
@@ -37,11 +37,11 @@ public class Order {
 
     private Integer deliveryId;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

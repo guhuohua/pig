@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("goods")
-@Api(value = "购物车",description = "购物车")
+@Api(value = "购物车", description = "购物车")
 public class ViewGoodsCarController {
 
     private static final Logger LOGGER = LogManager.getLogger(ViewGoodsCarController.class);
@@ -34,21 +34,21 @@ public class ViewGoodsCarController {
     ViewGoodsCarService viewGoodsCarService;
     @Autowired
     UserMapper userMapper;
-           
-    
+
+
     @GetMapping("car")
     @ApiOperation("购物车")
-    public ResponseResult addCar(Integer skuAtrId, Integer num , HttpServletRequest req){
-           ResponseResult result = new ResponseResult();
+    public ResponseResult addCar(Integer skuAtrId, Integer num, HttpServletRequest req) {
+        ResponseResult result = new ResponseResult();
 
-           try {
+        try {
             String openId = req.getHeader("openId");
-               String token = req.getHeader("Authorization");
-               Integer userId = TokenUtil.getUserId(token);
+            String token = req.getHeader("Authorization");
+            Integer userId = TokenUtil.getUserId(token);
 
-                   User user = userMapper.selectByPrimaryKey(userId);
+            User user = userMapper.selectByPrimaryKey(userId);
 
-            result = viewGoodsCarService.addCar(skuAtrId, num, openId,user.getShopId());
+            result = viewGoodsCarService.addCar(skuAtrId, num, openId, user.getShopId());
         } catch (Exception e) {
             LOGGER.error("加入购物车失败" + e.getMessage(), e);
             result.setCode(500);

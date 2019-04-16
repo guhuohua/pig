@@ -58,6 +58,7 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
             criteria.andGoodsIdEqualTo(goodsId);
             criteria.andShopIdEqualTo(goods.getShopId());
             List<GoodsSkuAttribute> goodsSkuAttributes = goodsSkuAttributeMapper.selectByExample(example);
+            goodsDetailsMap.put("goodsSkuAttributes",goodsSkuAttributes);
             //商品规格属性map
             // List goodsArrList = new ArrayList();
             List<GoodsCategory> goodsCategories = new ArrayList<>();
@@ -87,7 +88,7 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
                     SpecificationAttributeExample.Criteria criteria3 = exampleAttr.createCriteria();
                     criteria3.andSpecificationIdEqualTo(integer);
                     specificationAttributes = specificationAttributeMapper.selectByExample(exampleAttr);
-                    goodsDetailsMap.put("specificationAttributes", specificationAttributes);
+                    //goodsDetailsMap.put("specificationAttributes", specificationAttributes);
                     List<SpecificationAttribute> specNames = new ArrayList<>();
                     for (SpecificationAttribute specAttrs : specificationAttributes) {
 

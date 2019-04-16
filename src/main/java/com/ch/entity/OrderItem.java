@@ -15,7 +15,7 @@ public class OrderItem {
 
     private Integer skuAttrId;
 
-    private Integer orderId;
+    private String orderId;
 
     public Integer getId() {
         return id;
@@ -73,11 +73,11 @@ public class OrderItem {
         this.skuAttrId = skuAttrId;
     }
 
-    public Integer getOrderId() {
+    public String getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(Integer orderId) {
+    public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
 }

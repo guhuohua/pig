@@ -9,7 +9,7 @@
     <result column="number" property="number" jdbcType="INTEGER" />
     <result column="price" property="price" jdbcType="DECIMAL" />
     <result column="sku_attr_id" property="skuAttrId" jdbcType="INTEGER" />
-    <result column="order_id" property="orderId" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -109,7 +109,7 @@
       sku_attr_id, order_id)
     values (#{id,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, #{shopId,jdbcType=INTEGER}, 
       #{goodsName,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, 
-      #{skuAttrId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER})
+      #{skuAttrId,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.ch.entity.OrderItem" >
     insert into order_item
@@ -162,7 +162,7 @@
         #{skuAttrId,jdbcType=INTEGER},
       </if>
       <if test="orderId != null" >
-        #{orderId,jdbcType=INTEGER},
+        #{orderId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -197,7 +197,7 @@
         sku_attr_id = #{record.skuAttrId,jdbcType=INTEGER},
       </if>
       <if test="record.orderId != null" >
-        order_id = #{record.orderId,jdbcType=INTEGER},
+        order_id = #{record.orderId,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -213,7 +213,7 @@
       number = #{record.number,jdbcType=INTEGER},
       price = #{record.price,jdbcType=DECIMAL},
       sku_attr_id = #{record.skuAttrId,jdbcType=INTEGER},
-      order_id = #{record.orderId,jdbcType=INTEGER}
+      order_id = #{record.orderId,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -240,7 +240,7 @@
         sku_attr_id = #{skuAttrId,jdbcType=INTEGER},
       </if>
       <if test="orderId != null" >
-        order_id = #{orderId,jdbcType=INTEGER},
+        order_id = #{orderId,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -253,7 +253,7 @@
       number = #{number,jdbcType=INTEGER},
       price = #{price,jdbcType=DECIMAL},
       sku_attr_id = #{skuAttrId,jdbcType=INTEGER},
-      order_id = #{orderId,jdbcType=INTEGER}
+      order_id = #{orderId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
