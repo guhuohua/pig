@@ -7,45 +7,35 @@ public class Order {
 
     private Integer shopId;
 
-    private Integer status;
-
-    private Date createTime;
-
-    private Date updateTime;
-
-    private Integer delFlag;
-
     private Integer userId;
 
-    private Integer addrId;
+    private Integer orderStatus;
 
-    private String goodsId;
+    private Date createDate;
 
-    private String specificationId;
+    private Date deliveryDate;
 
-    private String orderSn;
+    private Date modifyDate;
 
-    private String oreerStr;
+    private Long orderPrice;
 
-    private Double allPrice;
+    private Date payDate;
 
-    private Double actualPrice;
+    private Long payPrice;
 
-    private Double shippingPrice;
+    private String payType;
 
-    private Integer payStatus;
+    private String remark;
 
-    private Integer payWay;
+    private Integer status;
 
-    private Date payTime;
+    private String payId;
 
-    private Integer orderType;
+    private Date takeDate;
 
-    private String buyMessage;
+    private String orderType;
 
-    private String courierSn;
-
-    private Integer empId;
+    private Integer deliveryId;
 
     public Integer getId() {
         return id;
@@ -63,38 +53,6 @@ public class Order {
         this.shopId = shopId;
     }
 
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public Integer getDelFlag() {
-        return delFlag;
-    }
-
-    public void setDelFlag(Integer delFlag) {
-        this.delFlag = delFlag;
-    }
-
     public Integer getUserId() {
         return userId;
     }
@@ -103,123 +61,115 @@ public class Order {
         this.userId = userId;
     }
 
-    public Integer getAddrId() {
-        return addrId;
+    public Integer getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setAddrId(Integer addrId) {
-        this.addrId = addrId;
+    public void setOrderStatus(Integer orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
-    public String getGoodsId() {
-        return goodsId;
+    public Date getCreateDate() {
+        return createDate;
     }
 
-    public void setGoodsId(String goodsId) {
-        this.goodsId = goodsId == null ? null : goodsId.trim();
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
-    public String getSpecificationId() {
-        return specificationId;
+    public Date getDeliveryDate() {
+        return deliveryDate;
     }
 
-    public void setSpecificationId(String specificationId) {
-        this.specificationId = specificationId == null ? null : specificationId.trim();
+    public void setDeliveryDate(Date deliveryDate) {
+        this.deliveryDate = deliveryDate;
     }
 
-    public String getOrderSn() {
-        return orderSn;
+    public Date getModifyDate() {
+        return modifyDate;
     }
 
-    public void setOrderSn(String orderSn) {
-        this.orderSn = orderSn == null ? null : orderSn.trim();
+    public void setModifyDate(Date modifyDate) {
+        this.modifyDate = modifyDate;
     }
 
-    public String getOreerStr() {
-        return oreerStr;
+    public Long getOrderPrice() {
+        return orderPrice;
     }
 
-    public void setOreerStr(String oreerStr) {
-        this.oreerStr = oreerStr == null ? null : oreerStr.trim();
+    public void setOrderPrice(Long orderPrice) {
+        this.orderPrice = orderPrice;
     }
 
-    public Double getAllPrice() {
-        return allPrice;
+    public Date getPayDate() {
+        return payDate;
     }
 
-    public void setAllPrice(Double allPrice) {
-        this.allPrice = allPrice;
+    public void setPayDate(Date payDate) {
+        this.payDate = payDate;
     }
 
-    public Double getActualPrice() {
-        return actualPrice;
+    public Long getPayPrice() {
+        return payPrice;
     }
 
-    public void setActualPrice(Double actualPrice) {
-        this.actualPrice = actualPrice;
+    public void setPayPrice(Long payPrice) {
+        this.payPrice = payPrice;
     }
 
-    public Double getShippingPrice() {
-        return shippingPrice;
+    public String getPayType() {
+        return payType;
     }
 
-    public void setShippingPrice(Double shippingPrice) {
-        this.shippingPrice = shippingPrice;
+    public void setPayType(String payType) {
+        this.payType = payType == null ? null : payType.trim();
     }
 
-    public Integer getPayStatus() {
-        return payStatus;
+    public String getRemark() {
+        return remark;
     }
 
-    public void setPayStatus(Integer payStatus) {
-        this.payStatus = payStatus;
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 
-    public Integer getPayWay() {
-        return payWay;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setPayWay(Integer payWay) {
-        this.payWay = payWay;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
-    public Date getPayTime() {
-        return payTime;
+    public String getPayId() {
+        return payId;
     }
 
-    public void setPayTime(Date payTime) {
-        this.payTime = payTime;
+    public void setPayId(String payId) {
+        this.payId = payId == null ? null : payId.trim();
     }
 
-    public Integer getOrderType() {
+    public Date getTakeDate() {
+        return takeDate;
+    }
+
+    public void setTakeDate(Date takeDate) {
+        this.takeDate = takeDate;
+    }
+
+    public String getOrderType() {
         return orderType;
     }
 
-    public void setOrderType(Integer orderType) {
-        this.orderType = orderType;
+    public void setOrderType(String orderType) {
+        this.orderType = orderType == null ? null : orderType.trim();
     }
 
-    public String getBuyMessage() {
-        return buyMessage;
+    public Integer getDeliveryId() {
+        return deliveryId;
     }
 
-    public void setBuyMessage(String buyMessage) {
-        this.buyMessage = buyMessage == null ? null : buyMessage.trim();
-    }
-
-    public String getCourierSn() {
-        return courierSn;
-    }
-
-    public void setCourierSn(String courierSn) {
-        this.courierSn = courierSn == null ? null : courierSn.trim();
-    }
-
-    public Integer getEmpId() {
-        return empId;
-    }
-
-    public void setEmpId(Integer empId) {
-        this.empId = empId;
+    public void setDeliveryId(Integer deliveryId) {
+        this.deliveryId = deliveryId;
     }
 }

@@ -38,7 +38,7 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
         criteria.andWxOpenidEqualTo(openId);
         List<SysUser> users = sysUserMapper.selectByExample(example);
         UserInfos userInfos = new UserInfos();
-        if(users.size()>0){
+        if (users.size() > 0) {
             SysUser user = users.get(0);
             userInfos.setShopId(user.getShopId());
             userInfos.setUserId(user.getUserId());
@@ -55,12 +55,13 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
         criteria.andWxOpenidEqualTo(openId);
         List<User> users = userMapper.selectByExample(example);
         User user = null;
-        if(users.size()>0){
-             user = users.get(0);
+        if (users.size() > 0) {
+            user = users.get(0);
 
         }
         return user;
     }
+
 
     @Override
     public void updateByPrimaryKey(User record) {
@@ -73,12 +74,30 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
     @Override
     public UserInfo findByUserId(Integer userId) {
         UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
-        return  userInfo;
+        return userInfo;
     }
 
     @Override
     public void insert(UserInfo record) {
         userInfoMapper.insert(record);
+    }
+
+    @Override
+    public UserInfo findOneByOpenId(String openId) {
+        UserInfoExample example = new UserInfoExample();
+        UserInfoExample.Criteria criteria = example.createCriteria();
+        criteria.andOpenIdEqualTo(openId);
+        List<UserInfo> userInfos = userInfoMapper.selectByExample(example);
+        UserInfo userInfo = null;
+        if (userInfos.size() > 0) {
+            userInfo = userInfos.get(0);
+        }
+        return userInfo;
+    }
+
+    @Override
+    public void updateByPrimaryKey(UserInfo userInfo) {
+        userInfoMapper.updateByPrimaryKey(userInfo);
     }
 
 

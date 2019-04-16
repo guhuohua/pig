@@ -4,26 +4,21 @@
   <resultMap id="BaseResultMap" type="com.ch.entity.Order" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="shop_id" property="shopId" jdbcType="INTEGER" />
-    <result column="status" property="status" jdbcType="INTEGER" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-    <result column="del_flag" property="delFlag" jdbcType="INTEGER" />
     <result column="user_id" property="userId" jdbcType="INTEGER" />
-    <result column="addr_id" property="addrId" jdbcType="INTEGER" />
-    <result column="goods_id" property="goodsId" jdbcType="VARCHAR" />
-    <result column="specification_id" property="specificationId" jdbcType="VARCHAR" />
-    <result column="order_sn" property="orderSn" jdbcType="VARCHAR" />
-    <result column="oreer_str" property="oreerStr" jdbcType="VARCHAR" />
-    <result column="all_price" property="allPrice" jdbcType="DOUBLE" />
-    <result column="actual_price" property="actualPrice" jdbcType="DOUBLE" />
-    <result column="shipping_price" property="shippingPrice" jdbcType="DOUBLE" />
-    <result column="pay_status" property="payStatus" jdbcType="INTEGER" />
-    <result column="pay_way" property="payWay" jdbcType="INTEGER" />
-    <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
-    <result column="order_type" property="orderType" jdbcType="INTEGER" />
-    <result column="buy_message" property="buyMessage" jdbcType="VARCHAR" />
-    <result column="courier_sn" property="courierSn" jdbcType="VARCHAR" />
-    <result column="emp_id" property="empId" jdbcType="INTEGER" />
+    <result column="order_status" property="orderStatus" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="delivery_date" property="deliveryDate" jdbcType="TIMESTAMP" />
+    <result column="modify_date" property="modifyDate" jdbcType="TIMESTAMP" />
+    <result column="order_price" property="orderPrice" jdbcType="DECIMAL" />
+    <result column="pay_date" property="payDate" jdbcType="TIMESTAMP" />
+    <result column="pay_price" property="payPrice" jdbcType="DECIMAL" />
+    <result column="pay_type" property="payType" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="pay_id" property="payId" jdbcType="VARCHAR" />
+    <result column="take_date" property="takeDate" jdbcType="TIMESTAMP" />
+    <result column="order_type" property="orderType" jdbcType="VARCHAR" />
+    <result column="delivery_id" property="deliveryId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -84,9 +79,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, shop_id, status, create_time, update_time, del_flag, user_id, addr_id, goods_id, 
-    specification_id, order_sn, oreer_str, all_price, actual_price, shipping_price, pay_status, 
-    pay_way, pay_time, order_type, buy_message, courier_sn, emp_id
+    id, shop_id, user_id, order_status, create_date, delivery_date, modify_date, order_price, 
+    pay_date, pay_price, pay_type, remark, status, pay_id, take_date, order_type, delivery_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.OrderExample" >
     select
@@ -120,22 +114,18 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ch.entity.Order" >
-    insert into order (id, shop_id, status, 
-      create_time, update_time, del_flag, 
-      user_id, addr_id, goods_id, 
-      specification_id, order_sn, oreer_str, 
-      all_price, actual_price, shipping_price, 
-      pay_status, pay_way, pay_time, 
-      order_type, buy_message, courier_sn, 
-      emp_id)
-    values (#{id,jdbcType=INTEGER}, #{shopId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=INTEGER}, 
-      #{userId,jdbcType=INTEGER}, #{addrId,jdbcType=INTEGER}, #{goodsId,jdbcType=VARCHAR}, 
-      #{specificationId,jdbcType=VARCHAR}, #{orderSn,jdbcType=VARCHAR}, #{oreerStr,jdbcType=VARCHAR}, 
-      #{allPrice,jdbcType=DOUBLE}, #{actualPrice,jdbcType=DOUBLE}, #{shippingPrice,jdbcType=DOUBLE}, 
-      #{payStatus,jdbcType=INTEGER}, #{payWay,jdbcType=INTEGER}, #{payTime,jdbcType=TIMESTAMP}, 
-      #{orderType,jdbcType=INTEGER}, #{buyMessage,jdbcType=VARCHAR}, #{courierSn,jdbcType=VARCHAR}, 
-      #{empId,jdbcType=INTEGER})
+    insert into order (id, shop_id, user_id, 
+      order_status, create_date, delivery_date, 
+      modify_date, order_price, pay_date, 
+      pay_price, pay_type, remark, 
+      status, pay_id, take_date, 
+      order_type, delivery_id)
+    values (#{id,jdbcType=INTEGER}, #{shopId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{orderStatus,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{deliveryDate,jdbcType=TIMESTAMP}, 
+      #{modifyDate,jdbcType=TIMESTAMP}, #{orderPrice,jdbcType=DECIMAL}, #{payDate,jdbcType=TIMESTAMP}, 
+      #{payPrice,jdbcType=DECIMAL}, #{payType,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{payId,jdbcType=VARCHAR}, #{takeDate,jdbcType=TIMESTAMP}, 
+      #{orderType,jdbcType=VARCHAR}, #{deliveryId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ch.entity.Order" >
     insert into order
@@ -146,65 +136,50 @@
       <if test="shopId != null" >
         shop_id,
       </if>
-      <if test="status != null" >
-        status,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="updateTime != null" >
-        update_time,
-      </if>
-      <if test="delFlag != null" >
-        del_flag,
-      </if>
       <if test="userId != null" >
         user_id,
       </if>
-      <if test="addrId != null" >
-        addr_id,
+      <if test="orderStatus != null" >
+        order_status,
       </if>
-      <if test="goodsId != null" >
-        goods_id,
+      <if test="createDate != null" >
+        create_date,
       </if>
-      <if test="specificationId != null" >
-        specification_id,
+      <if test="deliveryDate != null" >
+        delivery_date,
       </if>
-      <if test="orderSn != null" >
-        order_sn,
+      <if test="modifyDate != null" >
+        modify_date,
       </if>
-      <if test="oreerStr != null" >
-        oreer_str,
+      <if test="orderPrice != null" >
+        order_price,
       </if>
-      <if test="allPrice != null" >
-        all_price,
+      <if test="payDate != null" >
+        pay_date,
       </if>
-      <if test="actualPrice != null" >
-        actual_price,
+      <if test="payPrice != null" >
+        pay_price,
       </if>
-      <if test="shippingPrice != null" >
-        shipping_price,
+      <if test="payType != null" >
+        pay_type,
       </if>
-      <if test="payStatus != null" >
-        pay_status,
+      <if test="remark != null" >
+        remark,
       </if>
-      <if test="payWay != null" >
-        pay_way,
+      <if test="status != null" >
+        status,
       </if>
-      <if test="payTime != null" >
-        pay_time,
+      <if test="payId != null" >
+        pay_id,
+      </if>
+      <if test="takeDate != null" >
+        take_date,
       </if>
       <if test="orderType != null" >
         order_type,
       </if>
-      <if test="buyMessage != null" >
-        buy_message,
-      </if>
-      <if test="courierSn != null" >
-        courier_sn,
-      </if>
-      <if test="empId != null" >
-        emp_id,
+      <if test="deliveryId != null" >
+        delivery_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -214,65 +189,50 @@
       <if test="shopId != null" >
         #{shopId,jdbcType=INTEGER},
       </if>
-      <if test="status != null" >
-        #{status,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="delFlag != null" >
-        #{delFlag,jdbcType=INTEGER},
-      </if>
       <if test="userId != null" >
         #{userId,jdbcType=INTEGER},
       </if>
-      <if test="addrId != null" >
-        #{addrId,jdbcType=INTEGER},
+      <if test="orderStatus != null" >
+        #{orderStatus,jdbcType=INTEGER},
       </if>
-      <if test="goodsId != null" >
-        #{goodsId,jdbcType=VARCHAR},
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="specificationId != null" >
-        #{specificationId,jdbcType=VARCHAR},
+      <if test="deliveryDate != null" >
+        #{deliveryDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="orderSn != null" >
-        #{orderSn,jdbcType=VARCHAR},
+      <if test="modifyDate != null" >
+        #{modifyDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="oreerStr != null" >
-        #{oreerStr,jdbcType=VARCHAR},
+      <if test="orderPrice != null" >
+        #{orderPrice,jdbcType=DECIMAL},
       </if>
-      <if test="allPrice != null" >
-        #{allPrice,jdbcType=DOUBLE},
+      <if test="payDate != null" >
+        #{payDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="actualPrice != null" >
-        #{actualPrice,jdbcType=DOUBLE},
+      <if test="payPrice != null" >
+        #{payPrice,jdbcType=DECIMAL},
       </if>
-      <if test="shippingPrice != null" >
-        #{shippingPrice,jdbcType=DOUBLE},
+      <if test="payType != null" >
+        #{payType,jdbcType=VARCHAR},
       </if>
-      <if test="payStatus != null" >
-        #{payStatus,jdbcType=INTEGER},
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
       </if>
-      <if test="payWay != null" >
-        #{payWay,jdbcType=INTEGER},
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
       </if>
-      <if test="payTime != null" >
-        #{payTime,jdbcType=TIMESTAMP},
+      <if test="payId != null" >
+        #{payId,jdbcType=VARCHAR},
+      </if>
+      <if test="takeDate != null" >
+        #{takeDate,jdbcType=TIMESTAMP},
       </if>
       <if test="orderType != null" >
-        #{orderType,jdbcType=INTEGER},
+        #{orderType,jdbcType=VARCHAR},
       </if>
-      <if test="buyMessage != null" >
-        #{buyMessage,jdbcType=VARCHAR},
-      </if>
-      <if test="courierSn != null" >
-        #{courierSn,jdbcType=VARCHAR},
-      </if>
-      <if test="empId != null" >
-        #{empId,jdbcType=INTEGER},
+      <if test="deliveryId != null" >
+        #{deliveryId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -291,65 +251,50 @@
       <if test="record.shopId != null" >
         shop_id = #{record.shopId,jdbcType=INTEGER},
       </if>
-      <if test="record.status != null" >
-        status = #{record.status,jdbcType=INTEGER},
-      </if>
-      <if test="record.createTime != null" >
-        create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.updateTime != null" >
-        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.delFlag != null" >
-        del_flag = #{record.delFlag,jdbcType=INTEGER},
-      </if>
       <if test="record.userId != null" >
         user_id = #{record.userId,jdbcType=INTEGER},
       </if>
-      <if test="record.addrId != null" >
-        addr_id = #{record.addrId,jdbcType=INTEGER},
+      <if test="record.orderStatus != null" >
+        order_status = #{record.orderStatus,jdbcType=INTEGER},
       </if>
-      <if test="record.goodsId != null" >
-        goods_id = #{record.goodsId,jdbcType=VARCHAR},
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.specificationId != null" >
-        specification_id = #{record.specificationId,jdbcType=VARCHAR},
+      <if test="record.deliveryDate != null" >
+        delivery_date = #{record.deliveryDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.orderSn != null" >
-        order_sn = #{record.orderSn,jdbcType=VARCHAR},
+      <if test="record.modifyDate != null" >
+        modify_date = #{record.modifyDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.oreerStr != null" >
-        oreer_str = #{record.oreerStr,jdbcType=VARCHAR},
+      <if test="record.orderPrice != null" >
+        order_price = #{record.orderPrice,jdbcType=DECIMAL},
       </if>
-      <if test="record.allPrice != null" >
-        all_price = #{record.allPrice,jdbcType=DOUBLE},
+      <if test="record.payDate != null" >
+        pay_date = #{record.payDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.actualPrice != null" >
-        actual_price = #{record.actualPrice,jdbcType=DOUBLE},
+      <if test="record.payPrice != null" >
+        pay_price = #{record.payPrice,jdbcType=DECIMAL},
       </if>
-      <if test="record.shippingPrice != null" >
-        shipping_price = #{record.shippingPrice,jdbcType=DOUBLE},
+      <if test="record.payType != null" >
+        pay_type = #{record.payType,jdbcType=VARCHAR},
       </if>
-      <if test="record.payStatus != null" >
-        pay_status = #{record.payStatus,jdbcType=INTEGER},
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
       </if>
-      <if test="record.payWay != null" >
-        pay_way = #{record.payWay,jdbcType=INTEGER},
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
       </if>
-      <if test="record.payTime != null" >
-        pay_time = #{record.payTime,jdbcType=TIMESTAMP},
+      <if test="record.payId != null" >
+        pay_id = #{record.payId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.takeDate != null" >
+        take_date = #{record.takeDate,jdbcType=TIMESTAMP},
       </if>
       <if test="record.orderType != null" >
-        order_type = #{record.orderType,jdbcType=INTEGER},
+        order_type = #{record.orderType,jdbcType=VARCHAR},
       </if>
-      <if test="record.buyMessage != null" >
-        buy_message = #{record.buyMessage,jdbcType=VARCHAR},
-      </if>
-      <if test="record.courierSn != null" >
-        courier_sn = #{record.courierSn,jdbcType=VARCHAR},
-      </if>
-      <if test="record.empId != null" >
-        emp_id = #{record.empId,jdbcType=INTEGER},
+      <if test="record.deliveryId != null" >
+        delivery_id = #{record.deliveryId,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -360,26 +305,21 @@
     update order
     set id = #{record.id,jdbcType=INTEGER},
       shop_id = #{record.shopId,jdbcType=INTEGER},
-      status = #{record.status,jdbcType=INTEGER},
-      create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-      del_flag = #{record.delFlag,jdbcType=INTEGER},
       user_id = #{record.userId,jdbcType=INTEGER},
-      addr_id = #{record.addrId,jdbcType=INTEGER},
-      goods_id = #{record.goodsId,jdbcType=VARCHAR},
-      specification_id = #{record.specificationId,jdbcType=VARCHAR},
-      order_sn = #{record.orderSn,jdbcType=VARCHAR},
-      oreer_str = #{record.oreerStr,jdbcType=VARCHAR},
-      all_price = #{record.allPrice,jdbcType=DOUBLE},
-      actual_price = #{record.actualPrice,jdbcType=DOUBLE},
-      shipping_price = #{record.shippingPrice,jdbcType=DOUBLE},
-      pay_status = #{record.payStatus,jdbcType=INTEGER},
-      pay_way = #{record.payWay,jdbcType=INTEGER},
-      pay_time = #{record.payTime,jdbcType=TIMESTAMP},
-      order_type = #{record.orderType,jdbcType=INTEGER},
-      buy_message = #{record.buyMessage,jdbcType=VARCHAR},
-      courier_sn = #{record.courierSn,jdbcType=VARCHAR},
-      emp_id = #{record.empId,jdbcType=INTEGER}
+      order_status = #{record.orderStatus,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      delivery_date = #{record.deliveryDate,jdbcType=TIMESTAMP},
+      modify_date = #{record.modifyDate,jdbcType=TIMESTAMP},
+      order_price = #{record.orderPrice,jdbcType=DECIMAL},
+      pay_date = #{record.payDate,jdbcType=TIMESTAMP},
+      pay_price = #{record.payPrice,jdbcType=DECIMAL},
+      pay_type = #{record.payType,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER},
+      pay_id = #{record.payId,jdbcType=VARCHAR},
+      take_date = #{record.takeDate,jdbcType=TIMESTAMP},
+      order_type = #{record.orderType,jdbcType=VARCHAR},
+      delivery_id = #{record.deliveryId,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -390,65 +330,50 @@
       <if test="shopId != null" >
         shop_id = #{shopId,jdbcType=INTEGER},
       </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="delFlag != null" >
-        del_flag = #{delFlag,jdbcType=INTEGER},
-      </if>
       <if test="userId != null" >
         user_id = #{userId,jdbcType=INTEGER},
       </if>
-      <if test="addrId != null" >
-        addr_id = #{addrId,jdbcType=INTEGER},
+      <if test="orderStatus != null" >
+        order_status = #{orderStatus,jdbcType=INTEGER},
       </if>
-      <if test="goodsId != null" >
-        goods_id = #{goodsId,jdbcType=VARCHAR},
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="specificationId != null" >
-        specification_id = #{specificationId,jdbcType=VARCHAR},
+      <if test="deliveryDate != null" >
+        delivery_date = #{deliveryDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="orderSn != null" >
-        order_sn = #{orderSn,jdbcType=VARCHAR},
+      <if test="modifyDate != null" >
+        modify_date = #{modifyDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="oreerStr != null" >
-        oreer_str = #{oreerStr,jdbcType=VARCHAR},
+      <if test="orderPrice != null" >
+        order_price = #{orderPrice,jdbcType=DECIMAL},
       </if>
-      <if test="allPrice != null" >
-        all_price = #{allPrice,jdbcType=DOUBLE},
+      <if test="payDate != null" >
+        pay_date = #{payDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="actualPrice != null" >
-        actual_price = #{actualPrice,jdbcType=DOUBLE},
+      <if test="payPrice != null" >
+        pay_price = #{payPrice,jdbcType=DECIMAL},
       </if>
-      <if test="shippingPrice != null" >
-        shipping_price = #{shippingPrice,jdbcType=DOUBLE},
+      <if test="payType != null" >
+        pay_type = #{payType,jdbcType=VARCHAR},
       </if>
-      <if test="payStatus != null" >
-        pay_status = #{payStatus,jdbcType=INTEGER},
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
       </if>
-      <if test="payWay != null" >
-        pay_way = #{payWay,jdbcType=INTEGER},
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
       </if>
-      <if test="payTime != null" >
-        pay_time = #{payTime,jdbcType=TIMESTAMP},
+      <if test="payId != null" >
+        pay_id = #{payId,jdbcType=VARCHAR},
+      </if>
+      <if test="takeDate != null" >
+        take_date = #{takeDate,jdbcType=TIMESTAMP},
       </if>
       <if test="orderType != null" >
-        order_type = #{orderType,jdbcType=INTEGER},
+        order_type = #{orderType,jdbcType=VARCHAR},
       </if>
-      <if test="buyMessage != null" >
-        buy_message = #{buyMessage,jdbcType=VARCHAR},
-      </if>
-      <if test="courierSn != null" >
-        courier_sn = #{courierSn,jdbcType=VARCHAR},
-      </if>
-      <if test="empId != null" >
-        emp_id = #{empId,jdbcType=INTEGER},
+      <if test="deliveryId != null" >
+        delivery_id = #{deliveryId,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -456,26 +381,21 @@
   <update id="updateByPrimaryKey" parameterType="com.ch.entity.Order" >
     update order
     set shop_id = #{shopId,jdbcType=INTEGER},
-      status = #{status,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      del_flag = #{delFlag,jdbcType=INTEGER},
       user_id = #{userId,jdbcType=INTEGER},
-      addr_id = #{addrId,jdbcType=INTEGER},
-      goods_id = #{goodsId,jdbcType=VARCHAR},
-      specification_id = #{specificationId,jdbcType=VARCHAR},
-      order_sn = #{orderSn,jdbcType=VARCHAR},
-      oreer_str = #{oreerStr,jdbcType=VARCHAR},
-      all_price = #{allPrice,jdbcType=DOUBLE},
-      actual_price = #{actualPrice,jdbcType=DOUBLE},
-      shipping_price = #{shippingPrice,jdbcType=DOUBLE},
-      pay_status = #{payStatus,jdbcType=INTEGER},
-      pay_way = #{payWay,jdbcType=INTEGER},
-      pay_time = #{payTime,jdbcType=TIMESTAMP},
-      order_type = #{orderType,jdbcType=INTEGER},
-      buy_message = #{buyMessage,jdbcType=VARCHAR},
-      courier_sn = #{courierSn,jdbcType=VARCHAR},
-      emp_id = #{empId,jdbcType=INTEGER}
+      order_status = #{orderStatus,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      delivery_date = #{deliveryDate,jdbcType=TIMESTAMP},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      order_price = #{orderPrice,jdbcType=DECIMAL},
+      pay_date = #{payDate,jdbcType=TIMESTAMP},
+      pay_price = #{payPrice,jdbcType=DECIMAL},
+      pay_type = #{payType,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      pay_id = #{payId,jdbcType=VARCHAR},
+      take_date = #{takeDate,jdbcType=TIMESTAMP},
+      order_type = #{orderType,jdbcType=VARCHAR},
+      delivery_id = #{deliveryId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

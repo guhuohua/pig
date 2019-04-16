@@ -16,5 +16,10 @@ public interface ViewUserInfoService {
 
      void insert(UserInfo record);
 
+     UserInfo findOneByOpenId(String openId);
+
+     void updateByPrimaryKey(UserInfo userInfo);
+
+
 
 }
