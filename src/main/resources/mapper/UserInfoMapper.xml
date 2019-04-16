@@ -11,7 +11,11 @@
     <result column="tel" property="tel" jdbcType="VARCHAR" />
     <result column="nickname" property="nickname" jdbcType="VARCHAR" />
     <result column="realname" property="realname" jdbcType="VARCHAR" />
-    <result column="gender" property="gender" jdbcType="INTEGER" />
+    <result column="gender" property="gender" jdbcType="VARCHAR" />
+    <result column="user_head" property="userHead" jdbcType="VARCHAR" />
+    <result column="user_city" property="userCity" jdbcType="VARCHAR" />
+    <result column="povince" property="povince" jdbcType="VARCHAR" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -73,7 +77,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, shop_id, status, create_time, update_time, del_flag, tel, nickname, realname, 
-    gender
+    gender, user_head, user_city, povince,open_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.UserInfoExample" >
     select
@@ -110,11 +114,13 @@
     insert into user_info (id, shop_id, status, 
       create_time, update_time, del_flag, 
       tel, nickname, realname, 
-      gender)
+      gender, user_head, user_city, 
+      povince,open_id)
     values (#{id,jdbcType=INTEGER}, #{shopId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=INTEGER}, 
       #{tel,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, 
-      #{gender,jdbcType=INTEGER})
+      #{gender,jdbcType=VARCHAR}, #{userHead,jdbcType=VARCHAR}, #{userCity,jdbcType=VARCHAR},
+      #{povince,jdbcType=VARCHAR},#{openId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.ch.entity.UserInfo" >
     insert into user_info
@@ -149,6 +155,15 @@
       <if test="gender != null" >
         gender,
       </if>
+      <if test="userHead != null" >
+        user_head,
+      </if>
+      <if test="userCity != null" >
+        user_city,
+      </if>
+      <if test="povince != null" >
+        povince,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -179,7 +194,16 @@
         #{realname,jdbcType=VARCHAR},
       </if>
       <if test="gender != null" >
-        #{gender,jdbcType=INTEGER},
+        #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="userHead != null" >
+        #{userHead,jdbcType=VARCHAR},
+      </if>
+      <if test="userCity != null" >
+        #{userCity,jdbcType=VARCHAR},
+      </if>
+      <if test="povince != null" >
+        #{povince,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -220,7 +244,16 @@
         realname = #{record.realname,jdbcType=VARCHAR},
       </if>
       <if test="record.gender != null" >
-        gender = #{record.gender,jdbcType=INTEGER},
+        gender = #{record.gender,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userHead != null" >
+        user_head = #{record.userHead,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userCity != null" >
+        user_city = #{record.userCity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.povince != null" >
+        povince = #{record.povince,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -238,7 +271,10 @@
       tel = #{record.tel,jdbcType=VARCHAR},
       nickname = #{record.nickname,jdbcType=VARCHAR},
       realname = #{record.realname,jdbcType=VARCHAR},
-      gender = #{record.gender,jdbcType=INTEGER}
+      gender = #{record.gender,jdbcType=VARCHAR},
+      user_head = #{record.userHead,jdbcType=VARCHAR},
+      user_city = #{record.userCity,jdbcType=VARCHAR},
+      povince = #{record.povince,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -271,7 +307,16 @@
         realname = #{realname,jdbcType=VARCHAR},
       </if>
       <if test="gender != null" >
-        gender = #{gender,jdbcType=INTEGER},
+        gender = #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="userHead != null" >
+        user_head = #{userHead,jdbcType=VARCHAR},
+      </if>
+      <if test="userCity != null" >
+        user_city = #{userCity,jdbcType=VARCHAR},
+      </if>
+      <if test="povince != null" >
+        povince = #{povince,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -286,7 +331,10 @@
       tel = #{tel,jdbcType=VARCHAR},
       nickname = #{nickname,jdbcType=VARCHAR},
       realname = #{realname,jdbcType=VARCHAR},
-      gender = #{gender,jdbcType=INTEGER}
+      gender = #{gender,jdbcType=VARCHAR},
+      user_head = #{userHead,jdbcType=VARCHAR},
+      user_city = #{userCity,jdbcType=VARCHAR},
+      povince = #{povince,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

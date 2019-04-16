@@ -734,6 +734,216 @@ public class UserInfoExample {
             addCriterion("gender not between", value1, value2, "gender");
             return (Criteria) this;
         }
+
+        public Criteria andUserHeadIsNull() {
+            addCriterion("user_head is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserHeadIsNotNull() {
+            addCriterion("user_head is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserHeadEqualTo(String value) {
+            addCriterion("user_head =", value, "userHead");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserHeadNotEqualTo(String value) {
+            addCriterion("user_head <>", value, "userHead");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserHeadGreaterThan(String value) {
+            addCriterion("user_head >", value, "userHead");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserHeadGreaterThanOrEqualTo(String value) {
+            addCriterion("user_head >=", value, "userHead");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserHeadLessThan(String value) {
+            addCriterion("user_head <", value, "userHead");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserHeadLessThanOrEqualTo(String value) {
+            addCriterion("user_head <=", value, "userHead");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserHeadLike(String value) {
+            addCriterion("user_head like", value, "userHead");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserHeadNotLike(String value) {
+            addCriterion("user_head not like", value, "userHead");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserHeadIn(List<String> values) {
+            addCriterion("user_head in", values, "userHead");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserHeadNotIn(List<String> values) {
+            addCriterion("user_head not in", values, "userHead");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserHeadBetween(String value1, String value2) {
+            addCriterion("user_head between", value1, value2, "userHead");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserHeadNotBetween(String value1, String value2) {
+            addCriterion("user_head not between", value1, value2, "userHead");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserCityIsNull() {
+            addCriterion("user_city is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserCityIsNotNull() {
+            addCriterion("user_city is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserCityEqualTo(String value) {
+            addCriterion("user_city =", value, "userCity");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserCityNotEqualTo(String value) {
+            addCriterion("user_city <>", value, "userCity");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserCityGreaterThan(String value) {
+            addCriterion("user_city >", value, "userCity");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserCityGreaterThanOrEqualTo(String value) {
+            addCriterion("user_city >=", value, "userCity");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserCityLessThan(String value) {
+            addCriterion("user_city <", value, "userCity");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserCityLessThanOrEqualTo(String value) {
+            addCriterion("user_city <=", value, "userCity");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserCityLike(String value) {
+            addCriterion("user_city like", value, "userCity");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserCityNotLike(String value) {
+            addCriterion("user_city not like", value, "userCity");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserCityIn(List<String> values) {
+            addCriterion("user_city in", values, "userCity");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserCityNotIn(List<String> values) {
+            addCriterion("user_city not in", values, "userCity");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserCityBetween(String value1, String value2) {
+            addCriterion("user_city between", value1, value2, "userCity");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserCityNotBetween(String value1, String value2) {
+            addCriterion("user_city not between", value1, value2, "userCity");
+            return (Criteria) this;
+        }
+
+        public Criteria andPovinceIsNull() {
+            addCriterion("povince is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPovinceIsNotNull() {
+            addCriterion("povince is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPovinceEqualTo(String value) {
+            addCriterion("povince =", value, "povince");
+            return (Criteria) this;
+        }
+
+        public Criteria andPovinceNotEqualTo(String value) {
+            addCriterion("povince <>", value, "povince");
+            return (Criteria) this;
+        }
+
+        public Criteria andPovinceGreaterThan(String value) {
+            addCriterion("povince >", value, "povince");
+            return (Criteria) this;
+        }
+
+        public Criteria andPovinceGreaterThanOrEqualTo(String value) {
+            addCriterion("povince >=", value, "povince");
+            return (Criteria) this;
+        }
+
+        public Criteria andPovinceLessThan(String value) {
+            addCriterion("povince <", value, "povince");
+            return (Criteria) this;
+        }
+
+        public Criteria andPovinceLessThanOrEqualTo(String value) {
+            addCriterion("povince <=", value, "povince");
+            return (Criteria) this;
+        }
+
+        public Criteria andPovinceLike(String value) {
+            addCriterion("povince like", value, "povince");
+            return (Criteria) this;
+        }
+
+        public Criteria andPovinceNotLike(String value) {
+            addCriterion("povince not like", value, "povince");
+            return (Criteria) this;
+        }
+
+        public Criteria andPovinceIn(List<String> values) {
+            addCriterion("povince in", values, "povince");
+            return (Criteria) this;
+        }
+
+        public Criteria andPovinceNotIn(List<String> values) {
+            addCriterion("povince not in", values, "povince");
+            return (Criteria) this;
+        }
+
+        public Criteria andPovinceBetween(String value1, String value2) {
+            addCriterion("povince between", value1, value2, "povince");
+            return (Criteria) this;
+        }
+
+        public Criteria andPovinceNotBetween(String value1, String value2) {
+            addCriterion("povince not between", value1, value2, "povince");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

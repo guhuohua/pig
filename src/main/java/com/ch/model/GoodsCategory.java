@@ -7,13 +7,15 @@
 
 package com.ch.model;
 
+import com.ch.entity.SpecificationAttribute;
+
 import java.util.List;
 
 public class GoodsCategory {
 
     private String attrName;
 
-    private List<String> attrValue;
+    private List<SpecificationAttribute> attrValue;
 
     public String getAttrName() {
         return attrName;
@@ -23,11 +25,11 @@ public class GoodsCategory {
         this.attrName = attrName;
     }
 
-    public List<String> getAttrValue() {
+    public List<SpecificationAttribute> getAttrValue() {
         return attrValue;
     }
 
-    public void setAttrValue(List<String> attrValue) {
+    public void setAttrValue(List<SpecificationAttribute> attrValue) {
         this.attrValue = attrValue;
     }
 }
