@@ -12,6 +12,7 @@
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="icon" property="icon" jdbcType="VARCHAR" />
     <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="category_id" property="categoryId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -72,7 +73,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, shop_id, status, create_time, update_time, del_flag, title, type, icon, sort
+    id, shop_id, status, create_time, update_time, del_flag, title, `type`, icon, `sort`, category_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.SpecificationExample" >
     select
@@ -105,15 +106,15 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.ch.entity.Specification" >
+  <insert id="insert" parameterType="com.ch.entity.Specification" useGeneratedKeys="true" keyProperty="id">
     insert into specification (id, shop_id, status, 
       create_time, update_time, del_flag, 
       title, type, icon, 
-      sort)
+      sort,category_id)
     values (#{id,jdbcType=INTEGER}, #{shopId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=INTEGER}, 
       #{title,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, 
-      #{sort,jdbcType=INTEGER})
+      #{sort,jdbcType=INTEGER},#{categoryId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ch.entity.Specification" >
     insert into specification
@@ -148,6 +149,9 @@
       <if test="sort != null" >
         sort,
       </if>
+      <if test="categoryId != null" >
+        category_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -179,6 +183,9 @@
       </if>
       <if test="sort != null" >
         #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="categoryId != null" >
+        #{categoryId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -237,7 +244,8 @@
       title = #{record.title,jdbcType=VARCHAR},
       type = #{record.type,jdbcType=VARCHAR},
       icon = #{record.icon,jdbcType=VARCHAR},
-      sort = #{record.sort,jdbcType=INTEGER}
+      sort = #{record.sort,jdbcType=INTEGER},
+    caregory_id = #{record.caregoryId,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -285,7 +293,8 @@
       title = #{title,jdbcType=VARCHAR},
       type = #{type,jdbcType=VARCHAR},
       icon = #{icon,jdbcType=VARCHAR},
-      sort = #{sort,jdbcType=INTEGER}
+      sort = #{sort,jdbcType=INTEGER},
+      category_id = #{categoryId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

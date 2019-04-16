@@ -173,10 +173,10 @@ public class SysGoodsServiceImpl implements SysGoodsService {
             GoodsSku sku = new GoodsSku();
             List<SysGoodsSkuModel> sysGoodsSkuModelList = model.getSysGoodsSkuModelList();
             for (SysGoodsSkuModel skuModel:sysGoodsSkuModelList) {
-                sku.setSn(sn.toString());
                 modelMapper.map(skuModel, sku);
                 sku.setCreateTime(new Date());
                 sku.setGoodsId(goods.getId());
+                sku.setSn(sn.toString());
                 sku.setStatus(0);
                 sku.setShopId(sysUser.getShopId());
                 goodsSkuMapper.insert(sku);
@@ -198,6 +198,65 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                     goodsSkuAttribute.setSkuId(sku.getId());
                     goodsSkuAttribute.setSpecificationId(sysGoodsSkuId.getSpecificationId());
                     goodsSkuAttribute.setSpecificationAttributeId(id);
+                    goodsSkuAttribute.setGoodsId(goods.getId());
+                    goodsSkuAttributeMapper.insert(goodsSkuAttribute);
+                }
+            }
+        } else {
+            GoodsExample goodsExample = new GoodsExample();
+            goodsExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andIdEqualTo(model.getId());
+            List<Goods> goodsList = goodsMapper.selectByExample(goodsExample);
+            if (goodsList.stream().findFirst().isPresent()) {
+                Goods goods = goodsList.stream().findFirst().get();
+                modelMapper.map(model, goods);
+                goods.setUpdateTime(new Date());
+                goodsMapper.updateByPrimaryKey(goods);
+            }
+
+            GoodsSkuExample goodsSkuExample = new GoodsSkuExample();
+            goodsSkuExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andGoodsIdEqualTo(model.getId());
+            goodsSkuMapper.deleteByExample(goodsSkuExample);
+
+
+            GoodsImageExample goodsImageExample = new GoodsImageExample();
+            goodsImageExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andGoodsIdEqualTo(model.getId());
+            goodsImageMapper.deleteByExample(goodsImageExample);
+
+
+            GoodsSkuAttributeExample goodsSkuAttributeExample = new GoodsSkuAttributeExample();
+            goodsSkuAttributeExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andGoodsIdEqualTo(model.getId());
+            goodsSkuAttributeMapper.deleteByExample(goodsSkuAttributeExample);
+
+            GoodsSku sku = new GoodsSku();
+            List<SysGoodsSkuModel> sysGoodsSkuModelList = model.getSysGoodsSkuModelList();
+            for (SysGoodsSkuModel skuModel:sysGoodsSkuModelList) {
+                modelMapper.map(skuModel, sku);
+                sku.setCreateTime(new Date());
+                sku.setGoodsId(model.getId());
+                sku.setSn(model.getSn());
+                sku.setStatus(0);
+                sku.setShopId(sysUser.getShopId());
+                goodsSkuMapper.insert(sku);
+            }
+            for (SysGoodsImageModel sysGoodsImageModel:model.getGoodsImageModelList()) {
+                GoodsImage goodsImage = new GoodsImage();
+                modelMapper.map(sysGoodsImageModel, goodsImage);
+                goodsImage.setShopId(sysUser.getShopId());
+                goodsImage.setStatus(0);
+                goodsImage.setCreateTime(new Date());
+                goodsImage.setGoodsId(model.getId());
+                goodsImageMapper.insert(goodsImage);
+            }
+            for (SysGoodsSkuId sysGoodsSkuId:model.getSysGoodsSkuIds()) {
+                for (Integer id:sysGoodsSkuId.getSpecificationAttrId()) {
+                    GoodsSkuAttribute goodsSkuAttribute = new GoodsSkuAttribute();
+                    goodsSkuAttribute.setCreateDate(new Date());
+                    goodsSkuAttribute.setShopId(sysUser.getShopId());
+                    goodsSkuAttribute.setSkuId(sku.getId());
+                    goodsSkuAttribute.setSpecificationId(sysGoodsSkuId.getSpecificationId());
+                    goodsSkuAttribute.setSpecificationAttributeId(id);
+                    goodsSkuAttribute.setGoodsId(model.getId());
+                    goodsSkuAttributeMapper.insert(goodsSkuAttribute);
                 }
             }
         }
