@@ -7,6 +7,7 @@ import com.ch.dto.GoodsParam;
 import com.ch.dto.GoodsSkuListDTO;
 import com.ch.dto.SpecificationAttrDTO;
 import com.ch.entity.*;
+import com.ch.enums.OderStatusEnum;
 import com.ch.model.*;
 import com.ch.service.SolrService;
 import com.ch.service.SysGoodsService;
