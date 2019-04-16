@@ -2,6 +2,7 @@ package com.ch.service;
 
 import com.ch.base.ResponseResult;
 import com.ch.dto.GoodsParam;
+import com.ch.model.SysGoodsModel;
 import com.ch.model.SysGoodsParam;
 
 public interface SysGoodsService {
@@ -36,4 +37,12 @@ public interface SysGoodsService {
      * @return
      */
     ResponseResult skuList(Integer categoryId, Integer userId);
+
+    /**
+     *
+     * @param model
+     * @param userId
+     * @return
+     */
+    ResponseResult mange(SysGoodsModel model, Integer userId);
 }

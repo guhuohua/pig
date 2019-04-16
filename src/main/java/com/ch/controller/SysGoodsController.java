@@ -92,4 +92,22 @@ public class SysGoodsController {
         }
         return result;
     }
+
+    @GetMapping("sku_list")
+    @ApiOperation("发布商品的规格列表")
+    public ResponseResult skuList(HttpServletRequest req, @RequestParam Integer categoryId) {
+        ResponseResult result = new ResponseResult();
+        try {
+            String token = req.getHeader("Authorization");
+            Integer userId = TokenUtil.getUserId(token);
+            result =  sysGoodsService.skuList(categoryId, userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("获取规格列表失败");
+        }
+        return result;
+    }
 }

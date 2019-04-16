@@ -48,7 +48,7 @@ public class SysGoodsModel {
 
     private String name;
 
-    private Integer catrgoryId;
+    private Integer categoryId;
 
     private String keyWords;
 
@@ -59,4 +59,6 @@ public class SysGoodsModel {
     private List<SysGoodsImageModel> goodsImageModelList;
 
     private List<SysGoodsSkuModel> sysGoodsSkuModelList;
+
+    private List<SysGoodsSkuId> sysGoodsSkuIds;
 }

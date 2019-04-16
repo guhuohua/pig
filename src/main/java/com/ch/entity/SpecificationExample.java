@@ -240,6 +240,11 @@ public class SpecificationExample {
             return (Criteria) this;
         }
 
+        public Criteria andCategoryId(Integer value) {
+            addCriterion("category_id =", value, "categoryId");
+            return (Criteria) this;
+        }
+
         public Criteria andStatusNotEqualTo(Integer value) {
             addCriterion("status <>", value, "status");
             return (Criteria) this;
