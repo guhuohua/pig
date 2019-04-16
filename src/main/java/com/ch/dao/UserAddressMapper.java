@@ -4,9 +4,7 @@ import com.ch.entity.UserAddress;
 import com.ch.entity.UserAddressExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public interface UserAddressMapper {
     int countByExample(UserAddressExample example);
 
