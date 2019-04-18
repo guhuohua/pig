@@ -12,8 +12,6 @@ public class PersonMangeParam extends PageQuery {
 
     private Integer userId;
 
-    private Integer roleId;
-
     private String password;
 
     private Integer status;

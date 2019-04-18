@@ -53,7 +53,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
         order.setShopId(shopId);
         order.setStatus(1);
         order.setCreateDate(new Date());
-        order.setOrderPrice(orderFee);
+//        order.setOrderPrice(orderFee);
         if (orderDtoList.length > 0) {
             for (OrderDto orderDto : orderDtoList) {
                 GoodsSkuAttribute goodsSkuAttribute = goodsSkuAttributeMapper.selectByPrimaryKey(orderDto.getSkuAttrId());
