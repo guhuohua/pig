@@ -7,17 +7,25 @@
 
 package com.ch.dto;
 
+import com.ch.entity.Order;
+import com.ch.entity.UserAddress;
+
 public class OrderDto {
-    private Integer skuAttrId;
+    private Integer skuId;
 
     private Integer num;
 
-    public Integer getSkuAttrId() {
-        return skuAttrId;
+    private UserAddress userAddress;
+
+    private Order order;
+
+
+    public Integer getSkuId() {
+        return skuId;
     }
 
-    public void setSkuAttrId(Integer skuAttrId) {
-        this.skuAttrId = skuAttrId;
+    public void setSkuId(Integer skuId) {
+        this.skuId = skuId;
     }
 
     public Integer getNum() {
@@ -26,5 +34,21 @@ public class OrderDto {
 
     public void setNum(Integer num) {
         this.num = num;
+    }
+
+    public UserAddress getUserAddress() {
+        return userAddress;
+    }
+
+    public void setUserAddress(UserAddress userAddress) {
+        this.userAddress = userAddress;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }

@@ -18,11 +18,11 @@ public class Order {
 
     private Date modifyDate;
 
-    private BigDecimal orderPrice;
+    private Long orderPrice;
 
     private Date payDate;
 
-    private BigDecimal payPrice;
+    private Long payPrice;
 
     private String payType;
 
@@ -98,11 +98,11 @@ public class Order {
         this.modifyDate = modifyDate;
     }
 
-    public BigDecimal getOrderPrice() {
+    public Long getOrderPrice() {
         return orderPrice;
     }
 
-    public void setOrderPrice(BigDecimal orderPrice) {
+    public void setOrderPrice(Long orderPrice) {
         this.orderPrice = orderPrice;
     }
 
@@ -114,11 +114,11 @@ public class Order {
         this.payDate = payDate;
     }
 
-    public BigDecimal getPayPrice() {
+    public Long getPayPrice() {
         return payPrice;
     }
 
-    public void setPayPrice(BigDecimal payPrice) {
+    public void setPayPrice(Long payPrice) {
         this.payPrice = payPrice;
     }
 

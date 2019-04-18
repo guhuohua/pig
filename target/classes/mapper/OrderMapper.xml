@@ -19,6 +19,8 @@
     <result column="take_date" property="takeDate" jdbcType="TIMESTAMP" />
     <result column="order_type" property="orderType" jdbcType="VARCHAR" />
     <result column="delivery_id" property="deliveryId" jdbcType="INTEGER" />
+    <result column="sale_id" property="saleId" jdbcType="VARCHAR" />
+    <result column="track_number" property="trackNumber" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -80,7 +82,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, shop_id, user_id, order_status, create_date, delivery_date, modify_date, order_price, 
-    pay_date, pay_price, pay_type, remark, status, pay_id, take_date, order_type, delivery_id
+    pay_date, pay_price, pay_type, remark, status, pay_id, take_date, order_type, delivery_id, 
+    sale_id, track_number
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.OrderExample" >
     select
@@ -97,13 +100,13 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from order
     where id = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from order
     where id = #{id,jdbcType=VARCHAR}
   </delete>
@@ -119,13 +122,15 @@
       modify_date, order_price, pay_date, 
       pay_price, pay_type, remark, 
       status, pay_id, take_date, 
-      order_type, delivery_id)
-    values (#{id,jdbcType=VARCHAR}, #{shopId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER},
+      order_type, delivery_id, sale_id, 
+      track_number)
+    values (#{id,jdbcType=VARCHAR}, #{shopId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
       #{orderStatus,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{deliveryDate,jdbcType=TIMESTAMP}, 
       #{modifyDate,jdbcType=TIMESTAMP}, #{orderPrice,jdbcType=DECIMAL}, #{payDate,jdbcType=TIMESTAMP}, 
       #{payPrice,jdbcType=DECIMAL}, #{payType,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{status,jdbcType=INTEGER}, #{payId,jdbcType=VARCHAR}, #{takeDate,jdbcType=TIMESTAMP}, 
-      #{orderType,jdbcType=VARCHAR}, #{deliveryId,jdbcType=INTEGER})
+      #{orderType,jdbcType=VARCHAR}, #{deliveryId,jdbcType=INTEGER}, #{saleId,jdbcType=VARCHAR}, 
+      #{trackNumber,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.ch.entity.Order" >
     insert into order
@@ -181,6 +186,12 @@
       <if test="deliveryId != null" >
         delivery_id,
       </if>
+      <if test="saleId != null" >
+        sale_id,
+      </if>
+      <if test="trackNumber != null" >
+        track_number,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -233,6 +244,12 @@
       </if>
       <if test="deliveryId != null" >
         #{deliveryId,jdbcType=INTEGER},
+      </if>
+      <if test="saleId != null" >
+        #{saleId,jdbcType=VARCHAR},
+      </if>
+      <if test="trackNumber != null" >
+        #{trackNumber,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -296,6 +313,12 @@
       <if test="record.deliveryId != null" >
         delivery_id = #{record.deliveryId,jdbcType=INTEGER},
       </if>
+      <if test="record.saleId != null" >
+        sale_id = #{record.saleId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.trackNumber != null" >
+        track_number = #{record.trackNumber,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -319,7 +342,9 @@
       pay_id = #{record.payId,jdbcType=VARCHAR},
       take_date = #{record.takeDate,jdbcType=TIMESTAMP},
       order_type = #{record.orderType,jdbcType=VARCHAR},
-      delivery_id = #{record.deliveryId,jdbcType=INTEGER}
+      delivery_id = #{record.deliveryId,jdbcType=INTEGER},
+      sale_id = #{record.saleId,jdbcType=VARCHAR},
+      track_number = #{record.trackNumber,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -375,6 +400,12 @@
       <if test="deliveryId != null" >
         delivery_id = #{deliveryId,jdbcType=INTEGER},
       </if>
+      <if test="saleId != null" >
+        sale_id = #{saleId,jdbcType=VARCHAR},
+      </if>
+      <if test="trackNumber != null" >
+        track_number = #{trackNumber,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -395,7 +426,9 @@
       pay_id = #{payId,jdbcType=VARCHAR},
       take_date = #{takeDate,jdbcType=TIMESTAMP},
       order_type = #{orderType,jdbcType=VARCHAR},
-      delivery_id = #{deliveryId,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
+      delivery_id = #{deliveryId,jdbcType=INTEGER},
+      sale_id = #{saleId,jdbcType=VARCHAR},
+      track_number = #{trackNumber,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

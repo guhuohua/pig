@@ -44,8 +44,8 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
         Map goodsDetailsMap = new HashMap();
         //查询商品表
         Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
-        goodsDetailsMap.put("goods", goods);
         if (shopId == goods.getShopId()) {
+            goodsDetailsMap.put("goods", goods);
             //查询sku列表
             GoodsSkuExample exampleSku = new GoodsSkuExample();
             GoodsSkuExample.Criteria criteria2 = exampleSku.createCriteria();
@@ -53,7 +53,7 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
             List<GoodsSku> goodsSkus = goodsSkuMapper.selectByExample(exampleSku);
             goodsDetailsMap.put("goodsSkus", goodsSkus);
 
-            GoodsSkuAttributeExample example = new GoodsSkuAttributeExample();
+           /* GoodsSkuAttributeExample example = new GoodsSkuAttributeExample();
             GoodsSkuAttributeExample.Criteria criteria = example.createCriteria();
             criteria.andGoodsIdEqualTo(goodsId);
             criteria.andShopIdEqualTo(goods.getShopId());
@@ -100,7 +100,30 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
 
                 }
             }
+
+
+
             goodsDetailsMap.put("goodAttr", goodsCategories);
+
+
+
+            //查询商品评价表
+            GoodsEvaluationExample example1 = new GoodsEvaluationExample();
+            GoodsEvaluationExample.Criteria criteria1 = example1.createCriteria();
+            criteria1.andGoodsIdEqualTo(goods.getId());
+            List<GoodsEvaluation> goodsEvaluations = goodsEvaluationMapper.selectByExample(example1);
+
+            //查询商品图片表
+
+            GoodsImageExample exampleImg = new GoodsImageExample();
+            GoodsImageExample.Criteria criteriaImg = exampleImg.createCriteria();
+            criteriaImg.andGoodsIdEqualTo(goodsId);
+            List<GoodsImage> goodsImages = goodsImageMapper.selectByExample(exampleImg);
+            goodsDetailsMap.put("goodsImages", goodsImages);
+            goodsDetailsMap.put("goodsEvaluations", goodsEvaluations);
+*/
+
+
 
             //查询商品评价表
             GoodsEvaluationExample example1 = new GoodsEvaluationExample();
@@ -117,6 +140,8 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
             goodsDetailsMap.put("goodsImages", goodsImages);
             goodsDetailsMap.put("goodsEvaluations", goodsEvaluations);
 
+            goodsDetailsMap.put("goodsImages", goodsImages);
+            goodsDetailsMap.put("goodsEvaluations", goodsEvaluations);
 
         }
 

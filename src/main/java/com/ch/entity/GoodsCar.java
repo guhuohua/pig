@@ -1,8 +1,6 @@
 package com.ch.entity;
 
-import java.math.BigDecimal;
-
-public class GoodCar {
+public class GoodsCar {
     private Integer id;
 
     private Integer skuId;
@@ -11,11 +9,13 @@ public class GoodCar {
 
     private Integer num;
 
-    private BigDecimal totalFee;
+    private Long totalFee;
 
-    private BigDecimal price;
+    private Long price;
 
     private Integer userId;
+
+    private Integer shopId;
 
     public Integer getId() {
         return id;
@@ -49,19 +49,19 @@ public class GoodCar {
         this.num = num;
     }
 
-    public BigDecimal getTotalFee() {
+    public Long getTotalFee() {
         return totalFee;
     }
 
-    public void setTotalFee(BigDecimal totalFee) {
+    public void setTotalFee(Long totalFee) {
         this.totalFee = totalFee;
     }
 
-    public BigDecimal getPrice() {
+    public Long getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Long price) {
         this.price = price;
     }
 
@@ -71,5 +71,13 @@ public class GoodCar {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public Integer getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Integer shopId) {
+        this.shopId = shopId;
     }
 }

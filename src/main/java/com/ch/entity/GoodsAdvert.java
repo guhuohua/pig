@@ -25,6 +25,8 @@ public class GoodsAdvert {
 
     private Integer browseNumber;
 
+    private Integer goodsId;
+
     public Integer getId() {
         return id;
     }
@@ -111,5 +113,13 @@ public class GoodsAdvert {
 
     public void setBrowseNumber(Integer browseNumber) {
         this.browseNumber = browseNumber;
+    }
+
+    public Integer getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(Integer goodsId) {
+        this.goodsId = goodsId;
     }
 }

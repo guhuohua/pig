@@ -56,19 +56,22 @@ public class ViewOrderServiceImpl implements ViewOrderService {
         order.setOrderPrice(orderFee);
         if (orderDtoList.length > 0) {
             for (OrderDto orderDto : orderDtoList) {
-                GoodsSkuAttribute goodsSkuAttribute = goodsSkuAttributeMapper.selectByPrimaryKey(orderDto.getSkuAttrId());
-                GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(goodsSkuAttribute.getSkuId());
+                GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderDto.getSkuId());
+                Goods goods = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
                 goodsSku.setInventory(goodsSku.getInventory() - 1);
                 goodsSku.setSale(goodsSku.getSale() + 1);
-                totalFee = goodsSku.getPresentPrice() * orderDto.getNum();
+                goodsSkuMapper.updateByPrimaryKey(goodsSku);
+                totalFee = (goodsSku.getPresentPrice() * orderDto.getNum())+goods.getFreight();
                 orderFee += totalFee;
+
                 OrderItem orderItem = new OrderItem();
-                orderItem.setGoodsId(goodsSkuAttribute.getGoodsId());
-                SpecificationAttribute specificationAttribute = specificationAttributeMapper.selectByPrimaryKey(goodsSkuAttribute.getSpecificationAttributeId());
-                Goods goods = goodsMapper.selectByPrimaryKey(goodsSkuAttribute.getGoodsId());
+                orderItem.setGoodsId(goodsSku.getGoodsId());
+
+
                 goods.setInventory(goodsSku.getInventory() - 1);
                 goods.setSale(goodsSku.getSale() + 1);
-                orderItem.setGoodsName(goods.getName() + specificationAttribute.getName());
+                goodsMapper.updateByPrimaryKey(goods);
+                orderItem.setGoodsName(goodsSku.getSkuName());
                 orderItem.setNumber(orderDto.getNum());
                 orderItem.setPrice(goodsSku.getPresentPrice());
                 orderItem.setOrderId(order.getId());
@@ -83,7 +86,6 @@ public class ViewOrderServiceImpl implements ViewOrderService {
 
     @Override
     public ResponseResult showOrder(String orderId, String openId) {
-
         Map map = new HashMap();
         UserInfoExample exampleInfo = new UserInfoExample();
         UserInfoExample.Criteria criteria1 = exampleInfo.createCriteria();
@@ -99,7 +101,6 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             criteria.andUserIdEqualTo(userInfo.getId());
             userAddresses1 = userAddressMapper.selectByExample(exampleAddress);
 
-
             UserAddressExample exampleAddress1 = new UserAddressExample();
             UserAddressExample.Criteria criteria2 = exampleAddress.createCriteria();
             criteria.andUserIdEqualTo(userInfo.getId());
@@ -114,8 +115,6 @@ public class ViewOrderServiceImpl implements ViewOrderService {
         OrderItemExample.Criteria criteria = example.createCriteria();
         criteria.andOrderIdEqualTo(orderId);
         List<OrderItem> orderItems = orderItemMapper.selectByExample(example);
-
-
         map.put("userAddresses1", userAddresses1);
         map.put("userAddress", userAddress);
         map.put("order", order);
@@ -124,5 +123,15 @@ public class ViewOrderServiceImpl implements ViewOrderService {
         result.setData(map);
         return result;
     }
+
+    @Override
+    public ResponseResult updateOrder(OrderDto orderDto) {
+        orderMapper.updateByPrimaryKey(orderDto.getOrder());
+        userAddressMapper.updateByPrimaryKey(orderDto.getUserAddress());
+
+
+        return null;
+    }
+
 
 }

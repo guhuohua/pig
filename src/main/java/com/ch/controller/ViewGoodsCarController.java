@@ -9,6 +9,7 @@ package com.ch.controller;
 
 import com.ch.base.ResponseResult;
 import com.ch.dao.UserMapper;
+import com.ch.dto.CarDto;
 import com.ch.entity.User;
 import com.ch.service.ViewGoodsCarService;
 import com.ch.util.TokenUtil;
@@ -17,9 +18,7 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -38,22 +37,58 @@ public class ViewGoodsCarController {
 
     @GetMapping("car")
     @ApiOperation("购物车")
-    public ResponseResult addCar(Integer skuAtrId, Integer num, HttpServletRequest req) {
+    public ResponseResult addCar(HttpServletRequest req , @RequestParam Integer skuId,@RequestParam Integer num ) {
         ResponseResult result = new ResponseResult();
-
         try {
             String openId = req.getHeader("openId");
             String token = req.getHeader("Authorization");
-            Integer userId = TokenUtil.getUserId(token);
-
-            User user = userMapper.selectByPrimaryKey(userId);
-
-            result = viewGoodsCarService.addCar(skuAtrId, num, openId, user.getShopId());
+            Integer shopId = TokenUtil.getUserId(token);
+            result = viewGoodsCarService.addCar(skuId, num, openId, shopId);
         } catch (Exception e) {
             LOGGER.error("加入购物车失败" + e.getMessage(), e);
             result.setCode(500);
             result.setError(e.getMessage());
             result.setError_description("加入购物车失败");
+        }
+        return result;
+
+    }
+
+
+    @GetMapping("showCar")
+    @ApiOperation("购物车")
+    public ResponseResult showCar(HttpServletRequest req ) {
+        ResponseResult result = new ResponseResult();
+        try {
+            String openId = req.getHeader("openId");
+            String token = req.getHeader("Authorization");
+            Integer shopId = TokenUtil.getUserId(token);
+            result = viewGoodsCarService.showCar(openId);
+        } catch (Exception e) {
+            LOGGER.error("展示购物车失败" + e.getMessage(), e);
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("展示购物车失败");
+        }
+        return result;
+
+    }
+
+
+    @PostMapping ("updateCar")
+    @ApiOperation("修改购物车")
+    public ResponseResult updateCar(HttpServletRequest req, @RequestBody CarDto[] carDto) {
+        ResponseResult result = new ResponseResult();
+        try {
+            String openId = req.getHeader("openId");
+            String token = req.getHeader("Authorization");
+            Integer shopId = TokenUtil.getUserId(token);
+            result = viewGoodsCarService.updateCar(carDto);
+        } catch (Exception e) {
+            LOGGER.error("修改购物车失败" + e.getMessage(), e);
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("修改购物车失败");
         }
         return result;
 
