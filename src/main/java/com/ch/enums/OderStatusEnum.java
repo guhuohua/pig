@@ -9,7 +9,8 @@ public enum OderStatusEnum {
     UNRECEIVED("5", "待收货"),
     RECEIVED("6", "已收货"),
     COMPLETE("7", "订单完成"),
-    CANCEL("8", "订单取消");
+    CANCEL("8", "订单取消"),
+    UNEVALUATED("9", "待评价");
 
     public final String code;
 
