@@ -180,16 +180,6 @@ public class GoodsSkuExample {
             return (Criteria) this;
         }
 
-        public Criteria andGoodsIdEqualTo(Integer value) {
-            addCriterion("goods_id =", value, "goodsId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCategoryIdEqualTo(Integer value) {
-            addCriterion("category_id =", value, "categoryId");
-            return (Criteria) this;
-        }
-
         public Criteria andShopIdNotEqualTo(Integer value) {
             addCriterion("shop_id <>", value, "shopId");
             return (Criteria) this;
@@ -925,6 +915,11 @@ public class GoodsSkuExample {
             return (Criteria) this;
         }
 
+        public Criteria andGoodsIdEqualTo(Integer value) {
+            addCriterion("goods_id =", value, "goodsId");
+            return (Criteria) this;
+        }
+
         public Criteria andGoodsIdNotEqualTo(Integer value) {
             addCriterion("goods_id <>", value, "goodsId");
             return (Criteria) this;
@@ -980,6 +975,11 @@ public class GoodsSkuExample {
             return (Criteria) this;
         }
 
+        public Criteria andCategoryIdEqualTo(Integer value) {
+            addCriterion("category_id =", value, "categoryId");
+            return (Criteria) this;
+        }
+
         public Criteria andCategoryIdNotEqualTo(Integer value) {
             addCriterion("category_id <>", value, "categoryId");
             return (Criteria) this;
@@ -1022,6 +1022,76 @@ public class GoodsSkuExample {
 
         public Criteria andCategoryIdNotBetween(Integer value1, Integer value2) {
             addCriterion("category_id not between", value1, value2, "categoryId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuNameIsNull() {
+            addCriterion("sku_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuNameIsNotNull() {
+            addCriterion("sku_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuNameEqualTo(String value) {
+            addCriterion("sku_name =", value, "skuName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuNameNotEqualTo(String value) {
+            addCriterion("sku_name <>", value, "skuName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuNameGreaterThan(String value) {
+            addCriterion("sku_name >", value, "skuName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuNameGreaterThanOrEqualTo(String value) {
+            addCriterion("sku_name >=", value, "skuName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuNameLessThan(String value) {
+            addCriterion("sku_name <", value, "skuName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuNameLessThanOrEqualTo(String value) {
+            addCriterion("sku_name <=", value, "skuName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuNameLike(String value) {
+            addCriterion("sku_name like", value, "skuName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuNameNotLike(String value) {
+            addCriterion("sku_name not like", value, "skuName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuNameIn(List<String> values) {
+            addCriterion("sku_name in", values, "skuName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuNameNotIn(List<String> values) {
+            addCriterion("sku_name not in", values, "skuName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuNameBetween(String value1, String value2) {
+            addCriterion("sku_name between", value1, value2, "skuName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSkuNameNotBetween(String value1, String value2) {
+            addCriterion("sku_name not between", value1, value2, "skuName");
             return (Criteria) this;
         }
     }

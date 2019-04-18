@@ -34,7 +34,6 @@ public class ViewShopInfoServiceImpl implements ViewShopInfoService {
         ShopInfo shopInfo = new ShopInfo();
         if (shopMiniPrograms.size() > 0) {
             ShopMiniProgram shopMiniProgram = shopMiniPrograms.get(0);
-
             shopInfo.setSecret(shopMiniProgram.getSecret());
             shopInfo.setShopId(shopMiniProgram.getShopId());
         }

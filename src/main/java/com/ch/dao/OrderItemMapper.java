@@ -4,7 +4,9 @@ import com.ch.entity.OrderItem;
 import com.ch.entity.OrderItemExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface OrderItemMapper {
     int countByExample(OrderItemExample example);
 
