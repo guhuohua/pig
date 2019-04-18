@@ -57,7 +57,6 @@ public class SysShopController {
             } else {
                 result = sysShopService.insert(record);
             }
-
         } catch (Exception e) {
             LOGGER.error("编辑店铺失败" + e.getMessage(), e);
             result.setCode(500);

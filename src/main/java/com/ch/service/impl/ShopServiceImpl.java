@@ -115,7 +115,6 @@ public class ShopServiceImpl implements ShopService {
                 br.setPassword(encodedPassword);
             }
             sysUserMapper.insert(br);
-            sysUserRoleMapper.updateRole(param.getRoleId(), param.getUserId(), sysUser.getShopId());
         } else {
             SysUserExample sysUserExample = new SysUserExample();
             sysUserExample.createCriteria().andPhoneEqualTo(param.getPhone());
@@ -147,11 +146,6 @@ public class ShopServiceImpl implements ShopService {
             user.setCreateTime(new Date());
             user.setStatus(0);
             sysUserMapper.insert(user);
-            SysUserRole sysUserRole = new SysUserRole();
-            sysUserRole.setShopId(sysUser.getShopId());
-            sysUserRole.setRoleId(param.getRoleId());
-            sysUserRole.setUserId(user.getUserId());
-            sysUserRoleMapper.insert(sysUserRole);
         }
         return result;
     }
