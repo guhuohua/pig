@@ -1,5 +1,6 @@
 package com.ch.ch;
 
+import com.alibaba.fastjson.JSON;
 import com.ch.entity.GoodsSolrSchema;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -12,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
@@ -100,5 +102,22 @@ public class ChApplicationTests {
 //        System.out.println(map);
 //    }
 
+
+
+
+    @Test
+    public void testUploadImage1(){
+       List<Integer> list = new ArrayList<>();
+       Integer sum = 0;
+
+       list.add(1);
+       list.add(2);
+       list.add(3);
+       for (Integer integer : list){
+           sum+=integer;
+
+       }
+        System.out.println(sum);
+    }
 
 }

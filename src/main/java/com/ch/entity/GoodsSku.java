@@ -33,6 +33,8 @@ public class GoodsSku {
 
     private Integer categoryId;
 
+    private String skuName;
+
     public Integer getId() {
         return id;
     }
@@ -151,5 +153,13 @@ public class GoodsSku {
 
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public String getSkuName() {
+        return skuName;
+    }
+
+    public void setSkuName(String skuName) {
+        this.skuName = skuName == null ? null : skuName.trim();
     }
 }

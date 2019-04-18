@@ -1,7 +1,7 @@
 /**
  * Author: 常富文
- * Date:   2019/4/4 14:21
- * Description: 首页轮播图
+ * Date:   2019/4/16 17:38
+ * Description: 订单
  */
 
 
@@ -9,42 +9,42 @@ package com.ch.controller;
 
 import com.ch.base.ResponseResult;
 import com.ch.dao.UserMapper;
+import com.ch.dto.OrderDto;
 import com.ch.entity.User;
-import com.ch.service.ViewGoodsAdvertService;
+import com.ch.service.ViewOrderService;
 import com.ch.util.TokenUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
-@RequestMapping("view")
-@Api(value = "轮播图管理",description = "轮播图管理")
-public class ViewGoodsAdvertController {
+@RequestMapping("order")
+public class ViewOrderController {
 
-    private static final Logger LOGGER = LogManager.getLogger(ViewGoodsAdvertController.class);
 
+
+
+    private static final Logger LOGGER = LogManager.getLogger(ViewOrderController.class);
     @Autowired
-    ViewGoodsAdvertService viewGoodsAdvertService;
-    @Autowired
-    UserMapper userMapper;
+    ViewOrderService viewOrderService;
 
-    @GetMapping("showAdvert")
-    @ApiOperation("轮播图展示")
-    public ResponseResult findByCategory(HttpServletRequest req){
+
+
+    @PostMapping("addOrder")
+    public ResponseResult addOrder( HttpServletRequest req, OrderDto[] orderDtoList ){
         ResponseResult result = new ResponseResult();
+        String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
-        System.out.println(shopId);
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
-            result = viewGoodsAdvertService.findByShopId(shopId);
+            result = viewOrderService.addOrder(orderDtoList,openId,shopId);
         } catch (Exception e) {
             LOGGER.error("展示轮播图失败" + e.getMessage(), e);
             result.setCode(500);

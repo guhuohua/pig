@@ -40,11 +40,11 @@ public class ViewGoodsTypeController {
     public ResponseResult findTree(HttpServletRequest req){
         ResponseResult result = new ResponseResult();
         String token = req.getHeader("Authorization");
-        Integer userId = TokenUtil.getUserId(token);
+        Integer shopId = TokenUtil.getUserId(token);
        //Integer userId = 6;
         try {
-            User user = userMapper.selectByPrimaryKey(userId);
-            result = viewGoodsTypeService.findTree(user.getShopId());
+            //User user = userMapper.selectByPrimaryKey(shopId);
+            result = viewGoodsTypeService.findTree(shopId);
         } catch (Exception e) {
             LOGGER.error("展示类目失败" + e.getMessage(), e);
             result.setCode(500);

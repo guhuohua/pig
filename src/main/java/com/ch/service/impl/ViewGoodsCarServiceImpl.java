@@ -61,12 +61,12 @@ public class ViewGoodsCarServiceImpl implements ViewGoodsCarService {
 
         GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(goodsSkuAttribute.getSkuId());
 
-        totalFee=goodsSku.getPresentPrice()*num;
+       // totalFee=goodsSku.getPresentPrice()*num;
 
         Goods goods = goodsMapper.selectByPrimaryKey(goodsSkuAttribute.getGoodsId());
 
 
-        totalFee=goodsSku.getPresentPrice()*num;
+       // totalFee=goodsSku.getPresentPrice()*num;
         BigDecimal big = new BigDecimal(totalFee);
         GoodCar goodCar = new GoodCar();
         goodCar.setNum(num);

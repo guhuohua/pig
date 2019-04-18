@@ -28,14 +28,14 @@ public class ViewLoginController {
     ViewShopInfoService viewShopInfoService;
     @Autowired
     ViewUserInfoService viewUserInfoService;
-    @GetMapping("userInfo")
-    public ResponseResult parseUserInfo(String code, String appId){
+    //@GetMapping("userInfo")
+   /* public ResponseResult parseUserInfo(String code, String appId){
         ResponseResult result = new ResponseResult();
         ShopInfo shopInfo = viewShopInfoService.findShopInfoByAppId(appId);
 
         JSONObject res = WXUtil.getUserOpenId(appId, shopInfo.getSecret(), code);
         String openid = res.getString("openid");
-       // System.out.println(openid);
+        System.out.println(openid);
         try {
             //获取微信openid
             if (openid == null) {
@@ -53,7 +53,19 @@ public class ViewLoginController {
             e.printStackTrace();
         }
         return result;
+    }*/
+
+    @GetMapping("userInfo")
+    public ResponseResult parseUserInfo(String appId){
+        ResponseResult result = new ResponseResult();
+        ShopInfo shopInfo = viewShopInfoService.findShopInfoByAppId(appId);
+        String token = TokenUtil.sign(shopInfo.getShopId());
+        result.setData(token);
+        return  result;
+
     }
+
+
 }
 
 

@@ -1,5 +1,6 @@
 package com.ch.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Order {
@@ -17,11 +18,11 @@ public class Order {
 
     private Date modifyDate;
 
-    private Long orderPrice;
+    private BigDecimal orderPrice;
 
     private Date payDate;
 
-    private Long payPrice;
+    private BigDecimal payPrice;
 
     private String payType;
 
@@ -37,12 +38,16 @@ public class Order {
 
     private Integer deliveryId;
 
+    private String saleId;
+
+    private String trackNumber;
+
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.id = id == null ? null : id.trim();
     }
 
     public Integer getShopId() {
@@ -93,11 +98,11 @@ public class Order {
         this.modifyDate = modifyDate;
     }
 
-    public Long getOrderPrice() {
+    public BigDecimal getOrderPrice() {
         return orderPrice;
     }
 
-    public void setOrderPrice(Long orderPrice) {
+    public void setOrderPrice(BigDecimal orderPrice) {
         this.orderPrice = orderPrice;
     }
 
@@ -109,11 +114,11 @@ public class Order {
         this.payDate = payDate;
     }
 
-    public Long getPayPrice() {
+    public BigDecimal getPayPrice() {
         return payPrice;
     }
 
-    public void setPayPrice(Long payPrice) {
+    public void setPayPrice(BigDecimal payPrice) {
         this.payPrice = payPrice;
     }
 
@@ -171,5 +176,21 @@ public class Order {
 
     public void setDeliveryId(Integer deliveryId) {
         this.deliveryId = deliveryId;
+    }
+
+    public String getSaleId() {
+        return saleId;
+    }
+
+    public void setSaleId(String saleId) {
+        this.saleId = saleId == null ? null : saleId.trim();
+    }
+
+    public String getTrackNumber() {
+        return trackNumber;
+    }
+
+    public void setTrackNumber(String trackNumber) {
+        this.trackNumber = trackNumber == null ? null : trackNumber.trim();
     }
 }

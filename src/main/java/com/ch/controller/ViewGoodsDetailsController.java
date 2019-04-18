@@ -36,10 +36,10 @@ public class ViewGoodsDetailsController {
    public ResponseResult findGoodsDetailsByGoodsId(Integer goodsId, HttpServletRequest req){
        ResponseResult result = new ResponseResult();
        String token = req.getHeader("Authorization");
-       Integer userId = TokenUtil.getUserId(token);
+       Integer shopId = TokenUtil.getUserId(token);
        //Integer userId = 6;
        try {
-           result = viewGoodsDetailsService.findGoodsDetailsByGoodsId(goodsId,userId);
+           result = viewGoodsDetailsService.findGoodsDetailsByGoodsId(goodsId,shopId);
        } catch (Exception e) {
            LOGGER.error("展示商品详情" + e.getMessage(), e);
            result.setCode(500);

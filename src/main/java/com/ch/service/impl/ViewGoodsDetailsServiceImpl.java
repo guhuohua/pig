@@ -38,14 +38,14 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
     GoodsImageMapper goodsImageMapper;
 
     @Override
-    public ResponseResult findGoodsDetailsByGoodsId(Integer goodsId, Integer userId) {
-        SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
+    public ResponseResult findGoodsDetailsByGoodsId(Integer goodsId,Integer shopId) {
+        //SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         //商品详情的map
         Map goodsDetailsMap = new HashMap();
         //查询商品表
         Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
         goodsDetailsMap.put("goods", goods);
-        if (sysUser.getShopId() == goods.getShopId()) {
+        if (shopId == goods.getShopId()) {
             //查询sku列表
             GoodsSkuExample exampleSku = new GoodsSkuExample();
             GoodsSkuExample.Criteria criteria2 = exampleSku.createCriteria();

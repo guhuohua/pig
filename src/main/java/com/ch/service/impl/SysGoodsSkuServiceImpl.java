@@ -2,7 +2,6 @@ package com.ch.service.impl;
 
 import com.ch.base.BeanUtils;
 import com.ch.base.ResponseResult;
-import com.ch.dao.GoodsSkuMapper;
 import com.ch.dao.SpecificationAttributeMapper;
 import com.ch.dao.SpecificationMapper;
 import com.ch.dao.SysUserMapper;
