@@ -2,11 +2,11 @@ package com.ch.service.impl;
 
 import com.ch.base.ResponseResult;
 import com.ch.dao.SysUserMapper;
-import com.ch.dao.UserInfoMapper;
+import com.ch.dao.UserAddressMapper;
 import com.ch.dto.BaseParam;
 import com.ch.entity.SysUser;
-import com.ch.model.SysUserListDTO;
-import com.ch.service.SysShopUserService;
+import com.ch.model.SysUserAddressModel;
+import com.ch.service.SysUserAddressService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +15,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class SysShopUserServiceImpl implements SysShopUserService {
+public class SysUserAddressServiceImpl implements SysUserAddressService {
 
     @Autowired
-    UserInfoMapper userInfoMapper;
+    UserAddressMapper userAddressMapper;
 
     @Autowired
     SysUserMapper sysUserMapper;
@@ -28,8 +28,8 @@ public class SysShopUserServiceImpl implements SysShopUserService {
         ResponseResult result = new ResponseResult();
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         PageHelper.startPage(param.getCurrentPage(), param.getPageSize());
-        List<SysUserListDTO> userInfos = userInfoMapper.list(param.getName(), param.getPhone(), sysUser.getShopId());
-        PageInfo<SysUserListDTO> pageInfo = new PageInfo<>(userInfos);
+        List<SysUserAddressModel> list = userAddressMapper.list(param.getName(), param.getPhone(), sysUser.getShopId());
+        PageInfo<SysUserAddressModel> pageInfo = new PageInfo<>(list);
         result.setData(pageInfo);
         return result;
     }

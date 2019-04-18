@@ -1,9 +1,13 @@
 package com.ch.dao;
 
+import com.ch.dao.provider.UserInfoProvider;
 import com.ch.entity.UserInfo;
 import com.ch.entity.UserInfoExample;
 import java.util.List;
+
+import com.ch.model.SysUserListDTO;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.SelectProvider;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -29,4 +33,7 @@ public interface UserInfoMapper {
     int updateByPrimaryKeySelective(UserInfo record);
 
     int updateByPrimaryKey(UserInfo record);
+
+    @SelectProvider(type = UserInfoProvider.class, method = "getList")
+    List<SysUserListDTO> list(@Param("name") String name, @Param("tel") String tel, @Param("shopId") Integer shopId);
 }

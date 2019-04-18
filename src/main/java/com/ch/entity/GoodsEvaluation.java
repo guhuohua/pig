@@ -25,6 +25,16 @@ public class GoodsEvaluation {
 
     private Integer orderId;
 
+    private String reply;
+
+    public String getReply() {
+        return reply;
+    }
+
+    public void setReply(String reply) {
+        this.reply = reply;
+    }
+
     public Integer getId() {
         return id;
     }

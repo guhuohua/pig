@@ -1,10 +1,16 @@
 package com.ch.dao;
 
+import com.ch.dao.provider.UserAddressProvider;
 import com.ch.entity.UserAddress;
 import com.ch.entity.UserAddressExample;
 import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
+import com.ch.model.SysUserAddressModel;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.SelectProvider;
+import org.springframework.stereotype.Repository;
+
+@Repository
 public interface UserAddressMapper {
     int countByExample(UserAddressExample example);
 
@@ -27,4 +33,8 @@ public interface UserAddressMapper {
     int updateByPrimaryKeySelective(UserAddress record);
 
     int updateByPrimaryKey(UserAddress record);
+
+
+    @SelectProvider(type = UserAddressProvider.class, method = "getList")
+    List<SysUserAddressModel> list(@Param("name") String name, @Param("tel") String tel, @Param("shopId") Integer shopId);
 }
