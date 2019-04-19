@@ -74,12 +74,13 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                 goods.setSale(goodsSku.getSale() + 1);
                 goodsMapper.updateByPrimaryKey(goods);
                 //Goods goods1 = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
-                //orderItem.setName(goods.getName());
+                orderItem.setName(orderDto.getName());
                 orderItem.setGoodsName(goodsSku.getSkuName());
                 orderItem.setNumber(orderDto.getNum());
-                orderItem.setPrice(goodsSku.getPresentPrice());
+                orderItem.setPrice(goodsSku.getPresentPrice()*orderDto.getNum());
                 orderItem.setOrderId(order.getId());
                 orderItem.setShopId(shopId);
+                orderItem.setSkuAttrId(orderDto.getGoodsSku().getId());
 
                 orderItemMapper.insert(orderItem);
             }
@@ -130,20 +131,15 @@ public class ViewOrderServiceImpl implements ViewOrderService {
         OrderItemExample.Criteria criteria = example.createCriteria();
         criteria.andOrderIdEqualTo(orderId);
 
-        List<OrderItem> orderItems = orderItemMapper.selectByExample(example);
-        Goods goods = null;
-        if (orderItems.size()>0){
-           for (OrderItem orderItem : orderItems){
-               goods  = goodsMapper.selectByPrimaryKey(orderItem.getGoodsId());
-           }
+        List<OrderItem>  orderItems = orderItemMapper.selectByExample(example);
 
-       }
+
 
         map.put("userAddresses1", userAddresses1);
         //map.put("userAddress", userAddress);
         map.put("order", order);
         map.put("orderItems", orderItems);
-        map.put("name",goods.getName());
+
         ResponseResult result = new ResponseResult();
         result.setData(map);
         return result;
