@@ -71,7 +71,6 @@ public class ViewGoodsCarController {
             result.setError_description("展示购物车失败");
         }
         return result;
-
     }
 
 

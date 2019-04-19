@@ -124,7 +124,7 @@
   <insert id="insert" parameterType="com.ch.entity.Goods" useGeneratedKeys="true" keyProperty="id">
     insert into goods (id, shop_id, status, 
       create_time, update_time, del_flag, 
-      title, desc, recommend, 
+      title, `desc`, recommend,
       sale, sort, type, inventory, 
       original_price, present_price, sn, 
       member_discount, limit_buy, sales_volume, 
@@ -489,7 +489,7 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       del_flag = #{delFlag,jdbcType=INTEGER},
       title = #{title,jdbcType=VARCHAR},
-      desc = #{desc,jdbcType=VARCHAR},
+      `desc` = #{desc,jdbcType=VARCHAR},
       recommend = #{recommend,jdbcType=INTEGER},
       sale = #{sale,jdbcType=INTEGER},
       sort = #{sort,jdbcType=INTEGER},

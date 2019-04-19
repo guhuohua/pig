@@ -1,10 +1,12 @@
-package mapper;
+package com.ch.dao;
 
 import com.ch.entity.GoodsOrder;
 import com.ch.entity.GoodsOrderExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface GoodsOrderMapper {
     int countByExample(GoodsOrderExample example);
 
