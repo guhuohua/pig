@@ -1,9 +1,8 @@
 package com.ch.entity;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
-public class Order {
+public class GoodsOrder {
     private String id;
 
     private Integer shopId;

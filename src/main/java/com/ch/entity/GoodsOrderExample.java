@@ -1,18 +1,17 @@
 package com.ch.entity;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class OrderExample {
+public class GoodsOrderExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public OrderExample() {
+    public GoodsOrderExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -546,52 +545,52 @@ public class OrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andOrderPriceEqualTo(BigDecimal value) {
+        public Criteria andOrderPriceEqualTo(Long value) {
             addCriterion("order_price =", value, "orderPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOrderPriceNotEqualTo(BigDecimal value) {
+        public Criteria andOrderPriceNotEqualTo(Long value) {
             addCriterion("order_price <>", value, "orderPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOrderPriceGreaterThan(BigDecimal value) {
+        public Criteria andOrderPriceGreaterThan(Long value) {
             addCriterion("order_price >", value, "orderPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOrderPriceGreaterThanOrEqualTo(BigDecimal value) {
+        public Criteria andOrderPriceGreaterThanOrEqualTo(Long value) {
             addCriterion("order_price >=", value, "orderPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOrderPriceLessThan(BigDecimal value) {
+        public Criteria andOrderPriceLessThan(Long value) {
             addCriterion("order_price <", value, "orderPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOrderPriceLessThanOrEqualTo(BigDecimal value) {
+        public Criteria andOrderPriceLessThanOrEqualTo(Long value) {
             addCriterion("order_price <=", value, "orderPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOrderPriceIn(List<BigDecimal> values) {
+        public Criteria andOrderPriceIn(List<Long> values) {
             addCriterion("order_price in", values, "orderPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOrderPriceNotIn(List<BigDecimal> values) {
+        public Criteria andOrderPriceNotIn(List<Long> values) {
             addCriterion("order_price not in", values, "orderPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOrderPriceBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andOrderPriceBetween(Long value1, Long value2) {
             addCriterion("order_price between", value1, value2, "orderPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOrderPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andOrderPriceNotBetween(Long value1, Long value2) {
             addCriterion("order_price not between", value1, value2, "orderPrice");
             return (Criteria) this;
         }
@@ -666,52 +665,52 @@ public class OrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andPayPriceEqualTo(BigDecimal value) {
+        public Criteria andPayPriceEqualTo(Long value) {
             addCriterion("pay_price =", value, "payPrice");
             return (Criteria) this;
         }
 
-        public Criteria andPayPriceNotEqualTo(BigDecimal value) {
+        public Criteria andPayPriceNotEqualTo(Long value) {
             addCriterion("pay_price <>", value, "payPrice");
             return (Criteria) this;
         }
 
-        public Criteria andPayPriceGreaterThan(BigDecimal value) {
+        public Criteria andPayPriceGreaterThan(Long value) {
             addCriterion("pay_price >", value, "payPrice");
             return (Criteria) this;
         }
 
-        public Criteria andPayPriceGreaterThanOrEqualTo(BigDecimal value) {
+        public Criteria andPayPriceGreaterThanOrEqualTo(Long value) {
             addCriterion("pay_price >=", value, "payPrice");
             return (Criteria) this;
         }
 
-        public Criteria andPayPriceLessThan(BigDecimal value) {
+        public Criteria andPayPriceLessThan(Long value) {
             addCriterion("pay_price <", value, "payPrice");
             return (Criteria) this;
         }
 
-        public Criteria andPayPriceLessThanOrEqualTo(BigDecimal value) {
+        public Criteria andPayPriceLessThanOrEqualTo(Long value) {
             addCriterion("pay_price <=", value, "payPrice");
             return (Criteria) this;
         }
 
-        public Criteria andPayPriceIn(List<BigDecimal> values) {
+        public Criteria andPayPriceIn(List<Long> values) {
             addCriterion("pay_price in", values, "payPrice");
             return (Criteria) this;
         }
 
-        public Criteria andPayPriceNotIn(List<BigDecimal> values) {
+        public Criteria andPayPriceNotIn(List<Long> values) {
             addCriterion("pay_price not in", values, "payPrice");
             return (Criteria) this;
         }
 
-        public Criteria andPayPriceBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andPayPriceBetween(Long value1, Long value2) {
             addCriterion("pay_price between", value1, value2, "payPrice");
             return (Criteria) this;
         }
 
-        public Criteria andPayPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andPayPriceNotBetween(Long value1, Long value2) {
             addCriterion("pay_price not between", value1, value2, "payPrice");
             return (Criteria) this;
         }
