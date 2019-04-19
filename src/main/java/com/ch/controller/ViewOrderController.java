@@ -13,18 +13,19 @@ import com.ch.dto.OrderDto;
 import com.ch.entity.User;
 import com.ch.service.ViewOrderService;
 import com.ch.util.TokenUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
 @RequestMapping("order")
+@Api(value = "订单",description = "订单")
 public class ViewOrderController {
 
 
@@ -37,7 +38,8 @@ public class ViewOrderController {
 
 
     @PostMapping("addOrder")
-    public ResponseResult addOrder( HttpServletRequest req, OrderDto[] orderDtoList ){
+    @ApiOperation("添加订单")
+    public ResponseResult addOrder( HttpServletRequest req, @RequestBody OrderDto[] orderDtoList ){
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
@@ -53,4 +55,47 @@ public class ViewOrderController {
         }
         return result;
     }
+
+
+    @GetMapping("showOrder")
+    @ApiOperation("展示订单")
+    public ResponseResult showOrder( HttpServletRequest req,@RequestParam String orderId){
+        ResponseResult result = new ResponseResult();
+        String openId = req.getHeader("openId");
+        String token = req.getHeader("Authorization");
+        Integer shopId = TokenUtil.getUserId(token);
+        try {
+            //User user = userMapper.selectByPrimaryKey(userId);
+            result = viewOrderService.showOrder(orderId,  openId);
+        } catch (Exception e) {
+            LOGGER.error("展示订单失败" + e.getMessage(), e);
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("展示订单失败");
+        }
+        return result;
+    }
+
+
+    @PostMapping("updateOrder")
+    @ApiOperation("修改订单")
+    public ResponseResult updateOrder( HttpServletRequest req,@RequestBody OrderDto orderDto ){
+        ResponseResult result = new ResponseResult();
+        String openId = req.getHeader("openId");
+        String token = req.getHeader("Authorization");
+        Integer shopId = TokenUtil.getUserId(token);
+        try {
+            //User user = userMapper.selectByPrimaryKey(userId);
+            result = viewOrderService.updateOrder(orderDto);
+        } catch (Exception e) {
+            LOGGER.error("修改失败" + e.getMessage(), e);
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("展示修改失败");
+        }
+        return result;
+    }
+
+
+
 }

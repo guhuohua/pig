@@ -2,7 +2,7 @@ package com.ch.service.impl;
 
 import com.ch.base.BeanUtils;
 import com.ch.base.ResponseResult;
-import com.ch.dao.OrderMapper;
+import com.ch.dao.GoodsOrderMapper;
 import com.ch.dao.SysUserMapper;
 import com.ch.dao.UserInfoMapper;
 import com.ch.dto.DeliverGoodsParam;
@@ -26,7 +26,7 @@ public class SysOrderServiceImpl implements SysOrderService {
     SysUserMapper sysUserMapper;
 
     @Autowired
-    OrderMapper orderMapper;
+    GoodsOrderMapper orderMapper;
 
     @Autowired
     UserInfoMapper userInfoMapper;
@@ -35,8 +35,8 @@ public class SysOrderServiceImpl implements SysOrderService {
     public ResponseResult list(SysOrderParam param, Integer userId) {
         ResponseResult result = new ResponseResult();
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
-        OrderExample orderExample = new OrderExample();
-        OrderExample.Criteria criteria = orderExample.createCriteria();
+        GoodsOrderExample orderExample = new GoodsOrderExample();
+        GoodsOrderExample.Criteria criteria = orderExample.createCriteria();
         criteria.andShopIdEqualTo(sysUser.getShopId());
         if (BeanUtils.isNotEmpty(param.getName())) {
             UserInfoExample userInfoExample = new UserInfoExample();
@@ -59,8 +59,8 @@ public class SysOrderServiceImpl implements SysOrderService {
             criteria.andCreateDateLessThanOrEqualTo(new Date(param.getEndDate()));
         }
         PageHelper.startPage(param.getCurrentPage(), param.getPageSize());
-        List<Order> orders = orderMapper.selectByExample(orderExample);
-        PageInfo<Order> pageInfo = new PageInfo<>(orders);
+        List<GoodsOrder> orders = orderMapper.selectByExample(orderExample);
+        PageInfo<GoodsOrder> pageInfo = new PageInfo<>(orders);
         result.setData(pageInfo);
         return result;
     }
@@ -69,12 +69,12 @@ public class SysOrderServiceImpl implements SysOrderService {
     public ResponseResult deliverGoods(DeliverGoodsParam param, Integer userId) {
         ResponseResult result = new ResponseResult();
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
-        OrderExample orderExample = new OrderExample();
-        OrderExample.Criteria criteria = orderExample.createCriteria();
+        GoodsOrderExample orderExample = new GoodsOrderExample();
+        GoodsOrderExample.Criteria criteria = orderExample.createCriteria();
         criteria.andShopIdEqualTo(sysUser.getShopId()).andIdEqualTo(param.getOrderId());
-        List<Order> orders = orderMapper.selectByExample(orderExample);
+        List<GoodsOrder> orders = orderMapper.selectByExample(orderExample);
         if (orders.stream().findFirst().isPresent()) {
-            Order order = orders.stream().findFirst().get();
+            GoodsOrder order = orders.stream().findFirst().get();
             order.setTrackNumber(param.getExpressCode());
             order.setModifyDate(new Date());
             order.setOrderStatus(Integer.valueOf(OderStatusEnum.SHIPPED.code));

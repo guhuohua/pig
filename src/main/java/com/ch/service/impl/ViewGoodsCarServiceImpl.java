@@ -86,9 +86,7 @@ public class ViewGoodsCarServiceImpl implements ViewGoodsCarService {
             carDto.setGoodsSku(goodsSku);
             carDto.setNum(goodsCar.getNum());
             carDto.setName(goods.getName());
-
             list.add(carDto);
-
         }
 
         ResponseResult result = new ResponseResult();

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ch.dao.OrderMapper" >
-  <resultMap id="BaseResultMap" type="com.ch.entity.Order" >
+<mapper namespace="com.ch.dao.GoodsOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.ch.entity.GoodsOrder" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="shop_id" property="shopId" jdbcType="INTEGER" />
     <result column="user_id" property="userId" jdbcType="INTEGER" />
@@ -9,9 +9,9 @@
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
     <result column="delivery_date" property="deliveryDate" jdbcType="TIMESTAMP" />
     <result column="modify_date" property="modifyDate" jdbcType="TIMESTAMP" />
-    <result column="order_price" property="orderPrice" jdbcType="DECIMAL" />
+    <result column="order_price" property="orderPrice" jdbcType="BIGINT" />
     <result column="pay_date" property="payDate" jdbcType="TIMESTAMP" />
-    <result column="pay_price" property="payPrice" jdbcType="DECIMAL" />
+    <result column="pay_price" property="payPrice" jdbcType="BIGINT" />
     <result column="pay_type" property="payType" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="INTEGER" />
@@ -85,14 +85,14 @@
     pay_date, pay_price, pay_type, remark, status, pay_id, take_date, order_type, delivery_id, 
     sale_id, track_number
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.OrderExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.GoodsOrderExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     'true' as QUERYID,
     <include refid="Base_Column_List" />
-    from order
+    from goods_order
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -103,21 +103,21 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
-    from order
+    from goods_order
     where id = #{id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from order
+    delete from goods_order
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="com.ch.entity.OrderExample" >
-    delete from order
+  <delete id="deleteByExample" parameterType="com.ch.entity.GoodsOrderExample" >
+    delete from goods_order
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.ch.entity.Order" >
-    insert into order (id, shop_id, user_id, 
+  <insert id="insert" parameterType="com.ch.entity.GoodsOrder" >
+    insert into goods_order (id, shop_id, user_id, 
       order_status, create_date, delivery_date, 
       modify_date, order_price, pay_date, 
       pay_price, pay_type, remark, 
@@ -126,14 +126,14 @@
       track_number)
     values (#{id,jdbcType=VARCHAR}, #{shopId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
       #{orderStatus,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{deliveryDate,jdbcType=TIMESTAMP}, 
-      #{modifyDate,jdbcType=TIMESTAMP}, #{orderPrice,jdbcType=DECIMAL}, #{payDate,jdbcType=TIMESTAMP}, 
-      #{payPrice,jdbcType=DECIMAL}, #{payType,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{modifyDate,jdbcType=TIMESTAMP}, #{orderPrice,jdbcType=BIGINT}, #{payDate,jdbcType=TIMESTAMP}, 
+      #{payPrice,jdbcType=BIGINT}, #{payType,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{status,jdbcType=INTEGER}, #{payId,jdbcType=VARCHAR}, #{takeDate,jdbcType=TIMESTAMP}, 
       #{orderType,jdbcType=VARCHAR}, #{deliveryId,jdbcType=INTEGER}, #{saleId,jdbcType=VARCHAR}, 
       #{trackNumber,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.ch.entity.Order" >
-    insert into order
+  <insert id="insertSelective" parameterType="com.ch.entity.GoodsOrder" >
+    insert into goods_order
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
@@ -216,13 +216,13 @@
         #{modifyDate,jdbcType=TIMESTAMP},
       </if>
       <if test="orderPrice != null" >
-        #{orderPrice,jdbcType=DECIMAL},
+        #{orderPrice,jdbcType=BIGINT},
       </if>
       <if test="payDate != null" >
         #{payDate,jdbcType=TIMESTAMP},
       </if>
       <if test="payPrice != null" >
-        #{payPrice,jdbcType=DECIMAL},
+        #{payPrice,jdbcType=BIGINT},
       </if>
       <if test="payType != null" >
         #{payType,jdbcType=VARCHAR},
@@ -253,14 +253,14 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.ch.entity.OrderExample" resultType="java.lang.Integer" >
-    select count(*) from order
+  <select id="countByExample" parameterType="com.ch.entity.GoodsOrderExample" resultType="java.lang.Integer" >
+    select count(*) from goods_order
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update order
+    update goods_order
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=VARCHAR},
@@ -284,13 +284,13 @@
         modify_date = #{record.modifyDate,jdbcType=TIMESTAMP},
       </if>
       <if test="record.orderPrice != null" >
-        order_price = #{record.orderPrice,jdbcType=DECIMAL},
+        order_price = #{record.orderPrice,jdbcType=BIGINT},
       </if>
       <if test="record.payDate != null" >
         pay_date = #{record.payDate,jdbcType=TIMESTAMP},
       </if>
       <if test="record.payPrice != null" >
-        pay_price = #{record.payPrice,jdbcType=DECIMAL},
+        pay_price = #{record.payPrice,jdbcType=BIGINT},
       </if>
       <if test="record.payType != null" >
         pay_type = #{record.payType,jdbcType=VARCHAR},
@@ -325,7 +325,7 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update order
+    update goods_order
     set id = #{record.id,jdbcType=VARCHAR},
       shop_id = #{record.shopId,jdbcType=INTEGER},
       user_id = #{record.userId,jdbcType=INTEGER},
@@ -333,9 +333,9 @@
       create_date = #{record.createDate,jdbcType=TIMESTAMP},
       delivery_date = #{record.deliveryDate,jdbcType=TIMESTAMP},
       modify_date = #{record.modifyDate,jdbcType=TIMESTAMP},
-      order_price = #{record.orderPrice,jdbcType=DECIMAL},
+      order_price = #{record.orderPrice,jdbcType=BIGINT},
       pay_date = #{record.payDate,jdbcType=TIMESTAMP},
-      pay_price = #{record.payPrice,jdbcType=DECIMAL},
+      pay_price = #{record.payPrice,jdbcType=BIGINT},
       pay_type = #{record.payType,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=INTEGER},
@@ -349,8 +349,8 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.ch.entity.Order" >
-    update order
+  <update id="updateByPrimaryKeySelective" parameterType="com.ch.entity.GoodsOrder" >
+    update goods_order
     <set >
       <if test="shopId != null" >
         shop_id = #{shopId,jdbcType=INTEGER},
@@ -371,13 +371,13 @@
         modify_date = #{modifyDate,jdbcType=TIMESTAMP},
       </if>
       <if test="orderPrice != null" >
-        order_price = #{orderPrice,jdbcType=DECIMAL},
+        order_price = #{orderPrice,jdbcType=BIGINT},
       </if>
       <if test="payDate != null" >
         pay_date = #{payDate,jdbcType=TIMESTAMP},
       </if>
       <if test="payPrice != null" >
-        pay_price = #{payPrice,jdbcType=DECIMAL},
+        pay_price = #{payPrice,jdbcType=BIGINT},
       </if>
       <if test="payType != null" >
         pay_type = #{payType,jdbcType=VARCHAR},
@@ -409,17 +409,17 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.ch.entity.Order" >
-    update order
+  <update id="updateByPrimaryKey" parameterType="com.ch.entity.GoodsOrder" >
+    update goods_order
     set shop_id = #{shopId,jdbcType=INTEGER},
       user_id = #{userId,jdbcType=INTEGER},
       order_status = #{orderStatus,jdbcType=INTEGER},
       create_date = #{createDate,jdbcType=TIMESTAMP},
       delivery_date = #{deliveryDate,jdbcType=TIMESTAMP},
       modify_date = #{modifyDate,jdbcType=TIMESTAMP},
-      order_price = #{orderPrice,jdbcType=DECIMAL},
+      order_price = #{orderPrice,jdbcType=BIGINT},
       pay_date = #{payDate,jdbcType=TIMESTAMP},
-      pay_price = #{payPrice,jdbcType=DECIMAL},
+      pay_price = #{payPrice,jdbcType=BIGINT},
       pay_type = #{payType,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},

@@ -25,7 +25,7 @@ import java.util.*;
 public class ViewOrderServiceImpl implements ViewOrderService {
 
     @Autowired
-    OrderMapper orderMapper;
+    GoodsOrderMapper orderMapper;
 
     @Autowired
     OrderItemMapper orderItemMapper;
@@ -48,39 +48,54 @@ public class ViewOrderServiceImpl implements ViewOrderService {
 
         Long totalFee = 0l;
         Long orderFee = 0l;
-        Order order = new Order();
+        GoodsOrder order = new GoodsOrder();
+        UserInfoExample example = new UserInfoExample();
+        UserInfoExample.Criteria criteria = example.createCriteria();
+        criteria.andOpenIdEqualTo(openId);
+        List<UserInfo> userInfos = userInfoMapper.selectByExample(example);
+        UserInfo userInfo = null;
+        if (userInfos.size()>0){
+             userInfo = userInfos.get(0);
+        }
         order.setId(System.currentTimeMillis() + RandomUtils.getRandomNumber(6));
-        order.setShopId(shopId);
-        order.setStatus(1);
-        order.setCreateDate(new Date());
-//        order.setOrderPrice(orderFee);
+
         if (orderDtoList.length > 0) {
             for (OrderDto orderDto : orderDtoList) {
-                GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderDto.getSkuId());
+                GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderDto.getGoodsSku().getId());
                 Goods goods = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
                 goodsSku.setInventory(goodsSku.getInventory() - 1);
                 goodsSku.setSale(goodsSku.getSale() + 1);
                 goodsSkuMapper.updateByPrimaryKey(goodsSku);
                 totalFee = (goodsSku.getPresentPrice() * orderDto.getNum())+goods.getFreight();
                 orderFee += totalFee;
-
                 OrderItem orderItem = new OrderItem();
                 orderItem.setGoodsId(goodsSku.getGoodsId());
-
-
                 goods.setInventory(goodsSku.getInventory() - 1);
                 goods.setSale(goodsSku.getSale() + 1);
                 goodsMapper.updateByPrimaryKey(goods);
+                //Goods goods1 = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
+                //orderItem.setName(goods.getName());
                 orderItem.setGoodsName(goodsSku.getSkuName());
                 orderItem.setNumber(orderDto.getNum());
                 orderItem.setPrice(goodsSku.getPresentPrice());
                 orderItem.setOrderId(order.getId());
                 orderItem.setShopId(shopId);
+
                 orderItemMapper.insert(orderItem);
             }
+
+            order.setUserId(userInfo.getId());
+            order.setShopId(shopId);
+            order.setOrderStatus(1);
+            order.setStatus(0);
+            order.setCreateDate(new Date());
+            order.setOrderPrice(orderFee);
+            orderMapper.insert(order);
         }
-        orderMapper.insert(order);
+
+
         ResponseResult result = new ResponseResult();
+        result.setData(order.getId());
         return result;
     }
 
@@ -92,7 +107,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
         criteria1.andOpenIdEqualTo(openId);
         List<UserInfo> userInfos = userInfoMapper.selectByExample(exampleInfo);
         List<UserAddress> userAddresses1 = new ArrayList<>();
-        List<UserAddress> userAddresses = new ArrayList<>();
+        //List<UserAddress> userAddresses = new ArrayList<>();
         UserAddress userAddress = null;
         if (userInfos.size() > 0) {
             UserInfo userInfo = userInfos.get(0);
@@ -101,24 +116,34 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             criteria.andUserIdEqualTo(userInfo.getId());
             userAddresses1 = userAddressMapper.selectByExample(exampleAddress);
 
-            UserAddressExample exampleAddress1 = new UserAddressExample();
+           /* UserAddressExample exampleAddress1 = new UserAddressExample();
             UserAddressExample.Criteria criteria2 = exampleAddress.createCriteria();
-            criteria.andUserIdEqualTo(userInfo.getId());
-            criteria.andStatusEqualTo(0);
+            criteria2.andUserIdEqualTo(userInfo.getId());
+            criteria2.andStatusEqualTo(0);
             userAddresses = userAddressMapper.selectByExample(exampleAddress1);
             if (userAddresses.size() > 0) {
                 userAddress = userAddresses.get(0);
-            }
+            }*/
         }
-        Order order = orderMapper.selectByPrimaryKey(orderId);
+        GoodsOrder order = orderMapper.selectByPrimaryKey(orderId);
         OrderItemExample example = new OrderItemExample();
         OrderItemExample.Criteria criteria = example.createCriteria();
         criteria.andOrderIdEqualTo(orderId);
+
         List<OrderItem> orderItems = orderItemMapper.selectByExample(example);
+        Goods goods = null;
+        if (orderItems.size()>0){
+           for (OrderItem orderItem : orderItems){
+               goods  = goodsMapper.selectByPrimaryKey(orderItem.getGoodsId());
+           }
+
+       }
+
         map.put("userAddresses1", userAddresses1);
-        map.put("userAddress", userAddress);
+        //map.put("userAddress", userAddress);
         map.put("order", order);
         map.put("orderItems", orderItems);
+        map.put("name",goods.getName());
         ResponseResult result = new ResponseResult();
         result.setData(map);
         return result;
@@ -128,9 +153,8 @@ public class ViewOrderServiceImpl implements ViewOrderService {
     public ResponseResult updateOrder(OrderDto orderDto) {
         orderMapper.updateByPrimaryKey(orderDto.getOrder());
         userAddressMapper.updateByPrimaryKey(orderDto.getUserAddress());
-
-
-        return null;
+        ResponseResult result = new ResponseResult();
+        return result;
     }
 
 
