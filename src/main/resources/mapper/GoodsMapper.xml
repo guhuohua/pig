@@ -26,6 +26,7 @@
     <result column="key_words" property="keyWords" jdbcType="VARCHAR" />
     <result column="freight" property="freight" jdbcType="DECIMAL" />
     <result column="units" property="units" jdbcType="VARCHAR" />
+    <result column="goods_img_url" property="goodsImgUrl" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -88,7 +89,7 @@
   <sql id="Base_Column_List" >
     id, shop_id, status, create_time, update_time, del_flag, title, 'desc', recommend,
     sale, sort, type, inventory, original_price, present_price, sn, member_discount,
-    limit_buy, sales_volume, name, catrgory_id, key_words, freight, units
+    limit_buy, sales_volume, name, catrgory_id, key_words, freight, units,goods_img_url
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.GoodsExample" >
     select
@@ -129,7 +130,7 @@
       original_price, present_price, sn, 
       member_discount, limit_buy, sales_volume, 
       name, catrgory_id, key_words, 
-      freight, units)
+      freight, units,goods_img_url)
     values (#{id,jdbcType=INTEGER}, #{shopId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=INTEGER}, 
       #{title,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, #{recommend,jdbcType=INTEGER}, 
@@ -137,7 +138,7 @@
       #{originalPrice,jdbcType=DECIMAL}, #{presentPrice,jdbcType=DECIMAL}, #{sn,jdbcType=VARCHAR}, 
       #{memberDiscount,jdbcType=INTEGER}, #{limitBuy,jdbcType=INTEGER}, #{salesVolume,jdbcType=INTEGER}, 
       #{name,jdbcType=VARCHAR}, #{catrgoryId,jdbcType=INTEGER}, #{keyWords,jdbcType=VARCHAR}, 
-      #{freight,jdbcType=DECIMAL}, #{units,jdbcType=VARCHAR})
+      #{freight,jdbcType=DECIMAL}, #{units,jdbcType=VARCHAR}, #{goodsImgUrl,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.ch.entity.Goods" >
     insert into goods
@@ -401,7 +402,8 @@
       catrgory_id = #{record.catrgoryId,jdbcType=INTEGER},
       key_words = #{record.keyWords,jdbcType=VARCHAR},
       freight = #{record.freight,jdbcType=DECIMAL},
-      units = #{record.units,jdbcType=VARCHAR}
+      units = #{record.units,jdbcType=VARCHAR},
+        goods_img_url = #{record.goodsImgUrl,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -505,7 +507,8 @@
       catrgory_id = #{catrgoryId,jdbcType=INTEGER},
       key_words = #{keyWords,jdbcType=VARCHAR},
       freight = #{freight,jdbcType=DECIMAL},
-      units = #{units,jdbcType=VARCHAR}
+      units = #{units,jdbcType=VARCHAR},
+      goods_img_url = #{record.goodsImgUrl,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

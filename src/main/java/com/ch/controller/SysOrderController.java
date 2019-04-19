@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Scanner;
 
 @RestController
 @RequestMapping("sys_order")
@@ -37,6 +36,23 @@ public class SysOrderController {
             result.setCode(500);
             result.setError(e.getMessage());
             result.setError_description("获取订单列表失败，请稍后重试");
+        }
+        return result;
+    }
+
+    @GetMapping("detail")
+    public ResponseResult detail(HttpServletRequest req, String orderId) {
+        ResponseResult result = new ResponseResult();
+        try {
+            String token = req.getHeader("Authorization");
+            Integer userId = TokenUtil.getUserId(token);
+            result =  sysOrderService.detail(orderId, userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("获取订单详情失败，请稍后重试");
         }
         return result;
     }
