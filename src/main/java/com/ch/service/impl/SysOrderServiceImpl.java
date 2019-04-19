@@ -82,4 +82,12 @@ public class SysOrderServiceImpl implements SysOrderService {
         }
         return result;
     }
+
+    @Override
+    public ResponseResult detail(String oderId, Integer userId) {
+        ResponseResult result = new ResponseResult();
+        SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
+
+        return result;
+    }
 }

@@ -29,4 +29,5 @@ public class SysGoodsSkuModel {
 
     private Integer goodsId;
 
+    private String skuName;
 }

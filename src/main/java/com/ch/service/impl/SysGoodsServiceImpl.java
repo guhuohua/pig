@@ -171,15 +171,16 @@ public class SysGoodsServiceImpl implements SysGoodsService {
             goods.setShopId(sysUser.getShopId());
             goods.setCreateTime(new Date());
             goodsMapper.insert(goods);
-            GoodsSku sku = new GoodsSku();
             List<SysGoodsSkuModel> sysGoodsSkuModelList = model.getSysGoodsSkuModelList();
             for (SysGoodsSkuModel skuModel:sysGoodsSkuModelList) {
+                GoodsSku sku = new GoodsSku();
                 modelMapper.map(skuModel, sku);
                 sku.setCreateTime(new Date());
                 sku.setGoodsId(goods.getId());
                 sku.setSn(sn.toString());
                 sku.setStatus(0);
                 sku.setShopId(sysUser.getShopId());
+                sku.setSkuName(sku.getSkuName());
                 goodsSkuMapper.insert(sku);
             }
             for (SysGoodsImageModel sysGoodsImageModel:model.getGoodsImageModelList()) {
@@ -190,18 +191,6 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                 goodsImage.setCreateTime(new Date());
                 goodsImage.setGoodsId(goods.getId());
                 goodsImageMapper.insert(goodsImage);
-            }
-            for (SysGoodsSkuId sysGoodsSkuId:model.getSysGoodsSkuIds()) {
-                for (Integer id:sysGoodsSkuId.getSpecificationAttrId()) {
-                    GoodsSkuAttribute goodsSkuAttribute = new GoodsSkuAttribute();
-                    goodsSkuAttribute.setCreateDate(new Date());
-                    goodsSkuAttribute.setShopId(sysUser.getShopId());
-                    goodsSkuAttribute.setSkuId(sku.getId());
-                    goodsSkuAttribute.setSpecificationId(sysGoodsSkuId.getSpecificationId());
-                    goodsSkuAttribute.setSpecificationAttributeId(id);
-                    goodsSkuAttribute.setGoodsId(goods.getId());
-                    goodsSkuAttributeMapper.insert(goodsSkuAttribute);
-                }
             }
         } else {
             GoodsExample goodsExample = new GoodsExample();
@@ -228,15 +217,17 @@ public class SysGoodsServiceImpl implements SysGoodsService {
             goodsSkuAttributeExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andGoodsIdEqualTo(model.getId());
             goodsSkuAttributeMapper.deleteByExample(goodsSkuAttributeExample);
 
-            GoodsSku sku = new GoodsSku();
+
             List<SysGoodsSkuModel> sysGoodsSkuModelList = model.getSysGoodsSkuModelList();
             for (SysGoodsSkuModel skuModel:sysGoodsSkuModelList) {
+                GoodsSku sku = new GoodsSku();
                 modelMapper.map(skuModel, sku);
                 sku.setCreateTime(new Date());
                 sku.setGoodsId(model.getId());
                 sku.setSn(model.getSn());
                 sku.setStatus(0);
                 sku.setShopId(sysUser.getShopId());
+                sku.setSkuName(sku.getSkuName());
                 goodsSkuMapper.insert(sku);
             }
             for (SysGoodsImageModel sysGoodsImageModel:model.getGoodsImageModelList()) {
@@ -247,18 +238,6 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                 goodsImage.setCreateTime(new Date());
                 goodsImage.setGoodsId(model.getId());
                 goodsImageMapper.insert(goodsImage);
-            }
-            for (SysGoodsSkuId sysGoodsSkuId:model.getSysGoodsSkuIds()) {
-                for (Integer id:sysGoodsSkuId.getSpecificationAttrId()) {
-                    GoodsSkuAttribute goodsSkuAttribute = new GoodsSkuAttribute();
-                    goodsSkuAttribute.setCreateDate(new Date());
-                    goodsSkuAttribute.setShopId(sysUser.getShopId());
-                    goodsSkuAttribute.setSkuId(sku.getId());
-                    goodsSkuAttribute.setSpecificationId(sysGoodsSkuId.getSpecificationId());
-                    goodsSkuAttribute.setSpecificationAttributeId(id);
-                    goodsSkuAttribute.setGoodsId(model.getId());
-                    goodsSkuAttributeMapper.insert(goodsSkuAttribute);
-                }
             }
         }
         return result;

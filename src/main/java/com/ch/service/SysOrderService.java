@@ -22,4 +22,12 @@ public interface SysOrderService {
      */
     ResponseResult deliverGoods(DeliverGoodsParam param, Integer userId);
 
+
+    /**
+     * 订单详情
+     * @param oderId
+     * @param userId
+     * @return
+     */
+    ResponseResult detail(String oderId, Integer userId);
 }
