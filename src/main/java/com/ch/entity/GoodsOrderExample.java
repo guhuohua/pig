@@ -1175,73 +1175,73 @@ public class GoodsOrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andSaleIdIsNull() {
-            addCriterion("sale_id is null");
+        public Criteria andRefundIdIsNull() {
+            addCriterion("refund_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andSaleIdIsNotNull() {
-            addCriterion("sale_id is not null");
+        public Criteria andRefundIdIsNotNull() {
+            addCriterion("refund_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSaleIdEqualTo(String value) {
-            addCriterion("sale_id =", value, "saleId");
+        public Criteria andRefundIdEqualTo(String value) {
+            addCriterion("refund_id =", value, "saleId");
             return (Criteria) this;
         }
 
-        public Criteria andSaleIdNotEqualTo(String value) {
-            addCriterion("sale_id <>", value, "saleId");
+        public Criteria andRefundIdNotEqualTo(String value) {
+            addCriterion("refund_id <>", value, "saleId");
             return (Criteria) this;
         }
 
-        public Criteria andSaleIdGreaterThan(String value) {
-            addCriterion("sale_id >", value, "saleId");
+        public Criteria andRefundIdGreaterThan(String value) {
+            addCriterion("refund_id >", value, "saleId");
             return (Criteria) this;
         }
 
-        public Criteria andSaleIdGreaterThanOrEqualTo(String value) {
-            addCriterion("sale_id >=", value, "saleId");
+        public Criteria andRefundIdGreaterThanOrEqualTo(String value) {
+            addCriterion("refund_id >=", value, "saleId");
             return (Criteria) this;
         }
 
-        public Criteria andSaleIdLessThan(String value) {
-            addCriterion("sale_id <", value, "saleId");
+        public Criteria andRefundIdLessThan(String value) {
+            addCriterion("refund_id <", value, "saleId");
             return (Criteria) this;
         }
 
-        public Criteria andSaleIdLessThanOrEqualTo(String value) {
-            addCriterion("sale_id <=", value, "saleId");
+        public Criteria andRefundIdLessThanOrEqualTo(String value) {
+            addCriterion("refund_id <=", value, "saleId");
             return (Criteria) this;
         }
 
-        public Criteria andSaleIdLike(String value) {
-            addCriterion("sale_id like", value, "saleId");
+        public Criteria andRefundIdLike(String value) {
+            addCriterion("refund_id like", value, "saleId");
             return (Criteria) this;
         }
 
-        public Criteria andSaleIdNotLike(String value) {
-            addCriterion("sale_id not like", value, "saleId");
+        public Criteria andRefundIdNotLike(String value) {
+            addCriterion("refund_id not like", value, "saleId");
             return (Criteria) this;
         }
 
-        public Criteria andSaleIdIn(List<String> values) {
-            addCriterion("sale_id in", values, "saleId");
+        public Criteria andRefundIdIn(List<String> values) {
+            addCriterion("refund_id in", values, "saleId");
             return (Criteria) this;
         }
 
-        public Criteria andSaleIdNotIn(List<String> values) {
-            addCriterion("sale_id not in", values, "saleId");
+        public Criteria andRefundIdNotIn(List<String> values) {
+            addCriterion("refund_id not in", values, "saleId");
             return (Criteria) this;
         }
 
-        public Criteria andSaleIdBetween(String value1, String value2) {
-            addCriterion("sale_id between", value1, value2, "saleId");
+        public Criteria andRefundIdBetween(String value1, String value2) {
+            addCriterion("refund_id between", value1, value2, "saleId");
             return (Criteria) this;
         }
 
-        public Criteria andSaleIdNotBetween(String value1, String value2) {
-            addCriterion("sale_id not between", value1, value2, "saleId");
+        public Criteria andRefundIdNotBetween(String value1, String value2) {
+            addCriterion("refund_id not between", value1, value2, "saleId");
             return (Criteria) this;
         }
 
