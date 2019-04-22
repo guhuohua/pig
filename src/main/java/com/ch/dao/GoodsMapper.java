@@ -4,6 +4,7 @@ import com.ch.entity.Goods;
 import com.ch.entity.GoodsExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -29,4 +30,7 @@ public interface GoodsMapper {
     int updateByPrimaryKeySelective(Goods record);
 
     int updateByPrimaryKey(Goods record);
+
+    //@Select("SELECT MAX(freight) FROM goods WHERE id = {id}")
+    //Long findMaxFreight (@Param("id") Integer id);
 }

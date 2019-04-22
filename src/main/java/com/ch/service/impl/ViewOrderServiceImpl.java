@@ -45,7 +45,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
 
     @Override
     public ResponseResult addOrder(OrderDto[] orderDtoList, String openId, Integer shopId) {
-
+        ResponseResult result = new ResponseResult();
         Long totalFee = 0l;
         Long orderFee = 0l;
         GoodsOrder order = new GoodsOrder();
@@ -58,15 +58,28 @@ public class ViewOrderServiceImpl implements ViewOrderService {
              userInfo = userInfos.get(0);
         }
         order.setId(System.currentTimeMillis() + RandomUtils.getRandomNumber(6));
-
+        List<Long> feeList = new ArrayList<>();
         if (orderDtoList.length > 0) {
             for (OrderDto orderDto : orderDtoList) {
                 GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderDto.getGoodsSku().getId());
                 Goods goods = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
-                goodsSku.setInventory(goodsSku.getInventory() - 1);
+                feeList.add(goods.getFreight());
+                GoodsExample example1 = new GoodsExample();
+                GoodsExample.Criteria criteria1 = example1.createCriteria();
+
+                goodsMapper.selectByExample(example1);
+                if (goodsSku.getInventory()>0){
+                    goodsSku.setInventory(goodsSku.getInventory() - 1);
+                }else {
+                    result.setError("500");
+                    result.setError_description("商品已售馨");
+                    return  result;
+                }
+
                 goodsSku.setSale(goodsSku.getSale() + 1);
+
                 goodsSkuMapper.updateByPrimaryKey(goodsSku);
-                totalFee = (goodsSku.getPresentPrice() * orderDto.getNum())+goods.getFreight();
+                totalFee = (goodsSku.getPresentPrice() * orderDto.getNum());
                 orderFee += totalFee;
                 OrderItem orderItem = new OrderItem();
                 orderItem.setGoodsId(goodsSku.getGoodsId());
@@ -90,12 +103,12 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             order.setOrderStatus(1);
             order.setStatus(0);
             order.setCreateDate(new Date());
-            order.setOrderPrice(orderFee);
+            order.setOrderPrice(orderFee+Collections.max(feeList));
             orderMapper.insert(order);
         }
 
 
-        ResponseResult result = new ResponseResult();
+
         result.setData(order.getId());
         return result;
     }
