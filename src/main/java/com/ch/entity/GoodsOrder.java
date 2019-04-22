@@ -37,7 +37,7 @@ public class GoodsOrder {
 
     private Integer deliveryId;
 
-    private String saleId;
+    private String refundId;
 
     private String trackNumber;
 
@@ -177,12 +177,12 @@ public class GoodsOrder {
         this.deliveryId = deliveryId;
     }
 
-    public String getSaleId() {
-        return saleId;
+    public String getRefundId() {
+        return refundId;
     }
 
-    public void setSaleId(String saleId) {
-        this.saleId = saleId == null ? null : saleId.trim();
+    public void setRefundId(String refundId) {
+        this.refundId = refundId;
     }
 
     public String getTrackNumber() {

@@ -91,6 +91,7 @@ public class SysOrderServiceImpl implements SysOrderService {
             order.setTrackNumber(param.getExpressCode());
             order.setModifyDate(new Date());
             order.setOrderStatus(Integer.valueOf(OderStatusEnum.SHIPPED.code));
+            order.setDeliveryDate(new Date());
             orderMapper.updateByPrimaryKey(order);
         }
         return result;
