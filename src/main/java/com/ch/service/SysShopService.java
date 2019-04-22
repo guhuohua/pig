@@ -4,8 +4,6 @@ import com.ch.base.ResponseResult;
 import com.ch.dto.ShopParam;
 import com.ch.entity.Shop;
 
-import java.util.List;
-
 public interface SysShopService {
 
      Shop findShopById( Integer id);
