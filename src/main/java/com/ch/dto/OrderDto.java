@@ -11,6 +11,8 @@ import com.ch.entity.GoodsOrder;
 import com.ch.entity.GoodsSku;
 import com.ch.entity.UserAddress;
 
+import javax.print.DocFlavor;
+
 public class OrderDto {
     private GoodsSku goodsSku;
 
@@ -20,6 +22,15 @@ public class OrderDto {
 
     private GoodsOrder order;
 
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public GoodsSku getGoodsSku() {
         return goodsSku;

@@ -27,10 +27,10 @@ public class GoodsSolrSchema implements Serializable {
     private String name;
 
     @Field
-    private BigDecimal originalPrice;
+    private Long originalPrice;
 
     @Field
-    private BigDecimal presentPrice;
+    private Long presentPrice;
 
     @Field
     private Integer salesVolume;

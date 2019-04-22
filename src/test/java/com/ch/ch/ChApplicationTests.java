@@ -1,4 +1,5 @@
-/*
+
+
 package com.ch.ch;
 
 import com.alibaba.fastjson.JSON;
@@ -16,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 
 @RunWith(SpringRunner.class)
@@ -31,8 +33,9 @@ public class ChApplicationTests {
     public void testUploadImage() {
 
 
-    */
-/*   Map<String, String> params = new HashMap<String, String>();
+
+
+ /*Map<String, String> params = new HashMap<String, String>();
               Integer shopId = 1;
                params.put("q", "shopId :"+shopId+"and status :1");
 
@@ -55,38 +58,46 @@ public class ChApplicationTests {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
-           }
-                goodsSpecificationMapper.selectByPrimaryKey(1);
+           }*/
+               /* goodsSpecificationMapper.selectByPrimaryKey(1);
         GoodsSpecification goodsSpecification2 = goodsSpecificationMapper.selectByPrimaryKey(1);
         GoodsSpecification goodsSpecification3 = goodsSpecificationMapper.selectByPrimaryKey(1);
         GoodsSpecification goodsSpecification4 = goodsSpecificationMapper.selectByPrimaryKey(1);
-        Map specMap = JSON.parseObject(goodsSpecification1.getAttrs());*//*
+        Map specMap = JSON.parseObject(goodsSpecification1.getAttrs());*/
 
-       List<String> strings = new ArrayList<>();
-        strings.add("HOT");
-        GoodsSolrSchema goodsSolrSchema = new GoodsSolrSchema();
-        //goodsSolrSchema.setGoodsSalesArea(strings);
-        goodsSolrSchema.setTitle("测试");
-        goodsSolrSchema.setShopId(1);
-        goodsSolrSchema.setStatus(1);
-        goodsSolrSchema.setInventory(1);
-        goodsSolrSchema.setName("测试商品");
-        goodsSolrSchema.setSort(6);
-        goodsSolrSchema.setId(UUID.randomUUID().toString());
-        goodsSolrSchema.setGoodsId(1);
-        goodsSolrSchema.setShopId(1);
-        goodsSolrSchema.setSort(2);
-        goodsSolrSchema.setNewSort(1);
-        goodsSolrSchema.setStatus(1);
-        goodsSolrSchema.setGoodsSalesArea("NEW");
-        goodsSolrSchema.setCategoryId(1);
 
-        //goodsSolrSchema.setGoodsSpecification(goodsSpecification1.getAttrs());
+
+        //BigDecimal bigDecimal = new BigDecimal(1000);
+        List<GoodsSolrSchema> list = new ArrayList<>();
+
+       for (int i = 1 ;i<4;i++){
+           GoodsSolrSchema goodsSolrSchema = new GoodsSolrSchema();
+           goodsSolrSchema.setId(UUID.randomUUID().toString());
+           goodsSolrSchema.setGoodsId(1);
+           goodsSolrSchema.setTitle("苹果手机真的好"+i);
+           goodsSolrSchema.setName("苹果手机"+i);
+           goodsSolrSchema.setShopId(1);
+           goodsSolrSchema.setStatus(1);
+           goodsSolrSchema.setInventory(1);
+           goodsSolrSchema.setPresentPrice(1000l);
+           goodsSolrSchema.setGoodsSalesArea("BOUTIQUE");
+           goodsSolrSchema.setSort(i);
+           goodsSolrSchema.setBoutiqueSort(i);
+           goodsSolrSchema.setCategoryId(i);
+           list.add(goodsSolrSchema);
+
+       }
+
+
+
+
+
 
 
         try {
           //solrClient.deleteById("516a4cf5-3af5-42b1-9416-d4d580a96bfd");
-            solrClient.addBean(goodsSolrSchema);
+            //solrClient.addBean(goodsSolrSchema);
+            solrClient.addBeans(list);
             solrClient.commit();
         } catch (IOException e) {
             e.printStackTrace();
@@ -105,5 +116,11 @@ public class ChApplicationTests {
 //    }
 
 
+
+
+
+
 }
-*/
+
+
+

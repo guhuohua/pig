@@ -10,6 +10,7 @@
     <result column="price" property="price" jdbcType="DECIMAL" />
     <result column="sku_attr_id" property="skuAttrId" jdbcType="INTEGER" />
     <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -70,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, goods_id, shop_id, goods_name, number, price, sku_attr_id, order_id
+    id, goods_id, shop_id, goods_name, number, price, sku_attr_id, order_id, name
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.OrderItemExample" >
     select
@@ -106,10 +107,12 @@
   <insert id="insert" parameterType="com.ch.entity.OrderItem" >
     insert into order_item (id, goods_id, shop_id, 
       goods_name, number, price, 
-      sku_attr_id, order_id)
+      sku_attr_id, order_id, name
+      )
     values (#{id,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, #{shopId,jdbcType=INTEGER}, 
       #{goodsName,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, 
-      #{skuAttrId,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR})
+      #{skuAttrId,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.ch.entity.OrderItem" >
     insert into order_item
@@ -138,6 +141,9 @@
       <if test="orderId != null" >
         order_id,
       </if>
+      <if test="name != null" >
+        name,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -163,6 +169,9 @@
       </if>
       <if test="orderId != null" >
         #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -199,6 +208,9 @@
       <if test="record.orderId != null" >
         order_id = #{record.orderId,jdbcType=VARCHAR},
       </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -213,7 +225,8 @@
       number = #{record.number,jdbcType=INTEGER},
       price = #{record.price,jdbcType=DECIMAL},
       sku_attr_id = #{record.skuAttrId,jdbcType=INTEGER},
-      order_id = #{record.orderId,jdbcType=VARCHAR}
+      order_id = #{record.orderId,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -242,6 +255,9 @@
       <if test="orderId != null" >
         order_id = #{orderId,jdbcType=VARCHAR},
       </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -253,7 +269,8 @@
       number = #{number,jdbcType=INTEGER},
       price = #{price,jdbcType=DECIMAL},
       sku_attr_id = #{skuAttrId,jdbcType=INTEGER},
-      order_id = #{orderId,jdbcType=VARCHAR}
+      order_id = #{orderId,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
