@@ -60,6 +60,7 @@ public class ViewLoginController {
         ResponseResult result = new ResponseResult();
         ShopInfo shopInfo = viewShopInfoService.findShopInfoByAppId(appId);
         String token = TokenUtil.sign(shopInfo.getShopId());
+        System.out.println(token);
         result.setData(token);
         return  result;
 

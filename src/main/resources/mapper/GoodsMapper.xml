@@ -508,7 +508,7 @@
       key_words = #{keyWords,jdbcType=VARCHAR},
       freight = #{freight,jdbcType=DECIMAL},
       units = #{units,jdbcType=VARCHAR},
-      goods_img_url = #{record.goodsImgUrl,jdbcType=VARCHAR}
+      goods_img_url = #{goodsImgUrl,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

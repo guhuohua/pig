@@ -9,6 +9,7 @@ public class WXPayConstant {
 
     // 蜜獾商城
     private static final String CALLBACK_URL = "https://inbole.com/wxshop";
+
     public static final String APP_ID = "wxf2f4ded6354f9ba7";
     public static final String APP_SECRET = "6118f7887dff318443f2d072941f81fe";
     public static final String APP_KEY = "0EF1CDAFCC3327C1AF3B8D6CA37F9581";

@@ -11,6 +11,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.ch.constant.WXPayConstant;
 import com.ch.dao.GoodsOrderMapper;
 import com.ch.dao.PayInfoMapper;
+import com.ch.dao.PaySuccessInfoMapper;
 import com.ch.dao.ShopMapper;
 import com.ch.entity.*;
 import com.ch.service.ViewShopNameService;
@@ -46,10 +47,11 @@ public class ViewPayController {
     PayInfoMapper payInfoMapper;
     @Autowired
     ShopMapper shopMapper;
+    @Autowired
+    PaySuccessInfoMapper paySuccessInfoMapper;
 
 
     @GetMapping("/prepay")
-
     public Object prePay(@RequestParam String orderId, HttpServletRequest req) {
 
         Map<String, Object> map = new HashMap<>();
@@ -80,9 +82,9 @@ public class ViewPayController {
             openId = openId.replace("\"", "").trim();
             String clientIP = CommonUtil.getClientIp(req);
             log.error("openId: " + openId + ", clientIP: " + clientIP);
-//            String randomNonceStr = RandomUtils.generateMixString(32);
+          // String randomNonceStr = RandomUtils.generateMixString(32);
 
-            String randomNonceStr = null;
+           String randomNonceStr = null;
             try {
                 randomNonceStr = CommonUtil.getMD5(goodsOrder.getId()).toUpperCase();
             } catch (Exception e) {
@@ -90,7 +92,7 @@ public class ViewPayController {
             }
 
             // 创建订单
-            String prepayId = unifiedOrder(openId, clientIP, randomNonceStr, goodsOrder);
+            String prepayId = unifiedOrder(openId, clientIP, randomNonceStr, goodsOrder,shopMiniProgram,shop);
 
             switch (prepayId) {
                 case WXPayConstant.PAY_STATUS_ERR:
@@ -103,10 +105,10 @@ public class ViewPayController {
                     map.put("package", "prepay_id=" + prepayId);
                     map.put("nonceStr", randomNonceStr);
                     map.put("signType", "MD5");
-                    map.put("appId", WXPayConstant.APP_ID);
+                    map.put("appId", shopMiniProgram.getAppId());
                     String timeStamp = String.valueOf(System.currentTimeMillis()).substring(0, 10);
                     map.put("timeStamp", timeStamp);
-                    String md5 = getPaySign(prepayId, randomNonceStr, timeStamp);
+                    String md5 = getPaySign(prepayId, randomNonceStr, timeStamp,shopMiniProgram);
                     System.out.println("微信：sign：" + md5);
                     map.put("paySign", md5);
                     System.out.println(map);
@@ -117,14 +119,14 @@ public class ViewPayController {
         return Msg.err("创建订单失败");
     }
 
-    private String getPaySign(String prepayId, String randomNonceStr, String timeStamp) {
+    private String getPaySign(String prepayId, String randomNonceStr, String timeStamp,ShopMiniProgram shopMiniProgram) {
         StringBuffer sb = new StringBuffer();
-        sb.append("appId=" + WXPayConstant.APP_ID)
+        sb.append("appId=" + shopMiniProgram.getAppId())
                 .append("&nonceStr=" + randomNonceStr)
                 .append("&package=prepay_id=" + prepayId)
                 .append("&signType=MD5")
                 .append("&timeStamp=" + timeStamp)
-                .append("&key=" + WXPayConstant.APP_KEY);
+                .append("&key=" + shopMiniProgram.getAppKey());
 
 
         log.error("微信小程序需要的拼接参数：" + sb.toString());
@@ -144,21 +146,21 @@ public class ViewPayController {
      * @param openId
      * @param order
      */
-    private String unifiedOrder(String openId, String clientIP, String randomNonceStr, GoodsOrder order) {
-/*
+    private String unifiedOrder(String openId, String clientIP, String randomNonceStr, GoodsOrder order,ShopMiniProgram shopMiniProgram,Shop shop) {
+
         try {
 
             String url = WXPayConstant.URL_UNIFIED_ORDER;
-//            String url = WXPayConstant.URL_UNIFIED_ORDER_sandboxnew;
 
-            clientIP = clientIP.equals("0:0:0:0:0:0:0:1") ? "19.93.11.07" : clientIP;
-            PayInfo payInfo = createPayInfo(openId, clientIP, randomNonceStr, order);
+           // clientIP = clientIP.equals("0:0:0:0:0:0:0:1") ? "19.93.11.07" : clientIP;
+            PayInfo payInfo = createPayInfo(openId, clientIP, randomNonceStr, order,shopMiniProgram,shop);
 //            payInfo.setSpbill_create_ip("192.168.10.10");
            // payInfo.setSpbill_create_ip(clientIP);
             payInfo.setSpbillCreateIp(clientIP);
-            System.out.println(payInfo);
-            String md5 = getSign(payInfo);
+
+            String md5 = getSign(payInfo,shopMiniProgram);
             payInfo.setSign(md5);
+            //System.out.println(payInfo);
 
             log.error("md5 value: " + md5);
 
@@ -172,13 +174,8 @@ public class ViewPayController {
 
             Map<String, String> result = CommonUtil.parseXml(data);
             log.error("微信支付返回结果: \n" + result);
-
-
             String return_code = result.get("return_code");
             if (StringUtils.isNotBlank(return_code) && return_code.equals("SUCCESS")) {
-
-
-
                 String return_msg = result.get("return_msg");
                 String err_code = result.get("err_code");
                 String err_code_des = result.get("err_code_des");
@@ -202,7 +199,7 @@ public class ViewPayController {
         } catch (Exception e) {
             e.printStackTrace();
             log.info("统一下单出错", e);
-        }*/
+        }
         return WXPayConstant.PAY_STATUS_ERR;
     }
 
@@ -232,7 +229,7 @@ public class ViewPayController {
 //        String timeStart = "20181106141913";
 //        String timeExpire = "20181108141913";
 
-//        String randomOrderId = CommonUtil.getRandomOrderId();
+       //String randomOrderId = CommonUtil.getRandomOrderId();
 
 
 
@@ -269,7 +266,6 @@ public class ViewPayController {
         payInfo.setTradeType("JSAPI");
         payInfo.setLimitPay("no_credit");
         payInfo.setOpenid(openId);
-
 
         return payInfo;
     }
@@ -326,17 +322,17 @@ public class ViewPayController {
             log.error("支付失败了", object);
             return null;
         }
-
-      /*  paySuccessInfoReposition.save(successInfo);
-        String out_trade_no = successInfo.getOut_trade_no();
+        paySuccessInfoMapper.insert(successInfo);
+        // paySuccessInfoReposition.save(successInfo);
+        String out_trade_no = successInfo.getOutTradeNo();
 
         // 修改订单信息
-        Order order = orderReposition.findByOrdSn(out_trade_no);
-        order.setStatus(1);
-        order.setPayTime(System.currentTimeMillis());
-
-        order.setPayId(1);
-        orderReposition.save(order);*/
+        //Order order = orderReposition.findByOrdSn(out_trade_no);
+        GoodsOrder order = goodsOrderMapper.selectByPrimaryKey(out_trade_no);
+        order.setStatus(2);
+        order.setPayDate(new Date());
+        order.setPayId(1+"");
+        goodsOrderMapper.updateByPrimaryKey(order);
         return "<xml>\n" +
                 "  <return_code><![CDATA[SUCCESS]]></return_code>\n" +
                 "  <return_msg><![CDATA[OK]]></return_msg>\n" +
@@ -344,17 +340,18 @@ public class ViewPayController {
     }
 
 
-  /*  @PostMapping("/complete")
-    public Object complete(@RequestBody JSONObject info) {
-       log.debug(info);
-       Order order = orderReposition.findById(info.getInteger("ordId")).get();
-        Integer payStatus = order.getPayStatus();
+   @PostMapping("/complete")
+    public Object complete(HttpServletRequest req, @RequestParam String orderId) {
+
+      // Order order = orderReposition.findById(info.getInteger("ordId")).get();
+       GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderId);
+       Integer payStatus = goodsOrder.getOrderStatus();
         if (payStatus == 1) {
-            return Msg.success(order);
+            return Msg.success(goodsOrder);
         } else {
             return Msg.err("支付失败");
         }
-    }*/
+    }
 
 
 }

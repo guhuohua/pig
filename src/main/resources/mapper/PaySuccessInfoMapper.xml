@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ch.dao.PaySuccessInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.ch.entity.PaySuccessInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="transaction_id" property="transactionId" jdbcType="VARCHAR" />
+    <result column="nonce_str" property="nonceStr" jdbcType="VARCHAR" />
+    <result column="bank_type" property="bankType" jdbcType="VARCHAR" />
+    <result column="openid" property="openId" jdbcType="VARCHAR" />
+    <result column="sign" property="sign" jdbcType="VARCHAR" />
+    <result column="fee_type" property="feeType" jdbcType="VARCHAR" />
+    <result column="mch_id" property="mchId" jdbcType="VARCHAR" />
+    <result column="cash_fee" property="cashFee" jdbcType="VARCHAR" />
+    <result column="device_info" property="deviceInfo" jdbcType="VARCHAR" />
+    <result column="out_trade_no" property="outTradeNo" jdbcType="VARCHAR" />
+    <result column="appid" property="appid" jdbcType="VARCHAR" />
+    <result column="total_fee" property="totalFee" jdbcType="VARCHAR" />
+    <result column="trade_type" property="tradeType" jdbcType="VARCHAR" />
+    <result column="result_code" property="resultCode" jdbcType="VARCHAR" />
+    <result column="attach" property="attach" jdbcType="VARCHAR" />
+    <result column="time_end" property="timeEnd" jdbcType="VARCHAR" />
+    <result column="is_subscribe" property="isSubscribe" jdbcType="VARCHAR" />
+    <result column="return_code" property="returnCode" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, transaction_id, nonce_str, bank_type, openid, sign, fee_type, mch_id, cash_fee, 
+    device_info, out_trade_no, appid, total_fee, trade_type, result_code, attach, time_end, 
+    is_subscribe, return_code
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.PaySuccessInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from pay_success_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from pay_success_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from pay_success_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ch.entity.PaySuccessInfoExample" >
+    delete from pay_success_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ch.entity.PaySuccessInfo" >
+    insert into pay_success_info (id, transaction_id, nonce_str, 
+      bank_type, openid, sign, 
+      fee_type, mch_id, cash_fee, 
+      device_info, out_trade_no, appid, 
+      total_fee, trade_type, result_code, 
+      attach, time_end, is_subscribe, 
+      return_code)
+    values (#{id,jdbcType=INTEGER}, #{transactionId,jdbcType=VARCHAR}, #{nonceStr,jdbcType=VARCHAR}, 
+      #{bankType,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{sign,jdbcType=VARCHAR},
+      #{feeType,jdbcType=VARCHAR}, #{mchId,jdbcType=VARCHAR}, #{cashFee,jdbcType=VARCHAR}, 
+      #{deviceInfo,jdbcType=VARCHAR}, #{outTradeNo,jdbcType=VARCHAR}, #{appid,jdbcType=VARCHAR}, 
+      #{totalFee,jdbcType=VARCHAR}, #{tradeType,jdbcType=VARCHAR}, #{resultCode,jdbcType=VARCHAR}, 
+      #{attach,jdbcType=VARCHAR}, #{timeEnd,jdbcType=VARCHAR}, #{isSubscribe,jdbcType=VARCHAR}, 
+      #{returnCode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ch.entity.PaySuccessInfo" >
+    insert into pay_success_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="transactionId != null" >
+        transaction_id,
+      </if>
+      <if test="nonceStr != null" >
+        nonce_str,
+      </if>
+      <if test="bankType != null" >
+        bank_type,
+      </if>
+      <if test="openId != null" >
+        openid,
+      </if>
+      <if test="sign != null" >
+        sign,
+      </if>
+      <if test="feeType != null" >
+        fee_type,
+      </if>
+      <if test="mchId != null" >
+        mch_id,
+      </if>
+      <if test="cashFee != null" >
+        cash_fee,
+      </if>
+      <if test="deviceInfo != null" >
+        device_info,
+      </if>
+      <if test="outTradeNo != null" >
+        out_trade_no,
+      </if>
+      <if test="appid != null" >
+        appid,
+      </if>
+      <if test="totalFee != null" >
+        total_fee,
+      </if>
+      <if test="tradeType != null" >
+        trade_type,
+      </if>
+      <if test="resultCode != null" >
+        result_code,
+      </if>
+      <if test="attach != null" >
+        attach,
+      </if>
+      <if test="timeEnd != null" >
+        time_end,
+      </if>
+      <if test="isSubscribe != null" >
+        is_subscribe,
+      </if>
+      <if test="returnCode != null" >
+        return_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="transactionId != null" >
+        #{transactionId,jdbcType=VARCHAR},
+      </if>
+      <if test="nonceStr != null" >
+        #{nonceStr,jdbcType=VARCHAR},
+      </if>
+      <if test="bankType != null" >
+        #{bankType,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="sign != null" >
+        #{sign,jdbcType=VARCHAR},
+      </if>
+      <if test="feeType != null" >
+        #{feeType,jdbcType=VARCHAR},
+      </if>
+      <if test="mchId != null" >
+        #{mchId,jdbcType=VARCHAR},
+      </if>
+      <if test="cashFee != null" >
+        #{cashFee,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceInfo != null" >
+        #{deviceInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="outTradeNo != null" >
+        #{outTradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="appid != null" >
+        #{appid,jdbcType=VARCHAR},
+      </if>
+      <if test="totalFee != null" >
+        #{totalFee,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeType != null" >
+        #{tradeType,jdbcType=VARCHAR},
+      </if>
+      <if test="resultCode != null" >
+        #{resultCode,jdbcType=VARCHAR},
+      </if>
+      <if test="attach != null" >
+        #{attach,jdbcType=VARCHAR},
+      </if>
+      <if test="timeEnd != null" >
+        #{timeEnd,jdbcType=VARCHAR},
+      </if>
+      <if test="isSubscribe != null" >
+        #{isSubscribe,jdbcType=VARCHAR},
+      </if>
+      <if test="returnCode != null" >
+        #{returnCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ch.entity.PaySuccessInfoExample" resultType="java.lang.Integer" >
+    select count(*) from pay_success_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update pay_success_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.transactionId != null" >
+        transaction_id = #{record.transactionId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nonceStr != null" >
+        nonce_str = #{record.nonceStr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bankType != null" >
+        bank_type = #{record.bankType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.openId != null" >
+        openid = #{record.openId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sign != null" >
+        sign = #{record.sign,jdbcType=VARCHAR},
+      </if>
+      <if test="record.feeType != null" >
+        fee_type = #{record.feeType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mchId != null" >
+        mch_id = #{record.mchId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cashFee != null" >
+        cash_fee = #{record.cashFee,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deviceInfo != null" >
+        device_info = #{record.deviceInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.outTradeNo != null" >
+        out_trade_no = #{record.outTradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appid != null" >
+        appid = #{record.appid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.totalFee != null" >
+        total_fee = #{record.totalFee,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tradeType != null" >
+        trade_type = #{record.tradeType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resultCode != null" >
+        result_code = #{record.resultCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attach != null" >
+        attach = #{record.attach,jdbcType=VARCHAR},
+      </if>
+      <if test="record.timeEnd != null" >
+        time_end = #{record.timeEnd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isSubscribe != null" >
+        is_subscribe = #{record.isSubscribe,jdbcType=VARCHAR},
+      </if>
+      <if test="record.returnCode != null" >
+        return_code = #{record.returnCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update pay_success_info
+    set id = #{record.id,jdbcType=INTEGER},
+      transaction_id = #{record.transactionId,jdbcType=VARCHAR},
+      nonce_str = #{record.nonceStr,jdbcType=VARCHAR},
+      bank_type = #{record.bankType,jdbcType=VARCHAR},
+      openid = #{record.openId,jdbcType=VARCHAR},
+      sign = #{record.sign,jdbcType=VARCHAR},
+      fee_type = #{record.feeType,jdbcType=VARCHAR},
+      mch_id = #{record.mchId,jdbcType=VARCHAR},
+      cash_fee = #{record.cashFee,jdbcType=VARCHAR},
+      device_info = #{record.deviceInfo,jdbcType=VARCHAR},
+      out_trade_no = #{record.outTradeNo,jdbcType=VARCHAR},
+      appid = #{record.appid,jdbcType=VARCHAR},
+      total_fee = #{record.totalFee,jdbcType=VARCHAR},
+      trade_type = #{record.tradeType,jdbcType=VARCHAR},
+      result_code = #{record.resultCode,jdbcType=VARCHAR},
+      attach = #{record.attach,jdbcType=VARCHAR},
+      time_end = #{record.timeEnd,jdbcType=VARCHAR},
+      is_subscribe = #{record.isSubscribe,jdbcType=VARCHAR},
+      return_code = #{record.returnCode,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ch.entity.PaySuccessInfo" >
+    update pay_success_info
+    <set >
+      <if test="transactionId != null" >
+        transaction_id = #{transactionId,jdbcType=VARCHAR},
+      </if>
+      <if test="nonceStr != null" >
+        nonce_str = #{nonceStr,jdbcType=VARCHAR},
+      </if>
+      <if test="bankType != null" >
+        bank_type = #{bankType,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        openid = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="sign != null" >
+        sign = #{sign,jdbcType=VARCHAR},
+      </if>
+      <if test="feeType != null" >
+        fee_type = #{feeType,jdbcType=VARCHAR},
+      </if>
+      <if test="mchId != null" >
+        mch_id = #{mchId,jdbcType=VARCHAR},
+      </if>
+      <if test="cashFee != null" >
+        cash_fee = #{cashFee,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceInfo != null" >
+        device_info = #{deviceInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="outTradeNo != null" >
+        out_trade_no = #{outTradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="appid != null" >
+        appid = #{appid,jdbcType=VARCHAR},
+      </if>
+      <if test="totalFee != null" >
+        total_fee = #{totalFee,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeType != null" >
+        trade_type = #{tradeType,jdbcType=VARCHAR},
+      </if>
+      <if test="resultCode != null" >
+        result_code = #{resultCode,jdbcType=VARCHAR},
+      </if>
+      <if test="attach != null" >
+        attach = #{attach,jdbcType=VARCHAR},
+      </if>
+      <if test="timeEnd != null" >
+        time_end = #{timeEnd,jdbcType=VARCHAR},
+      </if>
+      <if test="isSubscribe != null" >
+        is_subscribe = #{isSubscribe,jdbcType=VARCHAR},
+      </if>
+      <if test="returnCode != null" >
+        return_code = #{returnCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ch.entity.PaySuccessInfo" >
+    update pay_success_info
+    set transaction_id = #{transactionId,jdbcType=VARCHAR},
+      nonce_str = #{nonceStr,jdbcType=VARCHAR},
+      bank_type = #{bankType,jdbcType=VARCHAR},
+      openid = #{openId,jdbcType=VARCHAR},
+      sign = #{sign,jdbcType=VARCHAR},
+      fee_type = #{feeType,jdbcType=VARCHAR},
+      mch_id = #{mchId,jdbcType=VARCHAR},
+      cash_fee = #{cashFee,jdbcType=VARCHAR},
+      device_info = #{deviceInfo,jdbcType=VARCHAR},
+      out_trade_no = #{outTradeNo,jdbcType=VARCHAR},
+      appid = #{appid,jdbcType=VARCHAR},
+      total_fee = #{totalFee,jdbcType=VARCHAR},
+      trade_type = #{tradeType,jdbcType=VARCHAR},
+      result_code = #{resultCode,jdbcType=VARCHAR},
+      attach = #{attach,jdbcType=VARCHAR},
+      time_end = #{timeEnd,jdbcType=VARCHAR},
+      is_subscribe = #{isSubscribe,jdbcType=VARCHAR},
+      return_code = #{returnCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

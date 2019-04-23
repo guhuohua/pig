@@ -20,6 +20,7 @@
     <result column="limit_pay" property="limitPay" jdbcType="VARCHAR" />
     <result column="openid" property="openid" jdbcType="VARCHAR" />
     <result column="prepayId" property="prepayid" jdbcType="VARCHAR" />
+    <result column="time_expire" property="timeExpire" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -81,8 +82,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, app_id, mch_id, device_info, nonce_str, sign, sign_type, body, attach, out_trade_no, 
-    total_fee, spbill_create_ip, time_start, notify_url, trade_type, limit_pay, openid, 
-    prepayId
+    total_fee, spbill_create_ip, time_start, notify_url, trade_type, limit_pay, openid,
+    prepayId,time_expire
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.PayInfoExample" >
     select
@@ -121,14 +122,14 @@
       sign_type, body, attach, 
       out_trade_no, total_fee, spbill_create_ip, 
       time_start, notify_url, trade_type, 
-      limit_pay, openid, prepayId
+      limit_pay, openid, prepayId,time_expire
       )
     values (#{id,jdbcType=INTEGER}, #{appId,jdbcType=VARCHAR}, #{mchId,jdbcType=VARCHAR}, 
       #{deviceInfo,jdbcType=VARCHAR}, #{nonceStr,jdbcType=VARCHAR}, #{sign,jdbcType=VARCHAR}, 
       #{signType,jdbcType=VARCHAR}, #{body,jdbcType=VARCHAR}, #{attach,jdbcType=VARCHAR}, 
       #{outTradeNo,jdbcType=VARCHAR}, #{totalFee,jdbcType=BIGINT}, #{spbillCreateIp,jdbcType=VARCHAR}, 
       #{timeStart,jdbcType=TIMESTAMP}, #{notifyUrl,jdbcType=VARCHAR}, #{tradeType,jdbcType=VARCHAR}, 
-      #{limitPay,jdbcType=VARCHAR}, #{openid,jdbcType=VARCHAR}, #{prepayid,jdbcType=VARCHAR}
+      #{limitPay,jdbcType=VARCHAR}, #{openid,jdbcType=VARCHAR}, #{prepayid,jdbcType=VARCHAR},#{timeExpire,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.ch.entity.PayInfo" >
@@ -187,6 +188,9 @@
       </if>
       <if test="prepayid != null" >
         prepayId,
+      </if>
+      <if test="timeExpire != null" >
+        time_expire,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -413,7 +417,8 @@
       trade_type = #{tradeType,jdbcType=VARCHAR},
       limit_pay = #{limitPay,jdbcType=VARCHAR},
       openid = #{openid,jdbcType=VARCHAR},
-      prepayId = #{prepayid,jdbcType=VARCHAR}
+      prepayId = #{prepayid,jdbcType=VARCHAR},
+       time_expire = #{timeExpire,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

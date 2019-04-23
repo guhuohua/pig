@@ -41,6 +41,8 @@ public class PayInfo {
 
     private String timeExpire;
 
+
+
     public String getTimeExpire() {
         return timeExpire;
     }
@@ -193,5 +195,30 @@ public class PayInfo {
 
     public void setTimeStart(String timeStart) {
         this.timeStart = timeStart;
+    }
+
+    @Override
+    public String toString() {
+        return "PayInfo{" +
+                "id=" + id +
+                ", appId='" + appId + '\'' +
+                ", mchId='" + mchId + '\'' +
+                ", deviceInfo='" + deviceInfo + '\'' +
+                ", nonceStr='" + nonceStr + '\'' +
+                ", sign='" + sign + '\'' +
+                ", signType='" + signType + '\'' +
+                ", body='" + body + '\'' +
+                ", attach='" + attach + '\'' +
+                ", outTradeNo='" + outTradeNo + '\'' +
+                ", totalFee=" + totalFee +
+                ", spbillCreateIp='" + spbillCreateIp + '\'' +
+                ", timeStart='" + timeStart + '\'' +
+                ", notifyUrl='" + notifyUrl + '\'' +
+                ", tradeType='" + tradeType + '\'' +
+                ", limitPay='" + limitPay + '\'' +
+                ", openid='" + openid + '\'' +
+                ", prepayid='" + prepayid + '\'' +
+                ", timeExpire='" + timeExpire + '\'' +
+                '}';
     }
 }
