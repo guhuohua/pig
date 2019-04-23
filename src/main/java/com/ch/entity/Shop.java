@@ -21,7 +21,7 @@ public class Shop {
 
     private String shareImage;
 
-    private Short status;
+    private Integer status;
 
     private Date createTime;
 
@@ -103,11 +103,11 @@ public class Shop {
         this.shareImage = shareImage == null ? null : shareImage.trim();
     }
 
-    public Short getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Short status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

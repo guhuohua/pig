@@ -1,6 +1,7 @@
 package com.ch.controller;
 
 import com.ch.base.ResponseResult;
+import com.ch.dto.SysShopInfoDTO;
 import com.ch.model.PersonMangeParam;
 import com.ch.model.SysShopInfoParam;
 import com.ch.service.ShopService;
@@ -54,7 +55,9 @@ public class ShopController {
 
     @PostMapping("shop_mange")
     @ApiOperation("修改店铺信息")
-    public ResponseResult shopMange(HttpServletRequest req, @RequestBody SysShopInfoParam param) {
-        return shopService.mange(param);
+    public ResponseResult shopMange(HttpServletRequest req, @RequestBody SysShopInfoDTO param) {
+        String token = req.getHeader("Authorization");
+        Integer userId = TokenUtil.getUserId(token);
+        return shopService.mange(param, userId);
     }
 }

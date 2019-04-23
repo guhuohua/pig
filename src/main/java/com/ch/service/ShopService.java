@@ -1,6 +1,7 @@
 package com.ch.service;
 
 import com.ch.base.ResponseResult;
+import com.ch.dto.SysShopInfoDTO;
 import com.ch.model.PersonMangeParam;
 import com.ch.model.SysShopInfoParam;
 
@@ -38,8 +39,8 @@ public interface ShopService {
 
     /**
      * 店铺的修改
-     * @param sysShopInfoParam
+     * @param sysShopInfoDTO
      * @return
      */
-    ResponseResult mange(SysShopInfoParam sysShopInfoParam);
+    ResponseResult mange(SysShopInfoDTO sysShopInfoDTO, Integer userId);
 }
