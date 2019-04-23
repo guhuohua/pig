@@ -11,7 +11,7 @@
     <result column="service_time" property="serviceTime" jdbcType="VARCHAR" />
     <result column="logo" property="logo" jdbcType="VARCHAR" />
     <result column="share_image" property="shareImage" jdbcType="VARCHAR" />
-    <result column="status" property="status" jdbcType="DECIMAL" />
+    <result column="status" property="status" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
@@ -110,7 +110,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.ch.entity.Shop" >
+  <insert id="insert" parameterType="com.ch.entity.Shop" keyProperty="id" useGeneratedKeys="true">
     insert into shop (id, shop_account_id, title, 
       address, share_title, tel, 
       service_time, logo, share_image, 

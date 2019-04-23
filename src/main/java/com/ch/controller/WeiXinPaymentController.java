@@ -2,18 +2,24 @@ package com.ch.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.ch.dao.GoodsOrderMapper;
+import com.ch.dao.PayInfoMapper;
+import com.ch.dao.ShopMapper;
 import com.ch.dto.PaymentDto;
+import com.ch.entity.GoodsOrder;
+import com.ch.entity.Shop;
+import com.ch.entity.ShopMiniProgram;
+import com.ch.service.ViewShopNameService;
 import com.ch.util.PayUtil;
+import com.ch.util.TokenUtil;
 import com.ch.util.UUIDHexGenerator;
 import com.ch.util.XmlUtil;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayInputStream;
@@ -30,6 +36,18 @@ import java.util.Map;
 @RestController
 @RequestMapping("/pay")
 public class WeiXinPaymentController {
+
+    @Autowired
+    ViewShopNameService viewShopNameService;
+    @Autowired
+    PayInfoMapper payInfoMapper;
+    @Autowired
+    ShopMapper shopMapper;
+    @Autowired
+    GoodsOrderMapper goodsOrderMapper;
+
+
+
 
     private final String mch_id = "1512785241";//商户号
     private final String spbill_create_ip = "183.93.230.40";//终端IP
@@ -67,29 +85,42 @@ public class WeiXinPaymentController {
     }
 
 
-    @RequestMapping("/weixin/payment.do")
+    @GetMapping("wxpay")
     @ResponseBody
-    public JSONObject payment(@RequestParam(required = true) String openId, @RequestParam(required = true)String total_fee, @RequestParam(required = false) String body, @RequestParam(required = false) String attach) throws UnsupportedEncodingException, DocumentException {
+    public JSONObject payment(HttpServletRequest req,@RequestParam String orderId) throws UnsupportedEncodingException, DocumentException {
+
+
+        String openId = req.getHeader("openId");
+        String token = req.getHeader("Authorization");
+        Integer shopId = TokenUtil.getUserId(token);
+
+
+
+        ShopMiniProgram shopMiniProgram = viewShopNameService.shopPayInfo(shopId);
+        GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderId);
+      //  Shop shop = shopMapper.selectByPrimaryKey(shopId);
+
         JSONObject JsonObject = new JSONObject() ;
+        String body = "小晨旭";
         body = new String(body.getBytes("UTF-8"),"ISO-8859-1");
         String nonce_str = UUIDHexGenerator.generate();//随机字符串
         String today = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         String code = PayUtil.createCode(8);
         String out_trade_no = mch_id + today + code;//商户订单号
 
-        String openid = openId;//用户标识
+
         PaymentDto paymentPo = new PaymentDto();
-        paymentPo.setAppid(appid);
-        paymentPo.setMch_id(mch_id);
+        paymentPo.setAppid(shopMiniProgram.getAppId());
+        paymentPo.setMch_id(shopMiniProgram.getMchIdd());
         paymentPo.setNonce_str(nonce_str);
         String newbody = new String(body.getBytes("ISO-8859-1"),"UTF-8");//以utf-8编码放入paymentPo，微信支付要求字符编码统一采用UTF-8字符编码
         paymentPo.setBody(newbody);
         paymentPo.setOut_trade_no(out_trade_no);
-        paymentPo.setTotal_fee(total_fee);
+        paymentPo.setTotal_fee(goodsOrder.getOrderPrice().toString());
         paymentPo.setSpbill_create_ip(spbill_create_ip);
-        paymentPo.setNotify_url(notify_url);
-        paymentPo.setTrade_type(trade_type);
-        paymentPo.setOpenid(openid);
+        paymentPo.setNotify_url(shopMiniProgram.getBackUrl());
+        paymentPo.setTrade_type("JSAPI");
+        paymentPo.setOpenid(openId);
         // 把请求参数打包成数组
         Map<String, Object> sParaTemp = new HashMap();
         sParaTemp.put("appid", paymentPo.getAppid());
@@ -160,7 +191,7 @@ public class WeiXinPaymentController {
      * 预支付时填写的 notify_url ，支付成功后的回调接口
      * @param request
      */
-    @RequestMapping("/weixin/paycallback.do")
+    @RequestMapping("/weixin/paycallback")
     @ResponseBody
     public void paycallback(HttpServletRequest request) {
         try {
