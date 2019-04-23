@@ -50,6 +50,7 @@ public class SysUserServiceImpl implements SysUserService {
             SysUserRoleExample example = new SysUserRoleExample();
             SysUserRoleExample.Criteria criteria = example.createCriteria();
             criteria.andUserIdEqualTo(userId);
+            criteria.andShopIdEqualTo(sysUser.getShopId());
             List<SysUserRole> sysUserRoles = sysUserRoleMapper.selectByExample(example);
             Set<String> roles = new HashSet<>();
             Set<String> permissions = new HashSet<>();

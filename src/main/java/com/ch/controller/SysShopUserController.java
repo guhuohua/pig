@@ -19,7 +19,7 @@ public class SysShopUserController {
     @Autowired
     SysUserMangeService sysUserMangeService;
 
-    @PostMapping("list")
+    @GetMapping("list")
     @ApiOperation(value="获取店铺下所有人员列表")
     @ApiImplicitParam(name = "shopUserParam", value = "传入参数", required = true, dataType = "ShopUserParam")
     public ResponseResult list(@RequestBody ShopUserParam shopUserParam) {

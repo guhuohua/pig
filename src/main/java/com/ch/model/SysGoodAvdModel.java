@@ -9,13 +9,7 @@ public class SysGoodAvdModel {
 
     private Integer id;
 
-    private String title;
-
-    private String path;
-
     private String pictureUrl;
-
-    private Integer status;
 
     private Integer sortOrder;
 
@@ -25,7 +19,5 @@ public class SysGoodAvdModel {
 
     private Date updateTime;
 
-    private String creater;
-
-    private Integer browseNumber;
+    private Integer goodsId;
 }

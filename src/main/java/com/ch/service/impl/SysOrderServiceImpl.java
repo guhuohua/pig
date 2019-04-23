@@ -43,6 +43,9 @@ public class SysOrderServiceImpl implements SysOrderService {
     @Autowired
     GoodsSkuMapper goodsSkuMapper;
 
+    @Autowired
+    OrderRefundMapper orderRefundMapper;
+
 
     @Override
     public ResponseResult list(SysOrderParam param, Integer userId) {
@@ -119,6 +122,23 @@ public class SysOrderServiceImpl implements SysOrderService {
                 sysOrderDetailDTO.setDeliveryName(userAddress.getName());
                 sysOrderDetailDTO.setPhone(userAddress.getTel());
             }
+
+            if (BeanUtils.isNotEmpty(order.getRefundId())) {
+                OrderRefundExample orderRefundExample = new OrderRefundExample();
+                orderRefundExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andIdEqualTo(order.getRefundId());
+                List<OrderRefund> orderRefunds = orderRefundMapper.selectByExample(orderRefundExample);
+                if (orderRefunds.stream().findFirst().isPresent()) {
+                    OrderRefund orderRefund = orderRefunds.stream().findFirst().get();
+                    sysOrderDetailDTO.setRefundId(orderRefund.getId());
+                    sysOrderDetailDTO.setRefundDate(orderRefund.getCreateDate());
+                    sysOrderDetailDTO.setPhoto(orderRefund.getPhotos());
+                    sysOrderDetailDTO.setRefundPrice(orderRefund.getPrice());
+                    sysOrderDetailDTO.setRealPrice(orderRefund.getRealPrice());
+                    sysOrderDetailDTO.setRefundNumber(orderRefund.getNumber());
+                    sysOrderDetailDTO.setRefundReason(orderRefund.getRemarks());
+                }
+            }
+
             sysOrderDetailDTO.setAddress(sb.toString());
             sysOrderDetailDTO.setOrderStatus(order.getOrderStatus());
             UserInfoExample userInfoExample = new UserInfoExample();

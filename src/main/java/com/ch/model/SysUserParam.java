@@ -13,10 +13,12 @@ public class SysUserParam {
 
     private String phone;
 
-    private String avatar;
+    private Integer status;
 
     private Integer shopId;
 
     private Integer userId;
+
+    private String avatar;
 
 }

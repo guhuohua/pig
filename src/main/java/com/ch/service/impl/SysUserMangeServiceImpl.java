@@ -60,18 +60,6 @@ public class SysUserMangeServiceImpl implements SysUserMangeService {
     @Transactional
     public ResponseResult insertUser(SysUserParam sysUserParam) {
         ResponseResult result = new ResponseResult();
-        //判断该店铺下是否已经存在管理员
-        SysRoleExample sysRoleExample = new SysRoleExample();
-        sysRoleExample.createCriteria().andShopIdEqualTo(sysUserParam.getShopId());
-        List<SysRole> sysRoles = sysRoleMapper.selectByExample(sysRoleExample);
-        for (SysRole sysRole:sysRoles) {
-            if ("管理员".equals(sysRole.getRoleName())) {
-                result.setCode(500);
-                result.setError("该店铺下已经存在管理员，不要重复添加");
-                result.setError_description("该店铺下已经存在管理员，不要重复添加");
-                return result;
-            }
-        }
         SysUser sysUser = new SysUser();
         modelMapper.map(sysUserParam, sysUser);
         sysUser.setCreateTime(new Date());
@@ -114,7 +102,7 @@ public class SysUserMangeServiceImpl implements SysUserMangeService {
                 Integer roleId = sysRole.getRoleId();
                 //构建用户角色中间表
                 SysUserRole sysUserRole = new SysUserRole();
-                sysUserRole.setRoleId(roleId);
+                sysUserRole.setRoleId(2);
                 sysUserRole.setShopId(sysUserParam.getShopId());
                 sysUserRole.setUserId(sysUser.getUserId());
                 sysUserRoleMapper.insert(sysUserRole);

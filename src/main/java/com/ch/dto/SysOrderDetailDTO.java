@@ -28,4 +28,19 @@ public class SysOrderDetailDTO {
     private String payName;
 
     private Date payDate;
+
+    private Date refundDate;
+
+    private String refundReason;
+
+    private String photo;
+
+    private Long refundPrice;
+
+    private Long realPrice;
+
+    private Integer refundNumber;
+
+    private String refundId;
+
 }
