@@ -11,6 +11,7 @@ import com.ch.base.ResponseResult;
 import com.ch.dao.UserAddressMapper;
 import com.ch.dao.UserInfoMapper;
 import com.ch.entity.UserAddress;
+import com.ch.entity.UserAddressExample;
 import com.ch.entity.UserInfo;
 import com.ch.entity.UserInfoExample;
 import com.ch.service.ViewUserAddressService;
@@ -49,7 +50,19 @@ public class ViewUserAddressServiceImpl implements ViewUserAddressService {
                 userInfo = userInfos.get(0);
             }
             record.setUserId(userInfo.getId());
-            userAddressMapper.insert(record);
+
+        UserAddressExample example1 = new UserAddressExample();
+        UserAddressExample.Criteria criteria1 = example1.createCriteria();
+        criteria1.andStatusEqualTo(1);
+        List<UserAddress> userAddresses = userAddressMapper.selectByExample(example1);
+        if (userAddresses.size()>0){
+            for (UserAddress userAddress : userAddresses){
+                userAddress.setStatus(0);
+                userAddressMapper.updateByPrimaryKey(userAddress);
+            }
+        }
+
+        userAddressMapper.insert(record);
 
         ResponseResult result = new ResponseResult();
         return result;
@@ -68,6 +81,18 @@ public class ViewUserAddressServiceImpl implements ViewUserAddressService {
                userInfo = userInfos.get(0);
            }
            record.setUserId(userInfo.getId());
+
+        UserAddressExample example1 = new UserAddressExample();
+        UserAddressExample.Criteria criteria1 = example1.createCriteria();
+        criteria1.andStatusEqualTo(1);
+        List<UserAddress> userAddresses = userAddressMapper.selectByExample(example1);
+        if (userAddresses.size()>0){
+            for (UserAddress userAddress : userAddresses){
+                userAddress.setStatus(0);
+                userAddressMapper.updateByPrimaryKey(userAddress);
+            }
+        }
+
            userAddressMapper.updateByPrimaryKey(record);
         ResponseResult result = new ResponseResult();
         return result;

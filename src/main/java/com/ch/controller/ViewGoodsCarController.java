@@ -10,7 +10,6 @@ package com.ch.controller;
 import com.ch.base.ResponseResult;
 import com.ch.dao.UserMapper;
 import com.ch.dto.CarDto;
-import com.ch.entity.User;
 import com.ch.service.ViewGoodsCarService;
 import com.ch.util.TokenUtil;
 import io.swagger.annotations.Api;

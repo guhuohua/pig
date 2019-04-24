@@ -80,7 +80,6 @@ public class ViewUserAddressController {
     public ResponseResult findById(@RequestParam Integer id){
         ResponseResult result = new ResponseResult();
         try {
-
             result = viewUserAddressService.findById(id);
             System.out.println(result);
         } catch (Exception e) {
@@ -90,6 +89,5 @@ public class ViewUserAddressController {
             result.setError_description("查询地址失败");
         }
         return result;
-
     }
 }

@@ -14,7 +14,6 @@ import com.ch.dao.UserMapper;
 import com.ch.dto.ShopInfo;
 import com.ch.dto.UserConstant;
 import com.ch.dto.UserDto;
-import com.ch.entity.User;
 import com.ch.entity.UserInfo;
 import com.ch.entity.UserInfoExample;
 import com.ch.service.ViewShopInfoService;

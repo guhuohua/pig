@@ -54,8 +54,8 @@ public class ViewOrderServiceImpl implements ViewOrderService {
         criteria.andOpenIdEqualTo(openId);
         List<UserInfo> userInfos = userInfoMapper.selectByExample(example);
         UserInfo userInfo = null;
-        if (userInfos.size()>0){
-             userInfo = userInfos.get(0);
+        if (userInfos.size() > 0) {
+            userInfo = userInfos.get(0);
         }
         order.setId(System.currentTimeMillis() + RandomUtils.getRandomNumber(6));
         List<Long> feeList = new ArrayList<>();
@@ -68,12 +68,12 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                 GoodsExample.Criteria criteria1 = example1.createCriteria();
 
                 goodsMapper.selectByExample(example1);
-                if (goodsSku.getInventory()>0){
+                if (goodsSku.getInventory() > 0) {
                     goodsSku.setInventory(goodsSku.getInventory() - 1);
-                }else {
+                } else {
                     result.setError("500");
                     result.setError_description("商品已售馨");
-                    return  result;
+                    return result;
                 }
 
                 goodsSku.setSale(goodsSku.getSale() + 1);
@@ -90,7 +90,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                 orderItem.setName(orderDto.getName());
                 orderItem.setGoodsName(goodsSku.getSkuName());
                 orderItem.setNumber(orderDto.getNum());
-                orderItem.setPrice(goodsSku.getPresentPrice()*orderDto.getNum());
+                orderItem.setPrice(goodsSku.getPresentPrice() * orderDto.getNum());
                 orderItem.setOrderId(order.getId());
                 orderItem.setShopId(shopId);
                 orderItem.setSkuAttrId(orderDto.getGoodsSku().getId());
@@ -103,10 +103,9 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             order.setOrderStatus(1);
             order.setStatus(0);
             order.setCreateDate(new Date());
-            order.setOrderPrice(orderFee+Collections.max(feeList));
+            order.setOrderPrice(orderFee + Collections.max(feeList));
             orderMapper.insert(order);
         }
-
 
 
         result.setData(order.getId());
@@ -144,8 +143,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
         OrderItemExample.Criteria criteria = example.createCriteria();
         criteria.andOrderIdEqualTo(orderId);
 
-        List<OrderItem>  orderItems = orderItemMapper.selectByExample(example);
-
+        List<OrderItem> orderItems = orderItemMapper.selectByExample(example);
 
 
         map.put("userAddresses1", userAddresses1);
@@ -163,6 +161,100 @@ public class ViewOrderServiceImpl implements ViewOrderService {
         orderMapper.updateByPrimaryKey(orderDto.getOrder());
         userAddressMapper.updateByPrimaryKey(orderDto.getUserAddress());
         ResponseResult result = new ResponseResult();
+        return result;
+    }
+
+    @Override
+    public ResponseResult deleOrder(String orderId) {
+        orderMapper.deleteByPrimaryKey(orderId);
+        ResponseResult result = new ResponseResult();
+        return result;
+    }
+
+
+    @Override
+    public ResponseResult manageOrder(Integer status, String openId, Integer shopId) {
+        ResponseResult result = new ResponseResult();
+        UserInfoExample example = new UserInfoExample();
+        UserInfoExample.Criteria criteria = example.createCriteria();
+        criteria.andOpenIdEqualTo(openId);
+        List<UserInfo> userInfos = userInfoMapper.selectByExample(example);
+        UserInfo userInfo = null;
+        if (userInfos.size() > 0) {
+            userInfo = userInfos.get(0);
+        }
+        //待支付
+        if (status != null) {
+            if (status == 1) {
+                GoodsOrderExample example1 = new GoodsOrderExample();
+                GoodsOrderExample.Criteria criteria1 = example1.createCriteria();
+                criteria1.andUserIdEqualTo(userInfo.getId());
+                criteria1.andStatusEqualTo(1);
+                criteria1.andShopIdEqualTo(shopId);
+                List<GoodsOrder> goodsOrders1 = orderMapper.selectByExample(example1);
+                result.setData(goodsOrders1);
+            }
+            if (status == 3) {
+                GoodsOrderExample example3 = new GoodsOrderExample();
+                GoodsOrderExample.Criteria criteria3 = example3.createCriteria();
+                criteria3.andUserIdEqualTo(userInfo.getId());
+                criteria3.andStatusEqualTo(3);
+                criteria3.andShopIdEqualTo(shopId);
+                List<GoodsOrder> goodsOrders3 = orderMapper.selectByExample(example3);
+                result.setData(goodsOrders3);
+            }
+            if (status == 5) {
+                GoodsOrderExample example5 = new GoodsOrderExample();
+                GoodsOrderExample.Criteria criteria5 = example5.createCriteria();
+                criteria5.andUserIdEqualTo(userInfo.getId());
+                criteria5.andStatusEqualTo(5);
+                criteria5.andShopIdEqualTo(shopId);
+                List<GoodsOrder> goodsOrders5 = orderMapper.selectByExample(example5);
+                result.setData(goodsOrders5);
+            }
+
+            if (status == 7) {
+                GoodsOrderExample example7 = new GoodsOrderExample();
+                GoodsOrderExample.Criteria criteria7 = example7.createCriteria();
+                criteria7.andUserIdEqualTo(userInfo.getId());
+                criteria7.andStatusEqualTo(7);
+                criteria7.andShopIdEqualTo(shopId);
+                List<GoodsOrder> goodsOrders7 = orderMapper.selectByExample(example7);
+                result.setData(goodsOrders7);
+            }
+
+            if (status == 9) {
+                GoodsOrderExample example9 = new GoodsOrderExample();
+                GoodsOrderExample.Criteria criteria9 = example9.createCriteria();
+                criteria9.andUserIdEqualTo(userInfo.getId());
+                criteria9.andStatusEqualTo(9);
+                criteria9.andShopIdEqualTo(shopId);
+                List<GoodsOrder> goodsOrders9 = orderMapper.selectByExample(example9);
+                result.setData(goodsOrders9);
+            }
+        }
+
+
+        return result;
+    }
+
+    @Override
+    public ResponseResult findAll(String openId, Integer shopId) {
+        ResponseResult result = new ResponseResult();
+        UserInfoExample example = new UserInfoExample();
+        UserInfoExample.Criteria criteria = example.createCriteria();
+        criteria.andOpenIdEqualTo(openId);
+        List<UserInfo> userInfos = userInfoMapper.selectByExample(example);
+        UserInfo userInfo = null;
+        if (userInfos.size() > 0) {
+            userInfo = userInfos.get(0);
+        }
+        GoodsOrderExample example1 = new GoodsOrderExample();
+        GoodsOrderExample.Criteria criteria1 = example1.createCriteria();
+        criteria1.andUserIdEqualTo(userInfo.getId());
+        criteria1.andShopIdEqualTo(shopId);
+        List<GoodsOrder> goodsOrders = orderMapper.selectByExample(example1);
+        result.setData(goodsOrders);
         return result;
     }
 

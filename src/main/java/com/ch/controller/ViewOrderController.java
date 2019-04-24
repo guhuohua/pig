@@ -8,9 +8,7 @@
 package com.ch.controller;
 
 import com.ch.base.ResponseResult;
-import com.ch.dao.UserMapper;
 import com.ch.dto.OrderDto;
-import com.ch.entity.User;
 import com.ch.service.ViewOrderService;
 import com.ch.util.TokenUtil;
 import io.swagger.annotations.Api;
@@ -21,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @RestController
 @RequestMapping("order")
@@ -96,6 +93,45 @@ public class ViewOrderController {
         return result;
     }
 
+
+    @GetMapping("manageOrder")
+    @ApiOperation("订单管理查询")
+    public ResponseResult manageOrder( HttpServletRequest req,@RequestParam Integer status ){
+        ResponseResult result = new ResponseResult();
+        String openId = req.getHeader("openId");
+        String token = req.getHeader("Authorization");
+        Integer shopId = TokenUtil.getUserId(token);
+        try {
+            //User user = userMapper.selectByPrimaryKey(userId);
+            result = viewOrderService.manageOrder(status,openId,shopId);
+        } catch (Exception e) {
+            LOGGER.error("订单管理查询失败" + e.getMessage(), e);
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("订单管理查询失败");
+        }
+        return result;
+    }
+
+
+    @GetMapping("findAll")
+    @ApiOperation("查询所有订单")
+    public ResponseResult findAll( HttpServletRequest req ){
+        ResponseResult result = new ResponseResult();
+        String openId = req.getHeader("openId");
+        String token = req.getHeader("Authorization");
+        Integer shopId = TokenUtil.getUserId(token);
+        try {
+            //User user = userMapper.selectByPrimaryKey(userId);
+            result = viewOrderService.findAll(openId,shopId);
+        } catch (Exception e) {
+            LOGGER.error("查询所有订单失败" + e.getMessage(), e);
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("查询所有订单失败");
+        }
+        return result;
+    }
 
 
 }

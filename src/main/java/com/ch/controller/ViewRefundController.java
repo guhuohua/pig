@@ -87,7 +87,7 @@ public class ViewRefundController {
     @PostMapping("refund")
     @ResponseBody
     @Transactional
-    public JSONObject refund(HttpServletRequest req,@RequestParam String orderId) {
+    public JSONObject refund(HttpServletRequest req, @RequestParam String orderId) {
         // Long orderId, String refundId, Long totalFee,
         // Long refundFee, String refundAccount
 
@@ -111,51 +111,46 @@ public class ViewRefundController {
         refoundDto.setNonce_str(RandomUtils.generateMixString(32));
         refoundDto.setOut_trade_no(goodsOrder.getPayId());
         refoundDto.setOut_refund_no(refundId);
-        refoundDto.setTotal_fee(goodsOrder.getOrderPrice()+"");
-        refoundDto.setRefund_fee( goodsOrder.getOrderPrice().toString());
+        refoundDto.setTotal_fee(goodsOrder.getOrderPrice() + "");
+        refoundDto.setRefund_fee(goodsOrder.getOrderPrice().toString());
 
         Map<String, Object> params = new TreeMap<>();
         params.put("appid", refoundDto.getAppid());
         params.put("mch_id", refoundDto.getMch_id());
-        params.put("nonce_str",refoundDto.getNonce_str());
+        params.put("nonce_str", refoundDto.getNonce_str());
         //商户订单号和微信订单号二选一
-        params.put("out_trade_no",refoundDto.getOut_trade_no());
+        params.put("out_trade_no", refoundDto.getOut_trade_no());
         params.put("out_refund_no", refoundDto.getOut_refund_no());
         params.put("total_fee", refoundDto.getTotal_fee());
         params.put("refund_fee", refoundDto.getRefund_fee());
-        params.put("refund_account", "REFUND_SOURCE_UNSETTLED_FUNDS");
+        //params.put("refund_account", "REFUND_SOURCE_UNSETTLED_FUNDS");
         // 除去数组中的空值和签名参数
         Map sPara = PayUtil.paraFilter(params);
         String prestr = PayUtil.createLinkString(sPara); // 把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串
-        StringBuilder stringSignTemp=new StringBuilder(prestr);
+        StringBuilder stringSignTemp = new StringBuilder(prestr).append("&key=0EF1CDAFCC3327C1AF3B8D6CA37F9581");
 
         String sign = md5Password(stringSignTemp.toString()).toUpperCase();
 
         //MD5运算生成签名
         refoundDto.setSign(sign);
 
-
-
         try {
 
             String respXml = XmlUtil.messageToXML1(refoundDto);
-            System.out.println(respXml);
             // 打印respXml发现，得到的xml中有“__”不对，应该替换成“_”
             respXml = respXml.replace("__", "_");
             String param = respXml;
+            System.out.println(param);
 
-
-            String xmlStr = doRefund("https://api.mch.weixin.qq.com/secapi/pay/refund", param);
+            String xmlStr = doRefund("https://api.mch.weixin.qq.com/secapi/pay/refund", param,shopMiniProgram);
 
             //加入微信支付日志
-           // payWechatLogService.insertPayWechatLog(Constants.PAY_REFUND_RESULT_LOG, xmlStr);
+            // payWechatLogService.insertPayWechatLog(Constants.PAY_REFUND_RESULT_LOG, xmlStr);
 
-
-
-            System.out.println("请求微信退款接口，返回 result："+xmlStr);
+            System.out.println("请求微信退款接口，返回 result：" + xmlStr);
             // 将解析结果存储在Map中
             Map map = new HashMap();
-            InputStream in=new ByteArrayInputStream(xmlStr.getBytes());
+            InputStream in = new ByteArrayInputStream(xmlStr.getBytes());
             // 读取输入流
             SAXReader reader = new SAXReader();
             Document document = reader.read(in);
@@ -172,50 +167,41 @@ public class ViewRefundController {
             String result_code = map.get("result_code").toString();
             System.out.println("请求微信预支付接口，返回 code：" + return_code);
             System.out.println("请求微信预支付接口，返回 msg：" + return_msg);
-            JSONObject JsonObject = new JSONObject() ;
+            JSONObject JsonObject = new JSONObject();
 
             if ("SUCCESS".equals(return_code) && "SUCCESS".equals(result_code)) {
-                // 业务结果
 
-                String prepay_id = map.get("prepay_id").toString();//返回的预付单信息
-                String nonceStr = UUIDHexGenerator.generate();
-                JsonObject.put("nonceStr", nonceStr);
-                JsonObject.put("package", "prepay_id=" + prepay_id);
-                Long timeStamp = System.currentTimeMillis() / 1000;
-                JsonObject.put("timeStamp", timeStamp + "");
-                String aa = "appId=" + shopMiniProgram.getAppId() + "&nonceStr=" + nonceStr + "&package=prepay_id=" + prepay_id + "&signType=MD5&timeStamp=" + timeStamp;
-                //再次签名
-                String paySign = md5Password(aa.trim()).toUpperCase();
-                JsonObject.put("paySign", paySign);
+                if (goodsOrder.getOrderStatus() == 3) {
+                    goodsOrder.setOrderStatus(10);
+                    goodsOrderMapper.updateByPrimaryKey(goodsOrder);
+
+                }
+
             }
-
 
             return JsonObject;
 
-
-
-
-
         } catch (Exception e) {
+            JSONObject JsonObject = new JSONObject();
+            JsonObject.put("错误信息", e);
+            return JsonObject;
 
-            System.out.println(e);
-            return null;
         }
     }
 
 
-    public String doRefund(String url, String data) throws Exception {
+    public String doRefund(String url, String data,ShopMiniProgram shopMiniProgram) throws Exception {
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
         FileInputStream is = new FileInputStream(new File("G:\\cert\\apiclient_cert.p12"));
         try {
-            keyStore.load(is, "1512785241".toCharArray());
+            keyStore.load(is, shopMiniProgram.getMchIdd().toCharArray());
         } finally {
             is.close();
         }
         // Trust own CA and all self-signed certs
         SSLContext sslcontext = SSLContexts.custom().loadKeyMaterial(
                 keyStore,
-                "1512785241".toCharArray())
+                shopMiniProgram.getMchIdd().toCharArray())
                 .build();
         // Allow TLSv1 protocol only
         SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
