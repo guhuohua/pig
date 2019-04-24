@@ -9,4 +9,6 @@ public interface ViewUserAddressService {
     ResponseResult insert(UserAddress record,String openId,Integer shopId);
 
     ResponseResult updateByPrimaryKey(UserAddress record,String openId,Integer shopId);
+
+    ResponseResult findById(Integer id);
 }

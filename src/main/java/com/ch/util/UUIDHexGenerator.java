@@ -60,7 +60,7 @@ public class UUIDHexGenerator {
         return (int) System.currentTimeMillis();
     }
     public static String generate() {
-        return new StringBuffer(36).append(format(getIP())).append(sep).append(format(getJVM())).append(sep)
+        return new StringBuffer(32).append(format(getIP())).append(sep).append(format(getJVM())).append(sep)
                 .append(format(getHiTime())).append(sep).append(format(getLoTime())).append(sep)
                 .append(format(getCount())).toString();
     }

@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.DigestUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.List;
@@ -100,10 +101,14 @@ public class CommonUtil {
      * @param str
      * @return
      */
-    public static String getMD5(String str) throws Exception {
+    public static String getMD5(String str)  {
 
-        return DigestUtils.md5DigestAsHex(str.getBytes("UTF-8"));
-
+        try {
+            return DigestUtils.md5DigestAsHex(str.getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return null;
         /*try {
             // 生成一个MD5加密计算摘要
             MessageDigest md = MessageDigest.getInstance("MD5");

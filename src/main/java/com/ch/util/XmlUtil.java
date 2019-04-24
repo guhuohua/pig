@@ -1,6 +1,7 @@
 package com.ch.util;
 
 import com.ch.dto.PaymentDto;
+import com.ch.dto.RefoundDto;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.core.util.QuickWriter;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
@@ -66,6 +67,12 @@ public class XmlUtil {
     public static String messageToXML(PaymentDto paymentPo){
         xstream.alias("xml",PaymentDto.class);
         return xstream.toXML(paymentPo);
+    }
+
+
+    public static String messageToXML1(RefoundDto refoundDto){
+        xstream.alias("xml",RefoundDto.class);
+        return xstream.toXML(refoundDto);
     }
 
 }
