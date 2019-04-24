@@ -101,12 +101,12 @@ public class WeiXinPaymentController {
       //  Shop shop = shopMapper.selectByPrimaryKey(shopId);
 
         JSONObject JsonObject = new JSONObject() ;
-        String body = "小晨旭";
+        String body = "test";
         body = new String(body.getBytes("UTF-8"),"ISO-8859-1");
         String nonce_str = UUIDHexGenerator.generate();//随机字符串
         String today = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         String code = PayUtil.createCode(8);
-        String out_trade_no = mch_id + today + code;//商户订单号
+        String out_trade_no = goodsOrder.getId();//商户订单号
 
 
         PaymentDto paymentPo = new PaymentDto();
@@ -178,9 +178,9 @@ public class WeiXinPaymentController {
             JsonObject.put("package", "prepay_id=" + prepay_id);
             Long timeStamp = System.currentTimeMillis() / 1000;
             JsonObject.put("timeStamp", timeStamp + "");
-            String aa = "appId=" + appid + "&nonceStr=" + nonceStr + "&package=prepay_id=" + prepay_id + "&signType=MD5&timeStamp=" + timeStamp;
+            String aa = "appId=" + appid + "&nonceStr=" + nonceStr + "&package=prepay_id=" + prepay_id + "&signType=MD5&timeStamp=" + timeStamp + "&key=" + shopMiniProgram.getAppKey();
             //再次签名
-            String paySign = md5Password(aa).toUpperCase();
+            String paySign = md5Password(aa.trim()).toUpperCase();
             JsonObject.put("paySign", paySign);
         }
         return JsonObject;
