@@ -7,17 +7,6 @@
 
 package com.ch.controller;
 
-import javax.net.ssl.SSLContext;
-import javax.servlet.http.HttpServletRequest;
-import java.io.*;
-import java.security.KeyStore;
-import java.security.MessageDigest;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-
-import com.alibaba.fastjson.JSON;
-
 import com.alibaba.fastjson.JSONObject;
 import com.ch.dao.GoodsOrderMapper;
 import com.ch.dao.ShopMiniProgramMapper;
@@ -25,8 +14,10 @@ import com.ch.dto.RefoundDto;
 import com.ch.entity.GoodsOrder;
 import com.ch.entity.ShopMiniProgram;
 import com.ch.service.ViewShopNameService;
-import com.ch.util.*;
-import com.sun.org.apache.bcel.internal.ExceptionConstants;
+import com.ch.util.PayUtil;
+import com.ch.util.RandomUtils;
+import com.ch.util.TokenUtil;
+import com.ch.util.XmlUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -36,13 +27,23 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContexts;
 import org.apache.http.util.EntityUtils;
-import org.apache.logging.log4j.util.Constants;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import javax.net.ssl.SSLContext;
+import javax.servlet.http.HttpServletRequest;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.security.KeyStore;
+import java.security.MessageDigest;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RestController
 @RequestMapping("weixin")
@@ -142,7 +143,7 @@ public class ViewRefundController {
             String param = respXml;
             System.out.println(param);
 
-            String xmlStr = doRefund("https://api.mch.weixin.qq.com/secapi/pay/refund", param,shopMiniProgram);
+            String xmlStr = doRefund("https://api.mch.weixin.qq.com/secapi/pay/refund", param, shopMiniProgram);
 
             //加入微信支付日志
             // payWechatLogService.insertPayWechatLog(Constants.PAY_REFUND_RESULT_LOG, xmlStr);
@@ -174,7 +175,6 @@ public class ViewRefundController {
                 if (goodsOrder.getOrderStatus() == 3) {
                     goodsOrder.setOrderStatus(10);
                     goodsOrderMapper.updateByPrimaryKey(goodsOrder);
-
                 }
 
             }
@@ -190,7 +190,7 @@ public class ViewRefundController {
     }
 
 
-    public String doRefund(String url, String data,ShopMiniProgram shopMiniProgram) throws Exception {
+    public String doRefund(String url, String data, ShopMiniProgram shopMiniProgram) throws Exception {
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
         FileInputStream is = new FileInputStream(new File("G:\\cert\\apiclient_cert.p12"));
         try {

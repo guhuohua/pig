@@ -19,14 +19,6 @@ public class OrderItem {
 
     private String name;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Integer getId() {
         return id;
     }
@@ -88,6 +80,14 @@ public class OrderItem {
     }
 
     public void setOrderId(String orderId) {
-        this.orderId = orderId;
+        this.orderId = orderId == null ? null : orderId.trim();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 }

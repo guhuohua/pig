@@ -11,4 +11,6 @@ public interface ViewUserAddressService {
     ResponseResult updateByPrimaryKey(UserAddress record,String openId,Integer shopId);
 
     ResponseResult findById(Integer id);
+
+    ResponseResult findAll(String openId,Integer shopId);
 }

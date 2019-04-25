@@ -10,7 +10,10 @@ public interface ViewOrderService {
     ResponseResult addOrder(OrderDto[] orderDtoList ,String openId,Integer shopId);
     ResponseResult showOrder(String orderId, String openId);
     ResponseResult updateOrder(OrderDto orderDto);
-    ResponseResult deleOrder(String orderId);
+
     ResponseResult manageOrder(Integer status,String openId,Integer shopId );
     ResponseResult findAll(String openId,Integer shopId);
+    ResponseResult deleOrderById(String orderId);
+
+
 }

@@ -15,6 +15,7 @@ import com.ch.dao.UserInfoMapper;
 import com.ch.dto.CarDto;
 import com.ch.entity.*;
 import com.ch.service.ViewGoodsCarService;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +39,6 @@ public class ViewGoodsCarServiceImpl implements ViewGoodsCarService {
     @Override
 
     public ResponseResult addCar(Integer skuId, Integer num, String openId, Integer shopId) {
-        Map map = new HashMap();
         Long totalFee = null;
         UserInfoExample example = new UserInfoExample();
         UserInfoExample.Criteria criteria = example.createCriteria();
@@ -49,16 +49,28 @@ public class ViewGoodsCarServiceImpl implements ViewGoodsCarService {
             userInfo = userInfos.get(0);
         }
         GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(skuId);
-        totalFee = goodsSku.getPresentPrice() * num;
-        GoodsCar goodsCar = new GoodsCar();
-        goodsCar.setShopId(shopId);
-        goodsCar.setNum(num);
-        goodsCar.setSkuId(skuId);
-        goodsCar.setTotalFee(totalFee);
-        goodsCar.setUserId(userInfo.getId());
-        goodsCarMapper.insert(goodsCar);
+        GoodsCarExample example1 = new GoodsCarExample();
+        GoodsCarExample.Criteria criteria1 = example1.createCriteria();
+        criteria1.andShopIdEqualTo(shopId);
+        criteria1.andUserIdEqualTo(userInfo.getId());
+        List<GoodsCar> goodsCars = goodsCarMapper.selectByExample(example1);
+        for (GoodsCar goodsCar : goodsCars) {
+            if (goodsCar.getSkuId() == goodsSku.getId()) {
+                goodsCar.setNum(goodsCar.getNum() + num);
+                totalFee = goodsSku.getPresentPrice() * goodsCar.getNum();
+                goodsCar.setTotalFee(totalFee);
+                goodsCarMapper.updateByPrimaryKey(goodsCar);
+            } else {
+                GoodsCar goodsCar1 = new GoodsCar();
+                goodsCar1.setShopId(shopId);
+                goodsCar1.setNum(num);
+                goodsCar1.setSkuId(skuId);
+                goodsCar1.setTotalFee(totalFee);
+                goodsCar1.setUserId(userInfo.getId());
+                goodsCarMapper.insert(goodsCar1);
+            }
+        }
         ResponseResult result = new ResponseResult();
-        result.setData(map);
         return result;
 
     }

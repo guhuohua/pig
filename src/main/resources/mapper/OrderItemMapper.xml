@@ -7,7 +7,7 @@
     <result column="shop_id" property="shopId" jdbcType="INTEGER" />
     <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
     <result column="number" property="number" jdbcType="INTEGER" />
-    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="price" property="price" jdbcType="BIGINT" />
     <result column="sku_attr_id" property="skuAttrId" jdbcType="INTEGER" />
     <result column="order_id" property="orderId" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -110,7 +110,7 @@
       sku_attr_id, order_id, name
       )
     values (#{id,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, #{shopId,jdbcType=INTEGER}, 
-      #{goodsName,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, 
+      #{goodsName,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER}, #{price,jdbcType=BIGINT}, 
       #{skuAttrId,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}
       )
   </insert>
@@ -162,7 +162,7 @@
         #{number,jdbcType=INTEGER},
       </if>
       <if test="price != null" >
-        #{price,jdbcType=DECIMAL},
+        #{price,jdbcType=BIGINT},
       </if>
       <if test="skuAttrId != null" >
         #{skuAttrId,jdbcType=INTEGER},
@@ -200,7 +200,7 @@
         number = #{record.number,jdbcType=INTEGER},
       </if>
       <if test="record.price != null" >
-        price = #{record.price,jdbcType=DECIMAL},
+        price = #{record.price,jdbcType=BIGINT},
       </if>
       <if test="record.skuAttrId != null" >
         sku_attr_id = #{record.skuAttrId,jdbcType=INTEGER},
@@ -223,7 +223,7 @@
       shop_id = #{record.shopId,jdbcType=INTEGER},
       goods_name = #{record.goodsName,jdbcType=VARCHAR},
       number = #{record.number,jdbcType=INTEGER},
-      price = #{record.price,jdbcType=DECIMAL},
+      price = #{record.price,jdbcType=BIGINT},
       sku_attr_id = #{record.skuAttrId,jdbcType=INTEGER},
       order_id = #{record.orderId,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR}
@@ -247,7 +247,7 @@
         number = #{number,jdbcType=INTEGER},
       </if>
       <if test="price != null" >
-        price = #{price,jdbcType=DECIMAL},
+        price = #{price,jdbcType=BIGINT},
       </if>
       <if test="skuAttrId != null" >
         sku_attr_id = #{skuAttrId,jdbcType=INTEGER},
@@ -267,7 +267,7 @@
       shop_id = #{shopId,jdbcType=INTEGER},
       goods_name = #{goodsName,jdbcType=VARCHAR},
       number = #{number,jdbcType=INTEGER},
-      price = #{price,jdbcType=DECIMAL},
+      price = #{price,jdbcType=BIGINT},
       sku_attr_id = #{skuAttrId,jdbcType=INTEGER},
       order_id = #{orderId,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR}

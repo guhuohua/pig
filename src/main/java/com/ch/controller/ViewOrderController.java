@@ -13,6 +13,7 @@ import com.ch.service.ViewOrderService;
 import com.ch.util.TokenUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.ibatis.annotations.Param;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +27,9 @@ import javax.servlet.http.HttpServletRequest;
 public class ViewOrderController {
 
 
-
-
     private static final Logger LOGGER = LogManager.getLogger(ViewOrderController.class);
     @Autowired
     ViewOrderService viewOrderService;
-
-
 
     @PostMapping("addOrder")
     @ApiOperation("添加订单")
@@ -116,7 +113,7 @@ public class ViewOrderController {
 
     @GetMapping("findAll")
     @ApiOperation("查询所有订单")
-    public ResponseResult findAll( HttpServletRequest req ){
+    public ResponseResult findAll( HttpServletRequest req,@RequestParam Integer pageNum, @RequestParam Integer pageSize ){
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
@@ -129,6 +126,27 @@ public class ViewOrderController {
             result.setCode(500);
             result.setError(e.getMessage());
             result.setError_description("查询所有订单失败");
+        }
+        return result;
+    }
+
+
+
+    @GetMapping("deleOrderById")
+    @ApiOperation("取消订单")
+    public ResponseResult deleOrderById( HttpServletRequest req ,@RequestParam String orderId){
+        ResponseResult result = new ResponseResult();
+        String openId = req.getHeader("openId");
+        String token = req.getHeader("Authorization");
+        Integer shopId = TokenUtil.getUserId(token);
+        try {
+            //User user = userMapper.selectByPrimaryKey(userId);
+            result = viewOrderService.deleOrderById(orderId);
+        } catch (Exception e) {
+            LOGGER.error("取消订单失败" + e.getMessage(), e);
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("取消订单失败");
         }
         return result;
     }
