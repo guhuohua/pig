@@ -10,7 +10,10 @@ public enum OderStatusEnum {
     RECEIVED("6", "已收货"),
     COMPLETE("7", "订单完成"),
     CANCEL("8", "订单取消"),
-    UNEVALUATED("9", "待评价");
+    UNEVALUATED("9", "待评价"),
+    REFUNDNO("10","已退款");
+
+
 
     public final String code;
 

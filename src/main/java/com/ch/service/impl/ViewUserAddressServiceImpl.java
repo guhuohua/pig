@@ -11,6 +11,7 @@ import com.ch.base.ResponseResult;
 import com.ch.dao.UserAddressMapper;
 import com.ch.dao.UserInfoMapper;
 import com.ch.entity.UserAddress;
+import com.ch.entity.UserAddressExample;
 import com.ch.entity.UserInfo;
 import com.ch.entity.UserInfoExample;
 import com.ch.service.ViewUserAddressService;
@@ -31,44 +32,68 @@ public class ViewUserAddressServiceImpl implements ViewUserAddressService {
 
         userAddressMapper.deleteByPrimaryKey(id);
 
-       ResponseResult result = new ResponseResult();
+        ResponseResult result = new ResponseResult();
 
         return result;
     }
 
     @Override
-    public ResponseResult insert(UserAddress record,String openId,Integer shopId) {
+    public ResponseResult insert(UserAddress record, String openId, Integer shopId) {
 
-            record.setShopId(shopId);
-            UserInfoExample example = new UserInfoExample();
-            UserInfoExample.Criteria criteria = example.createCriteria();
-            criteria.andOpenIdEqualTo(openId);
-            List<UserInfo> userInfos = userInfoMapper.selectByExample(example);
-            UserInfo userInfo = null;
-            if (userInfos.size() > 0) {
-                userInfo = userInfos.get(0);
+        record.setShopId(shopId);
+        UserInfoExample example = new UserInfoExample();
+        UserInfoExample.Criteria criteria = example.createCriteria();
+        criteria.andOpenIdEqualTo(openId);
+        List<UserInfo> userInfos = userInfoMapper.selectByExample(example);
+        UserInfo userInfo = null;
+        if (userInfos.size() > 0) {
+            userInfo = userInfos.get(0);
+        }
+        record.setUserId(userInfo.getId());
+
+        UserAddressExample example1 = new UserAddressExample();
+        UserAddressExample.Criteria criteria1 = example1.createCriteria();
+        criteria1.andStatusEqualTo(1);
+        List<UserAddress> userAddresses = userAddressMapper.selectByExample(example1);
+        if (userAddresses.size() > 0) {
+            for (UserAddress userAddress : userAddresses) {
+                userAddress.setStatus(0);
+                userAddressMapper.updateByPrimaryKey(userAddress);
             }
-            record.setUserId(userInfo.getId());
-            userAddressMapper.insert(record);
+        }
+
+        userAddressMapper.insert(record);
 
         ResponseResult result = new ResponseResult();
         return result;
     }
 
     @Override
-    public ResponseResult updateByPrimaryKey(UserAddress record,String openId,Integer shopId) {
+    public ResponseResult updateByPrimaryKey(UserAddress record, String openId, Integer shopId) {
 
-           record.setShopId(shopId);
-           UserInfoExample example = new UserInfoExample();
-           UserInfoExample.Criteria criteria = example.createCriteria();
-           criteria.andOpenIdEqualTo(openId);
-           List<UserInfo> userInfos = userInfoMapper.selectByExample(example);
-           UserInfo userInfo = null;
-           if (userInfos.size() > 0) {
-               userInfo = userInfos.get(0);
-           }
-           record.setUserId(userInfo.getId());
-           userAddressMapper.updateByPrimaryKey(record);
+        record.setShopId(shopId);
+        UserInfoExample example = new UserInfoExample();
+        UserInfoExample.Criteria criteria = example.createCriteria();
+        criteria.andOpenIdEqualTo(openId);
+        List<UserInfo> userInfos = userInfoMapper.selectByExample(example);
+        UserInfo userInfo = null;
+        if (userInfos.size() > 0) {
+            userInfo = userInfos.get(0);
+        }
+        record.setUserId(userInfo.getId());
+
+        UserAddressExample example1 = new UserAddressExample();
+        UserAddressExample.Criteria criteria1 = example1.createCriteria();
+        criteria1.andStatusEqualTo(1);
+        List<UserAddress> userAddresses = userAddressMapper.selectByExample(example1);
+        if (userAddresses.size() > 0) {
+            for (UserAddress userAddress : userAddresses) {
+                userAddress.setStatus(0);
+                userAddressMapper.updateByPrimaryKey(userAddress);
+            }
+        }
+
+        userAddressMapper.updateByPrimaryKey(record);
         ResponseResult result = new ResponseResult();
         return result;
     }
@@ -78,6 +103,28 @@ public class ViewUserAddressServiceImpl implements ViewUserAddressService {
         UserAddress userAddress = userAddressMapper.selectByPrimaryKey(id);
         ResponseResult result = new ResponseResult();
         result.setData(userAddress);
-        return  result;
+        return result;
+    }
+
+    @Override
+    public ResponseResult findAll(String openId, Integer shopId) {
+        UserInfoExample example = new UserInfoExample();
+        UserInfoExample.Criteria criteria = example.createCriteria();
+        criteria.andOpenIdEqualTo(openId);
+        List<UserInfo> userInfos = userInfoMapper.selectByExample(example);
+        UserInfo userInfo = null;
+        if (userInfos.size() > 0) {
+            userInfo = userInfos.get(0);
+        }
+        UserAddressExample example1 = new UserAddressExample();
+        UserAddressExample.Criteria criteria1 = example1.createCriteria();
+        criteria1.andUserIdEqualTo(userInfo.getId());
+        criteria1.andShopIdEqualTo(shopId);
+        List<UserAddress> userAddresses = userAddressMapper.selectByExample(example1);
+
+        ResponseResult result = new ResponseResult();
+
+        result.setData(userAddresses);
+        return result;
     }
 }

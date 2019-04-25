@@ -9,7 +9,6 @@ package com.ch.controller;
 
 import com.ch.base.ResponseResult;
 import com.ch.dao.UserMapper;
-import com.ch.entity.User;
 import com.ch.service.ViewGoodsAdvertService;
 import com.ch.util.TokenUtil;
 import io.swagger.annotations.Api;
