@@ -1,54 +1,51 @@
 /**
  * Author: 常富文
- * Date:   2019/4/4 14:21
- * Description: 首页轮播图
+ * Date:   2019/4/26 11:19
+ * Description: 售后
  */
 
 
 package com.ch.controller;
 
 import com.ch.base.ResponseResult;
-import com.ch.dao.UserMapper;
-import com.ch.service.ViewGoodsAdvertService;
+import com.ch.entity.OrderRefund;
+import com.ch.service.ViewOrderRefundService;
 import com.ch.util.TokenUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("view")
-@Api(value = "轮播图管理",description = "轮播图管理")
-public class ViewGoodsAdvertController {
-
-    private static final Logger LOGGER = LogManager.getLogger(ViewGoodsAdvertController.class);
-
+@RequestMapping("order")
+@Api(value = "售后",description = "售后")
+public class ViewOrderRefundController {
+    private static final Logger LOGGER = LogManager.getLogger(ViewOrderRefundController.class);
     @Autowired
-    ViewGoodsAdvertService viewGoodsAdvertService;
-    @Autowired
-    UserMapper userMapper;
+    ViewOrderRefundService viewOrderRefundService;
 
-    @GetMapping("showAdvert")
-    @ApiOperation("轮播图展示")
-    public ResponseResult findByCategory(HttpServletRequest req){
+    @PostMapping("applyRefund")
+    @ApiOperation("售后")
+    public ResponseResult refund(HttpServletRequest req, @RequestBody OrderRefund orderRefund){
         ResponseResult result = new ResponseResult();
+        String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
-        //System.out.println(shopId);
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
-            result = viewGoodsAdvertService.findByShopId(shopId);
+            result = viewOrderRefundService.addOrderRefund(orderRefund,openId,shopId);
         } catch (Exception e) {
-            LOGGER.error("展示轮播图失败" + e.getMessage(), e);
+            LOGGER.error("申请售后失败" + e.getMessage(), e);
             result.setCode(500);
             result.setError(e.getMessage());
-            result.setError_description("展示轮播图失败");
+            result.setError_description("申请售后失败");
         }
         return result;
     }

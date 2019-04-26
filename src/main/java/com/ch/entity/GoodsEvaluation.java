@@ -23,17 +23,11 @@ public class GoodsEvaluation {
 
     private Integer goodsId;
 
-    private Integer orderId;
+    private String orderId;
 
     private String reply;
 
-    public String getReply() {
-        return reply;
-    }
-
-    public void setReply(String reply) {
-        this.reply = reply;
-    }
+    private Integer orderItemId;
 
     public Integer getId() {
         return id;
@@ -115,11 +109,27 @@ public class GoodsEvaluation {
         this.goodsId = goodsId;
     }
 
-    public Integer getOrderId() {
+    public String getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(Integer orderId) {
+    public void setOrderId(String orderId) {
         this.orderId = orderId;
+    }
+
+    public String getReply() {
+        return reply;
+    }
+
+    public void setReply(String reply) {
+        this.reply = reply == null ? null : reply.trim();
+    }
+
+    public Integer getOrderItemId() {
+        return orderItemId;
+    }
+
+    public void setOrderItemId(Integer orderItemId) {
+        this.orderItemId = orderItemId;
     }
 }

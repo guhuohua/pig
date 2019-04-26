@@ -31,24 +31,29 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
     SysUserMapper userMapper;
 
     @Override
-    public ResponseResult findGoodsList(SolrDto solrDto, Integer userId) {
-       SysUser sysUser = userMapper.selectByPrimaryKey(userId);
+    public ResponseResult findGoodsList(SolrDto solrDto, Integer shopId) {
+      //  SysUser sysUser = userMapper.selectByPrimaryKey(userId);
         ResponseResult result1 = new ResponseResult();
         Map params = new HashMap<>();
         String str = null;
-     if (solrDto.getCategoryId()!=null ){
-         params.put("q", "categoryId :"+solrDto.getCategoryId());
-
-     }
-
+        if (solrDto.getCategoryId() != null) {
+            params.put("q", "categoryId :" + solrDto.getCategoryId());
+        }
 
         //System.out.println("categoryId :"+solrDto.getCategoryId()+" AND "+"shopId:"+sysUser.getShopId());
         //params.put("q","*:*");
-        params.put("q","shopId:"+sysUser.getShopId());
+
+        params.put("q", "shopId:" + shopId);
         params.put("start", solrDto.getStart());
         params.put("rows", solrDto.getRows());
         params.put("sort", "sort asc");
+
         if (solrDto.getCondition() != null) {
+            str = "goodsSalesArea:" + "\"" + solrDto.getCondition() + "\"" + " OR name:" + "\"" + solrDto.getCondition() + "\"" + " OR title:" + "\"" + solrDto.getCondition() + "\"";
+           // System.out.println(str);
+            params.put("fq", str);
+
+
             if ("NEW".equals(solrDto.getCondition())) {
                 str = "goodsSalesArea:" + "\"" + solrDto.getCondition() + "\"" + " OR name:" + "\"" + solrDto.getCondition() + "\"" + " OR title:" + "\"" + solrDto.getCondition() + "\"";
                 System.out.println(str);
@@ -68,7 +73,6 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
                 params.remove("sort");
                 params.put("sort", "boutiqueSort asc");
             }
-
         }
         SolrParams mapSolrParams = new MapSolrParams(params);
         QueryResponse query1 = null;
@@ -86,7 +90,6 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return result1;
     }
 }

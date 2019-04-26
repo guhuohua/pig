@@ -11,5 +11,5 @@ public interface ViewGoodsListService {
      * @param solrDto
      * @return
      */
-    ResponseResult findGoodsList(SolrDto  solrDto,Integer userId);
+    ResponseResult findGoodsList(SolrDto  solrDto,Integer shopId);
 }

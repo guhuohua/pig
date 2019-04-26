@@ -14,6 +14,7 @@
     <result column="goods_id" property="goodsId" jdbcType="INTEGER" />
     <result column="order_id" property="orderId" jdbcType="VARCHAR" />
     <result column="reply" property="reply" jdbcType="VARCHAR" />
+    <result column="order_item_id" property="orderItemId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -75,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, shop_id, status, create_time, update_time, del_flag, name, details, score, goods_id, 
-    order_id,reply
+    order_id, reply, order_item_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.GoodsEvaluationExample" >
     select
@@ -112,11 +113,13 @@
     insert into goods_evaluation (id, shop_id, status, 
       create_time, update_time, del_flag, 
       name, details, score, 
-      goods_id, order_id, reply)
+      goods_id, order_id, reply, 
+      order_item_id)
     values (#{id,jdbcType=INTEGER}, #{shopId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=INTEGER}, 
       #{name,jdbcType=VARCHAR}, #{details,jdbcType=VARCHAR}, #{score,jdbcType=INTEGER}, 
-      #{goodsId,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR}, #{reply,jdbcType=VARCHAR})
+      #{goodsId,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR}, #{reply,jdbcType=VARCHAR},
+      #{orderItemId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ch.entity.GoodsEvaluation" >
     insert into goods_evaluation
@@ -154,6 +157,12 @@
       <if test="orderId != null" >
         order_id,
       </if>
+      <if test="reply != null" >
+        reply,
+      </if>
+      <if test="orderItemId != null" >
+        order_item_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -188,6 +197,12 @@
       </if>
       <if test="orderId != null" >
         #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="reply != null" >
+        #{reply,jdbcType=VARCHAR},
+      </if>
+      <if test="orderItemId != null" >
+        #{orderItemId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -233,6 +248,12 @@
       <if test="record.orderId != null" >
         order_id = #{record.orderId,jdbcType=VARCHAR},
       </if>
+      <if test="record.reply != null" >
+        reply = #{record.reply,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderItemId != null" >
+        order_item_id = #{record.orderItemId,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -251,7 +272,8 @@
       score = #{record.score,jdbcType=INTEGER},
       goods_id = #{record.goodsId,jdbcType=INTEGER},
       order_id = #{record.orderId,jdbcType=VARCHAR},
-    reply = #{record.reply,jdbcType=VARCHAR}
+      reply = #{record.reply,jdbcType=VARCHAR},
+      order_item_id = #{record.orderItemId,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -289,6 +311,12 @@
       <if test="orderId != null" >
         order_id = #{orderId,jdbcType=VARCHAR},
       </if>
+      <if test="reply != null" >
+        reply = #{reply,jdbcType=VARCHAR},
+      </if>
+      <if test="orderItemId != null" >
+        order_item_id = #{orderItemId,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -304,7 +332,8 @@
       score = #{score,jdbcType=INTEGER},
       goods_id = #{goodsId,jdbcType=INTEGER},
       order_id = #{orderId,jdbcType=VARCHAR},
-      reply = #{reply,jdbcType=VARCHAR}
+      reply = #{reply,jdbcType=VARCHAR},
+      order_item_id = #{orderItemId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
