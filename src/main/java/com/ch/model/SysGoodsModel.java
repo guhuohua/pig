@@ -34,10 +34,6 @@ public class SysGoodsModel {
 
     private Integer inventory;
 
-    private BigDecimal originalPrice;
-
-    private BigDecimal presentPrice;
-
     private String sn;
 
     private Integer memberDiscount;

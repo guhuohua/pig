@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -170,8 +171,12 @@ public class SysGoodsServiceImpl implements SysGoodsService {
             modelMapper.map(model, goods);
             goods.setShopId(sysUser.getShopId());
             goods.setCreateTime(new Date());
-            goodsMapper.insert(goods);
             List<SysGoodsSkuModel> sysGoodsSkuModelList = model.getSysGoodsSkuModelList();
+            long max = sysGoodsSkuModelList.stream().mapToLong(SysGoodsSkuModel::getPresentPrice).max().getAsLong();
+            long min = sysGoodsSkuModelList.stream().mapToLong(SysGoodsSkuModel::getPresentPrice).min().getAsLong();
+            goods.setOriginalPrice(BigDecimal.valueOf(max));
+            goods.setPresentPrice(BigDecimal.valueOf(min));
+            goodsMapper.insert(goods);
             for (SysGoodsSkuModel skuModel:sysGoodsSkuModelList) {
                 GoodsSku sku = new GoodsSku();
                 modelMapper.map(skuModel, sku);
