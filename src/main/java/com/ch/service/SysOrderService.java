@@ -30,4 +30,11 @@ public interface SysOrderService {
      * @return
      */
     ResponseResult detail(String oderId, Integer userId);
+
+    /**
+     * 超时未支付，取消订单
+     * @param oderId
+     * @return
+     */
+    ResponseResult cancelOrder(String oderId);
 }

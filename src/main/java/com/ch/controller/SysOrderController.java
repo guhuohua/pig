@@ -3,6 +3,7 @@ package com.ch.controller;
 import com.ch.base.ResponseResult;
 import com.ch.dto.DeliverGoodsParam;
 import com.ch.dto.SysOrderParam;
+import com.ch.handler.ActiveMQHandler;
 import com.ch.service.SysOrderService;
 import com.ch.util.TokenUtil;
 import io.swagger.annotations.Api;
@@ -22,6 +23,9 @@ public class SysOrderController {
 
     @Autowired
     SysOrderService sysOrderService;
+
+    @Autowired
+    ActiveMQHandler activeMQHandler;
 
     @GetMapping("list")
     public ResponseResult list(HttpServletRequest req, SysOrderParam param) {
@@ -74,5 +78,19 @@ public class SysOrderController {
         return result;
     }
 
+    @GetMapping("cancel_order")
+    public ResponseResult cancelOrder(HttpServletRequest req, @RequestParam String orderId) {
+        ResponseResult result = new ResponseResult();
+        try {
+            activeMQHandler.cancelOrder("cancelOrder", orderId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.error("发送关闭订单MQ失败", e);
+            result.setCode(700);
+            result.setError(e.getMessage());
+            result.setError_description("发送关闭订单MQ失败");
+        }
+        return result;
+    }
 
 }

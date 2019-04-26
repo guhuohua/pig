@@ -1,9 +1,11 @@
 package com.ch.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ch.dao.*;
 import com.ch.dto.PaymentDto;
 import com.ch.entity.*;
+import com.ch.handler.ActiveMQHandler;
 import com.ch.service.ViewShopNameService;
 import com.ch.util.PayUtil;
 import com.ch.util.TokenUtil;
@@ -51,6 +53,7 @@ public class WeiXinPaymentController {
     OrderItemMapper orderItemMapper;
     @Autowired
     GoodsCarMapper goodsCarMapper;
+
 
     public static String md5Password(String key) {
         char hexDigits[] = {
@@ -172,7 +175,7 @@ public class WeiXinPaymentController {
             JsonObject.put("package", "prepay_id=" + prepay_id);
             Long timeStamp = System.currentTimeMillis() / 1000;
             JsonObject.put("timeStamp", timeStamp + "");
-            String aa = "appId=" + appid + "&nonceStr=" + nonceStr + "&package=prepay_id=" + prepay_id + "&signType=MD5&timeStamp=" + timeStamp + "&key=" + shopMiniProgram.getAppKey();
+            String aa = "appId=" + shopMiniProgram.getAppId() + "&nonceStr=" + nonceStr + "&package=prepay_id=" + prepay_id + "&signType=MD5&timeStamp=" + timeStamp + "&key=" + shopMiniProgram.getAppKey();
             //再次签名
             String paySign = md5Password(aa.trim()).toUpperCase();
             JsonObject.put("paySign", paySign);
@@ -191,6 +194,7 @@ public class WeiXinPaymentController {
     public void paycallback(HttpServletRequest request) {
         try {
             Map<String, Object> dataMap = XmlUtil.parseXML(request);
+            System.out.println(JSON.toJSONString(dataMap));
             //{"transaction_id":"4200000109201805293331420304","nonce_str":"402880e963a9764b0163a979a16e0002","bank_type":"CFT","openid":"oXI6G5Jc4D44y2wixgxE3OPwpDVg","sign":"262978D36A3093ACBE4B55707D6EA7B2","fee_type":"CNY","mch_id":"1491307962","cash_fee":"10","out_trade_no":"14913079622018052909183048768217","appid":"wxa177427bc0e60aab","total_fee":"10","trade_type":"JSAPI","result_code":"SUCCESS","time_end":"20180529091834","is_subscribe":"N","return_code":"SUCCESS"}
             if ("SUCCESS".equals(dataMap.get("return_code"))) {
                 String transaction_id = (String) dataMap.get("transaction_id");

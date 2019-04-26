@@ -185,4 +185,14 @@ public class SysOrderServiceImpl implements SysOrderService {
         result.setData(sysOrderDetailDTO);
         return result;
     }
+
+    @Override
+    public ResponseResult cancelOrder(String oderId) {
+        ResponseResult result = new ResponseResult();
+        GoodsOrder goodsOrder = orderMapper.selectByPrimaryKey(oderId);
+        goodsOrder.setOrderStatus(Integer.valueOf(OderStatusEnum.CANCEL.code));
+        goodsOrder.setModifyDate(new Date());
+        orderMapper.updateByPrimaryKey(goodsOrder);
+        return result;
+    }
 }

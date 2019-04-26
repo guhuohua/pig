@@ -8,6 +8,7 @@
 package com.ch.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ch.config.WxRefundProperties;
 import com.ch.dao.GoodsOrderMapper;
 import com.ch.dao.ShopMiniProgramMapper;
 import com.ch.dto.RefoundDto;
@@ -55,6 +56,8 @@ public class ViewRefundController {
     ShopMiniProgramMapper shopMiniProgramMapper;
     @Autowired
     ViewShopNameService viewShopNameService;
+    @Autowired
+    WxRefundProperties wxRefundProperties;
 
 
     public static String md5Password(String key) {
@@ -192,7 +195,7 @@ public class ViewRefundController {
 
     public String doRefund(String url, String data, ShopMiniProgram shopMiniProgram) throws Exception {
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
-        FileInputStream is = new FileInputStream(new File("G:\\cert\\apiclient_cert.p12"));
+        FileInputStream is = new FileInputStream(new File(wxRefundProperties.getCertificate()));
         try {
             keyStore.load(is, shopMiniProgram.getMchIdd().toCharArray());
         } finally {
