@@ -784,6 +784,136 @@ public class GoodsEvaluationExample {
             addCriterion("order_id not between", value1, value2, "orderId");
             return (Criteria) this;
         }
+
+        public Criteria andReplyIsNull() {
+            addCriterion("reply is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyIsNotNull() {
+            addCriterion("reply is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyEqualTo(String value) {
+            addCriterion("reply =", value, "reply");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyNotEqualTo(String value) {
+            addCriterion("reply <>", value, "reply");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyGreaterThan(String value) {
+            addCriterion("reply >", value, "reply");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyGreaterThanOrEqualTo(String value) {
+            addCriterion("reply >=", value, "reply");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyLessThan(String value) {
+            addCriterion("reply <", value, "reply");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyLessThanOrEqualTo(String value) {
+            addCriterion("reply <=", value, "reply");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyLike(String value) {
+            addCriterion("reply like", value, "reply");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyNotLike(String value) {
+            addCriterion("reply not like", value, "reply");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyIn(List<String> values) {
+            addCriterion("reply in", values, "reply");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyNotIn(List<String> values) {
+            addCriterion("reply not in", values, "reply");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyBetween(String value1, String value2) {
+            addCriterion("reply between", value1, value2, "reply");
+            return (Criteria) this;
+        }
+
+        public Criteria andReplyNotBetween(String value1, String value2) {
+            addCriterion("reply not between", value1, value2, "reply");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderItemIdIsNull() {
+            addCriterion("order_item_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderItemIdIsNotNull() {
+            addCriterion("order_item_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderItemIdEqualTo(Integer value) {
+            addCriterion("order_item_id =", value, "orderItemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderItemIdNotEqualTo(Integer value) {
+            addCriterion("order_item_id <>", value, "orderItemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderItemIdGreaterThan(Integer value) {
+            addCriterion("order_item_id >", value, "orderItemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderItemIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("order_item_id >=", value, "orderItemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderItemIdLessThan(Integer value) {
+            addCriterion("order_item_id <", value, "orderItemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderItemIdLessThanOrEqualTo(Integer value) {
+            addCriterion("order_item_id <=", value, "orderItemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderItemIdIn(List<Integer> values) {
+            addCriterion("order_item_id in", values, "orderItemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderItemIdNotIn(List<Integer> values) {
+            addCriterion("order_item_id not in", values, "orderItemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderItemIdBetween(Integer value1, Integer value2) {
+            addCriterion("order_item_id between", value1, value2, "orderItemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderItemIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("order_item_id not between", value1, value2, "orderItemId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

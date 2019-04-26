@@ -94,7 +94,7 @@ public class ViewUserConstantController {
         // 发送请求
         String wxResult = HttpRequestUtil.doGet(UserConstant.WX_LOGIN_URL, param);
         JSONObject jsonObject = JSONObject.parseObject(wxResult);
-        System.out.println(jsonObject);
+        //System.out.println(jsonObject);
         String session_key = null;
         String open_id = null;
         if (jsonObject!=null){

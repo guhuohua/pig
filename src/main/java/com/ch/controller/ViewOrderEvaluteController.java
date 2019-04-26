@@ -1,16 +1,15 @@
 /**
  * Author: 常富文
- * Date:   2019/4/8 11:41
- * Description: 商品列表控制层
+ * Date:   2019/4/26 10:39
+ * Description: 商品评价
  */
 
 
 package com.ch.controller;
 
 import com.ch.base.ResponseResult;
-import com.ch.dto.GoodsDto;
-import com.ch.dto.SolrDto;
-import com.ch.service.ViewGoodsListService;
+import com.ch.entity.GoodsEvaluation;
+import com.ch.service.ViewOrderEvaluteService;
 import com.ch.util.TokenUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,29 +24,29 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@Api(value = "展示商品列表",description = "展示商品列表")
 @RequestMapping("goods")
-public class ViewGoodsListController {
+@Api(value = "商品评价",description = "商品评价")
+public class ViewOrderEvaluteController {
 
+    private static final Logger LOGGER = LogManager.getLogger(ViewOrderEvaluteController.class);
     @Autowired
-    ViewGoodsListService viewGoodsListService;
+    ViewOrderEvaluteService viewOrderEvaluteService;
 
-    private static final Logger LOGGER = LogManager.getLogger(ViewGoodsListController.class);
-
-    @PostMapping("viewList")
-    @ApiOperation("展示商品列表")
-    public ResponseResult findGoodsList(@RequestBody SolrDto solrDto, HttpServletRequest req){
+    @PostMapping("evalution")
+    @ApiOperation("商品评价")
+    public ResponseResult evalute(HttpServletRequest req, @RequestBody GoodsEvaluation goodsEvaluation){
         ResponseResult result = new ResponseResult();
+        String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
-        //Integer shopId = 1;
         try {
-            result = viewGoodsListService.findGoodsList(solrDto, shopId);
+            //User user = userMapper.selectByPrimaryKey(userId);
+            result = viewOrderEvaluteService.addEvalute(goodsEvaluation,shopId,openId);
         } catch (Exception e) {
-            LOGGER.error("展示商品列表" + e.getMessage(), e);
+            LOGGER.error("商品评价失败" + e.getMessage(), e);
             result.setCode(500);
             result.setError(e.getMessage());
-            result.setError_description("展示商品列表");
+            result.setError_description("商品评价失败");
         }
         return result;
     }

@@ -130,6 +130,7 @@ public interface GoodsEvaluationMapper {
     @Select("select count(*) from goods_evaluation where score in (1,2) and shop_id = #{shopId}")
     int differenceCount(@Param("shopId") Integer shopId);
 
+
     @SelectProvider(type = GoodsEvaluationProvider.class, method = "getList")
     List<SysEvaluateDTO> list(@Param("name") String name, @Param("score") Integer score, @Param("status") Integer status, @Param("shopId") Integer shopId);
 }
