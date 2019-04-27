@@ -37,4 +37,11 @@ public interface SysOrderService {
      * @return
      */
     ResponseResult cancelOrder(String oderId);
+
+    /**
+     * 7天自动收货
+     * @param oderId
+     * @return
+     */
+    ResponseResult deliver(String oderId);
 }

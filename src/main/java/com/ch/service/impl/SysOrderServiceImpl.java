@@ -9,6 +9,7 @@ import com.ch.dto.SysOrderDetailDTO;
 import com.ch.dto.SysOrderParam;
 import com.ch.entity.*;
 import com.ch.enums.OderStatusEnum;
+import com.ch.handler.ActiveMQHandler;
 import com.ch.service.SysOrderService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -45,6 +46,9 @@ public class SysOrderServiceImpl implements SysOrderService {
 
     @Autowired
     OrderRefundMapper orderRefundMapper;
+
+    @Autowired
+    ActiveMQHandler activeMQHandler;
 
 
     @Override
@@ -96,6 +100,7 @@ public class SysOrderServiceImpl implements SysOrderService {
             order.setOrderStatus(Integer.valueOf(OderStatusEnum.SHIPPED.code));
             order.setDeliveryDate(new Date());
             orderMapper.updateByPrimaryKey(order);
+            activeMQHandler.delivery("delivery", order.getId());
         }
         return result;
     }
@@ -190,9 +195,23 @@ public class SysOrderServiceImpl implements SysOrderService {
     public ResponseResult cancelOrder(String oderId) {
         ResponseResult result = new ResponseResult();
         GoodsOrder goodsOrder = orderMapper.selectByPrimaryKey(oderId);
-        goodsOrder.setOrderStatus(Integer.valueOf(OderStatusEnum.CANCEL.code));
-        goodsOrder.setModifyDate(new Date());
-        orderMapper.updateByPrimaryKey(goodsOrder);
+        if (BeanUtils.isNotEmpty(goodsOrder) && Integer.valueOf(OderStatusEnum.UNPAID.code) == goodsOrder.getOrderStatus()) {
+            goodsOrder.setOrderStatus(Integer.valueOf(OderStatusEnum.CANCEL.code));
+            goodsOrder.setModifyDate(new Date());
+            orderMapper.updateByPrimaryKey(goodsOrder);
+        }
+        return result;
+    }
+
+    @Override
+    public ResponseResult deliver(String oderId) {
+        ResponseResult result = new ResponseResult();
+        GoodsOrder goodsOrder = orderMapper.selectByPrimaryKey(oderId);
+        if (BeanUtils.isNotEmpty(goodsOrder) && Integer.valueOf(OderStatusEnum.SHIPPED.code) == goodsOrder.getOrderStatus()) {
+            goodsOrder.setOrderStatus(Integer.valueOf(OderStatusEnum.UNEVALUATED.code));
+            goodsOrder.setModifyDate(new Date());
+            orderMapper.updateByPrimaryKey(goodsOrder);
+        }
         return result;
     }
 }
