@@ -17,10 +17,7 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -48,6 +45,26 @@ public class ViewGoodsListController {
             result.setCode(500);
             result.setError(e.getMessage());
             result.setError_description("展示商品列表");
+        }
+        return result;
+    }
+
+
+
+    @GetMapping("showCondition")
+    @ApiOperation("展示搜索项")
+    public ResponseResult showCondition( HttpServletRequest req,@RequestParam String condition){
+        ResponseResult result = new ResponseResult();
+        String token = req.getHeader("Authorization");
+        Integer shopId = TokenUtil.getUserId(token);
+        //Integer shopId = 1;
+        try {
+            result = viewGoodsListService.shouCondition(condition,shopId);
+        } catch (Exception e) {
+            LOGGER.error("展示搜索项失败" + e.getMessage(), e);
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("展示搜索项失败");
         }
         return result;
     }

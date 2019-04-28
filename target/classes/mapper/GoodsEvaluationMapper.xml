@@ -75,7 +75,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, shop_id, status, create_time, update_time, del_flag, name, details, score, goods_id, 
+    id, shop_id, status, create_time, update_time, del_flag, 'name', details, score, goods_id,
     order_id, reply, order_item_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.GoodsEvaluationExample" >

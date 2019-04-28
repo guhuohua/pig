@@ -45,6 +45,7 @@ public class ViewOrderEvaluteServiceImpl implements ViewOrderEvaluteService {
         }
         goodsEvaluation.setShopId(shopId);
         goodsEvaluation.setCreateTime(new Date());
+        goodsEvaluation.setStatus(0);
         goodsEvaluation.setName(userInfo.getNickname());
         OrderItem orderItem = orderItemMapper.selectByPrimaryKey(goodsEvaluation.getOrderItemId());
         GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderItem.getOrderId());

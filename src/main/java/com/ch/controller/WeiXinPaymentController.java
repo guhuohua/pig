@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.ch.dao.*;
 import com.ch.dto.PaymentDto;
 import com.ch.entity.*;
-import com.ch.handler.ActiveMQHandler;
 import com.ch.service.ViewShopNameService;
 import com.ch.util.PayUtil;
 import com.ch.util.TokenUtil;
@@ -202,7 +201,7 @@ public class WeiXinPaymentController {
                 Long total_fee = (Long) dataMap.get("total_fee");
                 GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderId);
                 goodsOrder.setPayDate(new Date());
-                goodsOrder.setOrderPrice(total_fee);
+                goodsOrder.setPayPrice(total_fee);
                 goodsOrder.setOrderStatus(3);
                 goodsOrder.setPayId(transaction_id);
                 goodsOrderMapper.updateByPrimaryKey(goodsOrder);

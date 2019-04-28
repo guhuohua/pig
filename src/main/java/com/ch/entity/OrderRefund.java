@@ -33,6 +33,16 @@ public class OrderRefund {
 
     private String refuseReason;
 
+    private Integer userId;
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
     public String getId() {
         return id;
     }

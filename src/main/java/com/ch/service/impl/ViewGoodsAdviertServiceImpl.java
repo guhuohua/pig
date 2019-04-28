@@ -23,6 +23,7 @@ public class ViewGoodsAdviertServiceImpl implements ViewGoodsAdvertService {
 
     @Autowired
     GoodsAdvertMapper goodsAdvertMapper;
+
     @Override
     public ResponseResult findByShopId(Integer shopId) {
         GoodsAdvertExample example = new GoodsAdvertExample();

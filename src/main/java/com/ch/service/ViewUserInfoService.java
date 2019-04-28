@@ -5,21 +5,20 @@ import com.ch.entity.User;
 import com.ch.entity.UserInfo;
 
 public interface ViewUserInfoService {
-     UserInfos findByOpenId(String openId);
+    UserInfos findByOpenId(String openId);
 
-     User findUserByOpenId(String openId);
+    User findUserByOpenId(String openId);
 
-     void updateByPrimaryKey(User record);
+    void updateByPrimaryKey(User record);
 
 
-     UserInfo findByUserId(Integer userId);
+    UserInfo findByUserId(Integer userId);
 
-     void insert(UserInfo record);
+    void insert(UserInfo record);
 
-     UserInfo findOneByOpenId(String openId);
+    UserInfo findOneByOpenId(String openId);
 
-     void updateByPrimaryKey(UserInfo userInfo);
-
+    void updateByPrimaryKey(UserInfo userInfo);
 
 
 }

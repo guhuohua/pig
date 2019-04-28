@@ -71,12 +71,6 @@ public class ViewGoodsTypeServiceImpl implements ViewGoodsTypeService {
     }
 
 
-
-
-
-
-
-
     public List<GoodsType> getChild(Integer id, List<GoodsType> allMenu) {
         //子菜单
         List<GoodsType> childList = new ArrayList<GoodsType>();
@@ -98,7 +92,6 @@ public class ViewGoodsTypeServiceImpl implements ViewGoodsTypeService {
         }
         return childList;
     }
-
 
 
     public Comparator<GoodsType> order() {

@@ -113,7 +113,7 @@ public class ViewOrderController {
 
     @GetMapping("findAll")
     @ApiOperation("查询所有订单")
-    public ResponseResult findAll( HttpServletRequest req,@RequestParam Integer pageNum, @RequestParam Integer pageSize ){
+    public ResponseResult findAll( HttpServletRequest req){
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
@@ -151,5 +151,68 @@ public class ViewOrderController {
         return result;
     }
 
+
+    @GetMapping("updateStatus")
+    @ApiOperation("确认收货")
+    public ResponseResult updateStatus( HttpServletRequest req ,@RequestParam String orderId){
+        ResponseResult result = new ResponseResult();
+       /* String openId = req.getHeader("openId");
+        String token = req.getHeader("Authorization");
+        Integer shopId = TokenUtil.getUserId(token);*/
+        try {
+            //User user = userMapper.selectByPrimaryKey(userId);
+            result = viewOrderService.updateStatus(orderId);
+        } catch (Exception e) {
+            LOGGER.error("确认收货失败" + e.getMessage(), e);
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("确认收货失败");
+        }
+        return result;
+    }
+
+
+    @GetMapping("orderCount")
+    @ApiOperation("统计订单信息")
+    public ResponseResult orderCount( HttpServletRequest req ,@RequestParam Integer status){
+        ResponseResult result = new ResponseResult();
+       String openId = req.getHeader("openId");
+        String token = req.getHeader("Authorization");
+        Integer shopId = TokenUtil.getUserId(token);
+        try {
+            //User user = userMapper.selectByPrimaryKey(userId);
+            result = viewOrderService.orderCount(status,openId,shopId);
+
+        } catch (Exception e) {
+            LOGGER.error("统计订单信息失败" + e.getMessage(), e);
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("统计订单信息失败");
+        }
+        return result;
+    }
+
+
+
+
+    @GetMapping("orderAllCount")
+    @ApiOperation("统计全部订单信息")
+    public ResponseResult orderAllCount( HttpServletRequest req ){
+        ResponseResult result = new ResponseResult();
+        String openId = req.getHeader("openId");
+        String token = req.getHeader("Authorization");
+        Integer shopId = TokenUtil.getUserId(token);
+        try {
+            //User user = userMapper.selectByPrimaryKey(userId);
+            result = viewOrderService.orderAllCount(openId,shopId);
+
+        } catch (Exception e) {
+            LOGGER.error("统计全部订单信息失败" + e.getMessage(), e);
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("统计全部订单信息失败");
+        }
+        return result;
+    }
 
 }

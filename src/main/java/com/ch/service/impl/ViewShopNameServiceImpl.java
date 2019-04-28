@@ -14,7 +14,6 @@ import com.ch.entity.Shop;
 import com.ch.entity.ShopMiniProgram;
 import com.ch.entity.ShopMiniProgramExample;
 import com.ch.service.ViewShopNameService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +26,6 @@ public class ViewShopNameServiceImpl implements ViewShopNameService {
     ShopMapper shopMapper;
     @Autowired
     ShopMiniProgramMapper shopMiniProgramMapper;
-
 
 
     @Override
@@ -45,8 +43,8 @@ public class ViewShopNameServiceImpl implements ViewShopNameService {
         criteria.andShopIdEqualTo(shopId);
         List<ShopMiniProgram> shopMiniPrograms = shopMiniProgramMapper.selectByExample(example);
         ShopMiniProgram shopMiniProgram = null;
-        if (shopMiniPrograms.stream().findFirst().isPresent()){
-            shopMiniProgram   = shopMiniPrograms.stream().findFirst().get();
+        if (shopMiniPrograms.stream().findFirst().isPresent()) {
+            shopMiniProgram = shopMiniPrograms.stream().findFirst().get();
         }
 
         return shopMiniProgram;

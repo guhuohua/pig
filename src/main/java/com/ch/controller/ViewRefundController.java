@@ -116,7 +116,7 @@ public class ViewRefundController {
         refoundDto.setOut_trade_no(goodsOrder.getPayId());
         refoundDto.setOut_refund_no(refundId);
         refoundDto.setTotal_fee(goodsOrder.getOrderPrice() + "");
-        refoundDto.setRefund_fee(goodsOrder.getOrderPrice().toString());
+        refoundDto.setRefund_fee(goodsOrder.getPayPrice().toString());
 
         Map<String, Object> params = new TreeMap<>();
         params.put("appid", refoundDto.getAppid());

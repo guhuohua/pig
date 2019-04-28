@@ -999,6 +999,10 @@ public class OrderRefundExample {
             addCriterion("refuse_reason =", value, "refuseReason");
             return (Criteria) this;
         }
+        public Criteria andUserIdEqualTo(Integer value) {
+            addCriterion("user_id =", value, "userId");
+            return (Criteria) this;
+        }
 
         public Criteria andRefuseReasonNotEqualTo(String value) {
             addCriterion("refuse_reason <>", value, "refuseReason");

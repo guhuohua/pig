@@ -10,12 +10,13 @@ package com.ch.service.impl;
 import com.ch.base.ResponseResult;
 import com.ch.dao.*;
 import com.ch.entity.*;
-import com.ch.model.GoodsCategory;
 import com.ch.service.ViewGoodsDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
@@ -38,7 +39,7 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
     GoodsImageMapper goodsImageMapper;
 
     @Override
-    public ResponseResult findGoodsDetailsByGoodsId(Integer goodsId,Integer shopId) {
+    public ResponseResult findGoodsDetailsByGoodsId(Integer goodsId, Integer shopId) {
         //SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         //商品详情的map
         Map goodsDetailsMap = new HashMap();
@@ -124,7 +125,6 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
 */
 
 
-
             //查询商品评价表
             GoodsEvaluationExample example1 = new GoodsEvaluationExample();
             GoodsEvaluationExample.Criteria criteria1 = example1.createCriteria();
@@ -144,8 +144,6 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
             goodsDetailsMap.put("goodsEvaluations", goodsEvaluations);
 
         }
-
-
 
 
         ResponseResult result = new ResponseResult();

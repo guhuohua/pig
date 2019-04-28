@@ -15,14 +15,11 @@ import com.ch.dao.UserInfoMapper;
 import com.ch.dto.CarDto;
 import com.ch.entity.*;
 import com.ch.service.ViewGoodsCarService;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ViewGoodsCarServiceImpl implements ViewGoodsCarService {
@@ -54,29 +51,57 @@ public class ViewGoodsCarServiceImpl implements ViewGoodsCarService {
         criteria1.andShopIdEqualTo(shopId);
         criteria1.andUserIdEqualTo(userInfo.getId());
         List<GoodsCar> goodsCars = goodsCarMapper.selectByExample(example1);
-        for (GoodsCar goodsCar : goodsCars) {
-            if (goodsCar.getSkuId() == goodsSku.getId()) {
-                goodsCar.setNum(goodsCar.getNum() + num);
-                totalFee = goodsSku.getPresentPrice() * goodsCar.getNum();
-                goodsCar.setTotalFee(totalFee);
-                goodsCarMapper.updateByPrimaryKey(goodsCar);
-            } else {
-                GoodsCar goodsCar1 = new GoodsCar();
-                goodsCar1.setShopId(shopId);
-                goodsCar1.setNum(num);
-                goodsCar1.setSkuId(skuId);
-                goodsCar1.setTotalFee(totalFee);
-                goodsCar1.setUserId(userInfo.getId());
-                goodsCarMapper.insert(goodsCar1);
+        if (goodsCars.size() > 0) {
+            for (GoodsCar goodsCar : goodsCars) {
+                if (goodsCar.getSkuId() == goodsSku.getId()) {
+                    goodsCar.setNum(goodsCar.getNum() + num);
+                    totalFee = goodsSku.getPresentPrice() * goodsCar.getNum();
+                    goodsCar.setTotalFee(totalFee);
+                    goodsCarMapper.updateByPrimaryKey(goodsCar);
+                    break;
+                } else {
+                    GoodsCarExample goodsCarExample = new GoodsCarExample();
+                    goodsCarExample.createCriteria().andShopIdEqualTo(shopId)
+                            .andUserIdEqualTo(userInfo.getId()).andSkuIdEqualTo(skuId);
+                    boolean present = goodsCarMapper.selectByExample(goodsCarExample).stream().findFirst().isPresent();
+                    if (present) {
+                        GoodsCar goodsCar2 = goodsCarMapper.selectByExample(goodsCarExample).stream().findFirst().get();
+                        goodsCar2.setNum(goodsCar2.getNum() + num);
+                        totalFee = goodsSku.getPresentPrice() * goodsCar2.getNum();
+                        goodsCar2.setTotalFee(totalFee);
+                        goodsCarMapper.updateByPrimaryKey(goodsCar2);
+                        break;
+                    } else {
+                        GoodsCar goodsCar1 = new GoodsCar();
+                        goodsCar1.setShopId(shopId);
+                        goodsCar1.setNum(num);
+                        goodsCar1.setSkuId(skuId);
+                        totalFee = goodsSku.getPresentPrice() * num;
+                        goodsCar1.setTotalFee(totalFee);
+                        goodsCar1.setUserId(userInfo.getId());
+                        goodsCarMapper.insert(goodsCar1);
+                        break;
+                    }
+                }
             }
+        } else {
+            GoodsCar goodsCar1 = new GoodsCar();
+            goodsCar1.setShopId(shopId);
+            goodsCar1.setNum(num);
+            goodsCar1.setSkuId(skuId);
+            totalFee = goodsSku.getPresentPrice() * num;
+            goodsCar1.setTotalFee(totalFee);
+            goodsCar1.setUserId(userInfo.getId());
+            goodsCarMapper.insert(goodsCar1);
         }
+
         ResponseResult result = new ResponseResult();
         return result;
 
     }
 
     @Override
-    public ResponseResult showCar(String openId) {
+    public ResponseResult showCar(String openId, Integer shopId) {
         UserInfoExample example = new UserInfoExample();
         UserInfoExample.Criteria criteria = example.createCriteria();
         criteria.andOpenIdEqualTo(openId);
@@ -88,6 +113,7 @@ public class ViewGoodsCarServiceImpl implements ViewGoodsCarService {
         GoodsCarExample example1 = new GoodsCarExample();
         GoodsCarExample.Criteria criteria1 = example1.createCriteria();
         criteria1.andUserIdEqualTo(userInfo.getId());
+        criteria1.andShopIdEqualTo(shopId);
         List<GoodsCar> goodsCars = goodsCarMapper.selectByExample(example1);
         List list = new ArrayList<>();
 
@@ -117,14 +143,25 @@ public class ViewGoodsCarServiceImpl implements ViewGoodsCarService {
                 for (GoodsCar goodsCar : goodsCars) {
                     goodsCar.setNum(carDto.getNum());
                     goodsCarMapper.updateByPrimaryKey(goodsCar);
-
                 }
-
                 GoodsCarExample exampl1 = new GoodsCarExample();
                 GoodsCarExample.Criteria criteria1 = exampl1.createCriteria();
                 criteria1.andSkuIdNotEqualTo(carDto.getGoodsSku().getId());
                 goodsCarMapper.deleteByExample(exampl1);
             }
+        }
+        ResponseResult result = new ResponseResult();
+        return result;
+    }
+
+
+    @Override
+    public ResponseResult deleCar(Integer[] ids) {
+        for (Integer id : ids) {
+            GoodsCarExample example = new GoodsCarExample();
+            GoodsCarExample.Criteria criteria = example.createCriteria();
+            criteria.andSkuIdEqualTo(id);
+            goodsCarMapper.deleteByExample(example);
         }
         ResponseResult result = new ResponseResult();
         return result;

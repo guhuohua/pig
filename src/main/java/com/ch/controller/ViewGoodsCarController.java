@@ -62,7 +62,7 @@ public class ViewGoodsCarController {
             String openId = req.getHeader("openId");
             String token = req.getHeader("Authorization");
             Integer shopId = TokenUtil.getUserId(token);
-            result = viewGoodsCarService.showCar(openId);
+            result = viewGoodsCarService.showCar(openId,shopId);
         } catch (Exception e) {
             LOGGER.error("展示购物车失败" + e.getMessage(), e);
             result.setCode(500);
@@ -87,6 +87,26 @@ public class ViewGoodsCarController {
             result.setCode(500);
             result.setError(e.getMessage());
             result.setError_description("修改购物车失败");
+        }
+        return result;
+
+    }
+
+
+    @PostMapping ("deleCar")
+    @ApiOperation("删除购物车")
+    public ResponseResult deleCar(HttpServletRequest req, @RequestBody Integer[] ids) {
+        ResponseResult result = new ResponseResult();
+        try {
+           /* String openId = req.getHeader("openId");
+            String token = req.getHeader("Authorization");
+            Integer shopId = TokenUtil.getUserId(token);*/
+            result = viewGoodsCarService.deleCar(ids);
+        } catch (Exception e) {
+            LOGGER.error("删除购物车" + e.getMessage(), e);
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("删除购物车");
         }
         return result;
 

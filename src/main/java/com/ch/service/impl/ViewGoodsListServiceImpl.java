@@ -8,9 +8,11 @@
 package com.ch.service.impl;
 
 import com.ch.base.ResponseResult;
+import com.ch.dao.GoodsMapper;
 import com.ch.dao.SysUserMapper;
 import com.ch.dto.SolrDto;
-import com.ch.entity.SysUser;
+import com.ch.entity.Goods;
+import com.ch.entity.GoodsExample;
 import com.ch.service.ViewGoodsListService;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -20,8 +22,7 @@ import org.apache.solr.common.params.SolrParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ViewGoodsListServiceImpl implements ViewGoodsListService {
@@ -29,10 +30,12 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
     SolrClient solrClient;
     @Autowired
     SysUserMapper userMapper;
+    @Autowired
+    GoodsMapper goodsMapper;
 
     @Override
     public ResponseResult findGoodsList(SolrDto solrDto, Integer shopId) {
-      //  SysUser sysUser = userMapper.selectByPrimaryKey(userId);
+        //  SysUser sysUser = userMapper.selectByPrimaryKey(userId);
         ResponseResult result1 = new ResponseResult();
         Map params = new HashMap<>();
         String str = null;
@@ -50,7 +53,7 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
 
         if (solrDto.getCondition() != null) {
             str = "goodsSalesArea:" + "\"" + solrDto.getCondition() + "\"" + " OR name:" + "\"" + solrDto.getCondition() + "\"" + " OR title:" + "\"" + solrDto.getCondition() + "\"";
-           // System.out.println(str);
+            System.out.println(str);
             params.put("fq", str);
 
 
@@ -92,4 +95,28 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
         }
         return result1;
     }
+
+    @Override
+    public ResponseResult shouCondition(String condition, Integer shopId) {
+        GoodsExample example = new GoodsExample();
+        GoodsExample.Criteria criteria = example.createCriteria();
+        criteria.andTitleLike("%" + condition + "%");
+        criteria.andShopIdEqualTo(shopId);
+        GoodsExample.Criteria criteria1 = example.createCriteria();
+        criteria1.andNameLike("%" + condition + "%");
+        example.or(criteria1);
+        List<Goods> goods = goodsMapper.selectByExample(example);
+        List<String> list = new ArrayList<>();
+        for (Goods good : goods) {
+            list.add(good.getName());
+            list.add(good.getTitle());
+
+        }
+        Set set = new HashSet();
+        set.addAll(list);
+        ResponseResult result = new ResponseResult();
+        result.setData(set);
+        return result;
+    }
+
 }

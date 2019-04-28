@@ -8,7 +8,6 @@
 package com.ch.service.impl;
 
 import com.ch.dao.ShopMiniProgramMapper;
-
 import com.ch.dto.ShopInfo;
 import com.ch.entity.ShopMiniProgram;
 import com.ch.entity.ShopMiniProgramExample;
@@ -25,7 +24,7 @@ public class ViewShopInfoServiceImpl implements ViewShopInfoService {
     ShopMiniProgramMapper shopMiniProgramMapper;
 
     @Override
-   public ShopInfo findShopInfoByAppId(String appId) {
+    public ShopInfo findShopInfoByAppId(String appId) {
 
         ShopMiniProgramExample example = new ShopMiniProgramExample();
         ShopMiniProgramExample.Criteria criteria = example.createCriteria();

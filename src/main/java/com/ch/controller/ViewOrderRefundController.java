@@ -16,10 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -46,6 +43,26 @@ public class ViewOrderRefundController {
             result.setCode(500);
             result.setError(e.getMessage());
             result.setError_description("申请售后失败");
+        }
+        return result;
+    }
+
+
+    @GetMapping("showRefundList")
+    @ApiOperation("展示售后列表")
+    public ResponseResult showRefundList( HttpServletRequest req,@RequestParam Integer status ){
+        ResponseResult result = new ResponseResult();
+        String openId = req.getHeader("openId");
+        String token = req.getHeader("Authorization");
+        Integer shopId = TokenUtil.getUserId(token);
+        try {
+            //User user = userMapper.selectByPrimaryKey(userId);
+            result = viewOrderRefundService.showRefundList(status,openId,shopId);
+        } catch (Exception e) {
+            LOGGER.error("展示售后列表失败" + e.getMessage(), e);
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("展示售后列表失败");
         }
         return result;
     }

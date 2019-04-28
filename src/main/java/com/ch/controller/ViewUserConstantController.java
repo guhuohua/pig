@@ -29,6 +29,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 @RestController
 @RequestMapping("weixin")
 @Api(value = "微信授权登录")
@@ -44,7 +45,7 @@ public class ViewUserConstantController {
     UserInfoMapper userInfoMapper;
 
     @PostMapping("loginInfo1")
-    public ResponseResult user_login(HttpServletRequest req, @RequestBody UserDto userDto){
+    public ResponseResult user_login(HttpServletRequest req, @RequestBody UserDto userDto) {
 
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
@@ -53,7 +54,7 @@ public class ViewUserConstantController {
         UserInfoExample.Criteria criteria = example.createCriteria();
         criteria.andOpenIdEqualTo(userDto.getOpenId());
         List<UserInfo> userInfos = userInfoMapper.selectByExample(example);
-        if(userInfos.size()>0){
+        if (userInfos.size() > 0) {
             UserInfo userInfo = userInfos.get(0);
             /*userInfo.setUserHead(userDto.getUserHead());
             userInfo.setNickname(userDto.getUserName());
@@ -65,7 +66,7 @@ public class ViewUserConstantController {
             userInfo.setOpenId(userDto.getOpenId());*/
             userInfoMapper.updateByPrimaryKey(userInfo);
 
-        }else {
+        } else {
             UserInfo userInfo = new UserInfo();
             userInfo.setUserHead(userDto.getUserHead());
             userInfo.setNickname(userDto.getUserName());
@@ -83,7 +84,7 @@ public class ViewUserConstantController {
     }
 
     @GetMapping("login")
-    public ResponseResult user_login(String code,String appId){
+    public ResponseResult user_login(String code, String appId) {
         // 配置请求参数
         ShopInfo shopInfo = viewShopInfoService.findShopInfoByAppId(appId);
         Map<String, String> param = new HashMap<>();
@@ -97,15 +98,15 @@ public class ViewUserConstantController {
         //System.out.println(jsonObject);
         String session_key = null;
         String open_id = null;
-        if (jsonObject!=null){
-           // 获取参数返回的
+        if (jsonObject != null) {
+            // 获取参数返回的
             session_key = jsonObject.get("session_key").toString();
             open_id = jsonObject.get("openid").toString();
            /* UserInfo userInfo = new UserInfo();
            userInfo.setOpenId(open_id);
            userInfo.setCreateTime(new Date());
            userInfoMapper.insert(userInfo);*/
-       }
+        }
         // 封装返回小程序
         Map<String, String> result = new HashMap<>();
         result.put("session_key", session_key);
