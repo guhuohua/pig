@@ -79,7 +79,7 @@ public class SysOrderController {
     }
 
     @GetMapping("cancel_order")
-    public ResponseResult cancelOrder(HttpServletRequest req, @RequestParam String orderId) {
+    public ResponseResult cancelOrder(String orderId) {
         ResponseResult result = new ResponseResult();
         try {
             activeMQHandler.cancelOrder("cancelOrder", orderId);
