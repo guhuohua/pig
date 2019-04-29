@@ -40,9 +40,7 @@ public class ViewGoodsAdvertController {
         ResponseResult result = new ResponseResult();
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
-        //System.out.println(shopId);
         try {
-            //User user = userMapper.selectByPrimaryKey(userId);
             result = viewGoodsAdvertService.findByShopId(shopId);
         } catch (Exception e) {
             LOGGER.error("展示轮播图失败" + e.getMessage(), e);

@@ -31,7 +31,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/pay")
-public class WeiXinPaymentController {
+public class   WeiXinPaymentController {
 
     private final String mch_id = "1512785241";//商户号
     private final String spbill_create_ip = "183.93.230.40";//终端IP

@@ -211,6 +211,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                     map.put("order", goodsOrder);
                     list.add(map);
                 }
+
                 result.setData(list);
             }
 
