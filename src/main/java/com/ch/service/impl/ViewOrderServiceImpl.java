@@ -241,6 +241,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                     map.put("order", goodsOrder);
                     list.add(map);
                 }
+                Collections.reverse(list);
                 result.setData(list);
             }
             if (status == 5) {
