@@ -113,7 +113,7 @@ public class ViewRefundController {
         refoundDto.setAppid(shopMiniProgram.getAppId());
         refoundDto.setMch_id(shopMiniProgram.getMchIdd());
         refoundDto.setNonce_str(RandomUtils.generateMixString(32));
-        refoundDto.setOut_trade_no(goodsOrder.getPayId());
+        refoundDto.setOut_trade_no(goodsOrder.getId());
         refoundDto.setOut_refund_no(refundId);
         refoundDto.setTotal_fee(goodsOrder.getOrderPrice() + "");
         refoundDto.setRefund_fee(goodsOrder.getPayPrice().toString());
@@ -123,7 +123,7 @@ public class ViewRefundController {
         params.put("mch_id", refoundDto.getMch_id());
         params.put("nonce_str", refoundDto.getNonce_str());
         //商户订单号和微信订单号二选一
-        params.put("out_trade_no", refoundDto.getOut_trade_no());
+        params.put("out_trade_no", goodsOrder.getId());
         params.put("out_refund_no", refoundDto.getOut_refund_no());
         params.put("total_fee", refoundDto.getTotal_fee());
         params.put("refund_fee", refoundDto.getRefund_fee());

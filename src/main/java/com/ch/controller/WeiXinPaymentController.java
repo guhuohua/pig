@@ -10,6 +10,7 @@ import com.ch.util.PayUtil;
 import com.ch.util.TokenUtil;
 import com.ch.util.UUIDHexGenerator;
 import com.ch.util.XmlUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -31,7 +32,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/pay")
-public class   WeiXinPaymentController {
+@Slf4j
+public class WeiXinPaymentController {
 
     private final String mch_id = "1512785241";//商户号
     private final String spbill_create_ip = "183.93.230.40";//终端IP
@@ -193,12 +195,13 @@ public class   WeiXinPaymentController {
     public void paycallback(HttpServletRequest request) {
         try {
             Map<String, Object> dataMap = XmlUtil.parseXML(request);
+            log.info("支付回调结果：", JSON.toJSONString(dataMap));
             System.out.println(JSON.toJSONString(dataMap));
             //{"transaction_id":"4200000109201805293331420304","nonce_str":"402880e963a9764b0163a979a16e0002","bank_type":"CFT","openid":"oXI6G5Jc4D44y2wixgxE3OPwpDVg","sign":"262978D36A3093ACBE4B55707D6EA7B2","fee_type":"CNY","mch_id":"1491307962","cash_fee":"10","out_trade_no":"14913079622018052909183048768217","appid":"wxa177427bc0e60aab","total_fee":"10","trade_type":"JSAPI","result_code":"SUCCESS","time_end":"20180529091834","is_subscribe":"N","return_code":"SUCCESS"}
             if ("SUCCESS".equals(dataMap.get("return_code"))) {
                 String transaction_id = (String) dataMap.get("transaction_id");
                 String orderId = (String) dataMap.get("out_trade_no");
-                Long total_fee = (Long) dataMap.get("total_fee");
+                Long total_fee = Long.valueOf(dataMap.get("total_fee").toString());
                 GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderId);
                 goodsOrder.setPayDate(new Date());
                 goodsOrder.setPayPrice(total_fee);
