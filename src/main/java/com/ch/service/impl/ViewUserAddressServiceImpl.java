@@ -50,6 +50,7 @@ public class ViewUserAddressServiceImpl implements ViewUserAddressService {
             userInfo = userInfos.get(0);
         }
         record.setUserId(userInfo.getId());
+        //record.setTel(record.getTel().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
 
         UserAddressExample example1 = new UserAddressExample();
         UserAddressExample.Criteria criteria1 = example1.createCriteria();
@@ -81,7 +82,7 @@ public class ViewUserAddressServiceImpl implements ViewUserAddressService {
             userInfo = userInfos.get(0);
         }
         record.setUserId(userInfo.getId());
-
+       // record.setTel(record.getTel().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
         UserAddressExample example1 = new UserAddressExample();
         UserAddressExample.Criteria criteria1 = example1.createCriteria();
         criteria1.andStatusEqualTo(1);
@@ -89,6 +90,7 @@ public class ViewUserAddressServiceImpl implements ViewUserAddressService {
         if (userAddresses.size() > 0) {
             for (UserAddress userAddress : userAddresses) {
                 userAddress.setStatus(0);
+
                 userAddressMapper.updateByPrimaryKey(userAddress);
             }
         }

@@ -8,17 +8,14 @@
 package com.ch.service.impl;
 
 import com.ch.base.ResponseResult;
-import com.ch.dao.GoodsEvaluationMapper;
-import com.ch.dao.GoodsOrderMapper;
-import com.ch.dao.OrderItemMapper;
-import com.ch.dao.UserInfoMapper;
+import com.ch.dao.*;
 import com.ch.entity.*;
 import com.ch.service.ViewOrderEvaluteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ViewOrderEvaluteServiceImpl implements ViewOrderEvaluteService {
@@ -30,6 +27,9 @@ public class ViewOrderEvaluteServiceImpl implements ViewOrderEvaluteService {
     GoodsOrderMapper goodsOrderMapper;
     @Autowired
     GoodsEvaluationMapper goodsEvaluationMapper;
+    @Autowired
+    GoodsSkuMapper goodsSkuMapper;
+
 
 
     @Override
@@ -43,15 +43,111 @@ public class ViewOrderEvaluteServiceImpl implements ViewOrderEvaluteService {
         if (userInfos.size() > 0) {
             userInfo = userInfos.get(0);
         }
+        String nickname = userInfo.getNickname();
+        String name = nickname.substring(0,1)+"**"+nickname.substring((nickname.length()-1),nickname.length());
+
         goodsEvaluation.setShopId(shopId);
         goodsEvaluation.setCreateTime(new Date());
         goodsEvaluation.setStatus(0);
-        goodsEvaluation.setName(userInfo.getNickname());
+        goodsEvaluation.setName(name);
         OrderItem orderItem = orderItemMapper.selectByPrimaryKey(goodsEvaluation.getOrderItemId());
         GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderItem.getOrderId());
         goodsEvaluation.setOrderId(goodsOrder.getId());
         goodsEvaluation.setGoodsId(orderItem.getGoodsId());
+
         goodsEvaluationMapper.insert(goodsEvaluation);
+        goodsOrder.setOrderStatus(11);
+        goodsOrderMapper.updateByPrimaryKey(goodsOrder);
+        return result;
+
+    }
+
+    @Override
+    public ResponseResult showGoodEvluate(Integer goodsId) {
+        GoodsEvaluationExample example = new GoodsEvaluationExample();
+        example.setOrderByClause("create_time desc");
+        GoodsEvaluationExample.Criteria criteria = example.createCriteria();
+        criteria.andGoodsIdEqualTo(goodsId);
+        criteria.andScoreEqualTo(5);
+        List<GoodsEvaluation> list = goodsEvaluationMapper.selectByExample(example);
+        ResponseResult result = new ResponseResult();
+        Collections.reverse(list);
+        result.setData(list);
+        return result;
+    }
+
+    @Override
+    public ResponseResult showBadEvluate(Integer goodsId) {
+        GoodsEvaluationExample example = new GoodsEvaluationExample();
+        example.setOrderByClause("create_time desc");
+        GoodsEvaluationExample.Criteria criteria = example.createCriteria();
+        criteria.andGoodsIdEqualTo(goodsId);
+        criteria.andScoreLessThanOrEqualTo(2);
+        List<GoodsEvaluation> list = goodsEvaluationMapper.selectByExample(example);
+        ResponseResult result = new ResponseResult();
+        Collections.reverse(list);
+        result.setData(list);
+        return result;
+    }
+
+    @Override
+    public ResponseResult showMediumEvluate(Integer goodsId) {
+        GoodsEvaluationExample example = new GoodsEvaluationExample();
+        example.setOrderByClause("create_time desc");
+        GoodsEvaluationExample.Criteria criteria = example.createCriteria();
+        criteria.andGoodsIdEqualTo(goodsId);
+        criteria.andScoreEqualTo(3);
+        GoodsEvaluationExample.Criteria criteria1 = example.createCriteria();
+        criteria1.andScoreEqualTo(4);
+        example.or(criteria1);
+        List<GoodsEvaluation> list = goodsEvaluationMapper.selectByExample(example);
+        ResponseResult result = new ResponseResult();
+        Collections.reverse(list);
+        result.setData(list);
+        return result;
+    }
+
+    @Override
+    public ResponseResult showAllEvluate(Integer goodsId) {
+        GoodsEvaluationExample example = new GoodsEvaluationExample();
+        example.setOrderByClause("create_time desc");
+        GoodsEvaluationExample.Criteria criteria = example.createCriteria();
+        criteria.andGoodsIdEqualTo(goodsId);
+        List<GoodsEvaluation> list = goodsEvaluationMapper.selectByExample(example);
+        ResponseResult result = new ResponseResult();
+        Collections.reverse(list);
+        result.setData(list);
+        return result;
+    }
+
+    @Override
+    public ResponseResult showMyEvluate(Integer shopId, String openId) {
+        ResponseResult result = new ResponseResult();
+        UserInfoExample example = new UserInfoExample();
+        UserInfoExample.Criteria criteria = example.createCriteria();
+        criteria.andOpenIdEqualTo(openId);
+        List<UserInfo> userInfos = userInfoMapper.selectByExample(example);
+        UserInfo userInfo = null;
+        if (userInfos.size() > 0) {
+            userInfo = userInfos.get(0);
+        }
+        String nickname = userInfo.getNickname();
+        String name = nickname.substring(0,1)+"**"+nickname.substring((nickname.length()-1),nickname.length());
+        GoodsEvaluationExample example1 = new GoodsEvaluationExample();
+        GoodsEvaluationExample.Criteria criteria1 = example1.createCriteria();
+        criteria1.andNameEqualTo(name);
+        criteria1.andShopIdEqualTo(shopId);
+        List<GoodsEvaluation> list = goodsEvaluationMapper.selectByExample(example1);
+        List list1 = new ArrayList();
+        for (GoodsEvaluation goodsEvaluation : list){
+            OrderItem orderItem = orderItemMapper.selectByPrimaryKey(goodsEvaluation.getOrderItemId());
+            goodsSkuMapper.selectByPrimaryKey(orderItem.getSkuAttrId());
+            Map map = new HashMap();
+            map.put("orderItem",orderItem);
+            map.put("goodsEvaluation",goodsEvaluation);
+            list1.add(map);
+        }
+        result.setData(list1);
         return result;
     }
 }

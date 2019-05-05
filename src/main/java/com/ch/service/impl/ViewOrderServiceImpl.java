@@ -7,6 +7,7 @@
 
 package com.ch.service.impl;
 
+import com.ch.base.BeanUtils;
 import com.ch.base.ResponseResult;
 import com.ch.dao.*;
 import com.ch.dto.OrderDto;
@@ -17,6 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 public class ViewOrderServiceImpl implements ViewOrderService {
@@ -54,6 +58,16 @@ public class ViewOrderServiceImpl implements ViewOrderService {
         if (userInfos.size() > 0) {
             userInfo = userInfos.get(0);
         }
+        UserAddress userAddress = null;
+        UserAddressExample exampleAddress = new UserAddressExample();
+        UserAddressExample.Criteria criteria2 = exampleAddress.createCriteria();
+        criteria2.andUserIdEqualTo(userInfo.getId());
+        criteria2.andStatusEqualTo(1);
+        List<UserAddress> userAddresses = userAddressMapper.selectByExample(exampleAddress);
+        if (userAddresses.size() > 0) {
+            userAddress = userAddresses.get(0);
+        }
+
         order.setId(System.currentTimeMillis() + RandomUtils.getRandomNumber(6));
         List<Long> feeList = new ArrayList<>();
         if (orderDtoList.length > 0) {
@@ -103,10 +117,12 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                 orderItemMapper.insert(orderItem);
             }
 
+
             order.setUserId(userInfo.getId());
             order.setShopId(shopId);
             order.setOrderStatus(1);
             order.setStatus(0);
+            order.setDeliveryId(userAddress.getId());
             order.setCreateDate(new Date());
             order.setOrderPrice(orderFee + Collections.max(feeList));
             orderMapper.insert(order);
@@ -183,7 +199,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
         }
         List list = new ArrayList();
         //待支付
-        if (status != null) {
+        if (status != null ) {
             if (status == 1) {
                 GoodsOrderExample example1 = new GoodsOrderExample();
                 GoodsOrderExample.Criteria criteria1 = example1.createCriteria();
@@ -211,7 +227,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                     map.put("order", goodsOrder);
                     list.add(map);
                 }
-
+                Collections.reverse(list);
                 result.setData(list);
             }
 
@@ -272,6 +288,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                     map.put("order", goodsOrder);
                     list.add(map);
                 }
+                Collections.reverse(list);
                 result.setData(list);
             }
 
@@ -302,6 +319,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                     map.put("order", goodsOrder);
                     list.add(map);
                 }
+                Collections.reverse(list);
                 result.setData(list);
             }
 
@@ -332,15 +350,19 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                     map.put("order", goodsOrder);
                     list.add(map);
                 }
+                Collections.reverse(list);
                 result.setData(list);
             }
         }
+
+
+
 
         return result;
     }
 
     @Override
-    public ResponseResult findAll(String openId, Integer shopId) {
+    public ResponseResult findAll(String openId, Integer shopId,String condition) {
         //PageHelper.startPage(pageNum,pageSize);
 
         ResponseResult result = new ResponseResult();
@@ -352,34 +374,114 @@ public class ViewOrderServiceImpl implements ViewOrderService {
         if (userInfos.size() > 0) {
             userInfo = userInfos.get(0);
         }
+        System.out.println(userInfo);
         List list = new ArrayList();
 
-        GoodsOrderExample example1 = new GoodsOrderExample();
-        GoodsOrderExample.Criteria criteria1 = example1.createCriteria();
-        criteria1.andUserIdEqualTo(userInfo.getId());
-        criteria1.andShopIdEqualTo(shopId);
-        List<GoodsOrder> goodsOrders1 = orderMapper.selectByExample(example1);
-        for (GoodsOrder goodsOrder : goodsOrders1) {
-            OrderItemExample orderExample1 = new OrderItemExample();
-            OrderItemExample.Criteria criteria2 = orderExample1.createCriteria();
-            criteria2.andOrderIdEqualTo(goodsOrder.getId());
-            List<OrderItem> orderItems = orderItemMapper.selectByExample(orderExample1);
-            List list1 = new ArrayList();
-            for (OrderItem orderItem : orderItems) {
-                GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderItem.getSkuAttrId());
-                Goods goods = goodsMapper.selectByPrimaryKey(orderItem.getGoodsId());
-                Map map1 = new HashMap();
-                map1.put("goodsSku1", goodsSku);
-                map1.put("goods1", goods);
-                map1.put("orderItem", orderItem);
-                list1.add(map1);
+
+        if (condition != null) {
+            Pattern pattern = Pattern.compile("[0-9]*");
+            Matcher isNum = pattern.matcher(condition);
+            if (isNum.matches()) {
+                GoodsOrderExample example3 = new GoodsOrderExample();
+                GoodsOrderExample.Criteria criteria3 = example3.createCriteria();
+                criteria3.andUserIdEqualTo(userInfo.getId());
+                criteria3.andIdEqualTo(condition);
+                criteria3.andShopIdEqualTo(shopId);
+                List<GoodsOrder> goodsOrders3 = orderMapper.selectByExample(example3);
+                for (GoodsOrder goodsOrder : goodsOrders3) {
+                    OrderItemExample orderExample1 = new OrderItemExample();
+                    OrderItemExample.Criteria criteria2 = orderExample1.createCriteria();
+                    criteria2.andOrderIdEqualTo(goodsOrder.getId());
+                    List<OrderItem> orderItems = orderItemMapper.selectByExample(orderExample1);
+                    List list1 = new ArrayList();
+                    for (OrderItem orderItem : orderItems) {
+                        GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderItem.getSkuAttrId());
+                        Goods goods = goodsMapper.selectByPrimaryKey(orderItem.getGoodsId());
+                        Map map1 = new HashMap();
+                        map1.put("goodsSku1", goodsSku);
+                        map1.put("goods1", goods);
+                        map1.put("orderItem", orderItem);
+                        list1.add(map1);
+                    }
+                    Map map = new HashMap();
+                    map.put("orderItems", list1);
+                    map.put("order", goodsOrder);
+                    list.add(map);
+                }
+                Collections.reverse(list);
+                result.setData(list);
+            } else {
+                OrderItemExample example3 = new OrderItemExample();
+                OrderItemExample.Criteria criteria3 = example3.createCriteria();
+                criteria3.andNameLike("%" + condition + "%");
+
+                criteria3.andShopIdEqualTo(shopId);
+                List<OrderItem> orderItems = orderItemMapper.selectByExample(example3);
+                Set<GoodsOrder> set = new HashSet<>();
+                for (OrderItem orderItem : orderItems) {
+                    GoodsOrder goodsOrder = orderMapper.selectByPrimaryKey(orderItem.getOrderId());
+                    if (BeanUtils.isNotEmpty(goodsOrder)) {
+                        set.add(goodsOrder);
+                    }
+                }
+                Integer userId = userInfo.getId();
+                set.stream().filter(item -> item.getUserId() == userId).collect(Collectors.toList());
+                if (set.size()>0){
+                    for (GoodsOrder goodsOrder : set) {
+                        OrderItemExample orderExample1 = new OrderItemExample();
+                        OrderItemExample.Criteria criteria2 = orderExample1.createCriteria();
+                        criteria2.andOrderIdEqualTo(goodsOrder.getId());
+                        List<OrderItem> orderItems1 = orderItemMapper.selectByExample(orderExample1);
+                        List list2 = new ArrayList();
+                        for (OrderItem orderItem : orderItems1) {
+                            GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderItem.getSkuAttrId());
+                            Goods goods = goodsMapper.selectByPrimaryKey(orderItem.getGoodsId());
+                            Map map1 = new HashMap();
+                            map1.put("goodsSku1", goodsSku);
+                            map1.put("goods1", goods);
+                            map1.put("orderItem", orderItem);
+                            list2.add(map1);
+                        }
+                        Map map = new HashMap();
+                        map.put("orderItems", list2);
+                        map.put("order", goodsOrder);
+                        list.add(map);
+                    }
+                }
+
+                Collections.reverse(list);
+                result.setData(list);
             }
-            Map map = new HashMap();
-            map.put("orderItems", list1);
-            map.put("order", goodsOrder);
-            list.add(map);
+
+        }else {
+            GoodsOrderExample example1 = new GoodsOrderExample();
+            GoodsOrderExample.Criteria criteria1 = example1.createCriteria();
+            criteria1.andUserIdEqualTo(userInfo.getId());
+            criteria1.andShopIdEqualTo(shopId);
+            List<GoodsOrder> goodsOrders1 = orderMapper.selectByExample(example1);
+            for (GoodsOrder goodsOrder : goodsOrders1) {
+                OrderItemExample orderExample1 = new OrderItemExample();
+                OrderItemExample.Criteria criteria2 = orderExample1.createCriteria();
+                criteria2.andOrderIdEqualTo(goodsOrder.getId());
+                List<OrderItem> orderItems = orderItemMapper.selectByExample(orderExample1);
+                List list1 = new ArrayList();
+                for (OrderItem orderItem : orderItems) {
+                    GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderItem.getSkuAttrId());
+                    Goods goods = goodsMapper.selectByPrimaryKey(orderItem.getGoodsId());
+                    Map map1 = new HashMap();
+                    map1.put("goodsSku1", goodsSku);
+                    map1.put("goods1", goods);
+                    map1.put("orderItem", orderItem);
+                    list1.add(map1);
+                }
+                Map map = new HashMap();
+                map.put("orderItems", list1);
+                map.put("order", goodsOrder);
+                list.add(map);
+            }
+            //PageInfo<Map> page = new PageInfo<>(list);
+            Collections.reverse(list);
         }
-        //PageInfo<Map> page = new PageInfo<>(list);
         result.setData(list);
 
         return result;
@@ -478,6 +580,15 @@ public class ViewOrderServiceImpl implements ViewOrderService {
         criteria1.andShopIdEqualTo(shopId);
         List<GoodsOrder> goodsOrders1 = orderMapper.selectByExample(example1);
         result.setData(goodsOrders1.size());
+        return result;
+    }
+
+    @Override
+    public ResponseResult orderAddAddress(String orderId, Integer addressId) {
+        GoodsOrder goodsOrder = orderMapper.selectByPrimaryKey(orderId);
+        goodsOrder.setDeliveryId(addressId);
+        orderMapper.updateByPrimaryKey(goodsOrder);
+        ResponseResult result = new ResponseResult();
         return result;
     }
 

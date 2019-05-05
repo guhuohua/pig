@@ -12,7 +12,7 @@ public interface ViewOrderService {
 
     ResponseResult manageOrder(Integer status, String openId, Integer shopId);
 
-    ResponseResult findAll(String openId, Integer shopId);
+    ResponseResult findAll(String openId, Integer shopId,String condition);
 
     ResponseResult deleOrderById(String orderId);
 
@@ -21,4 +21,8 @@ public interface ViewOrderService {
     ResponseResult orderCount(Integer status, String openId, Integer shopId);
 
     ResponseResult orderAllCount(String openId, Integer shopId);
+
+    ResponseResult orderAddAddress(String orderId,Integer addressId);
+
+
 }

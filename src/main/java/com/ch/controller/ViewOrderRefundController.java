@@ -66,4 +66,24 @@ public class ViewOrderRefundController {
         }
         return result;
     }
+
+
+    @GetMapping("refounCount")
+    @ApiOperation("统计售后信息")
+    public ResponseResult refounCount( HttpServletRequest req ){
+        ResponseResult result = new ResponseResult();
+        String openId = req.getHeader("openId");
+        String token = req.getHeader("Authorization");
+        Integer shopId = TokenUtil.getUserId(token);
+        try {
+            //User user = userMapper.selectByPrimaryKey(userId);
+            result = viewOrderRefundService.refundCount(openId,shopId);
+        } catch (Exception e) {
+            LOGGER.error("统计售后信息失败" + e.getMessage(), e);
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("统计售后信息失败");
+        }
+        return result;
+    }
 }

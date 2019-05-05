@@ -14,9 +14,7 @@ import com.ch.service.ViewGoodsDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
@@ -103,9 +101,7 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
             }
 
 
-
             goodsDetailsMap.put("goodAttr", goodsCategories);
-
 
 
             //查询商品评价表
@@ -123,29 +119,33 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
             goodsDetailsMap.put("goodsImages", goodsImages);
             goodsDetailsMap.put("goodsEvaluations", goodsEvaluations);
 */
-
-
             //查询商品评价表
             GoodsEvaluationExample example1 = new GoodsEvaluationExample();
             GoodsEvaluationExample.Criteria criteria1 = example1.createCriteria();
-            criteria1.andGoodsIdEqualTo(goods.getId());
-            List<GoodsEvaluation> goodsEvaluations = goodsEvaluationMapper.selectByExample(example1);
+            criteria1.andGoodsIdEqualTo(goodsId);
+            criteria1.andScoreEqualTo(5);
+            List<GoodsEvaluation> goodsEvaluations1 = goodsEvaluationMapper.selectByExample(example1);
+            List goodsEvaluations = new ArrayList();
+            for (GoodsEvaluation goodsEvaluation : goodsEvaluations1){
+                goodsEvaluations.add(goodsEvaluation);
+
+                if (goodsEvaluations.size()>1){
+                    break;
+                }
+            }
+            Collections.reverse(goodsEvaluations);
+
 
             //查询商品图片表
-
             GoodsImageExample exampleImg = new GoodsImageExample();
+            exampleImg.setOrderByClause("sort asc");
             GoodsImageExample.Criteria criteriaImg = exampleImg.createCriteria();
             criteriaImg.andGoodsIdEqualTo(goodsId);
             List<GoodsImage> goodsImages = goodsImageMapper.selectByExample(exampleImg);
             goodsDetailsMap.put("goodsImages", goodsImages);
             goodsDetailsMap.put("goodsEvaluations", goodsEvaluations);
-
             goodsDetailsMap.put("goodsImages", goodsImages);
-            goodsDetailsMap.put("goodsEvaluations", goodsEvaluations);
-
         }
-
-
         ResponseResult result = new ResponseResult();
         result.setData(goodsDetailsMap);
         return result;

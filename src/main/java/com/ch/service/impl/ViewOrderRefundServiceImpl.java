@@ -61,6 +61,7 @@ public class ViewOrderRefundServiceImpl implements ViewOrderRefundService {
         orderRefundMapper.insert(orderRefund);
         GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderRefund.getOrderId());
         goodsOrder.setRefundId(orderRefund.getId());
+        goodsOrder.setOrderStatus(11);
         goodsOrderMapper.updateByPrimaryKey(goodsOrder);
         return result;
     }
@@ -177,6 +178,27 @@ public class ViewOrderRefundServiceImpl implements ViewOrderRefundService {
                 list.add(map);
             }
         }
+        return result;
+    }
+
+    @Override
+    public ResponseResult refundCount(String openId, Integer shopId) {
+        ResponseResult result = new ResponseResult();
+        UserInfoExample example = new UserInfoExample();
+        UserInfoExample.Criteria criteria = example.createCriteria();
+        criteria.andOpenIdEqualTo(openId);
+        List<UserInfo> userInfos = userInfoMapper.selectByExample(example);
+        UserInfo userInfo = null;
+        if (userInfos.size() > 0) {
+            userInfo = userInfos.get(0);
+        }
+
+        OrderRefundExample example1 = new OrderRefundExample();
+        OrderRefundExample.Criteria criteria1 = example1.createCriteria();
+        criteria1.andUserIdEqualTo(userInfo.getId());
+        criteria1.andShopIdEqualTo(shopId);
+        List<OrderRefund> orderRefunds = orderRefundMapper.selectByExample(example1);
+        result.setData(orderRefunds.size());
         return result;
     }
 }

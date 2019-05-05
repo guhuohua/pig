@@ -93,7 +93,7 @@ public class ViewOrderController {
 
     @GetMapping("manageOrder")
     @ApiOperation("订单管理查询")
-    public ResponseResult manageOrder( HttpServletRequest req,@RequestParam Integer status ){
+    public ResponseResult manageOrder( HttpServletRequest req,@RequestParam Integer status,@RequestParam String condition){
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
@@ -113,14 +113,14 @@ public class ViewOrderController {
 
     @GetMapping("findAll")
     @ApiOperation("查询所有订单")
-    public ResponseResult findAll( HttpServletRequest req){
+    public ResponseResult findAll( HttpServletRequest req,@RequestParam String condition){
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
-            result = viewOrderService.findAll(openId,shopId);
+            result = viewOrderService.findAll(openId,shopId,condition);
         } catch (Exception e) {
             LOGGER.error("查询所有订单失败" + e.getMessage(), e);
             result.setCode(500);
@@ -211,6 +211,26 @@ public class ViewOrderController {
             result.setCode(500);
             result.setError(e.getMessage());
             result.setError_description("统计全部订单信息失败");
+        }
+        return result;
+    }
+
+
+    @GetMapping("orderAddAddress")
+    @ApiOperation("确定订单地址")
+    public ResponseResult orderAddAddress( HttpServletRequest req ,@RequestParam String orderId,@RequestParam Integer addressId){
+        ResponseResult result = new ResponseResult();
+        //String openId = req.getHeader("openId");
+        //String token = req.getHeader("Authorization");
+        //Integer shopId = TokenUtil.getUserId(token);
+        try {
+            //User user = userMapper.selectByPrimaryKey(userId);
+            result = viewOrderService.orderAddAddress(orderId,addressId);
+        } catch (Exception e) {
+            LOGGER.error("确定订单地址" + e.getMessage(), e);
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("确定订单地址");
         }
         return result;
     }

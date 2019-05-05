@@ -11,7 +11,9 @@ public enum OderStatusEnum {
     COMPLETE("7", "订单完成"),
     CANCEL("8", "订单取消"),
     UNEVALUATED("9", "待评价"),
-    REFUNDNO("10","已退款");
+    REFUNDNO("10","已退款"),
+    EVALUATED("11","评价/申请售后完成");
+
 
 
 
