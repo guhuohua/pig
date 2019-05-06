@@ -10,7 +10,7 @@ public interface ViewOrderService {
 
     ResponseResult updateOrder(OrderDto orderDto);
 
-    ResponseResult manageOrder(Integer status, String openId, Integer shopId);
+    ResponseResult manageOrder(Integer status, String openId, Integer shopId,String condition);
 
     ResponseResult findAll(String openId, Integer shopId,String condition);
 

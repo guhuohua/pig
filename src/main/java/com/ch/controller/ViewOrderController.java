@@ -13,7 +13,6 @@ import com.ch.service.ViewOrderService;
 import com.ch.util.TokenUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.annotations.Param;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("order")
-@Api(value = "订单",description = "订单")
+@Api(value = "订单", description = "订单")
 public class ViewOrderController {
 
 
@@ -33,14 +32,14 @@ public class ViewOrderController {
 
     @PostMapping("addOrder")
     @ApiOperation("添加订单")
-    public ResponseResult addOrder( HttpServletRequest req, @RequestBody OrderDto[] orderDtoList ){
+    public ResponseResult addOrder(HttpServletRequest req, @RequestBody OrderDto[] orderDtoList) {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
-            result = viewOrderService.addOrder(orderDtoList,openId,shopId);
+            result = viewOrderService.addOrder(orderDtoList, openId, shopId);
         } catch (Exception e) {
             LOGGER.error("展示轮播图失败" + e.getMessage(), e);
             result.setCode(500);
@@ -53,14 +52,14 @@ public class ViewOrderController {
 
     @GetMapping("showOrder")
     @ApiOperation("展示订单")
-    public ResponseResult showOrder( HttpServletRequest req,@RequestParam String orderId){
+    public ResponseResult showOrder(HttpServletRequest req, @RequestParam String orderId) {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
-            result = viewOrderService.showOrder(orderId,  openId);
+            result = viewOrderService.showOrder(orderId, openId);
         } catch (Exception e) {
             LOGGER.error("展示订单失败" + e.getMessage(), e);
             result.setCode(500);
@@ -73,7 +72,7 @@ public class ViewOrderController {
 
     @PostMapping("updateOrder")
     @ApiOperation("修改订单")
-    public ResponseResult updateOrder( HttpServletRequest req,@RequestBody OrderDto orderDto ){
+    public ResponseResult updateOrder(HttpServletRequest req, @RequestBody OrderDto orderDto) {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
@@ -93,14 +92,17 @@ public class ViewOrderController {
 
     @GetMapping("manageOrder")
     @ApiOperation("订单管理查询")
-    public ResponseResult manageOrder( HttpServletRequest req,@RequestParam Integer status,@RequestParam String condition){
+    public ResponseResult manageOrder(HttpServletRequest req, @RequestParam Integer status, @RequestParam String condition) {
         ResponseResult result = new ResponseResult();
-        String openId = req.getHeader("openId");
+       /* String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
-        Integer shopId = TokenUtil.getUserId(token);
+        Integer shopId = TokenUtil.getUserId(token);*/
+
+        String openId = "oIc5o5DYm6RilTDpwblWCiXXkhFM";
+        Integer shopId = 1;
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
-            result = viewOrderService.manageOrder(status,openId,shopId);
+            result = viewOrderService.manageOrder(status, openId, shopId, condition);
         } catch (Exception e) {
             LOGGER.error("订单管理查询失败" + e.getMessage(), e);
             result.setCode(500);
@@ -113,14 +115,17 @@ public class ViewOrderController {
 
     @GetMapping("findAll")
     @ApiOperation("查询所有订单")
-    public ResponseResult findAll( HttpServletRequest req,@RequestParam String condition){
+    public ResponseResult findAll(HttpServletRequest req, @RequestParam String condition) {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
+
+        /*String openId = "oIc5o5DYm6RilTDpwblWCiXXkhFM";
+        Integer shopId = 1;*/
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
-            result = viewOrderService.findAll(openId,shopId,condition);
+            result = viewOrderService.findAll(openId, shopId, condition);
         } catch (Exception e) {
             LOGGER.error("查询所有订单失败" + e.getMessage(), e);
             result.setCode(500);
@@ -131,10 +136,9 @@ public class ViewOrderController {
     }
 
 
-
     @GetMapping("deleOrderById")
     @ApiOperation("取消订单")
-    public ResponseResult deleOrderById( HttpServletRequest req ,@RequestParam String orderId){
+    public ResponseResult deleOrderById(HttpServletRequest req, @RequestParam String orderId) {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
@@ -154,7 +158,7 @@ public class ViewOrderController {
 
     @GetMapping("updateStatus")
     @ApiOperation("确认收货")
-    public ResponseResult updateStatus( HttpServletRequest req ,@RequestParam String orderId){
+    public ResponseResult updateStatus(HttpServletRequest req, @RequestParam String orderId) {
         ResponseResult result = new ResponseResult();
        /* String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
@@ -174,14 +178,14 @@ public class ViewOrderController {
 
     @GetMapping("orderCount")
     @ApiOperation("统计订单信息")
-    public ResponseResult orderCount( HttpServletRequest req ,@RequestParam Integer status){
+    public ResponseResult orderCount(HttpServletRequest req, @RequestParam Integer status) {
         ResponseResult result = new ResponseResult();
-       String openId = req.getHeader("openId");
+        String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
-            result = viewOrderService.orderCount(status,openId,shopId);
+            result = viewOrderService.orderCount(status, openId, shopId);
 
         } catch (Exception e) {
             LOGGER.error("统计订单信息失败" + e.getMessage(), e);
@@ -193,18 +197,16 @@ public class ViewOrderController {
     }
 
 
-
-
     @GetMapping("orderAllCount")
     @ApiOperation("统计全部订单信息")
-    public ResponseResult orderAllCount( HttpServletRequest req ){
+    public ResponseResult orderAllCount(HttpServletRequest req) {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
-            result = viewOrderService.orderAllCount(openId,shopId);
+            result = viewOrderService.orderAllCount(openId, shopId);
 
         } catch (Exception e) {
             LOGGER.error("统计全部订单信息失败" + e.getMessage(), e);
@@ -218,14 +220,14 @@ public class ViewOrderController {
 
     @GetMapping("orderAddAddress")
     @ApiOperation("确定订单地址")
-    public ResponseResult orderAddAddress( HttpServletRequest req ,@RequestParam String orderId,@RequestParam Integer addressId){
+    public ResponseResult orderAddAddress(HttpServletRequest req, @RequestParam String orderId, @RequestParam Integer addressId) {
         ResponseResult result = new ResponseResult();
         //String openId = req.getHeader("openId");
         //String token = req.getHeader("Authorization");
         //Integer shopId = TokenUtil.getUserId(token);
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
-            result = viewOrderService.orderAddAddress(orderId,addressId);
+            result = viewOrderService.orderAddAddress(orderId, addressId);
         } catch (Exception e) {
             LOGGER.error("确定订单地址" + e.getMessage(), e);
             result.setCode(500);
