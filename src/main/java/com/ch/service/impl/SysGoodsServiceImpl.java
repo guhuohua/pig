@@ -64,23 +64,17 @@ public class SysGoodsServiceImpl implements SysGoodsService {
         if (BeanUtils.isNotEmpty(param.getName())) {
             criteria.andNameLike(param.getName());
         }
-        if (BeanUtils.isNotEmpty(param.getTitle())) {
-            criteria.andTitleLike(param.getTitle());
-        }
-        if (BeanUtils.isNotEmpty(param.getRecommend())) {
-            criteria.andRecommendEqualTo(param.getRecommend());
+        if (BeanUtils.isNotEmpty(param.getSn())) {
+            criteria.andSnEqualTo(param.getSn());
         }
         if (BeanUtils.isNotEmpty(param.getSale())) {
+            if (param.getSale() == 2) {
+                param.setSale(0);
+            }
             criteria.andSaleEqualTo(param.getSale());
         }
         List<Goods> goodsList = goodsMapper.selectByExample(goodsExample);
         PageInfo<Goods> page = new PageInfo<>(goodsList);
-        for (Goods goods:page.getList()) {
-            GoodsImageExample goodsImageExample = new GoodsImageExample();
-            goodsImageExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andGoodsIdEqualTo(goods.getId());
-            GoodsImage goodsImage = goodsImageMapper.selectByExample(goodsImageExample).stream().findFirst().get();
-            goods.setGoodsImgUrl(goodsImage.getUrl());
-        }
         result.setData(page);
         return result;
     }
@@ -93,18 +87,19 @@ public class SysGoodsServiceImpl implements SysGoodsService {
         ResponseResult result = new ResponseResult();
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         GoodsExample goodsExample = new GoodsExample();
-        goodsExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andIdEqualTo(param.getGoodsId());
+        goodsExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andIdEqualTo(param.getId());
         List<Goods> goodsList = goodsMapper.selectByExample(goodsExample);
         if (goodsList.stream().findFirst().isPresent()) {
             Goods goods = goodsList.stream().findFirst().get();
-            goods.setRecommend(param.getStatus());
+            goods.setStatus(param.getStatus());
+            goods.setSale(param.getStatus());
             goodsMapper.updateByPrimaryKey(goods);
         }
         if (0 == param.getStatus()) {
-            solrService.lowerShelf(param.getGoodsId());
+            solrService.lowerShelf(param.getId());
         }
         if (1 == param.getStatus()) {
-            solrService.releaseGoods(param.getGoodsId(), sysUser.getShopId());
+            solrService.releaseGoods(param.getId(), sysUser.getShopId());
         }
         return result;
     }
@@ -130,11 +125,11 @@ public class SysGoodsServiceImpl implements SysGoodsService {
     }
 
     @Override
-    public ResponseResult skuList(Integer categoryId, Integer userId) {
+    public ResponseResult skuList(List<Integer> categoryIds, Integer userId) {
         ResponseResult result = new ResponseResult();
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         SpecificationExample specificationExample = new SpecificationExample();
-        specificationExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andCategoryId(categoryId);
+        specificationExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andCategoryId(categoryIds.get(1));
         List<Specification> specifications = specificationMapper.selectByExample(specificationExample);
         List<GoodsSkuListDTO> goodsSkuListDTOList = new ArrayList<>();
         for (Specification specification:specifications) {

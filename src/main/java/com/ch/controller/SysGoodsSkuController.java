@@ -5,6 +5,7 @@ import com.ch.model.SysGoodsSkuParam;
 import com.ch.service.SysGoodsSkuService;
 import com.ch.util.TokenUtil;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,12 @@ public class SysGoodsSkuController {
     SysGoodsSkuService sysGoodsSkuService;
 
     @GetMapping("list")
-    public ResponseResult list(HttpServletRequest req, @RequestParam String name, @RequestParam Integer currentPage, @RequestParam Integer pageSize) {
+    public ResponseResult list(HttpServletRequest req, @RequestParam String title, @RequestParam Integer currentPage, @RequestParam Integer pageSize) {
         ResponseResult result = new ResponseResult();
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysGoodsSkuService.list(name, userId, currentPage, pageSize);
+            result =  sysGoodsSkuService.list(title, userId, currentPage, pageSize);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());
@@ -56,8 +57,8 @@ public class SysGoodsSkuController {
         return result;
     }
 
-    @PostMapping("delete")
-    public ResponseResult delete(HttpServletRequest req, @RequestBody Integer id) {
+    @GetMapping("delete")
+    public ResponseResult delete(HttpServletRequest req, @RequestParam Integer id) {
         ResponseResult result = new ResponseResult();
         try {
             String token = req.getHeader("Authorization");
@@ -69,6 +70,41 @@ public class SysGoodsSkuController {
             result.setCode(500);
             result.setError(e.getMessage());
             result.setError_description("获取商品规格失败，请稍后重试");
+        }
+        return result;
+    }
+
+    @GetMapping("findById")
+    public ResponseResult findById(HttpServletRequest req, @RequestParam Integer id) {
+        ResponseResult result = new ResponseResult();
+        try {
+            String token = req.getHeader("Authorization");
+            Integer userId = TokenUtil.getUserId(token);
+            result =  sysGoodsSkuService.findById(id, userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("获取商品规格失败，请稍后重试");
+        }
+        return result;
+    }
+
+    @GetMapping("goods_type_menu")
+    @ApiOperation("分类下拉菜单")
+    public ResponseResult goodsTypeMenu(HttpServletRequest req) {
+        ResponseResult result = new ResponseResult();
+        try {
+            String token = req.getHeader("Authorization");
+            Integer userId = TokenUtil.getUserId(token);
+            result =  sysGoodsSkuService.goodsClassification(userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("获取商品分类下拉菜单失败，请稍后重试");
         }
         return result;
     }

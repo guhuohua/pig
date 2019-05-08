@@ -14,4 +14,6 @@ public class GoodsAreaParam {
     private Integer status;
 
     private Integer sort;
+
+    private Integer id;
 }

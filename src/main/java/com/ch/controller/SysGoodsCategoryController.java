@@ -2,6 +2,7 @@ package com.ch.controller;
 
 import com.ch.base.ResponseResult;
 import com.ch.entity.GoodsType;
+import com.ch.model.SysCategoryParam;
 import com.ch.service.SysGoodsCategoryService;
 import com.ch.util.TokenUtil;
 import org.apache.logging.log4j.LogManager;
@@ -21,12 +22,12 @@ public class SysGoodsCategoryController {
     SysGoodsCategoryService sysGoodsCategoryService;
 
     @GetMapping("list")
-    public ResponseResult list(HttpServletRequest req, @RequestParam String name) {
+    public ResponseResult list(HttpServletRequest req) {
         ResponseResult result = new ResponseResult();
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysGoodsCategoryService.list(userId, name);
+            result =  sysGoodsCategoryService.list(userId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());
@@ -54,13 +55,47 @@ public class SysGoodsCategoryController {
         return result;
     }
 
-    @PostMapping("delete")
-    public ResponseResult delete(HttpServletRequest req, @RequestBody Integer id) {
+    @GetMapping("delete")
+    public ResponseResult delete(HttpServletRequest req, @RequestParam Integer id) {
         ResponseResult result = new ResponseResult();
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
             result =  sysGoodsCategoryService.delete(id, userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("管理商品类目失败");
+        }
+        return result;
+    }
+
+    @GetMapping("findOneCategory")
+    public ResponseResult findOneCategory(HttpServletRequest req) {
+        ResponseResult result = new ResponseResult();
+        try {
+            String token = req.getHeader("Authorization");
+            Integer userId = TokenUtil.getUserId(token);
+            result =  sysGoodsCategoryService.findOneCategory(userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("查询一级类目失败");
+        }
+        return result;
+    }
+
+    @PostMapping("updateStatus")
+    public ResponseResult updateStatus(HttpServletRequest req, @RequestBody SysCategoryParam param) {
+        ResponseResult result = new ResponseResult();
+        try {
+            String token = req.getHeader("Authorization");
+            Integer userId = TokenUtil.getUserId(token);
+            result =  sysGoodsCategoryService.updateStatus(param, userId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());

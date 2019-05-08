@@ -7,5 +7,5 @@ public class GoodsParam {
 
     private Integer status;
 
-    private Integer goodsId;
+    private Integer id;
 }

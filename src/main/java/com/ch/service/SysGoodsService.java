@@ -5,6 +5,8 @@ import com.ch.dto.GoodsParam;
 import com.ch.model.SysGoodsModel;
 import com.ch.model.SysGoodsParam;
 
+import java.util.List;
+
 public interface SysGoodsService {
 
     /**
@@ -33,10 +35,10 @@ public interface SysGoodsService {
 
     /**
      * 新增商品时sku列表
-     * @param categoryId
+     * @param categoryIds
      * @return
      */
-    ResponseResult skuList(Integer categoryId, Integer userId);
+    ResponseResult skuList(List<Integer> categoryIds, Integer userId);
 
     /**
      * 新增商品或者编辑商品

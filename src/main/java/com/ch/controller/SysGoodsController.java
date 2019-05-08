@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping("sys_goods")
@@ -24,7 +25,7 @@ public class SysGoodsController {
     SysGoodsService sysGoodsService;
 
     @GetMapping("list")
-    public ResponseResult list(HttpServletRequest req, @RequestParam SysGoodsParam param) {
+    public ResponseResult list(HttpServletRequest req, @ModelAttribute SysGoodsParam param) {
         ResponseResult result = new ResponseResult();
         try {
             String token = req.getHeader("Authorization");
@@ -57,9 +58,9 @@ public class SysGoodsController {
         return result;
     }
 
-    @PostMapping("goods_status/{param}")
+    @PostMapping("goods_status")
     @ApiOperation("上下架商品")
-    public ResponseResult goodsStatus(HttpServletRequest req, @PathVariable("param") GoodsParam param) {
+    public ResponseResult goodsStatus(HttpServletRequest req, @RequestBody GoodsParam param) {
         ResponseResult result = new ResponseResult();
         try {
             String token = req.getHeader("Authorization");
@@ -95,12 +96,12 @@ public class SysGoodsController {
 
     @GetMapping("sku_list")
     @ApiOperation("发布商品的规格列表")
-    public ResponseResult skuList(HttpServletRequest req, @RequestParam Integer categoryId) {
+    public ResponseResult skuList(HttpServletRequest req, @RequestParam List<Integer> categoryIds) {
         ResponseResult result = new ResponseResult();
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysGoodsService.skuList(categoryId, userId);
+            result =  sysGoodsService.skuList(categoryIds, userId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());

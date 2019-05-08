@@ -7,13 +7,13 @@ import java.util.Map;
 public class SpecificationProvider {
     public String getList(Map<String, Object> map) {
         //获取参数列表
-        String name = (String) map.get("title");
+        String name = (String) map.get("name");
         Integer shopId = (Integer) map.get("shopId");
-        StringBuffer sb = new StringBuffer("select id, title, sort from specification");
+        StringBuffer sb = new StringBuffer("select id, title, sort from specification where 1=1 ");
         if (BeanUtils.isNotEmpty(name)) {
-            sb.append(" and name  like '%").append(name).append("%'");
+            sb.append(" and title  like '%").append(name).append("%'");
         }
-        sb.append(" and g.shop_id = ").append(shopId);
+        sb.append(" and shop_id = ").append(shopId);
         return sb.toString();
     }
 }

@@ -7,7 +7,7 @@ public class SpecificationModel {
 
     private Integer id;
 
-    private Integer title;
+    private String title;
 
     private String values;
 

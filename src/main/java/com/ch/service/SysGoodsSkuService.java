@@ -30,4 +30,20 @@ public interface SysGoodsSkuService {
      * @return
      */
     ResponseResult delete(Integer id, Integer userId);
+
+
+    /**
+     * 商品分类下拉菜单
+     * @param userId
+     * @return
+     */
+    ResponseResult goodsClassification(Integer userId);
+
+    /**
+     * 根据ID查询规格信息
+     * @param id
+     * @param userId
+     * @return
+     */
+    ResponseResult findById(Integer id, Integer userId);
 }
