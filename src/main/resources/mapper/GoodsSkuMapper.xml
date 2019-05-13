@@ -112,7 +112,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.ch.entity.GoodsSku" >
+  <insert id="insert" parameterType="com.ch.entity.GoodsSku" useGeneratedKeys="true" keyProperty="id">
     insert into goods_sku (id, shop_id, status, 
       create_time, update_time, del_flag, 
       attrs, original_price, present_price, 

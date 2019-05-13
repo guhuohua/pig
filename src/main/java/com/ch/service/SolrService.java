@@ -5,9 +5,9 @@ public interface SolrService {
     /**
      * Solr上架商品
      * @param goodsId
-     * @param userId
+     * @param shopId
      */
-    void releaseGoods(Integer goodsId, Integer userId);
+    void releaseGoods(Integer goodsId, Integer shopId);
 
     /**
      * Solr下架商品

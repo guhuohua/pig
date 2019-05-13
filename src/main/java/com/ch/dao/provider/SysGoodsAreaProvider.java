@@ -12,7 +12,7 @@ public class SysGoodsAreaProvider {
         String recommend = (String) map.get("recommend");
         Integer status = (Integer) map.get("status");
         Integer shopId = (Integer) map.get("shopId");
-        StringBuffer sb = new StringBuffer("select ga.id, g.id as goodsId, g.sn, g.title, ga.goods_classification as recommend, ga.status, ga.id as goodsAreaId from goods g left join goods_area ga on g.id = ga.goods_id and g.shop_id = ga.shop_id where 1 = 1");
+        StringBuffer sb = new StringBuffer("select ga.id, g.id as goodsId, g.sn, g.title, ga.goods_classification as recommend, ga.status, ga.id as goodsAreaId, ga.sort from goods g left join goods_area ga on g.id = ga.goods_id and g.shop_id = ga.shop_id where 1 = 1");
         if (BeanUtils.isNotEmpty(title)) {
             sb.append(" and g.title  like '%").append(title).append("%'");
         }

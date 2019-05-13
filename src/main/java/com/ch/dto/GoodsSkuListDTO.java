@@ -11,5 +11,7 @@ public class GoodsSkuListDTO {
 
     private String specificationName;
 
+    private Integer delFlag;
+
     private List<SpecificationAttrDTO> specificationAttrDTOList;
 }

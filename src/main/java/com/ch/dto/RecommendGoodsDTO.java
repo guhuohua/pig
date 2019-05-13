@@ -19,4 +19,5 @@ public class RecommendGoodsDTO {
 
     private Integer id;
 
+    private Integer sort;
 }

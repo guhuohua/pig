@@ -8,4 +8,8 @@ public class SpecificationAttrDTO {
     private Integer attrId;
 
     private String attrName;
+
+    private Integer specificationId;
+
+    private Integer delFlag;
 }

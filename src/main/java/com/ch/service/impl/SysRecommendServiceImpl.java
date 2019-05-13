@@ -62,7 +62,7 @@ public class SysRecommendServiceImpl implements SysRecommendService {
                 goodsArea.setSort(param.getSort());
                 goodsArea.setStatus(param.getStatus());
                 goodsAreaMapper.insert(goodsArea);
-                solrService.releaseGoods(goodsArea.getGoodsId(), userId);
+                solrService.releaseGoods(goodsArea.getGoodsId(), sysUser.getShopId());
             }
         } else {
             GoodsAreaExample goodsAreaExample = new GoodsAreaExample();
@@ -80,7 +80,10 @@ public class SysRecommendServiceImpl implements SysRecommendService {
                     goodsArea.setSort(param.getSort());
                     goodsArea.setGoodsClassification(param.getRecommend());
                     goodsAreaMapper.updateByPrimaryKey(goodsArea);
-                    solrService.releaseGoods(goodsArea.getGoodsId(), userId);
+                    if (param.getStatus() == 0) {
+                        solrService.lowerShelf(goodsAreaList.stream().findFirst().get().getGoodsId());
+                    }
+                    solrService.releaseGoods(goodsArea.getGoodsId(), sysUser.getShopId());
                 }
             }
         }
@@ -95,10 +98,13 @@ public class SysRecommendServiceImpl implements SysRecommendService {
         goodsAreaExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andIdEqualTo(param.getGoodsAreaId());
         List<GoodsArea> goodsAreaList = goodsAreaMapper.selectByExample(goodsAreaExample);
         if (goodsAreaList.stream().findFirst().isPresent()) {
+            if (param.getStatus() == 0) {
+                solrService.lowerShelf(goodsAreaList.stream().findFirst().get().getGoodsId());
+            }
             GoodsArea goodsArea = goodsAreaList.stream().findFirst().get();
             goodsArea.setStatus(param.getStatus());
             goodsAreaMapper.updateByPrimaryKey(goodsArea);
-            solrService.releaseGoods(goodsArea.getGoodsId(), userId);
+            solrService.releaseGoods(goodsArea.getGoodsId(), sysUser.getShopId());
         }
         return result;
     }

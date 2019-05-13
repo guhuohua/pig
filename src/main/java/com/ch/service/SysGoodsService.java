@@ -47,4 +47,13 @@ public interface SysGoodsService {
      * @return
      */
     ResponseResult mange(SysGoodsModel model, Integer userId);
+
+
+    /**
+     * 查询商品
+     * @param goodsId
+     * @param userId
+     * @return
+     */
+    ResponseResult findById(Integer goodsId, Integer userId);
 }

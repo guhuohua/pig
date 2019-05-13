@@ -41,8 +41,25 @@ public class SysGoodsController {
         return result;
     }
 
-    @PostMapping("mange/{param}")
-    public ResponseResult mange(HttpServletRequest req, @PathVariable("param") SysGoodsModel param) {
+    @GetMapping("findById")
+    public ResponseResult findById(HttpServletRequest req, @RequestParam Integer goodsId) {
+        ResponseResult result = new ResponseResult();
+        try {
+            String token = req.getHeader("Authorization");
+            Integer userId = TokenUtil.getUserId(token);
+            result =  sysGoodsService.findById(goodsId, userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("查询商品详情失败");
+        }
+        return result;
+    }
+
+    @PostMapping("mange")
+    public ResponseResult mange(HttpServletRequest req, @RequestBody SysGoodsModel param) {
         ResponseResult result = new ResponseResult();
         try {
             String token = req.getHeader("Authorization");
@@ -76,9 +93,9 @@ public class SysGoodsController {
         return result;
     }
 
-    @PostMapping("delete_goods/{goodsId}")
+    @GetMapping("delete_goods")
     @ApiOperation("删除商品")
-    public ResponseResult deleteGoods(HttpServletRequest req, @PathVariable("goodsId") Integer goodsId) {
+    public ResponseResult deleteGoods(HttpServletRequest req, @RequestParam Integer goodsId) {
         ResponseResult result = new ResponseResult();
         try {
             String token = req.getHeader("Authorization");

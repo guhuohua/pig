@@ -60,6 +60,12 @@ public class SysGoodsSkuServiceImpl implements SysGoodsSkuService {
     @Transactional
     public ResponseResult mange(SysGoodsSkuParam param, Integer userId) {
         ResponseResult result = new ResponseResult();
+//        if (param.getParamList().size() > 1) {
+//            result.setCode(600);
+//            result.setError("长度最多为2，请删除后重试");
+//            result.setError_description("长度最多为2，请删除后重试");
+//            return result;
+//        }
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         if (BeanUtils.isEmpty(param.getId())) {
             Specification specification = new Specification();
@@ -68,6 +74,7 @@ public class SysGoodsSkuServiceImpl implements SysGoodsSkuService {
             specification.setSort(param.getSort());
             specification.setTitle(param.getTitle());
             specification.setStatus(0);
+            specification.setDelFlag(0);
             specification.setCategoryId(param.getCategoryIds().get(1));
             specificationMapper.insert(specification);
             for (SysGoodsSkuValueParam goodsSkuValueParam:param.getParamList()) {
@@ -78,6 +85,7 @@ public class SysGoodsSkuServiceImpl implements SysGoodsSkuService {
                 specificationAttribute.setSort(param.getSort());
                 specificationAttribute.setSpecificationId(specification.getId());
                 specificationAttribute.setStatus(0);
+                specificationAttribute.setDelFlag(0);
                 specificationAttributeMapper.insert(specificationAttribute);
             }
         } else {
@@ -93,15 +101,26 @@ public class SysGoodsSkuServiceImpl implements SysGoodsSkuService {
                 specificationMapper.updateByPrimaryKey(specification);
             }
             for (SysGoodsSkuValueParam goodsSkuValueParam:param.getParamList()) {
-                SpecificationAttributeExample example = new SpecificationAttributeExample();
-                example.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andIdEqualTo(goodsSkuValueParam.getId());
-                List<SpecificationAttribute> specificationAttributes = specificationAttributeMapper.selectByExample(example);
-                if (specificationAttributes.stream().findFirst().isPresent()) {
-                    SpecificationAttribute specificationAttribute = specificationAttributes.stream().findFirst().get();
+                if (BeanUtils.isNotEmpty(goodsSkuValueParam.getId())) {
+                    SpecificationAttributeExample example = new SpecificationAttributeExample();
+                    example.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andIdEqualTo(goodsSkuValueParam.getId());
+                    List<SpecificationAttribute> specificationAttributes = specificationAttributeMapper.selectByExample(example);
+                    if (specificationAttributes.stream().findFirst().isPresent()) {
+                        SpecificationAttribute specificationAttribute = specificationAttributes.stream().findFirst().get();
+                        specificationAttribute.setName(goodsSkuValueParam.getName());
+                        specificationAttribute.setSort(goodsSkuValueParam.getSort());
+                        specificationAttribute.setUpdateTime(new Date());
+                        specificationAttributeMapper.updateByPrimaryKey(specificationAttribute);
+                    }
+                } else {
+                    SpecificationAttribute specificationAttribute = new SpecificationAttribute();
+                    specificationAttribute.setCreateTime(new Date());
                     specificationAttribute.setName(goodsSkuValueParam.getName());
-                    specificationAttribute.setSort(goodsSkuValueParam.getSort());
-                    specificationAttribute.setUpdateTime(new Date());
-                    specificationAttributeMapper.updateByPrimaryKey(specificationAttribute);
+                    specificationAttribute.setShopId(sysUser.getShopId());
+                    specificationAttribute.setSort(param.getSort());
+                    specificationAttribute.setSpecificationId(param.getId());
+                    specificationAttribute.setStatus(0);
+                    specificationAttributeMapper.insert(specificationAttribute);
                 }
             }
         }
