@@ -80,9 +80,27 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                 GoodsExample.Criteria criteria1 = example1.createCriteria();
 
                 goodsMapper.selectByExample(example1);
+
+
+                totalFee = (goodsSku.getPresentPrice() * orderDto.getNum());
+                orderFee += totalFee;
+                OrderItem orderItem = new OrderItem();
+                orderItem.setGoodsId(goodsSku.getGoodsId());
+
+
                 if (goodsSku.getInventory() > 0) {
                     goodsSku.setInventory(goodsSku.getInventory() - 1);
                     goodsSku.setSale(goodsSku.getSale() + 1);
+                    //Goods goods1 = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
+                    orderItem.setName(orderDto.getName() + "" + goodsSku.getSkuName());
+                    orderItem.setGoodsName(orderDto.getName());
+                    orderItem.setNumber(orderDto.getNum());
+                    orderItem.setPrice(goodsSku.getPresentPrice() * orderDto.getNum());
+                    orderItem.setOrderId(order.getId());
+                    orderItem.setShopId(shopId);
+                    orderItem.setSkuAttrId(orderDto.getGoodsSku().getId());
+                    orderItemMapper.insert(orderItem);
+
                 } else {
                     result.setError("500");
                     result.setError_description("商品已售馨");
@@ -91,10 +109,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
 
 
                 goodsSkuMapper.updateByPrimaryKey(goodsSku);
-                totalFee = (goodsSku.getPresentPrice() * orderDto.getNum());
-                orderFee += totalFee;
-                OrderItem orderItem = new OrderItem();
-                orderItem.setGoodsId(goodsSku.getGoodsId());
+
 
                 if (goods.getInventory() > 0) {
                     goods.setInventory(goodsSku.getInventory() - 1);
@@ -104,21 +119,9 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                     result.setError_description("商品已售馨");
                     return result;
                 }
-
                 goodsMapper.updateByPrimaryKey(goods);
-                //Goods goods1 = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
-                orderItem.setName(orderDto.getName());
-                orderItem.setGoodsName(goodsSku.getSkuName());
-                orderItem.setNumber(orderDto.getNum());
-                orderItem.setPrice(goodsSku.getPresentPrice() * orderDto.getNum());
-                orderItem.setOrderId(order.getId());
-                orderItem.setShopId(shopId);
-                orderItem.setSkuAttrId(orderDto.getGoodsSku().getId());
 
-                orderItemMapper.insert(orderItem);
             }
-
-
             order.setUserId(userInfo.getId());
             order.setShopId(shopId);
             order.setOrderStatus(1);
@@ -126,6 +129,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             order.setDeliveryId(userAddress.getId());
             order.setCreateDate(new Date());
             order.setOrderPrice(orderFee + Collections.max(feeList));
+
             orderMapper.insert(order);
         }
 
@@ -263,7 +267,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                         map.put("order", goodsOrder);
                         list.add(map);
                     }
-                }else {
+                } else {
                     for (GoodsOrder goodsOrder : goodsOrders1) {
                         OrderItemExample orderExample1 = new OrderItemExample();
                         OrderItemExample.Criteria criteria2 = orderExample1.createCriteria();
@@ -350,7 +354,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                         map.put("order", goodsOrder);
                         list.add(map);
                     }
-                }else {
+                } else {
                     for (GoodsOrder goodsOrder : goodsOrders1) {
                         OrderItemExample orderExample1 = new OrderItemExample();
                         OrderItemExample.Criteria criteria2 = orderExample1.createCriteria();
@@ -437,7 +441,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                         map.put("order", goodsOrder);
                         list.add(map);
                     }
-                }else {
+                } else {
                     for (GoodsOrder goodsOrder : goodsOrders1) {
                         OrderItemExample orderExample1 = new OrderItemExample();
                         OrderItemExample.Criteria criteria2 = orderExample1.createCriteria();
@@ -525,7 +529,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                         map.put("order", goodsOrder);
                         list.add(map);
                     }
-                }else {
+                } else {
                     for (GoodsOrder goodsOrder : goodsOrders1) {
                         OrderItemExample orderExample1 = new OrderItemExample();
                         OrderItemExample.Criteria criteria2 = orderExample1.createCriteria();
@@ -614,12 +618,11 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                         map.put("order", goodsOrder);
                         list.add(map);
                     }
-                }else {
+                } else {
                     for (GoodsOrder goodsOrder : goodsOrders1) {
                         OrderItemExample orderExample1 = new OrderItemExample();
                         OrderItemExample.Criteria criteria2 = orderExample1.createCriteria();
                         criteria2.andOrderIdEqualTo(goodsOrder.getId());
-
                         List<OrderItem> orderItems = orderItemMapper.selectByExample(orderExample1);
                         List list1 = new ArrayList();
                         for (OrderItem orderItem : orderItems) {
