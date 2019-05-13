@@ -78,8 +78,20 @@ public class SysOrderServiceImpl implements SysOrderService {
             criteria.andCreateDateGreaterThanOrEqualTo(new Date(param.getBeginDate()));
             criteria.andCreateDateLessThanOrEqualTo(new Date(param.getEndDate()));
         }
+        List<Integer> orderStatus = new ArrayList<>();
+        orderStatus.add(11);
+        orderStatus.add(10);
+        criteria.andOrderStatusNotIn(orderStatus);
         PageHelper.startPage(param.getCurrentPage(), param.getPageSize());
         List<GoodsOrder> orders = orderMapper.selectByExample(orderExample);
+        for (GoodsOrder goodsOrder:orders) {
+            UserInfoExample userInfoExample = new UserInfoExample();
+            userInfoExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andIdEqualTo(goodsOrder.getUserId());
+            List<UserInfo> userInfos = userInfoMapper.selectByExample(userInfoExample);
+            if (userInfos.stream().findFirst().isPresent()) {
+                goodsOrder.setUserName(userInfos.stream().findFirst().get().getNickname());
+            }
+        }
         PageInfo<GoodsOrder> pageInfo = new PageInfo<>(orders);
         result.setData(pageInfo);
         return result;
@@ -118,16 +130,17 @@ public class SysOrderServiceImpl implements SysOrderService {
             GoodsOrder order = orders.stream().findFirst().get();
             sysOrderDetailDTO.setOrderId(order.getId());
             StringBuilder sb = new StringBuilder();
-            UserAddressExample userAddressExample = new UserAddressExample();
-            userAddressExample.createCriteria().andIdEqualTo(order.getDeliveryId()).andShopIdEqualTo(sysUser.getShopId());
-            List<UserAddress> userAddresses = userAddressMapper.selectByExample(userAddressExample);
-            if (userAddresses.stream().findFirst().isPresent()) {
-                UserAddress userAddress = userAddresses.stream().findFirst().get();
-                sb.append(userAddress.getProvince()).append("-").append(userAddress.getCity()).append("-").append(userAddress.getCity()).append(" ").append(userAddress.getAddress());
-                sysOrderDetailDTO.setDeliveryName(userAddress.getName());
-                sysOrderDetailDTO.setPhone(userAddress.getTel());
+            if (BeanUtils.isNotEmpty(order.getDeliveryId())) {
+                UserAddressExample userAddressExample = new UserAddressExample();
+                userAddressExample.createCriteria().andIdEqualTo(order.getDeliveryId()).andShopIdEqualTo(sysUser.getShopId());
+                List<UserAddress> userAddresses = userAddressMapper.selectByExample(userAddressExample);
+                if (userAddresses.stream().findFirst().isPresent()) {
+                    UserAddress userAddress = userAddresses.stream().findFirst().get();
+                    sb.append(userAddress.getProvince()).append("-").append(userAddress.getCity()).append("-").append(userAddress.getCity()).append(" ").append(userAddress.getAddress());
+                    sysOrderDetailDTO.setDeliveryName(userAddress.getName());
+                    sysOrderDetailDTO.setPhone(userAddress.getTel());
+                }
             }
-
             if (BeanUtils.isNotEmpty(order.getRefundId())) {
                 OrderRefundExample orderRefundExample = new OrderRefundExample();
                 orderRefundExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andIdEqualTo(order.getRefundId());

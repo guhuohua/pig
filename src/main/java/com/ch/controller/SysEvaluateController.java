@@ -4,6 +4,7 @@ import com.ch.base.ResponseResult;
 import com.ch.dto.BaseParam;
 import com.ch.service.SysEvaluateService;
 import com.ch.util.TokenUtil;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("sys_evaluate")
+@Api("评价管理")
 public class SysEvaluateController {
 
     private static final Logger LOGGER = LogManager.getLogger(SysEvaluateController.class);
