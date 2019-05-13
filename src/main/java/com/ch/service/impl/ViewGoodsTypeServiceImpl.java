@@ -36,7 +36,7 @@ public class ViewGoodsTypeServiceImpl implements ViewGoodsTypeService {
             GoodsTypeExample example = new GoodsTypeExample();
             GoodsTypeExample.Criteria criteria = example.createCriteria();
             criteria.andShopIdEqualTo(shopId);
-            criteria.andStatusEqualTo(0);
+            criteria.andStatusEqualTo(1);
             List<GoodsType> allMenu = goodsTypeMapper.selectByExample(example);
             //根节点
             List<GoodsType> rootMenu = new ArrayList<GoodsType>();
