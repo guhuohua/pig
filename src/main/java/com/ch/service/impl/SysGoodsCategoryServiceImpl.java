@@ -6,7 +6,10 @@ import com.ch.dao.GoodsMapper;
 import com.ch.dao.GoodsTypeMapper;
 import com.ch.dao.SysUserMapper;
 import com.ch.entity.*;
+import com.ch.model.SysCategoryParam;
 import com.ch.service.SysGoodsCategoryService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,15 +29,12 @@ public class SysGoodsCategoryServiceImpl implements SysGoodsCategoryService {
     GoodsMapper goodsMapper;
 
     @Override
-    public ResponseResult list(Integer userId, String name) {
+    public ResponseResult list(Integer userId) {
         ResponseResult result = new ResponseResult();
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         GoodsTypeExample goodsTypeExample = new GoodsTypeExample();
         GoodsTypeExample.Criteria criteria = goodsTypeExample.createCriteria();
         criteria.andShopIdEqualTo(sysUser.getShopId());
-        if (BeanUtils.isNotEmpty(name)) {
-            criteria.andTitleLike(name);
-        }
         List<GoodsType> goodsTypes = goodsTypeMapper.selectByExample(goodsTypeExample);
         List<GoodsType> rootMenu = new ArrayList<GoodsType>();
         for (GoodsType nav : goodsTypes) {
@@ -50,6 +50,7 @@ public class SysGoodsCategoryServiceImpl implements SysGoodsCategoryService {
             List<GoodsType> childList = getChild(nav.getId(), goodsTypes);
             nav.setChildren(childList);//给根节点设置子节点
         }
+        result.setData(rootMenu);
         return result;
     }
 
@@ -70,7 +71,7 @@ public class SysGoodsCategoryServiceImpl implements SysGoodsCategoryService {
         Collections.sort(childList, order());//排序
         //如果节点下没有子节点，返回一个空List（递归退出）
         if (childList.size() == 0) {
-            return new ArrayList<GoodsType>();
+            return null;
         }
         return childList;
     }
@@ -117,8 +118,33 @@ public class SysGoodsCategoryServiceImpl implements SysGoodsCategoryService {
             return result;
         }
         GoodsTypeExample goodsTypeExample = new GoodsTypeExample();
-        goodsTypeExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andIdEqualTo(id).andParentIdEqualTo(id);
+        goodsTypeExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andIdEqualTo(id);
+
         goodsTypeMapper.deleteByExample(goodsTypeExample);
+        return result;
+    }
+
+    @Override
+    public ResponseResult updateStatus(SysCategoryParam param, Integer userId) {
+        ResponseResult result = new ResponseResult();
+        SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
+        GoodsType goodsType = goodsTypeMapper.selectByPrimaryKey(param.getId());
+        if (BeanUtils.isNotEmpty(goodsType)) {
+            goodsType.setStatus(param.getStatus());
+            goodsType.setUpdateTime(new Date());
+            goodsTypeMapper.updateByPrimaryKey(goodsType);
+        }
+        return result;
+    }
+
+    @Override
+    public ResponseResult findOneCategory(Integer userId) {
+        ResponseResult result = new ResponseResult();
+        SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
+        GoodsTypeExample goodsTypeExample = new GoodsTypeExample();
+        goodsTypeExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andParentIdEqualTo(0);
+        List<GoodsType> goodsTypes = goodsTypeMapper.selectByExample(goodsTypeExample);
+        result.setData(goodsTypes);
         return result;
     }
 }

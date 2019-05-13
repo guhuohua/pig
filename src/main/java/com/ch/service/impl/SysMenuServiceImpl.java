@@ -39,10 +39,7 @@ public class SysMenuServiceImpl implements SysMenuService {
         example.createCriteria().andUserIdEqualTo(userId).andShopIdEqualTo(sysUser.getShopId());
         sysUserRoleMapper.selectByExample(example).forEach(userRole -> {
             SysRolePermissionExample sysRolePermissionExample = new SysRolePermissionExample();
-            sysRolePermissionExample
-                    .createCriteria()
-                    .andRoleIdEqualTo(userRole.getRoleId())
-                    .andShopIdEqualTo(userRole.getShopId());
+            sysRolePermissionExample.createCriteria().andRoleIdEqualTo(userRole.getRoleId());
             sysRolePermissionMapper.selectByExample(sysRolePermissionExample).forEach(rolePermission -> {
                 SysPermission sysPermission = sysPermissionMapper.selectByPrimaryKey(rolePermission.getPermissionId());
                 permissionNameList.add(sysPermission.getDesc());

@@ -5,6 +5,7 @@ import com.ch.dto.GoodsAreaParam;
 import com.ch.model.SysRecommendParam;
 import com.ch.service.SysRecommendService;
 import com.ch.util.TokenUtil;
+import io.swagger.annotations.Api;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("sys_goods_recommend")
+@Api(value = "商品推荐")
 public class SysGoodsAreaController {
 
     private static final Logger LOGGER = LogManager.getLogger(SysGoodsAreaController.class);

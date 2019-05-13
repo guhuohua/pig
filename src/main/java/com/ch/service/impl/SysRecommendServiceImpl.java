@@ -49,7 +49,7 @@ public class SysRecommendServiceImpl implements SysRecommendService {
     public ResponseResult mange(GoodsAreaParam param, Integer userId) {
         ResponseResult result = new ResponseResult();
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
-        if (BeanUtils.isEmpty(param.getGoodsAreaId())) {
+        if (BeanUtils.isEmpty(param.getId())) {
             GoodsExample goodsExample = new GoodsExample();
             goodsExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andSnEqualTo(param.getSn());
             List<Goods> goodsList = goodsMapper.selectByExample(goodsExample);
@@ -62,11 +62,11 @@ public class SysRecommendServiceImpl implements SysRecommendService {
                 goodsArea.setSort(param.getSort());
                 goodsArea.setStatus(param.getStatus());
                 goodsAreaMapper.insert(goodsArea);
-                solrService.releaseGoods(goodsArea.getGoodsId(), userId);
+                solrService.releaseGoods(goodsArea.getGoodsId(), sysUser.getShopId());
             }
         } else {
             GoodsAreaExample goodsAreaExample = new GoodsAreaExample();
-            goodsAreaExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andIdEqualTo(param.getGoodsAreaId());
+            goodsAreaExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andIdEqualTo(param.getId());
             List<GoodsArea> goodsAreaList = goodsAreaMapper.selectByExample(goodsAreaExample);
             if (goodsAreaList.stream().findFirst().isPresent()) {
                 GoodsArea goodsArea = goodsAreaList.stream().findFirst().get();
@@ -80,7 +80,10 @@ public class SysRecommendServiceImpl implements SysRecommendService {
                     goodsArea.setSort(param.getSort());
                     goodsArea.setGoodsClassification(param.getRecommend());
                     goodsAreaMapper.updateByPrimaryKey(goodsArea);
-                    solrService.releaseGoods(goodsArea.getGoodsId(), userId);
+                    if (param.getStatus() == 0) {
+                        solrService.lowerShelf(goodsAreaList.stream().findFirst().get().getGoodsId());
+                    }
+                    solrService.releaseGoods(goodsArea.getGoodsId(), sysUser.getShopId());
                 }
             }
         }
@@ -95,10 +98,13 @@ public class SysRecommendServiceImpl implements SysRecommendService {
         goodsAreaExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andIdEqualTo(param.getGoodsAreaId());
         List<GoodsArea> goodsAreaList = goodsAreaMapper.selectByExample(goodsAreaExample);
         if (goodsAreaList.stream().findFirst().isPresent()) {
+            if (param.getStatus() == 0) {
+                solrService.lowerShelf(goodsAreaList.stream().findFirst().get().getGoodsId());
+            }
             GoodsArea goodsArea = goodsAreaList.stream().findFirst().get();
             goodsArea.setStatus(param.getStatus());
             goodsAreaMapper.updateByPrimaryKey(goodsArea);
-            solrService.releaseGoods(goodsArea.getGoodsId(), userId);
+            solrService.releaseGoods(goodsArea.getGoodsId(), sysUser.getShopId());
         }
         return result;
     }
@@ -108,7 +114,7 @@ public class SysRecommendServiceImpl implements SysRecommendService {
         ResponseResult result = new ResponseResult();
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         GoodsAreaExample goodsAreaExample = new GoodsAreaExample();
-        goodsAreaExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andIdEqualTo(param.getGoodsAreaId());
+        goodsAreaExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andIdEqualTo(param.getId());
         List<GoodsArea> goodsAreaList = goodsAreaMapper.selectByExample(goodsAreaExample);
         if (goodsAreaList.stream().findFirst().isPresent()) {
             GoodsArea goodsArea = goodsAreaList.stream().findFirst().get();
@@ -117,7 +123,7 @@ public class SysRecommendServiceImpl implements SysRecommendService {
                 result.setError("启用中的状态不允许删除");
                 result.setError_description("启用中的状态不允许删除");
             } else {
-                goodsAreaMapper.deleteByPrimaryKey(goodsArea.getId());
+                goodsAreaMapper.deleteByPrimaryKey(param.getId());
             }
         }
         return result;

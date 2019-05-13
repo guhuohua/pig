@@ -1,8 +1,8 @@
 package com.ch.model;
 
+import com.ch.dto.GoodsSkuListDTO;
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -44,7 +44,7 @@ public class SysGoodsModel {
 
     private String name;
 
-    private Integer categoryId;
+    private List<Integer> categoryIds;
 
     private String keyWords;
 
@@ -52,9 +52,11 @@ public class SysGoodsModel {
 
     private String units;
 
-    private List<SysGoodsImageModel> goodsImageModelList;
+    private String goodsImgUrl;
+
+    private List<SysGoodsImageModel> goodsImgList;
 
     private List<SysGoodsSkuModel> sysGoodsSkuModelList;
 
-    private List<SysGoodsSkuId> sysGoodsSkuIds;
+    private List<GoodsSkuListDTO> goodsSkuListDTOList;
 }

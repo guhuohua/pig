@@ -13,7 +13,7 @@ public class SysGoodsSkuParam {
 
     private Integer sort;
 
-    private Integer categoryId;
+    private List<Integer> categoryIds;
 
     private List<SysGoodsSkuValueParam> paramList;
 }

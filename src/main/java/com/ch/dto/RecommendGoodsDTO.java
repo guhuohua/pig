@@ -17,4 +17,7 @@ public class RecommendGoodsDTO {
 
     private Integer goodsAreaId;
 
+    private Integer id;
+
+    private Integer sort;
 }
