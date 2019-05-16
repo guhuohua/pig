@@ -12,10 +12,7 @@ import com.ch.dao.ShopMapper;
 import com.ch.dao.SysShopMapper;
 import com.ch.dao.SysUserMapper;
 import com.ch.dto.ShopParam;
-import com.ch.entity.Shop;
-import com.ch.entity.ShopExample;
-import com.ch.entity.SysShop;
-import com.ch.entity.SysShopExample;
+import com.ch.entity.*;
 import com.ch.service.SysShopService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -38,6 +35,9 @@ public class SysShopServiceImpl implements SysShopService {
     @Autowired
     SysUserMapper sysUserMapper;
 
+
+
+
     public void init(){
     }
 
@@ -52,6 +52,10 @@ public class SysShopServiceImpl implements SysShopService {
         ResponseResult result = new ResponseResult();
         PageHelper.startPage(shopParam.getCurrentPage(), shopParam.getPageSize());
         List<Shop> shops = shopMapper.selectByExample(null);
+        for (Shop shop : shops) {
+            SysUser sysUser = sysUserMapper.selectByPrimaryKey(shop.getShopAccountId());
+            shop.setUsername(sysUser.getUsername());
+        }
         PageInfo<Shop> page = new PageInfo<>(shops);
         result.setData(page);
         return result;
@@ -146,6 +150,10 @@ public class SysShopServiceImpl implements SysShopService {
             }
         }
         List<Shop> shops = shopMapper.selectByExample(example);
+        for (Shop shop : shops) {
+            SysUser sysUser = sysUserMapper.selectByPrimaryKey(shop.getShopAccountId());
+            shop.setUsername(sysUser.getUsername());
+        }
         PageInfo<Shop> page = new PageInfo<>(shops);
         result.setData(page);
         return result;
