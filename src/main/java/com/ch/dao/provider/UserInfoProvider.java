@@ -11,9 +11,7 @@ public class UserInfoProvider {
         String name = (String) map.get("name");
         String tel = (String) map.get("tel");
         Integer shopId = (Integer) map.get("shopId");
-        StringBuilder sb = new StringBuilder("select ui.id, ui.user_head,ui.nickname,ui.tel, ui.gender, if(o.order_status =7, (select sum(order_price) from `order` where shop_id = 1),0 ) as orderPrice," +
-                " if(o.order_status =7, (select count(*) from `order` where shop_id = 1 ),0 ) as orderCount" +
-                " from user_info ui left join `order` o on o.user_id = ui.id and o.shop_id = ui.shop_id where 1 = 1");
+        StringBuilder sb = new StringBuilder("select ui.id, ui.user_head,ui.nickname,ui.tel, ui.gender from user_info ui where 1 = 1");
         sb.append(" and ui.shop_id = ").append(shopId);
         if (BeanUtils.isNotEmpty(name)) {
             sb.append(" and ui.nikename  like '%").append(name).append("%'");

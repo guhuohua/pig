@@ -70,7 +70,7 @@ public class ShopServiceImpl implements ShopService {
         for (SysUser user:sysUserPageInfo.getList()) {
             user.setPassword("");
             SysUserRoleExample sysUserRoleExample = new SysUserRoleExample();
-            sysUserRoleExample.createCriteria().andUserIdEqualTo(user.getUserId()).andShopIdEqualTo(user.getShopId());
+            sysUserRoleExample.createCriteria().andUserIdEqualTo(user.getId()).andShopIdEqualTo(user.getShopId());
             List<SysUserRole> sysUserRoles = sysUserRoleMapper.selectByExample(sysUserRoleExample);
             for (SysUserRole sysUserRole:sysUserRoles) {
                 SysRoleExample sysRoleExample = new SysRoleExample();
@@ -86,6 +86,7 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
+    @Transactional
     public ResponseResult PersonMange(PersonMangeParam param, Integer userId) {
         ResponseResult result = new ResponseResult();
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
@@ -114,6 +115,7 @@ public class ShopServiceImpl implements ShopService {
             br.setUpdateTime(new Date());
             br.setPhone(param.getPhone());
             br.setUsername(param.getUsername());
+            br.setStatus(param.getStatus());
             if (BeanUtils.isNotEmpty(param.getPassword())) {
                 String salt = UUID.randomUUID().toString();
                 PasswordUtil encoderMd5 = new PasswordUtil(salt, "sha-256");
@@ -121,7 +123,7 @@ public class ShopServiceImpl implements ShopService {
                 br.setSalt(salt);
                 br.setPassword(encodedPassword);
             }
-            sysUserMapper.insert(br);
+            sysUserMapper.updateByPrimaryKey(br);
         } else {
             SysUserExample sysUserExample = new SysUserExample();
             sysUserExample.createCriteria().andPhoneEqualTo(param.getPhone());
@@ -154,10 +156,10 @@ public class ShopServiceImpl implements ShopService {
             user.setStatus(0);
             sysUserMapper.insert(user);
             SysUserRole sysUserRole = new SysUserRole();
-            sysUserRole.setRoleId(2);
+            sysUserRole.setRoleId(4);
             sysUserRole.setShopId(sysUser.getShopId());
-            sysUserRole.setUserId(sysUser.getUserId());
-            sysUserRoleMapper.insert(sysUserRole);
+            sysUserRole.setUserId(user.getId());
+            int insert = sysUserRoleMapper.insert(sysUserRole);
         }
         return result;
     }
@@ -173,6 +175,14 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public ResponseResult shopInfo(Integer userId) {
         ResponseResult result = new ResponseResult();
+        UserDto dto = sysUserService.findById(userId);
+        Set<String> roles = dto.getRoles();
+        boolean flg = false;
+        for (String role : roles) {
+            if ("超级管理员".equals(role)) {
+                flg = true;
+            }
+        }
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         SysShopInfoDTO sysShopInfoDTO = new SysShopInfoDTO();
         Shop shop = shopMapper.selectByPrimaryKey(sysUser.getShopId());
@@ -186,7 +196,6 @@ public class ShopServiceImpl implements ShopService {
 
             SysUser admin = sysUserMapper.selectByPrimaryKey(shop.getShopAccountId());
             sysShopInfoDTO.setAdminName(admin.getUsername());
-            sysShopInfoDTO.setAdminPassword(admin.getPassword());
             sysShopInfoDTO.setAdminStatus(admin.getStatus());
             sysShopInfoDTO.setAdminTel(admin.getPhone());
 
@@ -194,11 +203,11 @@ public class ShopServiceImpl implements ShopService {
             ShopMiniProgramExample shopMiniProgramExample = new ShopMiniProgramExample();
             shopMiniProgramExample.createCriteria().andShopIdEqualTo(sysUser.getShopId());
             List<ShopMiniProgram> shopMiniPrograms = shopMiniProgramMapper.selectByExample(shopMiniProgramExample);
-            if (shopMiniPrograms.stream().findFirst().isPresent()) {
+            if (shopMiniPrograms.stream().findFirst().isPresent() && flg) {
                 ShopMiniProgram shopMiniProgram = shopMiniPrograms.stream().findFirst().get();
                 sysShopInfoDTO.setAppId(shopMiniProgram.getAppId());
                 sysShopInfoDTO.setSecret(shopMiniProgram.getSecret());
-                sysShopInfoDTO.setMchIdd(shopMiniProgram.getMchIdd());
+                sysShopInfoDTO.setMchId(shopMiniProgram.getMchIdd());
                 sysShopInfoDTO.setKey(shopMiniProgram.getAppKey());
                 sysShopInfoDTO.setBackUrl(shopMiniProgram.getBackUrl());
             }
@@ -222,6 +231,7 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
+    @Transactional
     public ResponseResult mange(SysShopInfoDTO sysShopInfoDTO, Integer userId) {
         ResponseResult result = new ResponseResult();
         UserDto dto = sysUserService.findById(userId);
@@ -244,13 +254,6 @@ public class ShopServiceImpl implements ShopService {
             SysUser admin = sysUserMapper.selectByPrimaryKey(shop.getShopAccountId());
             admin.setUsername(sysShopInfoDTO.getAdminName());
             admin.setPhone(sysShopInfoDTO.getAdminTel());
-            if (BeanUtils.isNotEmpty(sysShopInfoDTO.getAdminPassword())) {
-                String salt = UUID.randomUUID().toString();
-                PasswordUtil encoderMd5 = new PasswordUtil(salt, "sha-256");
-                String encodedPassword = encoderMd5.encode(sysShopInfoDTO.getAdminPassword());
-                admin.setSalt(salt);
-                admin.setPassword(encodedPassword);
-            }
             admin.setStatus(sysShopInfoDTO.getAdminStatus());
             sysUserMapper.updateByPrimaryKey(admin);
 
@@ -262,7 +265,7 @@ public class ShopServiceImpl implements ShopService {
                 shopMiniProgram.setShopId(sysShopInfoDTO.getShopId());
                 shopMiniProgram.setAppId(sysShopInfoDTO.getAppId());
                 shopMiniProgram.setSecret(sysShopInfoDTO.getSecret());
-                shopMiniProgram.setMchIdd(sysShopInfoDTO.getMchIdd());
+                shopMiniProgram.setMchIdd(sysShopInfoDTO.getMchId());
                 shopMiniProgram.setAppKey(sysShopInfoDTO.getKey());
                 shopMiniProgram.setBackUrl(sysShopInfoDTO.getBackUrl());
                 shopMiniProgramMapper.updateByPrimaryKey(shopMiniProgram);
@@ -273,16 +276,18 @@ public class ShopServiceImpl implements ShopService {
             goodsAdvertMapper.deleteByExample(goodsAdvertExample);
 
             List<SysGoodAvdModel> sysGoodAvdModels = sysShopInfoDTO.getSysGoodAvdModels();
-            for (SysGoodAvdModel sysGoodAvdModel:sysGoodAvdModels) {
+            for (int i = 0; i < sysGoodAvdModels.size(); i++) {
                 GoodsAdvert goodsAdvert = new GoodsAdvert();
                 goodsAdvert.setCreateTime(new Date());
                 goodsAdvert.setShopId(sysShopInfoDTO.getShopId());
                 goodsAdvert.setStatus(0);
-                goodsAdvert.setSortOrder(sysGoodAvdModel.getSortOrder());
-                goodsAdvert.setGoodsId(sysGoodAvdModel.getGoodsId());
-                goodsAdvert.setPictureUrl(sysGoodAvdModel.getPictureUrl());
+                goodsAdvert.setSortOrder(i);
+                goodsAdvert.setGoodsId(sysGoodAvdModels.get(i).getGoodsId());
+                goodsAdvert.setPictureUrl(sysGoodAvdModels.get(i).getPictureUrl());
+                goodsAdvert.setPath("");
                 goodsAdvertMapper.insert(goodsAdvert);
             }
+
         }
         if (flg && BeanUtils.isEmpty(sysShopInfoDTO.getShopId())) {
 
@@ -304,14 +309,14 @@ public class ShopServiceImpl implements ShopService {
             shop.setStartTime(new Date(sysShopInfoDTO.getShopServiceBeginDate()));
             shop.setEndTime(new Date(sysShopInfoDTO.getShopServiceEndDate()));
             shop.setStatus(sysShopInfoDTO.getShopStatus());
-            shop.setShopAccountId(sysUser.getUserId());
+            shop.setShopAccountId(sysUser.getId());
             shopMapper.insert(shop);
 
             sysUser.setShopId(shop.getId());
             sysUserMapper.updateByPrimaryKey(sysUser);
 
             SysUserRole sysUserRole = new SysUserRole();
-            sysUserRole.setUserId(sysUser.getUserId());
+            sysUserRole.setUserId(sysUser.getId());
             sysUserRole.setRoleId(2);
             sysUserRole.setShopId(shop.getId());
             sysUserRoleMapper.insert(sysUserRole);
@@ -321,37 +326,39 @@ public class ShopServiceImpl implements ShopService {
             shopMiniProgram.setStatus(0);
             shopMiniProgram.setAppId(sysShopInfoDTO.getAppId());
             shopMiniProgram.setSecret(sysShopInfoDTO.getSecret());
-            shopMiniProgram.setMchIdd(sysShopInfoDTO.getMchIdd());
+            shopMiniProgram.setMchIdd(sysShopInfoDTO.getMchId());
             shopMiniProgram.setBackUrl(sysShopInfoDTO.getBackUrl());
             shopMiniProgram.setAppKey(sysShopInfoDTO.getKey());
             shopMiniProgramMapper.insert(shopMiniProgram);
 
             List<SysGoodAvdModel> sysGoodAvdModels = sysShopInfoDTO.getSysGoodAvdModels();
-            for (SysGoodAvdModel sysGoodAvdModel:sysGoodAvdModels) {
+            for (int i = 0; i < sysGoodAvdModels.size(); i++) {
                 GoodsAdvert goodsAdvert = new GoodsAdvert();
                 goodsAdvert.setCreateTime(new Date());
                 goodsAdvert.setShopId(sysShopInfoDTO.getShopId());
                 goodsAdvert.setStatus(0);
-                goodsAdvert.setSortOrder(sysGoodAvdModel.getSortOrder());
-                goodsAdvert.setGoodsId(sysGoodAvdModel.getGoodsId());
-                goodsAdvert.setPictureUrl(sysGoodAvdModel.getPictureUrl());
+                goodsAdvert.setSortOrder(i);
+                goodsAdvert.setGoodsId(sysGoodAvdModels.get(i).getGoodsId());
+                goodsAdvert.setPictureUrl(sysGoodAvdModels.get(i).getPictureUrl());
+                goodsAdvert.setPath("");
                 goodsAdvertMapper.insert(goodsAdvert);
             }
         }
-        if (!flg && BeanUtils.isNotEmpty(sysShopInfoDTO.getShopId())) {
+        if (BeanUtils.isNotEmpty(sysShopInfoDTO.getShopId())) {
             GoodsAdvertExample goodsAdvertExample = new GoodsAdvertExample();
             goodsAdvertExample.createCriteria().andShopIdEqualTo(sysShopInfoDTO.getShopId());
             goodsAdvertMapper.deleteByExample(goodsAdvertExample);
 
             List<SysGoodAvdModel> sysGoodAvdModels = sysShopInfoDTO.getSysGoodAvdModels();
-            for (SysGoodAvdModel sysGoodAvdModel:sysGoodAvdModels) {
+            for (int i = 0; i < sysGoodAvdModels.size(); i++) {
                 GoodsAdvert goodsAdvert = new GoodsAdvert();
                 goodsAdvert.setCreateTime(new Date());
                 goodsAdvert.setShopId(sysShopInfoDTO.getShopId());
                 goodsAdvert.setStatus(0);
-                goodsAdvert.setSortOrder(sysGoodAvdModel.getSortOrder());
-                goodsAdvert.setGoodsId(sysGoodAvdModel.getGoodsId());
-                goodsAdvert.setPictureUrl(sysGoodAvdModel.getPictureUrl());
+                goodsAdvert.setSortOrder(i);
+                goodsAdvert.setGoodsId(sysGoodAvdModels.get(i).getGoodsId());
+                goodsAdvert.setPictureUrl(sysGoodAvdModels.get(i).getPictureUrl());
+                goodsAdvert.setPath("");
                 goodsAdvertMapper.insert(goodsAdvert);
             }
         }

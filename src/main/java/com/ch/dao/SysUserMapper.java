@@ -31,6 +31,6 @@ public interface SysUserMapper {
 
     int updateByPrimaryKey(SysUser record);
 
-    @Update("update sys_user set password = '@g0c211aa0bc22ccb@0g5F4*1fcf3@24c@#@2g1aa06a2dc20@66#*d0@4c2c216', salt = '0bdf8d16-159d-4ebe-8a93-506a14d1df2d' where user_id = #{userId} and shop_id = #{shopId}")
+    @Update("update sys_user set password = '@g0c211aa0bc22ccb@0g5F4*1fcf3@24c@#@2g1aa06a2dc20@66#*d0@4c2c216', salt = '0bdf8d16-159d-4ebe-8a93-506a14d1df2d' where id = #{userId} and shop_id = #{shopId}")
     int resetPassword(@Param("userId") Integer userId, @Param("shopId") Integer shopId);
 }

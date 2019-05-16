@@ -44,7 +44,7 @@ public class SysUserServiceImpl implements SysUserService {
         UserDto dto = new UserDto();
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         if(sysUser!=null){
-            dto.setUserId(sysUser.getUserId());
+            dto.setUserId(sysUser.getId());
             dto.setUsername(sysUser.getUsername());
 
             SysUserRoleExample example = new SysUserRoleExample();
@@ -107,7 +107,7 @@ public class SysUserServiceImpl implements SysUserService {
             PasswordUtil encoderMd5 = new PasswordUtil(sysUser.getSalt(), "sha-256");
             String encodedPassword = encoderMd5.encode(userDto.getPassword());
             if (sysUser.getPassword().equals(encodedPassword)) {
-                UserDto dto = findById(sysUser.getUserId());
+                UserDto dto = findById(sysUser.getId());
                 result.setData(dto);
                 return result;
             } else {

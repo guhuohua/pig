@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.ch.model.SysUserListDTO;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.springframework.stereotype.Repository;
 
@@ -36,4 +37,11 @@ public interface UserInfoMapper {
 
     @SelectProvider(type = UserInfoProvider.class, method = "getList")
     List<SysUserListDTO> list(@Param("name") String name, @Param("tel") String tel, @Param("shopId") Integer shopId);
+
+
+    @Select("select sum(order_price) from goods_order where user_id = #{userId} and shop_id = #{shopId} and order_status = 7")
+    long orderPrice(@Param("userId") Integer userId, @Param("shopId") Integer shopId);
+
+    @Select("select count(*) from goods_order where user_id = #{userId} and shop_id = #{shopId} and order_status = 7")
+    long orderCount(@Param("userId") Integer userId, @Param("shopId") Integer shopId);
 }

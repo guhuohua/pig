@@ -104,7 +104,7 @@ public class SysUserMangeServiceImpl implements SysUserMangeService {
                 SysUserRole sysUserRole = new SysUserRole();
                 sysUserRole.setRoleId(2);
                 sysUserRole.setShopId(sysUserParam.getShopId());
-                sysUserRole.setUserId(sysUser.getUserId());
+                sysUserRole.setUserId(sysUser.getId());
                 sysUserRoleMapper.insert(sysUserRole);
             } catch (Exception e) {
                 result.setCode(500);
@@ -148,10 +148,12 @@ public class SysUserMangeServiceImpl implements SysUserMangeService {
     public ResponseResult deleteUser(Integer userId, Integer tokenUserId) {
         ResponseResult result = new ResponseResult();
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(tokenUserId);
-        SysRoleExample sysRoleExample = new SysRoleExample();
-        sysRoleExample.createCriteria().andShopIdEqualTo(sysUser.getShopId());
-        List<SysRole> sysRoles = sysRoleMapper.selectByExample(sysRoleExample);
-        for (SysRole sysRole:sysRoles) {
+
+        SysUserRoleExample sysUserRoleExample = new SysUserRoleExample();
+        sysUserRoleExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andUserIdEqualTo(userId);
+        List<SysUserRole> sysUserRoles = sysUserRoleMapper.selectByExample(sysUserRoleExample);
+        for (SysUserRole sysUserRole:sysUserRoles) {
+            SysRole sysRole = sysRoleMapper.selectByPrimaryKey(sysUserRole.getRoleId());
             if ("管理员".equals(sysRole.getRoleName())) {
                 result.setCode(500);
                 result.setError("该用户为管理员，不允许删除");

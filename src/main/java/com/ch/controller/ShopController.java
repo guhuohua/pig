@@ -39,10 +39,10 @@ public class ShopController {
 
     @GetMapping("reset")
     @ApiOperation("重置密码")
-    public ResponseResult resetPassword(HttpServletRequest req, @RequestBody PersonMangeParam param) {
+    public ResponseResult resetPassword(HttpServletRequest req, @RequestParam Integer id) {
         String token = req.getHeader("Authorization");
         Integer userId = TokenUtil.getUserId(token);
-        return shopService.resetPassword(param.getUserId(), userId);
+        return shopService.resetPassword(id, userId);
     }
 
     @GetMapping("shop_info")

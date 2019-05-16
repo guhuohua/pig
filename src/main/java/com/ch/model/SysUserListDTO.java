@@ -9,13 +9,13 @@ public class SysUserListDTO {
 
     private String userHead;
 
-    private String nikename;
+    private String nickname;
 
     private String tel;
 
     private Integer gender;
 
-    private Double orderPrice;
+    private Long orderPrice;
 
-    private Double orderCount;
+    private Long orderCount;
 }

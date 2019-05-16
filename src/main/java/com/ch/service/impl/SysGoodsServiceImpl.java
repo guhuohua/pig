@@ -175,7 +175,7 @@ public class SysGoodsServiceImpl implements SysGoodsService {
             goodsSkuAttribute.setCreateDate(new Date());
             goodsSkuAttribute.setShopId(sysUser.getShopId());
             StringBuilder sn = new StringBuilder(sysUser.getShopId());
-            sn.append(sysUser.getUserId());
+            sn.append(sysUser.getId());
             sn.append(new Date().getTime());
             Goods goods = new Goods();
             modelMapper.map(model, goods);

@@ -41,7 +41,7 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
         if (users.size() > 0) {
             SysUser user = users.get(0);
             userInfos.setShopId(user.getShopId());
-            userInfos.setUserId(user.getUserId());
+            userInfos.setUserId(user.getId());
             userInfos.setUsername(user.getUsername());
         }
 

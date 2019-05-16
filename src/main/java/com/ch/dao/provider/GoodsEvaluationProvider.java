@@ -12,7 +12,7 @@ public class GoodsEvaluationProvider {
         Integer status = (Integer) map.get("status");
         Integer shopId = (Integer) map.get("shopId");
         Integer score = (Integer) map.get("score");
-        StringBuilder sb = new StringBuilder("select id, order_id, score, name, create_time, status from goods_evaluation where 1 = 1");
+        StringBuilder sb = new StringBuilder("select id, order_id, score, name, create_time, status, details as content from goods_evaluation where 1 = 1");
         if (BeanUtils.isNotEmpty(name)) {
             sb.append(" and name  like '%").append(name).append("%'");
         }

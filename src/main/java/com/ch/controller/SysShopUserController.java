@@ -33,11 +33,11 @@ public class SysShopUserController {
         return sysUserMangeService.insertUser(sysUserParam);
     }
 
-    @PostMapping("delete_user")
+    @GetMapping("delete_user")
     @ApiOperation(value="删除人员")
-    public ResponseResult deleteUser(HttpServletRequest req, @RequestBody Integer userId) {
+    public ResponseResult deleteUser(HttpServletRequest req, @RequestParam Integer id) {
         String token = req.getHeader("Authorization");
         Integer tokenUserId = TokenUtil.getUserId(token);
-        return sysUserMangeService.deleteUser(userId, tokenUserId);
+        return sysUserMangeService.deleteUser(id, tokenUserId);
     }
 }

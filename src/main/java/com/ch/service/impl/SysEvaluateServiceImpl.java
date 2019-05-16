@@ -55,6 +55,7 @@ public class SysEvaluateServiceImpl implements SysEvaluateService {
         sysEvaluateCountDTO.setSecondaryCount(goodsEvaluationMapper.secondaryCount(sysUser.getShopId()));
         sysEvaluateCountDTO.setSecondaryMonth(goodsEvaluationMapper.secondaryMonth(sysUser.getShopId()));
         sysEvaluateCountDTO.setSecondaryWeek(goodsEvaluationMapper.secondaryWeek(sysUser.getShopId()));
+        result.setData(sysEvaluateCountDTO);
         return result;
     }
 

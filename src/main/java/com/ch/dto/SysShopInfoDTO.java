@@ -32,7 +32,7 @@ public class SysShopInfoDTO {
 
     private String secret;
 
-    private String mchIdd;
+    private String mchId;
 
     private String key;
 

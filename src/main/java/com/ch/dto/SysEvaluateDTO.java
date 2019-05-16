@@ -18,4 +18,6 @@ public class SysEvaluateDTO {
     private Date createTime;
 
     private Integer status;
+
+    private String content;
 }

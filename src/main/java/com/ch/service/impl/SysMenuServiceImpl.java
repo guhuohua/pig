@@ -33,40 +33,9 @@ public class SysMenuServiceImpl implements SysMenuService {
     @Override
     public ResponseResult findSysMenu(Integer userId) {
         ResponseResult result = new ResponseResult();
-        List<String> permissionNameList = new ArrayList<>();
-        SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
-        SysUserRoleExample example = new SysUserRoleExample();
-        example.createCriteria().andUserIdEqualTo(userId).andShopIdEqualTo(sysUser.getShopId());
-        sysUserRoleMapper.selectByExample(example).forEach(userRole -> {
-            SysRolePermissionExample sysRolePermissionExample = new SysRolePermissionExample();
-            sysRolePermissionExample.createCriteria().andRoleIdEqualTo(userRole.getRoleId());
-            sysRolePermissionMapper.selectByExample(sysRolePermissionExample).forEach(rolePermission -> {
-                SysPermission sysPermission = sysPermissionMapper.selectByPrimaryKey(rolePermission.getPermissionId());
-                permissionNameList.add(sysPermission.getDesc());
-                if (BeanUtils.isNotEmpty(sysPermission.getParentId())) {
-                    SysPermissionExample sysPermissionExample = new SysPermissionExample();
-                    sysPermissionExample
-                            .createCriteria()
-                            .andPermissionIdEqualTo(sysPermission.getParentId());
-                    sysPermissionMapper.selectByExample(sysPermissionExample).forEach(parentPermission -> {
-                        permissionNameList.add(parentPermission.getDesc());
-                        if (BeanUtils.isNotEmpty(parentPermission.getParentId())) {
-                            SysPermissionExample sysPermissionExample2 = new SysPermissionExample();
-                            sysPermissionExample2
-                                    .createCriteria()
-                                    .andParentIdEqualTo(parentPermission.getParentId());
-                            sysPermissionMapper.selectByExample(sysPermissionExample2).forEach(topPermission -> {
-                                permissionNameList.add(topPermission.getDesc());
-                            });
-                        }
-                    });
-                }
-            });
-        });
         List<SysMenu> sysMenus = sysMenuMapper.selectByExample(null);
-        List<SysMenu> collect = sysMenus.stream().filter(item -> permissionNameList.contains(item.getPermission())).collect(Collectors.toList());
         List<SysMenu> rootMenu = new ArrayList<SysMenu>();
-        for (SysMenu nav : collect) {
+        for (SysMenu nav : sysMenus) {
             if (nav.getParentId() == 0) {
                 rootMenu.add(nav);
             }
@@ -76,7 +45,7 @@ public class SysMenuServiceImpl implements SysMenuService {
         //为根菜单设置子菜单，getClild是递归调用的
         for (SysMenu nav : rootMenu) {
             /* 获取根节点下的所有子节点 使用getChild方法*/
-            List<SysMenu> childList = getChild(nav.getMenuId(), collect);
+            List<SysMenu> childList = getChild(nav.getMenuId(), sysMenus);
             nav.setChildren(childList);//给根节点设置子节点
         }
         result.setData(rootMenu);
