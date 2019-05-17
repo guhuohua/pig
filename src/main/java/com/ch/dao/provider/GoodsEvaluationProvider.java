@@ -20,20 +20,15 @@ public class GoodsEvaluationProvider {
             if (1 == score) {
                 sb.append(" and score in (1,2)");
             }
-            if (2 == score) {
+            if (3 == score) {
                 sb.append(" and score in (3,4)");
             }
-            if (3 == score) {
+            if (5 == score) {
                 sb.append(" and score = 5");
             }
         }
-        if (BeanUtils.isNotEmpty(status)) {
-            if (0 == status) {
-                sb.append(" and status = 0");
-            }
-            if (1 == status) {
-                sb.append(" and status = 1");
-            }
+        if (null != status) {
+            sb.append(" and status = ").append(status);
         }
         sb.append(" and shop_id =").append(shopId);
         return sb.toString();

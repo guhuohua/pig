@@ -89,6 +89,23 @@ public class SysGoodsCategoryController {
         return result;
     }
 
+    @GetMapping("findById")
+    public ResponseResult findById(HttpServletRequest req, @RequestParam Integer id) {
+        ResponseResult result = new ResponseResult();
+        try {
+            String token = req.getHeader("Authorization");
+            Integer userId = TokenUtil.getUserId(token);
+            result =  sysGoodsCategoryService.findById(id, userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("查询失败");
+        }
+        return result;
+    }
+
     @PostMapping("updateStatus")
     public ResponseResult updateStatus(HttpServletRequest req, @RequestBody SysCategoryParam param) {
         ResponseResult result = new ResponseResult();

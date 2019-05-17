@@ -76,10 +76,7 @@ public class SysGoodsServiceImpl implements SysGoodsService {
         if (BeanUtils.isNotEmpty(param.getSn())) {
             criteria.andSnEqualTo(param.getSn());
         }
-        if (BeanUtils.isNotEmpty(param.getSale())) {
-            if (param.getSale() == 2) {
-                param.setSale(0);
-            }
+        if (null != param.getSale()) {
             criteria.andSaleEqualTo(param.getSale());
         }
         List<Goods> goodsList = goodsMapper.selectByExample(goodsExample);
@@ -196,6 +193,7 @@ public class SysGoodsServiceImpl implements SysGoodsService {
             goods.setStatus(0);
             goods.setRecommend(0);
             goods.setSn(sn.toString());
+            goods.setSale(0);
             goods.setShopId(sysUser.getShopId());
             goods.setCatrgoryId(model.getCategoryIds().get(1));
             goods.setCreateTime(new Date());
@@ -260,6 +258,7 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                 goods.setFreight(model.getFreight());
                 goods.setUnits(model.getUnits());
                 goods.setGoodsImgUrl(model.getGoodsImgUrl());
+                goods.setSale(model.getStatus());
                 goodsMapper.updateByPrimaryKey(goods);
             }
             GoodsSkuExample goodsSkuExample = new GoodsSkuExample();

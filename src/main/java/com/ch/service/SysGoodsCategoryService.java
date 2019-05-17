@@ -45,4 +45,13 @@ public interface SysGoodsCategoryService {
      * @return
      */
     ResponseResult findOneCategory(Integer userId);
+
+
+    /**
+     * 根据ID查询
+     * @param id
+     * @param userId
+     * @return
+     */
+    ResponseResult findById(Integer id, Integer userId);
 }
