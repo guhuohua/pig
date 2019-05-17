@@ -665,7 +665,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
         System.out.println(userInfo);
         List list = new ArrayList();
 
-        if (condition != null) {
+        if (BeanUtils.isNotEmpty(condition)) {
             Pattern pattern = Pattern.compile("[0-9]*");
             Matcher isNum = pattern.matcher(condition);
             if (isNum.matches()) {
