@@ -14,6 +14,7 @@ import com.ch.service.SolrService;
 import com.ch.service.SysGoodsService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,6 +58,9 @@ public class SysGoodsServiceImpl implements SysGoodsService {
 
     @Autowired
     GoodsTypeMapper goodsTypeMapper;
+
+    @Autowired
+    GoodsAreaMapper goodsAreaMapper;
 
     @Override
     public ResponseResult goodsList(SysGoodsParam param, Integer userId) {
@@ -116,12 +120,22 @@ public class SysGoodsServiceImpl implements SysGoodsService {
         GoodsExample goodsExample = new GoodsExample();
         goodsExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andIdEqualTo(goodsId);
         List<Goods> goodsList = goodsMapper.selectByExample(goodsExample);
+        GoodsAreaExample goodsAreaExample = new GoodsAreaExample();
+        goodsAreaExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andGoodsIdEqualTo(goodsId);
+        List<GoodsArea> goodsAreas = goodsAreaMapper.selectByExample(goodsAreaExample);
+        if (goodsAreas.size() > 0) {
+            result.setCode(500);
+            result.setError("该商品已挂载销售区域，请删除后重试");
+            result.setError_description("该商品已挂载销售区域，请删除后重试");
+            return result;
+        }
         if (goodsList.stream().findFirst().isPresent()) {
             Goods goods = goodsList.stream().findFirst().get();
             if (goods.getStatus() == 1) {
                 result.setCode(500);
                 result.setError("发布中的商品禁止删除，请下架后重试");
                 result.setError_description("发布中的商品禁止删除，请下架后重试");
+                return result;
             } else {
                 goodsMapper.deleteByExample(goodsExample);
             }

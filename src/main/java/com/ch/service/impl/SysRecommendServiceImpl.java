@@ -62,6 +62,7 @@ public class SysRecommendServiceImpl implements SysRecommendService {
                 goodsArea.setSort(param.getSort());
                 goodsArea.setStatus(param.getStatus());
                 goodsAreaMapper.insert(goodsArea);
+                solrService.lowerShelf(goodsArea.getGoodsId());
                 solrService.releaseGoods(goodsArea.getGoodsId(), sysUser.getShopId());
             }
         } else {
@@ -80,9 +81,7 @@ public class SysRecommendServiceImpl implements SysRecommendService {
                     goodsArea.setSort(param.getSort());
                     goodsArea.setGoodsClassification(param.getRecommend());
                     goodsAreaMapper.updateByPrimaryKey(goodsArea);
-                    if (param.getStatus() == 0) {
-                        solrService.lowerShelf(goodsAreaList.stream().findFirst().get().getGoodsId());
-                    }
+                    solrService.lowerShelf(goodsAreaList.stream().findFirst().get().getGoodsId());
                     solrService.releaseGoods(goodsArea.getGoodsId(), sysUser.getShopId());
                 }
             }
