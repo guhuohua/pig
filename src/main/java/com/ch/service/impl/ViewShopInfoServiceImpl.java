@@ -38,6 +38,7 @@ public class ViewShopInfoServiceImpl implements ViewShopInfoService {
         ShopInfo shopInfo = new ShopInfo();
         if (shopMiniPrograms.size() > 0) {
             ShopMiniProgram shopMiniProgram = shopMiniPrograms.get(0);
+            shopInfo.setSecret(shopMiniProgram.getSecret());
             Integer shopId = shopMiniProgram.getShopId();
             Shop shop = shopMapper.selectByPrimaryKey(shopId);
             if (shop.getStartTime().getTime() <= new Date().getTime() && shop.getEndTime().getTime() >=  new Date().getTime()){
