@@ -173,7 +173,7 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public ResponseResult shopInfo(Integer userId) {
+    public ResponseResult shopInfo(Integer userId, Integer shopId) {
         ResponseResult result = new ResponseResult();
         UserDto dto = sysUserService.findById(userId);
         Set<String> roles = dto.getRoles();
@@ -183,9 +183,14 @@ public class ShopServiceImpl implements ShopService {
                 flg = true;
             }
         }
+        Shop shop = new Shop();
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         SysShopInfoDTO sysShopInfoDTO = new SysShopInfoDTO();
-        Shop shop = shopMapper.selectByPrimaryKey(sysUser.getShopId());
+        if (BeanUtils.isNotEmpty(shopId)) {
+            shop = shopMapper.selectByPrimaryKey(shopId);
+        } else {
+            shop = shopMapper.selectByPrimaryKey(sysUser.getShopId());
+        }
         if (BeanUtils.isNotEmpty(shop)) {
             sysShopInfoDTO.setShopId(shop.getId());
             sysShopInfoDTO.setShopName(shop.getTitle());
@@ -201,7 +206,12 @@ public class ShopServiceImpl implements ShopService {
 
 
             ShopMiniProgramExample shopMiniProgramExample = new ShopMiniProgramExample();
-            shopMiniProgramExample.createCriteria().andShopIdEqualTo(sysUser.getShopId());
+            ShopMiniProgramExample.Criteria criteria = shopMiniProgramExample.createCriteria();
+            if (BeanUtils.isNotEmpty(shopId)) {
+                criteria.andShopIdEqualTo(shopId);
+            } else {
+                criteria.andShopIdEqualTo(sysUser.getShopId());
+            }
             List<ShopMiniProgram> shopMiniPrograms = shopMiniProgramMapper.selectByExample(shopMiniProgramExample);
             if (shopMiniPrograms.stream().findFirst().isPresent() && flg) {
                 ShopMiniProgram shopMiniProgram = shopMiniPrograms.stream().findFirst().get();
@@ -214,7 +224,12 @@ public class ShopServiceImpl implements ShopService {
 
             List<SysGoodAvdModel> sysGoodAvdModels = new ArrayList<>();
             GoodsAdvertExample goodsAdvertExample = new GoodsAdvertExample();
-            goodsAdvertExample.createCriteria().andShopIdEqualTo(sysUser.getShopId());
+            GoodsAdvertExample.Criteria criteria1 = goodsAdvertExample.createCriteria();
+            if (BeanUtils.isNotEmpty(shopId)) {
+                criteria1.andShopIdEqualTo(shopId);
+            } else {
+                criteria1.andShopIdEqualTo(sysUser.getShopId());
+            }
             List<GoodsAdvert> goodsAdverts = goodsAdvertMapper.selectByExample(goodsAdvertExample);
             goodsAdverts.stream().sorted(Comparator.comparing(GoodsAdvert::getSortOrder)).collect(Collectors.toList());
             for (int i = 0; i < goodsAdverts.size(); i++) {
@@ -332,16 +347,18 @@ public class ShopServiceImpl implements ShopService {
             shopMiniProgramMapper.insert(shopMiniProgram);
 
             List<SysGoodAvdModel> sysGoodAvdModels = sysShopInfoDTO.getSysGoodAvdModels();
-            for (int i = 0; i < sysGoodAvdModels.size(); i++) {
-                GoodsAdvert goodsAdvert = new GoodsAdvert();
-                goodsAdvert.setCreateTime(new Date());
-                goodsAdvert.setShopId(sysShopInfoDTO.getShopId());
-                goodsAdvert.setStatus(0);
-                goodsAdvert.setSortOrder(i);
-                goodsAdvert.setGoodsId(sysGoodAvdModels.get(i).getGoodsId());
-                goodsAdvert.setPictureUrl(sysGoodAvdModels.get(i).getPictureUrl());
-                goodsAdvert.setPath("");
-                goodsAdvertMapper.insert(goodsAdvert);
+            if (BeanUtils.isNotEmpty(sysGoodAvdModels) && sysGoodAvdModels.size() > 0) {
+                for (int i = 0; i < sysGoodAvdModels.size(); i++) {
+                    GoodsAdvert goodsAdvert = new GoodsAdvert();
+                    goodsAdvert.setCreateTime(new Date());
+                    goodsAdvert.setShopId(sysShopInfoDTO.getShopId());
+                    goodsAdvert.setStatus(0);
+                    goodsAdvert.setSortOrder(i);
+                    goodsAdvert.setGoodsId(sysGoodAvdModels.get(i).getGoodsId());
+                    goodsAdvert.setPictureUrl(sysGoodAvdModels.get(i).getPictureUrl());
+                    goodsAdvert.setPath("");
+                    goodsAdvertMapper.insert(goodsAdvert);
+                }
             }
         }
         if (BeanUtils.isNotEmpty(sysShopInfoDTO.getShopId())) {

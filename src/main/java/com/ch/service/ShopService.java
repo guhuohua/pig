@@ -35,7 +35,7 @@ public interface ShopService {
      * @param userId
      * @return
      */
-    ResponseResult shopInfo(Integer userId);
+    ResponseResult shopInfo(Integer userId, Integer shopId);
 
     /**
      * 店铺的修改

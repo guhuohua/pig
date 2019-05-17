@@ -47,10 +47,10 @@ public class ShopController {
 
     @GetMapping("shop_info")
     @ApiOperation("店铺详情")
-    public ResponseResult shopInfo(HttpServletRequest req) {
+    public ResponseResult shopInfo(HttpServletRequest req, @RequestParam Integer shopId) {
         String token = req.getHeader("Authorization");
         Integer userId = TokenUtil.getUserId(token);
-        return shopService.shopInfo(userId);
+        return shopService.shopInfo(userId, shopId);
     }
 
     @PostMapping("shop_mange")
