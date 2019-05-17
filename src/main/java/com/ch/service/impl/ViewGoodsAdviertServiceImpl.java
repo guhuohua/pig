@@ -29,7 +29,7 @@ public class ViewGoodsAdviertServiceImpl implements ViewGoodsAdvertService {
         GoodsAdvertExample example = new GoodsAdvertExample();
         GoodsAdvertExample.Criteria criteria = example.createCriteria();
         criteria.andShopIdEqualTo(shopId);
-        criteria.andStatusEqualTo(1);
+        criteria.andStatusEqualTo(0);
         List<GoodsAdvert> goodsAdverts = goodsAdvertMapper.selectByExample(example);
         ResponseResult result = new ResponseResult();
         result.setData(goodsAdverts);

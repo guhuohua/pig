@@ -101,7 +101,10 @@ public class ViewUserConstantController {
         if (jsonObject != null) {
             // 获取参数返回的
             session_key = jsonObject.get("session_key").toString();
+            System.out.println(session_key);
+
             open_id = jsonObject.get("openid").toString();
+            System.out.println(open_id);
            /* UserInfo userInfo = new UserInfo();
            userInfo.setOpenId(open_id);
            userInfo.setCreateTime(new Date());
