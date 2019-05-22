@@ -10,6 +10,7 @@ package com.ch.controller;
 import com.ch.base.ResponseResult;
 import com.ch.dao.UserMapper;
 import com.ch.dto.CarDto;
+import com.ch.dto.GoodsCarDto;
 import com.ch.service.ViewGoodsCarService;
 import com.ch.util.TokenUtil;
 import io.swagger.annotations.Api;
@@ -75,13 +76,13 @@ public class ViewGoodsCarController {
 
     @PostMapping ("updateCar")
     @ApiOperation("修改购物车")
-    public ResponseResult updateCar(HttpServletRequest req, @RequestBody CarDto[] carDto) {
+    public ResponseResult updateCar(HttpServletRequest req, @RequestBody GoodsCarDto goodsCarDto) {
         ResponseResult result = new ResponseResult();
         try {
             String openId = req.getHeader("openId");
             String token = req.getHeader("Authorization");
             Integer shopId = TokenUtil.getUserId(token);
-            result = viewGoodsCarService.updateCar(carDto);
+            result = viewGoodsCarService.updateCar(goodsCarDto.getCarDto());
         } catch (Exception e) {
             LOGGER.error("修改购物车失败" + e.getMessage(), e);
             result.setCode(500);
@@ -95,13 +96,13 @@ public class ViewGoodsCarController {
 
     @PostMapping ("deleCar")
     @ApiOperation("删除购物车")
-    public ResponseResult deleCar(HttpServletRequest req, @RequestBody Integer[] ids) {
+    public ResponseResult deleCar(HttpServletRequest req, @RequestBody GoodsCarDto goodsCarDto) {
         ResponseResult result = new ResponseResult();
         try {
            /* String openId = req.getHeader("openId");
             String token = req.getHeader("Authorization");
             Integer shopId = TokenUtil.getUserId(token);*/
-            result = viewGoodsCarService.deleCar(ids);
+            result = viewGoodsCarService.deleCar(goodsCarDto.getIds());
         } catch (Exception e) {
             LOGGER.error("删除购物车" + e.getMessage(), e);
             result.setCode(500);

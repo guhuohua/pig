@@ -8,6 +8,7 @@
 package com.ch.controller;
 
 import com.ch.base.ResponseResult;
+import com.ch.dto.GoodsOrderDto;
 import com.ch.dto.OrderDto;
 import com.ch.service.ViewOrderService;
 import com.ch.util.TokenUtil;
@@ -32,14 +33,14 @@ public class ViewOrderController {
 
     @PostMapping("addOrder")
     @ApiOperation("添加订单")
-    public ResponseResult addOrder(HttpServletRequest req, @RequestBody OrderDto[] orderDtoList) {
+    public ResponseResult addOrder(HttpServletRequest req, @RequestBody GoodsOrderDto goodsOrderDto) {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
-            result = viewOrderService.addOrder(orderDtoList, openId, shopId);
+            result = viewOrderService.addOrder(goodsOrderDto.getOrderDto(), openId, shopId);
         } catch (Exception e) {
             LOGGER.error("展示轮播图失败" + e.getMessage(), e);
             result.setCode(500);
@@ -94,7 +95,7 @@ public class ViewOrderController {
     @ApiOperation("订单管理查询")
     public ResponseResult manageOrder(HttpServletRequest req, @RequestParam Integer status, @RequestParam String condition) {
         ResponseResult result = new ResponseResult();
-       String openId = req.getHeader("openId");
+        String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
 

@@ -8,6 +8,7 @@
 package com.ch.controller;
 
 import com.ch.base.ResponseResult;
+import com.ch.dto.UserAddressDto;
 import com.ch.entity.UserAddress;
 import com.ch.service.ViewUserAddressService;
 import com.ch.util.TokenUtil;
@@ -30,13 +31,13 @@ public class ViewUserAddressController {
 
     @PostMapping("edit")
     @ApiOperation("编辑地址")
-    public ResponseResult addAddress(HttpServletRequest req, @RequestBody UserAddress[] records) {
+    public ResponseResult addAddress(HttpServletRequest req, @RequestBody UserAddressDto userAddressDto) {
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
         ResponseResult result = new ResponseResult();
         try {
-            for (UserAddress record : records) {
+            for (UserAddress record : userAddressDto.getRecords()) {
                 if (record.getId() == null) {
                     result = viewUserAddressService.insert(record, openId, shopId);
                 } else {

@@ -59,7 +59,7 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
 
             if ("NEW".equals(solrDto.getCondition())) {
                 str = "goodsSalesArea:" + "\"" + solrDto.getCondition() + "\"" + " OR name:" + "\"" + solrDto.getCondition() + "\"" + " OR title:" + "\"" + solrDto.getCondition() + "\"";
-                System.out.println(str);
+                //System.out.println(str);
                 params.put("fq", str);
                 params.remove("sort");
                 params.put("sort", "newSort asc");

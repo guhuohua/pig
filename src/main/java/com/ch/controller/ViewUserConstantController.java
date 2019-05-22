@@ -104,7 +104,7 @@ public class ViewUserConstantController {
             System.out.println(session_key);
 
             open_id = jsonObject.get("openid").toString();
-            System.out.println(open_id);
+           // System.out.println(open_id);
            /* UserInfo userInfo = new UserInfo();
            userInfo.setOpenId(open_id);
            userInfo.setCreateTime(new Date());

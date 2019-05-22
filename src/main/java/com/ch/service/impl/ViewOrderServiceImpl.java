@@ -662,7 +662,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
         if (userInfos.size() > 0) {
             userInfo = userInfos.get(0);
         }
-        System.out.println(userInfo);
+       // System.out.println(userInfo);
         List list = new ArrayList();
 
         if (BeanUtils.isNotEmpty(condition)) {

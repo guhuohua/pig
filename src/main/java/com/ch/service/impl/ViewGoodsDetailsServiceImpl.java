@@ -40,9 +40,11 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
     public ResponseResult findGoodsDetailsByGoodsId(Integer goodsId, Integer shopId) {
         //SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         //商品详情的map
+        ResponseResult result = new ResponseResult();
         Map goodsDetailsMap = new HashMap();
         //查询商品表
         Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
+
         if (shopId == goods.getShopId()) {
             goodsDetailsMap.put("goods", goods);
             //查询sku列表
@@ -146,7 +148,7 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
             goodsDetailsMap.put("goodsEvaluations", goodsEvaluations);
             goodsDetailsMap.put("goodsImages", goodsImages);
         }
-        ResponseResult result = new ResponseResult();
+
         result.setData(goodsDetailsMap);
         return result;
     }
