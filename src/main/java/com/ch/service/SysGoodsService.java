@@ -38,7 +38,7 @@ public interface SysGoodsService {
      * @param categoryIds
      * @return
      */
-    ResponseResult skuList(List<Integer> categoryIds, Integer userId);
+    ResponseResult skuList(List<Integer> categoryIds, Integer userId, Integer goodsId);
 
     /**
      * 新增商品或者编辑商品

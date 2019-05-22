@@ -113,12 +113,12 @@ public class SysGoodsController {
 
     @GetMapping("sku_list")
     @ApiOperation("发布商品的规格列表")
-    public ResponseResult skuList(HttpServletRequest req, @RequestParam List<Integer> categoryIds) {
+    public ResponseResult skuList(HttpServletRequest req, @RequestParam List<Integer> categoryIds, @RequestParam Integer goodsId) {
         ResponseResult result = new ResponseResult();
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysGoodsService.skuList(categoryIds, userId);
+            result =  sysGoodsService.skuList(categoryIds, userId, goodsId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());

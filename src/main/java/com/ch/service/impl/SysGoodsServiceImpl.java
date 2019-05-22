@@ -141,18 +141,24 @@ public class SysGoodsServiceImpl implements SysGoodsService {
     }
 
     @Override
-    public ResponseResult skuList(List<Integer> categoryIds, Integer userId) {
+    public ResponseResult skuList(List<Integer> categoryIds, Integer userId, Integer goodsId) {
         ResponseResult result = new ResponseResult();
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
+        List<GoodsSkuAttribute> goodsSkuAttributes = new ArrayList<>();
         SpecificationExample specificationExample = new SpecificationExample();
         specificationExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andCategoryId(categoryIds.get(1));
         List<Specification> specifications = specificationMapper.selectByExample(specificationExample);
+        if (BeanUtils.isNotEmpty(goodsId)) {
+            GoodsSkuAttributeExample goodsSkuAttributeExample = new GoodsSkuAttributeExample();
+            goodsSkuAttributeExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andGoodsIdEqualTo(goodsId);
+            goodsSkuAttributes = goodsSkuAttributeMapper.selectByExample(goodsSkuAttributeExample);
+        }
         List<GoodsSkuListDTO> goodsSkuListDTOList = new ArrayList<>();
         for (Specification specification:specifications) {
             GoodsSkuListDTO goodsSkuListDTO = new GoodsSkuListDTO();
             goodsSkuListDTO.setSpecificationId(specification.getId());
             goodsSkuListDTO.setSpecificationName(specification.getTitle());
-            goodsSkuListDTO.setDelFlag(specification.getDelFlag());
+            goodsSkuListDTO.setDelFlag(0);
             List<SpecificationAttrDTO> specificationAttrDTOS = new ArrayList<>();
             SpecificationAttributeExample example = new SpecificationAttributeExample();
             example.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andSpecificationIdEqualTo(specification.getId());
@@ -162,7 +168,15 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                 specificationAttrDTO.setAttrId(specificationAttribute.getId());
                 specificationAttrDTO.setAttrName(specificationAttribute.getName());
                 specificationAttrDTO.setSpecificationId(specification.getId());
-                specificationAttrDTO.setDelFlag(specificationAttribute.getDelFlag());
+                specificationAttrDTO.setDelFlag(0);
+                for (GoodsSkuAttribute goodsSkuAttribute:goodsSkuAttributes) {
+                    if (specification.getId() == goodsSkuAttribute.getSpecificationId()) {
+                        goodsSkuListDTO.setDelFlag(1);
+                    }
+                    if (specificationAttribute.getId() == goodsSkuAttribute.getSpecificationAttributeId()) {
+                        specificationAttrDTO.setDelFlag(1);
+                    }
+                }
                 specificationAttrDTOS.add(specificationAttrDTO);
             }
             goodsSkuListDTO.setSpecificationAttrDTOList(specificationAttrDTOS);
@@ -182,9 +196,7 @@ public class SysGoodsServiceImpl implements SysGoodsService {
         long max = sysGoodsSkuModelList.stream().mapToLong(SysGoodsSkuModel::getPresentPrice).max().getAsLong();
         long min = sysGoodsSkuModelList.stream().mapToLong(SysGoodsSkuModel::getPresentPrice).min().getAsLong();
         if (BeanUtils.isEmpty(model.getId())) {
-            GoodsSkuAttribute goodsSkuAttribute = new GoodsSkuAttribute();
-            goodsSkuAttribute.setCreateDate(new Date());
-            goodsSkuAttribute.setShopId(sysUser.getShopId());
+
             StringBuilder sn = new StringBuilder(sysUser.getShopId());
             sn.append(sysUser.getId());
             sn.append(new Date().getTime());
@@ -202,7 +214,7 @@ public class SysGoodsServiceImpl implements SysGoodsService {
             goods.setSalesVolume(0);
             goodsMapper.insert(goods);
             Integer count = 0;
-            goodsSkuAttribute.setGoodsId(goods.getId());
+
             for (SysGoodsSkuModel skuModel:sysGoodsSkuModelList) {
                 GoodsSku sku = new GoodsSku();
                 modelMapper.map(skuModel, sku);
@@ -214,7 +226,6 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                 sku.setSkuName(sku.getSkuName());
                 sku.setCategoryId(model.getCategoryIds().get(1));
                 goodsSkuMapper.insert(sku);
-                goodsSkuAttribute.setSkuId(sku.getId());
                 count += skuModel.getInventory();
             }
             goods.setInventory(count);
@@ -229,6 +240,11 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                 goodsImageMapper.insert(goodsImage);
             }
             for (GoodsSkuListDTO goodsSkuListDTO:model.getGoodsSkuListDTOList()) {
+                GoodsSkuAttribute goodsSkuAttribute = new GoodsSkuAttribute();
+                goodsSkuAttribute.setCreateDate(new Date());
+                goodsSkuAttribute.setShopId(sysUser.getShopId());
+                goodsSkuAttribute.setGoodsId(goods.getId());
+                goodsSkuAttribute.setSpecificationId(goodsSkuListDTO.getSpecificationId());
                 Specification specification = specificationMapper.selectByPrimaryKey(goodsSkuListDTO.getSpecificationId());
                 specification.setDelFlag(goodsSkuListDTO.getDelFlag());
                 specificationMapper.updateByPrimaryKey(specification);
@@ -236,6 +252,11 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                     SpecificationAttribute specificationAttribute = specificationAttributeMapper.selectByPrimaryKey(specificationAttrDTO.getAttrId());
                     specificationAttribute.setDelFlag(specificationAttrDTO.getDelFlag());
                     specificationAttributeMapper.updateByPrimaryKey(specificationAttribute);
+                    if (goodsSkuListDTO.getDelFlag() == 1 && specificationAttrDTO.getDelFlag() == 1) {
+                        goodsSkuAttribute.setSkuId(123);
+                        goodsSkuAttribute.setSpecificationAttributeId(specificationAttribute.getId());
+                        goodsSkuAttributeMapper.insert(goodsSkuAttribute);
+                    }
                 }
             }
         } else {
@@ -275,12 +296,13 @@ public class SysGoodsServiceImpl implements SysGoodsService {
             goodsSkuAttributeExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andGoodsIdEqualTo(model.getId());
             goodsSkuAttributeMapper.deleteByExample(goodsSkuAttributeExample);
 
-            GoodsSkuAttribute goodsSkuAttribute = new GoodsSkuAttribute();
-            goodsSkuAttribute.setCreateDate(new Date());
-            goodsSkuAttribute.setShopId(sysUser.getShopId());
-            goodsSkuAttribute.setGoodsId(model.getId());
 
             for (GoodsSkuListDTO goodsSkuListDTO:model.getGoodsSkuListDTOList()) {
+                GoodsSkuAttribute goodsSkuAttribute = new GoodsSkuAttribute();
+                goodsSkuAttribute.setCreateDate(new Date());
+                goodsSkuAttribute.setShopId(sysUser.getShopId());
+                goodsSkuAttribute.setGoodsId(goods.getId());
+                goodsSkuAttribute.setSpecificationId(goodsSkuListDTO.getSpecificationId());
                 Specification specification = specificationMapper.selectByPrimaryKey(goodsSkuListDTO.getSpecificationId());
                 specification.setDelFlag(goodsSkuListDTO.getDelFlag());
                 specificationMapper.updateByPrimaryKey(specification);
@@ -288,6 +310,10 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                     SpecificationAttribute specificationAttribute = specificationAttributeMapper.selectByPrimaryKey(specificationAttrDTO.getAttrId());
                     specificationAttribute.setDelFlag(specificationAttrDTO.getDelFlag());
                     specificationAttributeMapper.updateByPrimaryKey(specificationAttribute);
+                    if (specificationAttribute.getDelFlag() == 1) {
+                        goodsSkuAttribute.setSpecificationAttributeId(specificationAttribute.getId());
+                        goodsSkuAttributeMapper.insert(goodsSkuAttribute);
+                    }
                 }
             }
 
@@ -302,7 +328,6 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                 sku.setSkuName(sku.getSkuName());
                 goodsSkuMapper.insert(sku);
                 count += skuModel.getInventory();
-                goodsSkuAttribute.setSkuId(sku.getId());
             }
             goods.setInventory(count);
             goodsMapper.updateByPrimaryKey(goods);
