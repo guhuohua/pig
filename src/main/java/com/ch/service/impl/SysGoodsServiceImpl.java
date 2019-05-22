@@ -222,6 +222,7 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                 sku.setGoodsId(goods.getId());
                 sku.setSn(sn.toString());
                 sku.setStatus(0);
+                sku.setSale(0);
                 sku.setShopId(sysUser.getShopId());
                 sku.setSkuName(sku.getSkuName());
                 sku.setCategoryId(model.getCategoryIds().get(1));
@@ -282,9 +283,7 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                 goods.setSale(model.getStatus());
                 goodsMapper.updateByPrimaryKey(goods);
             }
-            GoodsSkuExample goodsSkuExample = new GoodsSkuExample();
-            goodsSkuExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andGoodsIdEqualTo(model.getId());
-            goodsSkuMapper.deleteByExample(goodsSkuExample);
+
 
 
             GoodsImageExample goodsImageExample = new GoodsImageExample();
@@ -318,15 +317,17 @@ public class SysGoodsServiceImpl implements SysGoodsService {
             }
 
             for (SysGoodsSkuModel skuModel:sysGoodsSkuModelList) {
-                GoodsSku sku = new GoodsSku();
-                modelMapper.map(skuModel, sku);
+                GoodsSku sku = goodsSkuMapper.selectByPrimaryKey(skuModel.getId());
                 sku.setCreateTime(new Date());
                 sku.setGoodsId(model.getId());
                 sku.setSn(model.getSn());
                 sku.setStatus(0);
                 sku.setShopId(sysUser.getShopId());
-                sku.setSkuName(sku.getSkuName());
-                goodsSkuMapper.insert(sku);
+                sku.setSkuName(skuModel.getSkuName());
+                sku.setOriginalPrice(skuModel.getOriginalPrice());
+                sku.setPresentPrice(skuModel.getPresentPrice());
+                sku.setGoodsImage(skuModel.getGoodsImage());
+                goodsSkuMapper.updateByPrimaryKey(sku);
                 count += skuModel.getInventory();
             }
             goods.setInventory(count);
