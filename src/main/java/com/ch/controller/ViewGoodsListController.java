@@ -7,6 +7,7 @@
 
 package com.ch.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.ch.base.ResponseResult;
 import com.ch.dto.GoodsDto;
 import com.ch.dto.SolrDto;
@@ -36,8 +37,11 @@ public class ViewGoodsListController {
     public ResponseResult findGoodsList(@RequestBody SolrDto solrDto, HttpServletRequest req){
         ResponseResult result = new ResponseResult();
         String token = req.getHeader("Authorization");
+        System.out.println("token:" + token);
+        System.out.println("SolrDto:" + JSON.toJSONString(solrDto));
         Integer shopId = TokenUtil.getUserId(token);
-        //Integer shopId = 1;
+        System.out.println("shopId" + shopId);
+//        Integer shopId = 1;
         try {
             result = viewGoodsListService.findGoodsList(solrDto, shopId);
         } catch (Exception e) {

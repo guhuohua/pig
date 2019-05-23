@@ -49,6 +49,8 @@ public class SysLoginController {
     public ResponseResult getUserInfo(HttpServletRequest req, HttpServletResponse res) {
         String token = req.getHeader("Authorization");
         Integer userId = TokenUtil.getUserId(token);
+        System.out.println("后台token"+token);
+        System.out.println("后台userId"+userId);
         ResponseResult result = new ResponseResult();
         try {
             result.setData(sysUserService.findById(userId));

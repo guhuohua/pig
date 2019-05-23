@@ -7,6 +7,7 @@
 
 package com.ch.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ch.base.ResponseResult;
 import com.ch.dto.ShopInfo;
@@ -59,9 +60,9 @@ public class ViewLoginController {
     public ResponseResult parseUserInfo(String appId){
         ResponseResult result = new ResponseResult();
         ShopInfo shopInfo = viewShopInfoService.findShopInfoByAppId(appId);
-        //System.out.println(shopInfo.getShopId());
+        System.out.println("shopinfo:"+ JSON.toJSONString(shopInfo));
         String token = TokenUtil.sign(shopInfo.getShopId());
-       // System.out.println(token);
+        System.out.println(token);
         result.setData(token);
         return  result;
 
