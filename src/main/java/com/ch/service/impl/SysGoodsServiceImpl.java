@@ -328,6 +328,7 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                 sku.setOriginalPrice(skuModel.getOriginalPrice());
                 sku.setPresentPrice(skuModel.getPresentPrice());
                 sku.setGoodsImage(skuModel.getGoodsImage());
+                sku.setInventory(skuModel.getInventory());
                 goodsSkuMapper.updateByPrimaryKey(sku);
                 count += skuModel.getInventory();
             }
