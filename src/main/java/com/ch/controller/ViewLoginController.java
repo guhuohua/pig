@@ -59,9 +59,9 @@ public class ViewLoginController {
     @GetMapping("userInfo")
     public ResponseResult parseUserInfo(String appId){
         ResponseResult result = new ResponseResult();
-        Integer shopId = viewShopInfoService.findShopId(appId);
-        System.out.println("shopId:"+ shopId);
-        String token = TokenUtil.sign(shopId);
+        ShopInfo shopInfo = viewShopInfoService.findShopInfoByAppId(appId);
+        System.out.println("shopinfo:"+ JSON.toJSONString(shopInfo));
+        String token = TokenUtil.sign(shopInfo.getShopId());
         System.out.println(token);
         result.setData(token);
         return  result;

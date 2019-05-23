@@ -43,6 +43,8 @@ public class ViewShopInfoServiceImpl implements ViewShopInfoService {
             Shop shop = shopMapper.selectByPrimaryKey(shopId);
             if (shop.getStartTime().getTime() <= new Date().getTime() && shop.getEndTime().getTime() >=  new Date().getTime()){
                 shopInfo.setShopId(shop.getId());
+            } else {
+                System.out.println("该店铺不在服务时间内");
             }
         }
         return shopInfo;

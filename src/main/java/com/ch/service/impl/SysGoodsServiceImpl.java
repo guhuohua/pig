@@ -311,6 +311,7 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                     specificationAttributeMapper.updateByPrimaryKey(specificationAttribute);
                     if (specificationAttribute.getDelFlag() == 1) {
                         goodsSkuAttribute.setSpecificationAttributeId(specificationAttribute.getId());
+                        goodsSkuAttribute.setSkuId(123);
                         goodsSkuAttributeMapper.insert(goodsSkuAttribute);
                     }
                 }
