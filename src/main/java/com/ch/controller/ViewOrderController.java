@@ -42,10 +42,10 @@ public class ViewOrderController {
             //User user = userMapper.selectByPrimaryKey(userId);
             result = viewOrderService.addOrder(goodsOrderDto.getOrderDto(), openId, shopId);
         } catch (Exception e) {
-            LOGGER.error("展示轮播图失败" + e.getMessage(), e);
+            LOGGER.error("添加订单失败" + e.getMessage(), e);
             result.setCode(500);
             result.setError(e.getMessage());
-            result.setError_description("展示轮播图失败");
+            result.setError_description("添加订单失败");
         }
         return result;
     }
