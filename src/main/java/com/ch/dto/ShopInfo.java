@@ -109,4 +109,20 @@ public class ShopInfo {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+    @Override
+    public String toString() {
+        return "ShopInfo{" +
+                "id=" + id +
+                ", shopId=" + shopId +
+                ", appId='" + appId + '\'' +
+                ", secret='" + secret + '\'' +
+                ", backUrl='" + backUrl + '\'' +
+                ", mchIdd='" + mchIdd + '\'' +
+                ", appKey='" + appKey + '\'' +
+                ", status=" + status +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
+    }
 }

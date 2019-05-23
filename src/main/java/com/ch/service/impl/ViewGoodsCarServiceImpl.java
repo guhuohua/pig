@@ -121,10 +121,26 @@ public class ViewGoodsCarServiceImpl implements ViewGoodsCarService {
             CarDto carDto = new CarDto();
             GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(goodsCar.getSkuId());
             Goods goods = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
-            carDto.setGoodsSku(goodsSku);
-            carDto.setNum(goodsCar.getNum());
-            carDto.setName(goods.getName());
-            list.add(carDto);
+            if (goods != null) {
+                if (1 == goods.getStatus()) {
+                    carDto.setGoodsSku(goodsSku);
+                    carDto.setNum(goodsCar.getNum());
+                    carDto.setName(goods.getName());
+                    carDto.setFlag(1);
+                    list.add(carDto);
+                }
+
+
+                if (0 == goods.getStatus()) {
+                    carDto.setGoodsSku(goodsSku);
+                    carDto.setNum(goodsCar.getNum());
+                    carDto.setName(goods.getName());
+                    carDto.setFlag(0);
+                    list.add(carDto);
+                }
+            }
+
+
         }
 
         ResponseResult result = new ResponseResult();

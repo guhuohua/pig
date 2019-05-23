@@ -75,6 +75,11 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             for (OrderDto orderDto : orderDtoList) {
                 GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderDto.getGoodsSku().getId());
                 Goods goods = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
+                if (goods.getStatus() == 0){
+                    result.setCode(500);
+                    result.setError_description("商品已下架");
+                    return result;
+                }
                 feeList.add(goods.getFreight());
                 GoodsExample example1 = new GoodsExample();
                 GoodsExample.Criteria criteria1 = example1.createCriteria();
@@ -102,7 +107,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                     orderItemMapper.insert(orderItem);
 
                 } else {
-                    result.setError("500");
+                    result.setCode(500);
                     result.setError_description("商品已售馨");
                     return result;
                 }
@@ -115,7 +120,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                     goods.setInventory(goodsSku.getInventory() - 1);
                     goods.setSale(goodsSku.getSale() + 1);
                 } else {
-                    result.setError("500");
+                    result.setCode(500);
                     result.setError_description("商品已售馨");
                     return result;
                 }
