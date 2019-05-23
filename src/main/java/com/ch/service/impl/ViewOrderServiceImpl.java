@@ -75,7 +75,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             for (OrderDto orderDto : orderDtoList) {
                 GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderDto.getGoodsSku().getId());
                 Goods goods = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
-                if (goods.getStatus() == 0){
+                if (goods.getStatus() == 0) {
                     result.setCode(500);
                     result.setError_description("商品已下架");
                     return result;
@@ -98,6 +98,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                     goodsSku.setSale(goodsSku.getSale() + 1);
                     //Goods goods1 = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
                     orderItem.setName(orderDto.getName() + "" + goodsSku.getSkuName());
+                   // orderItem.setSkuName(goodsSku.getSkuName());
                     orderItem.setGoodsName(orderDto.getName());
                     orderItem.setNumber(orderDto.getNum());
                     orderItem.setPrice(goodsSku.getPresentPrice() * orderDto.getNum());
@@ -158,6 +159,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             UserAddressExample exampleAddress = new UserAddressExample();
             UserAddressExample.Criteria criteria = exampleAddress.createCriteria();
             criteria.andUserIdEqualTo(userInfo.getId());
+            criteria.andStatusEqualTo(1);
             userAddresses1 = userAddressMapper.selectByExample(exampleAddress);
 
            /* UserAddressExample exampleAddress1 = new UserAddressExample();
@@ -175,7 +177,11 @@ public class ViewOrderServiceImpl implements ViewOrderService {
         criteria.andOrderIdEqualTo(orderId);
 
         List<OrderItem> orderItems = orderItemMapper.selectByExample(example);
-
+        for (OrderItem orderItem : orderItems){
+            GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderItem.getSkuAttrId());
+            orderItem.setImage(goodsSku.getGoodsImage());
+            orderItem.setSkuName(goodsSku.getSkuName());
+        }
 
         map.put("userAddresses1", userAddresses1);
         //map.put("userAddress", userAddress);
@@ -667,7 +673,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
         if (userInfos.size() > 0) {
             userInfo = userInfos.get(0);
         }
-       // System.out.println(userInfo);
+        // System.out.println(userInfo);
         List list = new ArrayList();
 
         if (BeanUtils.isNotEmpty(condition)) {

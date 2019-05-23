@@ -6,4 +6,5 @@ public interface ViewShopInfoService {
     ShopInfo findShopInfoByAppId(String appId);
 
 
+
 }
