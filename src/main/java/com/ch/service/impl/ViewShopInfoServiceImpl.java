@@ -47,4 +47,18 @@ public class ViewShopInfoServiceImpl implements ViewShopInfoService {
         }
         return shopInfo;
     }
+
+    @Override
+    public Integer findShopId(String appId) {
+        ShopMiniProgramExample example = new ShopMiniProgramExample();
+        ShopMiniProgramExample.Criteria criteria = example.createCriteria();
+        criteria.andAppIdEqualTo(appId);
+        List<ShopMiniProgram> shopMiniPrograms = shopMiniProgramMapper.selectByExample(example);
+        if (shopMiniPrograms.stream().findFirst().isPresent()) {
+            return shopMiniPrograms.stream().findFirst().get().getShopId();
+        } else {
+            System.out.println("获取shopId失败");
+            return null;
+        }
+    }
 }

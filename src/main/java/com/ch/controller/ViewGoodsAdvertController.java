@@ -39,7 +39,9 @@ public class ViewGoodsAdvertController {
     public ResponseResult findByCategory(HttpServletRequest req){
         ResponseResult result = new ResponseResult();
         String token = req.getHeader("Authorization");
+        System.out.println("token"+token);
         Integer shopId = TokenUtil.getUserId(token);
+        System.out.println("shopId"+shopId);
         try {
             result = viewGoodsAdvertService.findByShopId(shopId);
         } catch (Exception e) {
