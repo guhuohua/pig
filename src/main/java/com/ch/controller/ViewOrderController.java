@@ -60,7 +60,7 @@ public class ViewOrderController {
         Integer shopId = TokenUtil.getUserId(token);
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
-            result = viewOrderService.showOrder(orderId, openId);
+            result = viewOrderService.showOrder(orderId, openId,shopId);
         } catch (Exception e) {
             LOGGER.error("展示订单失败" + e.getMessage(), e);
             result.setCode(500);

@@ -185,10 +185,9 @@ public class ViewRefundController {
                     goodsOrderMapper.updateByPrimaryKey(goodsOrder);
                     OrderItemExample example = new OrderItemExample();
                     OrderItemExample.Criteria criteria = example.createCriteria();
-                    criteria.andOrderIdEqualTo(orderId);
+                    criteria.andOrderIdEqualTo(goodsOrder.getId());
                     List<OrderItem> orderItems = orderItemMapper.selectByExample(example);
                     for (OrderItem orderItem : orderItems) {
-
                         GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderItem.getSkuAttrId());
                         goodsSku.setSale(goodsSku.getSale() - orderItem.getNumber());
                         goodsSku.setInventory(goodsSku.getInventory() + orderItem.getNumber());

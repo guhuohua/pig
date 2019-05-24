@@ -87,17 +87,13 @@ public class WeiXinPaymentController {
     @GetMapping("wxpay")
     @ResponseBody
     public JSONObject payment(HttpServletRequest req, @RequestParam String orderId) throws UnsupportedEncodingException, DocumentException {
-
-
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
-
-
+        //获取店铺信息
         ShopMiniProgram shopMiniProgram = viewShopNameService.shopPayInfo(shopId);
         GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderId);
         //  Shop shop = shopMapper.selectByPrimaryKey(shopId);
-
         JSONObject JsonObject = new JSONObject();
         String body = "test";
         body = new String(body.getBytes("UTF-8"), "ISO-8859-1");
@@ -105,8 +101,6 @@ public class WeiXinPaymentController {
         String today = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         String code = PayUtil.createCode(8);
         String out_trade_no = goodsOrder.getId();//商户订单号
-
-
         PaymentDto paymentPo = new PaymentDto();
         paymentPo.setAppid(shopMiniProgram.getAppId());
         paymentPo.setMch_id(shopMiniProgram.getMchIdd());

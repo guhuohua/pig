@@ -6,7 +6,7 @@ import com.ch.dto.OrderDto;
 public interface ViewOrderService {
     ResponseResult addOrder(OrderDto[] orderDtoList, String openId, Integer shopId);
 
-    ResponseResult showOrder(String orderId, String openId);
+    ResponseResult showOrder(String orderId, String openId,Integer shopId);
 
     ResponseResult updateOrder(OrderDto orderDto);
 

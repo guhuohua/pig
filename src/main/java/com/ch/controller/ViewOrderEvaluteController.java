@@ -112,12 +112,12 @@ public class ViewOrderEvaluteController {
     @ApiOperation("展示全部评价")
     public ResponseResult showAllEvluate(HttpServletRequest req,@RequestParam Integer goodsId ){
         ResponseResult result = new ResponseResult();
-        /*String openId = req.getHeader("openId");
+        String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
-        Integer shopId = TokenUtil.getUserId(token);*/
+        Integer shopId = TokenUtil.getUserId(token);
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
-            result = viewOrderEvaluteService.showAllEvluate(goodsId);
+            result = viewOrderEvaluteService.showAllEvluate(goodsId,shopId);
         } catch (Exception e) {
             LOGGER.error("展示全部评价失败" + e.getMessage(), e);
             result.setCode(500);
