@@ -94,8 +94,8 @@ public class ViewOrderServiceImpl implements ViewOrderService {
 
 
                 if (goodsSku.getInventory() > 0) {
-                    goodsSku.setInventory(goodsSku.getInventory() - 1);
-                    goodsSku.setSale(goodsSku.getSale() + 1);
+                    goodsSku.setInventory(goodsSku.getInventory() - orderDto.getNum() );
+                    goodsSku.setSale(goodsSku.getSale() + orderDto.getNum());
                     //Goods goods1 = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
                     orderItem.setName(orderDto.getName() + "" + goodsSku.getSkuName());
                    // orderItem.setSkuName(goodsSku.getSkuName());
@@ -118,8 +118,8 @@ public class ViewOrderServiceImpl implements ViewOrderService {
 
 
                 if (goods.getInventory() > 0) {
-                    goods.setInventory(goodsSku.getInventory() - 1);
-                    goods.setSale(goodsSku.getSale() + 1);
+                    goods.setInventory(goodsSku.getInventory() - orderDto.getNum());
+                    goods.setSale(goodsSku.getSale() + orderDto.getNum());
                 } else {
                     result.setCode(500);
                     result.setError_description("商品已售馨");
@@ -138,7 +138,6 @@ public class ViewOrderServiceImpl implements ViewOrderService {
 
             orderMapper.insert(order);
         }
-
 
         result.setData(order.getId());
         return result;
