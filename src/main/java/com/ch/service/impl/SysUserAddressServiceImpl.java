@@ -28,7 +28,7 @@ public class SysUserAddressServiceImpl implements SysUserAddressService {
         ResponseResult result = new ResponseResult();
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         PageHelper.startPage(param.getCurrentPage(), param.getPageSize());
-        List<SysUserAddressModel> list = userAddressMapper.list(param.getName(), param.getPhone(), sysUser.getShopId());
+        List<SysUserAddressModel> list = userAddressMapper.list(param.getName(), param.getTel(), sysUser.getShopId());
         PageInfo<SysUserAddressModel> pageInfo = new PageInfo<>(list);
         result.setData(pageInfo);
         return result;

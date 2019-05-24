@@ -56,4 +56,12 @@ public interface SysGoodsService {
      * @return
      */
     ResponseResult findById(Integer goodsId, Integer userId);
+
+    /**
+     * 删除sku列表一行数据
+     * @param id
+     * @param userId
+     * @return
+     */
+    ResponseResult deleteSku(Integer id, Integer userId);
 }

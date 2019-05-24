@@ -15,8 +15,8 @@
     <result column="sort" property="sort" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="inventory" property="inventory" jdbcType="INTEGER" />
-    <result column="original_price" property="originalPrice" jdbcType="DECIMAL" />
-    <result column="present_price" property="presentPrice" jdbcType="DECIMAL" />
+    <result column="original_price" property="originalPrice" jdbcType="BIGINT" />
+    <result column="present_price" property="presentPrice" jdbcType="BIGINT" />
     <result column="sn" property="sn" jdbcType="VARCHAR" />
     <result column="member_discount" property="memberDiscount" jdbcType="INTEGER" />
     <result column="limit_buy" property="limitBuy" jdbcType="INTEGER" />
@@ -135,7 +135,7 @@
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=INTEGER}, 
       #{title,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, #{recommend,jdbcType=INTEGER}, 
       #{sale,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{inventory,jdbcType=INTEGER}, 
-      #{originalPrice,jdbcType=DECIMAL}, #{presentPrice,jdbcType=DECIMAL}, #{sn,jdbcType=VARCHAR}, 
+      #{originalPrice,jdbcType=BIGINT}, #{presentPrice,jdbcType=BIGINT}, #{sn,jdbcType=VARCHAR},
       #{memberDiscount,jdbcType=INTEGER}, #{limitBuy,jdbcType=INTEGER}, #{salesVolume,jdbcType=INTEGER}, 
       #{name,jdbcType=VARCHAR}, #{catrgoryId,jdbcType=INTEGER}, #{keyWords,jdbcType=VARCHAR}, 
       #{freight,jdbcType=DECIMAL}, #{units,jdbcType=VARCHAR}, #{goodsImgUrl,jdbcType=VARCHAR})
@@ -257,10 +257,10 @@
         #{inventory,jdbcType=INTEGER},
       </if>
       <if test="originalPrice != null" >
-        #{originalPrice,jdbcType=DECIMAL},
+        #{originalPrice,jdbcType=BIGINT},
       </if>
       <if test="presentPrice != null" >
-        #{presentPrice,jdbcType=DECIMAL},
+        #{presentPrice,jdbcType=BIGINT},
       </if>
       <if test="sn != null" >
         #{sn,jdbcType=VARCHAR},
@@ -340,10 +340,10 @@
         inventory = #{record.inventory,jdbcType=INTEGER},
       </if>
       <if test="record.originalPrice != null" >
-        original_price = #{record.originalPrice,jdbcType=DECIMAL},
+        original_price = #{record.originalPrice,jdbcType=BIGINT},
       </if>
       <if test="record.presentPrice != null" >
-        present_price = #{record.presentPrice,jdbcType=DECIMAL},
+        present_price = #{record.presentPrice,jdbcType=BIGINT},
       </if>
       <if test="record.sn != null" >
         sn = #{record.sn,jdbcType=VARCHAR},
@@ -392,8 +392,8 @@
       sort = #{record.sort,jdbcType=INTEGER},
       type = #{record.type,jdbcType=INTEGER},
       inventory = #{record.inventory,jdbcType=INTEGER},
-      original_price = #{record.originalPrice,jdbcType=DECIMAL},
-      present_price = #{record.presentPrice,jdbcType=DECIMAL},
+      original_price = #{record.originalPrice,jdbcType=BIGINT},
+      present_price = #{record.presentPrice,jdbcType=BIGINT},
       sn = #{record.sn,jdbcType=VARCHAR},
       member_discount = #{record.memberDiscount,jdbcType=INTEGER},
       limit_buy = #{record.limitBuy,jdbcType=INTEGER},
@@ -448,10 +448,10 @@
         inventory = #{inventory,jdbcType=INTEGER},
       </if>
       <if test="originalPrice != null" >
-        original_price = #{originalPrice,jdbcType=DECIMAL},
+        original_price = #{originalPrice,jdbcType=BIGINT},
       </if>
       <if test="presentPrice != null" >
-        present_price = #{presentPrice,jdbcType=DECIMAL},
+        present_price = #{presentPrice,jdbcType=BIGINT},
       </if>
       <if test="sn != null" >
         sn = #{sn,jdbcType=VARCHAR},
@@ -497,8 +497,8 @@
       sort = #{sort,jdbcType=INTEGER},
       type = #{type,jdbcType=INTEGER},
       inventory = #{inventory,jdbcType=INTEGER},
-      original_price = #{originalPrice,jdbcType=DECIMAL},
-      present_price = #{presentPrice,jdbcType=DECIMAL},
+      original_price = #{originalPrice,jdbcType=BIGINT},
+      present_price = #{presentPrice,jdbcType=BIGINT},
       sn = #{sn,jdbcType=VARCHAR},
       member_discount = #{memberDiscount,jdbcType=INTEGER},
       limit_buy = #{limitBuy,jdbcType=INTEGER},

@@ -29,7 +29,7 @@ public class SysShopUserServiceImpl implements SysShopUserService {
         ResponseResult result = new ResponseResult();
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         PageHelper.startPage(param.getCurrentPage(), param.getPageSize());
-        List<SysUserListDTO> userInfos = userInfoMapper.list(param.getName(), param.getPhone(), sysUser.getShopId());
+        List<SysUserListDTO> userInfos = userInfoMapper.list(param.getNickname(), param.getPhone(), sysUser.getShopId());
         PageInfo<SysUserListDTO> pageInfo = new PageInfo<>(userInfos);
         for (SysUserListDTO sysUserListDTO:pageInfo.getList()) {
             Long orderPrice = userInfoMapper.orderPrice(sysUserListDTO.getId(), sysUser.getShopId());

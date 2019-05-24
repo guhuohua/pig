@@ -71,7 +71,7 @@ public class SysShopController {
     public ResponseResult search(@RequestBody ShopParam shopParam) {
         ResponseResult result = new ResponseResult();
         try {
-            if (shopParam.getTel() == null & shopParam.getTitle() == null) {
+            if (shopParam.getId() == null & shopParam.getTitle() == null) {
                 result = sysShopService.findAll(shopParam);
             } else {
                 result = sysShopService.serach(shopParam);

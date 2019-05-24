@@ -98,7 +98,7 @@ public class SysUserServiceImpl implements SysUserService {
         List<SysUser> sysUsers = sysUserMapper.selectByExample(example);
         if(sysUsers.size()>0){
             SysUser sysUser = sysUsers.get(0);
-            if(sysUser.getStatus()==1){
+            if(sysUser.getStatus()==0){
                 result.setCode(500);
                 result.setError("该用户已被禁用，请联系管理员");
                 result.setError_description("该用户已被禁用，请联系管理员");

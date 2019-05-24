@@ -30,9 +30,9 @@ public class Goods {
 
     private Integer inventory;
 
-    private BigDecimal originalPrice;
+    private Long originalPrice;
 
-    private BigDecimal presentPrice;
+    private Long presentPrice;
 
     private String sn;
 
@@ -166,19 +166,19 @@ public class Goods {
         this.inventory = inventory;
     }
 
-    public BigDecimal getOriginalPrice() {
+    public Long getOriginalPrice() {
         return originalPrice;
     }
 
-    public void setOriginalPrice(BigDecimal originalPrice) {
+    public void setOriginalPrice(Long originalPrice) {
         this.originalPrice = originalPrice;
     }
 
-    public BigDecimal getPresentPrice() {
+    public Long getPresentPrice() {
         return presentPrice;
     }
 
-    public void setPresentPrice(BigDecimal presentPrice) {
+    public void setPresentPrice(Long presentPrice) {
         this.presentPrice = presentPrice;
     }
 

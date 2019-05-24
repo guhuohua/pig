@@ -7,6 +7,7 @@
 
 package com.ch.service.impl;
 
+import com.ch.base.BeanUtils;
 import com.ch.base.ResponseResult;
 import com.ch.dao.ShopMapper;
 import com.ch.dao.SysShopMapper;
@@ -145,8 +146,8 @@ public class SysShopServiceImpl implements SysShopService {
             if (shopParam.getTitle()!=null && shopParam.getTitle().length()>0 ){
                 criteria.andTitleLike("%"+shopParam.getTitle()+"%");
             }
-            if (shopParam.getTel()!=null && shopParam.getTel().length()>0){
-                criteria.andTelEqualTo(shopParam.getTel());
+            if (BeanUtils.isNotEmpty(shopParam.getId())){
+                criteria.andIdEqualTo(shopParam.getId());
             }
         }
         List<Shop> shops = shopMapper.selectByExample(example);

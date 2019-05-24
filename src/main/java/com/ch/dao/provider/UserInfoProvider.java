@@ -14,7 +14,7 @@ public class UserInfoProvider {
         StringBuilder sb = new StringBuilder("select ui.id, ui.user_head,ui.nickname,ui.tel, ui.gender from user_info ui where 1 = 1");
         sb.append(" and ui.shop_id = ").append(shopId);
         if (BeanUtils.isNotEmpty(name)) {
-            sb.append(" and ui.nikename  like '%").append(name).append("%'");
+            sb.append(" and ui.nickname  like '%").append(name).append("%'");
         }
         if (BeanUtils.isNotEmpty(tel)) {
             sb.append(" and ui.tel = ").append(tel);

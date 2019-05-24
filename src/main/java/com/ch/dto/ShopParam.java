@@ -11,7 +11,7 @@ import com.ch.base.PageQuery;
 
 public class ShopParam extends PageQuery {
     private String title;
-    private String tel;
+    private Integer id;
 
     public String getTitle() {
         return title;
@@ -21,11 +21,11 @@ public class ShopParam extends PageQuery {
         this.title = title;
     }
 
-    public String getTel() {
-        return tel;
+    public Integer getId() {
+        return id;
     }
 
-    public void setTel(String tel) {
-        this.tel = tel;
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

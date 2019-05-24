@@ -21,7 +21,7 @@ public class OrderRefundProvider {
             sb.append(" and ua.name  like '%").append(name).append("%'");
         }
         if (BeanUtils.isNotEmpty(refundId)) {
-            sb.append(" and orr.id =").append(refundId);
+            sb.append(" and orr.id = '").append(refundId).append("'");
         }
         if (BeanUtils.isNotEmpty(refundStatus)) {
             sb.append(" and orr.refund_status = ").append(refundStatus);

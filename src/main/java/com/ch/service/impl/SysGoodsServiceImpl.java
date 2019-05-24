@@ -99,6 +99,7 @@ public class SysGoodsServiceImpl implements SysGoodsService {
             Goods goods = goodsList.stream().findFirst().get();
             goods.setStatus(param.getStatus());
             goods.setSale(param.getStatus());
+            goods.setRecommend(param.getStatus());
             goodsMapper.updateByPrimaryKey(goods);
         }
         if (0 == param.getStatus()) {
@@ -209,8 +210,8 @@ public class SysGoodsServiceImpl implements SysGoodsService {
             goods.setShopId(sysUser.getShopId());
             goods.setCatrgoryId(model.getCategoryIds().get(1));
             goods.setCreateTime(new Date());
-            goods.setOriginalPrice(BigDecimal.valueOf(max));
-            goods.setPresentPrice(BigDecimal.valueOf(min));
+            goods.setOriginalPrice(max);
+            goods.setPresentPrice(min);
             goods.setSalesVolume(0);
             goodsMapper.insert(goods);
             Integer count = 0;
@@ -270,17 +271,16 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                 goods = goodsList.stream().findFirst().get();
                 goods.setTitle(model.getTitle());
                 goods.setName(model.getName());
+                goods.setKeyWords(model.getKeyWords());
                 goods.setDesc(model.getDesc());
                 goods.setUpdateTime(new Date());
-                goods.setRecommend(goods.getStatus());
-                goods.setOriginalPrice(BigDecimal.valueOf(max));
-                goods.setPresentPrice(BigDecimal.valueOf(min));
+                goods.setOriginalPrice(max);
+                goods.setPresentPrice(min);
                 goods.setCatrgoryId(model.getCategoryIds().get(1));
                 goods.setKeyWords(model.getKeyWords());
                 goods.setFreight(model.getFreight());
                 goods.setUnits(model.getUnits());
                 goods.setGoodsImgUrl(model.getGoodsImgUrl());
-                goods.setSale(model.getStatus());
                 goodsMapper.updateByPrimaryKey(goods);
             }
 
@@ -411,6 +411,16 @@ public class SysGoodsServiceImpl implements SysGoodsService {
 
             result.setData(sysGoodsModel);
         }
+        return result;
+    }
+
+    @Override
+    public ResponseResult deleteSku(Integer id, Integer userId) {
+        ResponseResult result = new ResponseResult();
+        SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
+        GoodsSkuExample goodsSkuExample = new GoodsSkuExample();
+        goodsSkuExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andIdEqualTo(id);
+        goodsSkuMapper.deleteByExample(goodsSkuExample);
         return result;
     }
 }

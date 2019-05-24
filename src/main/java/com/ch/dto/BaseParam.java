@@ -18,4 +18,7 @@ public class BaseParam extends PageQuery {
 
     private String content;
 
+    private String nickname;
+
+    private String tel;
 }

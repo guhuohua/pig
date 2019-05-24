@@ -111,6 +111,24 @@ public class SysGoodsController {
         return result;
     }
 
+    @GetMapping("delete_sku")
+    @ApiOperation("删除商品")
+    public ResponseResult deleteSku(HttpServletRequest req, @RequestParam Integer id) {
+        ResponseResult result = new ResponseResult();
+        try {
+            String token = req.getHeader("Authorization");
+            Integer userId = TokenUtil.getUserId(token);
+            result = sysGoodsService.deleteSku(id, userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("删除商品");
+        }
+        return result;
+    }
+
     @GetMapping("sku_list")
     @ApiOperation("发布商品的规格列表")
     public ResponseResult skuList(HttpServletRequest req, @RequestParam List<Integer> categoryIds, @RequestParam Integer goodsId) {
