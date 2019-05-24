@@ -53,12 +53,12 @@ public class ViewOrderEvaluteController {
     @ApiOperation("展示好评")
     public ResponseResult showGoodEvluate(HttpServletRequest req, @RequestParam Integer goodsId){
         ResponseResult result = new ResponseResult();
-        /*String openId = req.getHeader("openId");
+        String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
-        Integer shopId = TokenUtil.getUserId(token);*/
+        Integer shopId = TokenUtil.getUserId(token);
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
-            result = viewOrderEvaluteService.showGoodEvluate(goodsId);
+            result = viewOrderEvaluteService.showGoodEvluate(goodsId,shopId);
         } catch (Exception e) {
             LOGGER.error("展示好评失败" + e.getMessage(), e);
             result.setCode(500);
@@ -72,12 +72,12 @@ public class ViewOrderEvaluteController {
     @ApiOperation("展示差评")
     public ResponseResult showBadEvluate(HttpServletRequest req, @RequestParam Integer goodsId){
         ResponseResult result = new ResponseResult();
-        /*String openId = req.getHeader("openId");
+        String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
-        Integer shopId = TokenUtil.getUserId(token);*/
+        Integer shopId = TokenUtil.getUserId(token);
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
-            result = viewOrderEvaluteService.showBadEvluate(goodsId);
+            result = viewOrderEvaluteService.showBadEvluate(goodsId,shopId);
         } catch (Exception e) {
             LOGGER.error("展示差评失败" + e.getMessage(), e);
             result.setCode(500);
@@ -92,12 +92,12 @@ public class ViewOrderEvaluteController {
     @ApiOperation("展示中评")
     public ResponseResult showMediumEvluate(HttpServletRequest req, @RequestParam Integer goodsId){
         ResponseResult result = new ResponseResult();
-        /*String openId = req.getHeader("openId");
+        String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
-        Integer shopId = TokenUtil.getUserId(token);*/
+        Integer shopId = TokenUtil.getUserId(token);
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
-            result = viewOrderEvaluteService.showMediumEvluate(goodsId);
+            result = viewOrderEvaluteService.showMediumEvluate(goodsId,shopId);
         } catch (Exception e) {
             LOGGER.error("展示中评失败" + e.getMessage(), e);
             result.setCode(500);
