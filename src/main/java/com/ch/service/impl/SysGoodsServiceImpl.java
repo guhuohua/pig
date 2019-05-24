@@ -318,19 +318,37 @@ public class SysGoodsServiceImpl implements SysGoodsService {
             }
 
             for (SysGoodsSkuModel skuModel:sysGoodsSkuModelList) {
-                GoodsSku sku = goodsSkuMapper.selectByPrimaryKey(skuModel.getId());
-                sku.setCreateTime(new Date());
-                sku.setGoodsId(model.getId());
-                sku.setSn(model.getSn());
-                sku.setStatus(0);
-                sku.setShopId(sysUser.getShopId());
-                sku.setSkuName(skuModel.getSkuName());
-                sku.setOriginalPrice(skuModel.getOriginalPrice());
-                sku.setPresentPrice(skuModel.getPresentPrice());
-                sku.setGoodsImage(skuModel.getGoodsImage());
-                sku.setInventory(skuModel.getInventory());
-                goodsSkuMapper.updateByPrimaryKey(sku);
-                count += skuModel.getInventory();
+                if (BeanUtils.isNotEmpty(skuModel.getId())) {
+                    GoodsSku sku = goodsSkuMapper.selectByPrimaryKey(skuModel.getId());
+                    sku.setCreateTime(new Date());
+                    sku.setGoodsId(model.getId());
+                    sku.setSn(model.getSn());
+                    sku.setStatus(0);
+                    sku.setShopId(sysUser.getShopId());
+                    sku.setSkuName(skuModel.getSkuName());
+                    sku.setOriginalPrice(skuModel.getOriginalPrice());
+                    sku.setPresentPrice(skuModel.getPresentPrice());
+                    sku.setGoodsImage(skuModel.getGoodsImage());
+                    sku.setInventory(skuModel.getInventory());
+                    goodsSkuMapper.updateByPrimaryKey(sku);
+                    count += skuModel.getInventory();
+                } else {
+                    StringBuilder sn = new StringBuilder(sysUser.getShopId());
+                    sn.append(sysUser.getId());
+                    sn.append(new Date().getTime());
+                    GoodsSku sku = new GoodsSku();
+                    modelMapper.map(skuModel, sku);
+                    sku.setCreateTime(new Date());
+                    sku.setGoodsId(goods.getId());
+                    sku.setSn(sn.toString());
+                    sku.setStatus(0);
+                    sku.setSale(0);
+                    sku.setShopId(sysUser.getShopId());
+                    sku.setSkuName(sku.getSkuName());
+                    sku.setCategoryId(model.getCategoryIds().get(1));
+                    goodsSkuMapper.insert(sku);
+                    count += skuModel.getInventory();
+                }
             }
             goods.setInventory(count);
             goodsMapper.updateByPrimaryKey(goods);

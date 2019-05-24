@@ -40,8 +40,8 @@ public interface UserInfoMapper {
 
 
     @Select("select sum(order_price) from goods_order where user_id = #{userId} and shop_id = #{shopId} and order_status = 7")
-    long orderPrice(@Param("userId") Integer userId, @Param("shopId") Integer shopId);
+    Long orderPrice(@Param("userId") Integer userId, @Param("shopId") Integer shopId);
 
     @Select("select count(*) from goods_order where user_id = #{userId} and shop_id = #{shopId} and order_status = 7")
-    long orderCount(@Param("userId") Integer userId, @Param("shopId") Integer shopId);
+    Long orderCount(@Param("userId") Integer userId, @Param("shopId") Integer shopId);
 }
