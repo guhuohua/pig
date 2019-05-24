@@ -11,6 +11,7 @@ import com.ch.base.ResponseResult;
 import com.ch.dao.*;
 import com.ch.entity.*;
 import com.ch.service.ViewOrderEvaluteService;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,6 @@ public class ViewOrderEvaluteServiceImpl implements ViewOrderEvaluteService {
     GoodsSkuMapper goodsSkuMapper;
 
 
-
     @Override
     public ResponseResult addEvalute(GoodsEvaluation goodsEvaluation, Integer shopId, String openId) {
         ResponseResult result = new ResponseResult();
@@ -44,8 +44,7 @@ public class ViewOrderEvaluteServiceImpl implements ViewOrderEvaluteService {
             userInfo = userInfos.get(0);
         }
         String nickname = userInfo.getNickname();
-        String name = nickname.substring(0,1)+"**"+nickname.substring((nickname.length()-1),nickname.length());
-
+        String name = nickname.substring(0, 1) + "**" + nickname.substring((nickname.length() - 1), nickname.length());
         goodsEvaluation.setShopId(shopId);
         goodsEvaluation.setCreateTime(new Date());
         goodsEvaluation.setStatus(0);
@@ -54,7 +53,6 @@ public class ViewOrderEvaluteServiceImpl implements ViewOrderEvaluteService {
         GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderItem.getOrderId());
         goodsEvaluation.setOrderId(goodsOrder.getId());
         goodsEvaluation.setGoodsId(orderItem.getGoodsId());
-
         goodsEvaluationMapper.insert(goodsEvaluation);
         goodsOrder.setOrderStatus(11);
         goodsOrderMapper.updateByPrimaryKey(goodsOrder);
@@ -63,11 +61,12 @@ public class ViewOrderEvaluteServiceImpl implements ViewOrderEvaluteService {
     }
 
     @Override
-    public ResponseResult showGoodEvluate(Integer goodsId) {
+    public ResponseResult showGoodEvluate(Integer goodsId, Integer shopId) {
         GoodsEvaluationExample example = new GoodsEvaluationExample();
         example.setOrderByClause("create_time desc");
         GoodsEvaluationExample.Criteria criteria = example.createCriteria();
         criteria.andGoodsIdEqualTo(goodsId);
+        criteria.andShopIdEqualTo(shopId);
         criteria.andScoreEqualTo(5);
         List<GoodsEvaluation> list = goodsEvaluationMapper.selectByExample(example);
         ResponseResult result = new ResponseResult();
@@ -77,11 +76,12 @@ public class ViewOrderEvaluteServiceImpl implements ViewOrderEvaluteService {
     }
 
     @Override
-    public ResponseResult showBadEvluate(Integer goodsId) {
+    public ResponseResult showBadEvluate(Integer goodsId, Integer shopId) {
         GoodsEvaluationExample example = new GoodsEvaluationExample();
         example.setOrderByClause("create_time desc");
         GoodsEvaluationExample.Criteria criteria = example.createCriteria();
         criteria.andGoodsIdEqualTo(goodsId);
+        criteria.andShopIdEqualTo(shopId);
         criteria.andScoreLessThanOrEqualTo(2);
         List<GoodsEvaluation> list = goodsEvaluationMapper.selectByExample(example);
         ResponseResult result = new ResponseResult();
@@ -91,12 +91,13 @@ public class ViewOrderEvaluteServiceImpl implements ViewOrderEvaluteService {
     }
 
     @Override
-    public ResponseResult showMediumEvluate(Integer goodsId) {
+    public ResponseResult showMediumEvluate(Integer goodsId, Integer shopId) {
         GoodsEvaluationExample example = new GoodsEvaluationExample();
         example.setOrderByClause("create_time desc");
         GoodsEvaluationExample.Criteria criteria = example.createCriteria();
         criteria.andGoodsIdEqualTo(goodsId);
         criteria.andScoreEqualTo(3);
+        criteria.andShopIdEqualTo(shopId);
         GoodsEvaluationExample.Criteria criteria1 = example.createCriteria();
         criteria1.andScoreEqualTo(4);
         example.or(criteria1);
@@ -108,11 +109,12 @@ public class ViewOrderEvaluteServiceImpl implements ViewOrderEvaluteService {
     }
 
     @Override
-    public ResponseResult showAllEvluate(Integer goodsId) {
+    public ResponseResult showAllEvluate(Integer goodsId, Integer shopId) {
         GoodsEvaluationExample example = new GoodsEvaluationExample();
         example.setOrderByClause("create_time desc");
         GoodsEvaluationExample.Criteria criteria = example.createCriteria();
         criteria.andGoodsIdEqualTo(goodsId);
+        criteria.andShopIdEqualTo(shopId);
         List<GoodsEvaluation> list = goodsEvaluationMapper.selectByExample(example);
         ResponseResult result = new ResponseResult();
         Collections.reverse(list);
@@ -132,19 +134,19 @@ public class ViewOrderEvaluteServiceImpl implements ViewOrderEvaluteService {
             userInfo = userInfos.get(0);
         }
         String nickname = userInfo.getNickname();
-        String name = nickname.substring(0,1)+"**"+nickname.substring((nickname.length()-1),nickname.length());
+        String name = nickname.substring(0, 1) + "**" + nickname.substring((nickname.length() - 1), nickname.length());
         GoodsEvaluationExample example1 = new GoodsEvaluationExample();
         GoodsEvaluationExample.Criteria criteria1 = example1.createCriteria();
         criteria1.andNameEqualTo(name);
         criteria1.andShopIdEqualTo(shopId);
         List<GoodsEvaluation> list = goodsEvaluationMapper.selectByExample(example1);
         List list1 = new ArrayList();
-        for (GoodsEvaluation goodsEvaluation : list){
+        for (GoodsEvaluation goodsEvaluation : list) {
             OrderItem orderItem = orderItemMapper.selectByPrimaryKey(goodsEvaluation.getOrderItemId());
             goodsSkuMapper.selectByPrimaryKey(orderItem.getSkuAttrId());
             Map map = new HashMap();
-            map.put("orderItem",orderItem);
-            map.put("goodsEvaluation",goodsEvaluation);
+            map.put("orderItem", orderItem);
+            map.put("goodsEvaluation", goodsEvaluation);
             list1.add(map);
         }
         result.setData(list1);

@@ -9,11 +9,9 @@ package com.ch.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ch.config.WxRefundProperties;
-import com.ch.dao.GoodsOrderMapper;
-import com.ch.dao.ShopMiniProgramMapper;
+import com.ch.dao.*;
 import com.ch.dto.RefoundDto;
-import com.ch.entity.GoodsOrder;
-import com.ch.entity.ShopMiniProgram;
+import com.ch.entity.*;
 import com.ch.service.ViewShopNameService;
 import com.ch.util.PayUtil;
 import com.ch.util.RandomUtils;
@@ -32,6 +30,7 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,6 +57,12 @@ public class ViewRefundController {
     ViewShopNameService viewShopNameService;
     @Autowired
     WxRefundProperties wxRefundProperties;
+    @Autowired
+    OrderItemMapper orderItemMapper;
+    @Autowired
+    GoodsSkuMapper goodsSkuMapper;
+    @Autowired
+    GoodsMapper goodsMapper;
 
 
     public static String md5Password(String key) {
@@ -178,6 +183,21 @@ public class ViewRefundController {
                 if (goodsOrder.getOrderStatus() == 3) {
                     goodsOrder.setOrderStatus(10);
                     goodsOrderMapper.updateByPrimaryKey(goodsOrder);
+                    OrderItemExample example = new OrderItemExample();
+                    OrderItemExample.Criteria criteria = example.createCriteria();
+                    criteria.andOrderIdEqualTo(goodsOrder.getId());
+                    List<OrderItem> orderItems = orderItemMapper.selectByExample(example);
+                    for (OrderItem orderItem : orderItems) {
+                        GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderItem.getSkuAttrId());
+                        goodsSku.setSale(goodsSku.getSale() - orderItem.getNumber());
+                        goodsSku.setInventory(goodsSku.getInventory() + orderItem.getNumber());
+                        goodsSkuMapper.updateByPrimaryKey(goodsSku);
+                        Goods goods = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
+                        goods.setSale(goods.getSale() - orderItem.getNumber());
+                        goods.setInventory(goods.getInventory() + orderItem.getNumber());
+                        goodsMapper.updateByPrimaryKey(goods);
+                    }
+
                 }
 
             }

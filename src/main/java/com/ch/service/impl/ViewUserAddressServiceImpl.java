@@ -4,7 +4,6 @@
  * Description: 地址管理
  */
 
-
 package com.ch.service.impl;
 
 import com.ch.base.ResponseResult;
@@ -29,17 +28,13 @@ public class ViewUserAddressServiceImpl implements ViewUserAddressService {
 
     @Override
     public ResponseResult deleteByPrimaryKey(Integer id) {
-
         userAddressMapper.deleteByPrimaryKey(id);
-
         ResponseResult result = new ResponseResult();
-
         return result;
     }
 
     @Override
     public ResponseResult insert(UserAddress record, String openId, Integer shopId) {
-
         record.setShopId(shopId);
         UserInfoExample example = new UserInfoExample();
         UserInfoExample.Criteria criteria = example.createCriteria();
@@ -51,7 +46,6 @@ public class ViewUserAddressServiceImpl implements ViewUserAddressService {
         }
         record.setUserId(userInfo.getId());
         //record.setTel(record.getTel().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
-
         UserAddressExample example1 = new UserAddressExample();
         UserAddressExample.Criteria criteria1 = example1.createCriteria();
         criteria1.andStatusEqualTo(1);
@@ -62,16 +56,13 @@ public class ViewUserAddressServiceImpl implements ViewUserAddressService {
                 userAddressMapper.updateByPrimaryKey(userAddress);
             }
         }
-
         userAddressMapper.insert(record);
-
         ResponseResult result = new ResponseResult();
         return result;
     }
 
     @Override
     public ResponseResult updateByPrimaryKey(UserAddress record, String openId, Integer shopId) {
-
         record.setShopId(shopId);
         UserInfoExample example = new UserInfoExample();
         UserInfoExample.Criteria criteria = example.createCriteria();
@@ -82,7 +73,7 @@ public class ViewUserAddressServiceImpl implements ViewUserAddressService {
             userInfo = userInfos.get(0);
         }
         record.setUserId(userInfo.getId());
-       // record.setTel(record.getTel().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
+        // record.setTel(record.getTel().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2"));
         UserAddressExample example1 = new UserAddressExample();
         UserAddressExample.Criteria criteria1 = example1.createCriteria();
         criteria1.andStatusEqualTo(1);
@@ -94,7 +85,6 @@ public class ViewUserAddressServiceImpl implements ViewUserAddressService {
                 userAddressMapper.updateByPrimaryKey(userAddress);
             }
         }
-
         userAddressMapper.updateByPrimaryKey(record);
         ResponseResult result = new ResponseResult();
         return result;
@@ -123,9 +113,7 @@ public class ViewUserAddressServiceImpl implements ViewUserAddressService {
         criteria1.andUserIdEqualTo(userInfo.getId());
         criteria1.andShopIdEqualTo(shopId);
         List<UserAddress> userAddresses = userAddressMapper.selectByExample(example1);
-
         ResponseResult result = new ResponseResult();
-
         result.setData(userAddresses);
         return result;
     }

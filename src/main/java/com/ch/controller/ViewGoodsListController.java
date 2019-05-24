@@ -37,10 +37,10 @@ public class ViewGoodsListController {
     public ResponseResult findGoodsList(@RequestBody SolrDto solrDto, HttpServletRequest req){
         ResponseResult result = new ResponseResult();
         String token = req.getHeader("Authorization");
-        System.out.println("token:" + token);
-        System.out.println("SolrDto:" + JSON.toJSONString(solrDto));
+       // System.out.println("token:" + token);
+       // System.out.println("SolrDto:" + JSON.toJSONString(solrDto));
         Integer shopId = TokenUtil.getUserId(token);
-        System.out.println("shopId" + shopId);
+       // System.out.println("shopId" + shopId);
 //        Integer shopId = 1;
         try {
             result = viewGoodsListService.findGoodsList(solrDto, shopId);
