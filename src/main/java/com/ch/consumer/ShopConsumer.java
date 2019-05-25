@@ -17,23 +17,23 @@ public class ShopConsumer {
 
     @JmsListener(destination = "cancelOrder")
     public void customer(String msg) {
-        log.info("收到超时未支付取消订单MQ，orderId:", msg);
+        log.info("收到超时未支付取消订单MQ，orderId:[{}]", msg);
         try {
             sysOrderService.cancelOrder(msg);
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("处理超时未支付取消订单MQ失败, orderId", msg);
+            log.error("处理超时未支付取消订单MQ失败, orderId[{}]", msg);
         }
     }
 
     @JmsListener(destination = "cancelOrder")
     public void delivery(String msg) {
-        log.info("收到7天自动收货MQ，orderId:", msg);
+        log.info("收到7天自动收货MQ，orderId:[{}]", msg);
         try {
             sysOrderService.deliver(msg);
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("处理7天自动收货MQ失败, orderId", msg);
+            log.error("处理7天自动收货MQ失败, orderId:[{}]", msg);
         }
     }
 }

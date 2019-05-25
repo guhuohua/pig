@@ -8,7 +8,7 @@ public class SysOrderParam extends PageQuery {
 
     private String id;
 
-    private String name;
+    private String userName;
 
     private Integer orderStatus;
 
