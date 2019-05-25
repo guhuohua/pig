@@ -68,8 +68,8 @@ public class SysOrderServiceImpl implements SysOrderService {
             }
             criteria.andUserIdIn(userIds);
         }
-        if (BeanUtils.isNotEmpty(param.getOrderId())) {
-            criteria.andIdEqualTo(param.getOrderId());
+        if (BeanUtils.isNotEmpty(param.getId())) {
+            criteria.andIdEqualTo(param.getId());
         }
         if (BeanUtils.isNotEmpty(param.getOrderStatus())) {
             criteria.andOrderStatusEqualTo(param.getOrderStatus());
@@ -78,10 +78,6 @@ public class SysOrderServiceImpl implements SysOrderService {
             criteria.andCreateDateGreaterThanOrEqualTo(new Date(param.getBeginDate()));
             criteria.andCreateDateLessThanOrEqualTo(new Date(param.getEndDate()));
         }
-        List<Integer> orderStatus = new ArrayList<>();
-        orderStatus.add(11);
-        orderStatus.add(10);
-        criteria.andOrderStatusNotIn(orderStatus);
         PageHelper.startPage(param.getCurrentPage(), param.getPageSize());
         List<GoodsOrder> orders = orderMapper.selectByExample(orderExample);
         for (GoodsOrder goodsOrder:orders) {
@@ -109,7 +105,7 @@ public class SysOrderServiceImpl implements SysOrderService {
             GoodsOrder order = orders.stream().findFirst().get();
             order.setTrackNumber(param.getExpressCode());
             order.setModifyDate(new Date());
-            order.setOrderStatus(Integer.valueOf(OderStatusEnum.SHIPPED.code));
+            order.setOrderStatus(Integer.valueOf(OderStatusEnum.UNRECEIVED.code));
             order.setDeliveryDate(new Date());
             orderMapper.updateByPrimaryKey(order);
             activeMQHandler.delivery("delivery", order.getId());
@@ -220,7 +216,7 @@ public class SysOrderServiceImpl implements SysOrderService {
     public ResponseResult deliver(String oderId) {
         ResponseResult result = new ResponseResult();
         GoodsOrder goodsOrder = orderMapper.selectByPrimaryKey(oderId);
-        if (BeanUtils.isNotEmpty(goodsOrder) && Integer.valueOf(OderStatusEnum.SHIPPED.code) == goodsOrder.getOrderStatus()) {
+        if (BeanUtils.isNotEmpty(goodsOrder) && Integer.valueOf(OderStatusEnum.UNRECEIVED.code) == goodsOrder.getOrderStatus()) {
             goodsOrder.setOrderStatus(Integer.valueOf(OderStatusEnum.UNEVALUATED.code));
             goodsOrder.setModifyDate(new Date());
             orderMapper.updateByPrimaryKey(goodsOrder);

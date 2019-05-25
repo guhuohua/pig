@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class SysOrderParam extends PageQuery {
 
-    private String orderId;
+    private String id;
 
     private String name;
 
