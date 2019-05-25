@@ -120,7 +120,14 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             order.setShopId(shopId);
             order.setOrderStatus(1);
             order.setStatus(0);
-            order.setDeliveryId(userAddress.getId());
+            if(userAddress.getId() != null){
+                order.setDeliveryId(userAddress.getId());
+            }else {
+                result.setCode(500);
+                result.setError_description("请选择地址");
+                return result;
+            }
+
             order.setCreateDate(new Date());
             order.setOrderPrice(orderFee + Collections.max(feeList));
             orderMapper.insert(order);
@@ -556,7 +563,6 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                 criteria1.andUserIdEqualTo(userInfo.getId());
                 criteria1.andOrderStatusEqualTo(9);
                 criteria1.andShopIdEqualTo(shopId);
-
                 List<GoodsOrder> goodsOrders1 = orderMapper.selectByExample(example1);
                 List<String> orderIds1 = new ArrayList<>();
                 for (GoodsOrder goodsOrder : goodsOrders1) {
@@ -567,7 +573,6 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                     OrderItemExample.Criteria criteria2 = orderExample1.createCriteria();
                     criteria2.andNameLike("%" + condition + "%");
                     criteria2.andShopIdEqualTo(shopId);
-
                     List<OrderItem> orderItems = orderItemMapper.selectByExample(orderExample1);
                     //Set<Integer> Idset = new HashSet();
                     List<GoodsOrder> list2 = new ArrayList<>();
@@ -633,7 +638,6 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                         list.add(map);
                     }
                 }
-
                 Collections.reverse(list);
                 result.setData(list);
             }
