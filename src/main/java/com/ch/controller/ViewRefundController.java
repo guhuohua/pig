@@ -8,6 +8,7 @@
 package com.ch.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ch.base.ResponseResult;
 import com.ch.config.WxRefundProperties;
 import com.ch.dao.*;
 import com.ch.dto.RefoundDto;
@@ -104,7 +105,6 @@ public class ViewRefundController {
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
-
         GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderId);
 
         ShopMiniProgram shopMiniProgram = viewShopNameService.shopPayInfo(shopId);
@@ -174,8 +174,8 @@ public class ViewRefundController {
             String return_code = map.get("return_code").toString();//返回状态码
             String return_msg = map.get("return_msg").toString();//返回信息
             String result_code = map.get("result_code").toString();
-            System.out.println("请求微信预支付接口，返回 code：" + return_code);
-            System.out.println("请求微信预支付接口，返回 msg：" + return_msg);
+           /* System.out.println("请求微信预支付接口，返回 code：" + return_code);
+            System.out.println("请求微信预支付接口，返回 msg：" + return_msg);*/
             JSONObject JsonObject = new JSONObject();
 
             if ("SUCCESS".equals(return_code) && "SUCCESS".equals(result_code)) {
@@ -199,14 +199,21 @@ public class ViewRefundController {
                     }
 
                 }
+                JsonObject.put("code",0);
+                return JsonObject;
+            }else {
+                JsonObject.put("code",500);
 
+                return JsonObject;
             }
 
-            return JsonObject;
+
 
         } catch (Exception e) {
             JSONObject JsonObject = new JSONObject();
             JsonObject.put("错误信息", e);
+            JsonObject.put("code",500);
+
             return JsonObject;
 
         }
