@@ -95,11 +95,11 @@ public class ViewOrderController {
     @ApiOperation("订单管理查询")
     public ResponseResult manageOrder(HttpServletRequest req, @RequestParam Integer status, @RequestParam String condition) {
         ResponseResult result = new ResponseResult();
-        /*String openId = req.getHeader("openId");
+        String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
-        Integer shopId = TokenUtil.getUserId(token);*/
-       String openId = "oIc5o5DYm6RilTDpwblWCiXXkhFM";
-        Integer shopId = 1;
+        Integer shopId = TokenUtil.getUserId(token);
+       /*String openId = "oIc5o5DYm6RilTDpwblWCiXXkhFM";
+        Integer shopId = 1;*/
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
             result = viewOrderService.manageOrder(status, openId, shopId, condition);
