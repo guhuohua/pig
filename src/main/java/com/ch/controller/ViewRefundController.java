@@ -8,6 +8,7 @@
 package com.ch.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ch.base.ResponseResult;
 import com.ch.config.WxRefundProperties;
 import com.ch.dao.*;
 import com.ch.dto.RefoundDto;
@@ -104,7 +105,6 @@ public class ViewRefundController {
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
-
         GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderId);
 
         ShopMiniProgram shopMiniProgram = viewShopNameService.shopPayInfo(shopId);

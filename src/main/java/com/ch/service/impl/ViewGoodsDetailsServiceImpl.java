@@ -44,6 +44,7 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
         Map goodsDetailsMap = new HashMap();
         //查询商品表
         Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
+       // System.out.println(goods.getShopId());
 
         if (shopId == goods.getShopId()) {
             goodsDetailsMap.put("goods", goods);

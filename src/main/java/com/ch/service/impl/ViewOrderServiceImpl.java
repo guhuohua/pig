@@ -107,8 +107,8 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                 }
                 goodsSkuMapper.updateByPrimaryKey(goodsSku);
                 if (goods.getInventory() > 0) {
-                    goods.setInventory(goodsSku.getInventory() - orderDto.getNum());
-                    goods.setSale(goodsSku.getSale() + orderDto.getNum());
+                    goods.setInventory(goods.getInventory() - orderDto.getNum());
+                    goods.setSalesVolume(goods.getSalesVolume() + orderDto.getNum());
                 } else {
                     result.setCode(500);
                     result.setError_description("商品已售馨");
@@ -774,7 +774,21 @@ public class ViewOrderServiceImpl implements ViewOrderService {
 
     @Override
     public ResponseResult deleOrderById(String orderId) {
+        OrderItemExample example = new OrderItemExample();
+        OrderItemExample.Criteria criteria = example.createCriteria();
+        criteria.andOrderIdEqualTo(orderId);
+        List<OrderItem> orderItems = orderItemMapper.selectByExample(example);
+        for (OrderItem orderItem : orderItems) {
+            GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderItem.getSkuAttrId());
+            goodsSku.setInventory(goodsSku.getInventory() + orderItem.getNumber());
+            goodsSku.setSale(goodsSku.getSale() - orderItem.getNumber());
+            Goods goods = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
+            goods.setInventory(goods.getInventory() + orderItem.getNumber());
+            goods.setSalesVolume(goods.getSalesVolume() - orderItem.getNumber());
+        }
+
         orderMapper.deleteByPrimaryKey(orderId);
+
         ResponseResult result = new ResponseResult();
         return result;
     }
