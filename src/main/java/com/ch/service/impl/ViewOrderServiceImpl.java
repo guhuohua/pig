@@ -120,14 +120,13 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             order.setShopId(shopId);
             order.setOrderStatus(1);
             order.setStatus(0);
-            if(userAddress.getId() != null){
+            if(BeanUtils.isNotEmpty(userAddress)){
                 order.setDeliveryId(userAddress.getId());
             }else {
                 result.setCode(500);
                 result.setError_description("请选择地址");
                 return result;
             }
-
             order.setCreateDate(new Date());
             order.setOrderPrice(orderFee + Collections.max(feeList));
             orderMapper.insert(order);

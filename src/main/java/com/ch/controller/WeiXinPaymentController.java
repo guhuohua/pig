@@ -2,6 +2,7 @@ package com.ch.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.ch.base.ResponseResult;
 import com.ch.dao.*;
 import com.ch.dto.PaymentDto;
 import com.ch.entity.*;
@@ -86,7 +87,8 @@ public class WeiXinPaymentController {
 
     @GetMapping("wxpay")
     @ResponseBody
-    public JSONObject payment(HttpServletRequest req, @RequestParam String orderId) throws UnsupportedEncodingException, DocumentException {
+    public ResponseResult payment(HttpServletRequest req, @RequestParam String orderId) throws UnsupportedEncodingException, DocumentException {
+        ResponseResult result1 = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
@@ -174,8 +176,13 @@ public class WeiXinPaymentController {
             //再次签名
             String paySign = md5Password(aa.trim()).toUpperCase();
             JsonObject.put("paySign", paySign);
+            result1.setData(JsonObject);
+            return result1;
+
+        }else {
+            result1.setCode(500);
+            return result1;
         }
-        return JsonObject;
     }
 
 

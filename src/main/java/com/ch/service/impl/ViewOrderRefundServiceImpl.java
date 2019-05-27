@@ -7,6 +7,7 @@
 
 package com.ch.service.impl;
 
+import com.ch.base.BeanUtils;
 import com.ch.base.ResponseResult;
 import com.ch.dao.*;
 import com.ch.entity.*;
@@ -45,25 +46,35 @@ public class ViewOrderRefundServiceImpl implements ViewOrderRefundService {
     @Override
     public ResponseResult addOrderRefund(OrderRefund orderRefund, String openId, Integer shopId) {
         ResponseResult result = new ResponseResult();
-        UserInfoExample example = new UserInfoExample();
-        UserInfoExample.Criteria criteria = example.createCriteria();
-        criteria.andOpenIdEqualTo(openId);
-        List<UserInfo> userInfos = userInfoMapper.selectByExample(example);
-        UserInfo userInfo = null;
-        if (userInfos.size() > 0) {
-            userInfo = userInfos.get(0);
+        OrderRefundExample example1 = new OrderRefundExample();
+        OrderRefundExample.Criteria criteria1 = example1.createCriteria();
+        criteria1.andOrderIdEqualTo(orderRefund.getOrderId());
+        List<OrderRefund> orderRefunds = orderRefundMapper.selectByExample(example1);
+        if (orderRefunds.size()>0){
+            result.setCode(500);
+            result.setError_description("当前订单已申请售后，请勿重复添加");
+            return  result;
+        }else {
+            UserInfoExample example = new UserInfoExample();
+            UserInfoExample.Criteria criteria = example.createCriteria();
+            criteria.andOpenIdEqualTo(openId);
+            List<UserInfo> userInfos = userInfoMapper.selectByExample(example);
+            UserInfo userInfo = null;
+            if (userInfos.size() > 0) {
+                userInfo = userInfos.get(0);
+            }
+            orderRefund.setId(IdUtil.createIdByUUID());
+            orderRefund.setCreateDate(new Date());
+            orderRefund.setShopId(shopId);
+            orderRefund.setRefundStatus(1);
+            orderRefund.setUserId(userInfo.getId());
+            orderRefundMapper.insert(orderRefund);
+            GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderRefund.getOrderId());
+            goodsOrder.setRefundId(orderRefund.getId());
+            goodsOrder.setOrderStatus(11);
+            goodsOrderMapper.updateByPrimaryKey(goodsOrder);
+            return result;
         }
-        orderRefund.setId(IdUtil.createIdByUUID());
-        orderRefund.setCreateDate(new Date());
-        orderRefund.setShopId(shopId);
-        orderRefund.setRefundStatus(1);
-        orderRefund.setUserId(userInfo.getId());
-        orderRefundMapper.insert(orderRefund);
-        GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderRefund.getOrderId());
-        goodsOrder.setRefundId(orderRefund.getId());
-        goodsOrder.setOrderStatus(11);
-        goodsOrderMapper.updateByPrimaryKey(goodsOrder);
-        return result;
     }
 
     @Override
