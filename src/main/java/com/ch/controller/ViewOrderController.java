@@ -39,7 +39,6 @@ public class ViewOrderController {
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
         try {
-            //User user = userMapper.selectByPrimaryKey(userId);
             result = viewOrderService.addOrder(goodsOrderDto.getOrderDto(), openId, shopId);
         } catch (Exception e) {
             LOGGER.error("添加订单失败" + e.getMessage(), e);
@@ -59,7 +58,6 @@ public class ViewOrderController {
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
         try {
-            //User user = userMapper.selectByPrimaryKey(userId);
             result = viewOrderService.showOrder(orderId, openId,shopId);
         } catch (Exception e) {
             LOGGER.error("展示订单失败" + e.getMessage(), e);
@@ -144,7 +142,6 @@ public class ViewOrderController {
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
         try {
-            //User user = userMapper.selectByPrimaryKey(userId);
             result = viewOrderService.deleOrderById(orderId);
         } catch (Exception e) {
             LOGGER.error("取消订单失败" + e.getMessage(), e);
@@ -160,11 +157,10 @@ public class ViewOrderController {
     @ApiOperation("确认收货")
     public ResponseResult updateStatus(HttpServletRequest req, @RequestParam String orderId) {
         ResponseResult result = new ResponseResult();
-       /* String openId = req.getHeader("openId");
+        String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
-        Integer shopId = TokenUtil.getUserId(token);*/
+        Integer shopId = TokenUtil.getUserId(token);
         try {
-            //User user = userMapper.selectByPrimaryKey(userId);
             result = viewOrderService.updateStatus(orderId);
         } catch (Exception e) {
             LOGGER.error("确认收货失败" + e.getMessage(), e);
@@ -184,7 +180,6 @@ public class ViewOrderController {
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
         try {
-            //User user = userMapper.selectByPrimaryKey(userId);
             result = viewOrderService.orderCount(status, openId, shopId);
 
         } catch (Exception e) {
@@ -226,7 +221,6 @@ public class ViewOrderController {
         //String token = req.getHeader("Authorization");
         //Integer shopId = TokenUtil.getUserId(token);
         try {
-            //User user = userMapper.selectByPrimaryKey(userId);
             result = viewOrderService.orderAddAddress(orderId, addressId);
         } catch (Exception e) {
             LOGGER.error("确定订单地址" + e.getMessage(), e);
