@@ -120,7 +120,8 @@ public class GoodsOrder {
     }
 
     public void setPayDate(Date payDate) {
-        this.payDate = payDate;
+
+        this.payDate = payDate ;
     }
 
     public Long getPayPrice() {

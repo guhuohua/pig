@@ -782,9 +782,11 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderItem.getSkuAttrId());
             goodsSku.setInventory(goodsSku.getInventory() + orderItem.getNumber());
             goodsSku.setSale(goodsSku.getSale() - orderItem.getNumber());
+            goodsSkuMapper.updateByPrimaryKey(goodsSku);
             Goods goods = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
             goods.setInventory(goods.getInventory() + orderItem.getNumber());
             goods.setSalesVolume(goods.getSalesVolume() - orderItem.getNumber());
+            goodsMapper.updateByPrimaryKey(goods);
         }
 
         orderMapper.deleteByPrimaryKey(orderId);
