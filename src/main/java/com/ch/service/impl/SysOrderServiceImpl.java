@@ -58,13 +58,15 @@ public class SysOrderServiceImpl implements SysOrderService {
         GoodsOrderExample orderExample = new GoodsOrderExample();
         GoodsOrderExample.Criteria criteria = orderExample.createCriteria();
         criteria.andShopIdEqualTo(sysUser.getShopId());
-        if (BeanUtils.isNotEmpty(param.getName())) {
+        if (BeanUtils.isNotEmpty(param.getUserName())) {
             UserInfoExample userInfoExample = new UserInfoExample();
-            userInfoExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andNicknameLike(param.getName());
+            userInfoExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andNicknameLike(param.getUserName());
             List<UserInfo> userInfos = userInfoMapper.selectByExample(userInfoExample);
             List<Integer> userIds = new ArrayList<>();
-            for (UserInfo info:userInfos) {
-                userIds.add(info.getId());
+            if (BeanUtils.isNotEmpty(userInfos)) {
+                for (UserInfo info:userInfos) {
+                    userIds.add(info.getId());
+                }
             }
             criteria.andUserIdIn(userIds);
         }

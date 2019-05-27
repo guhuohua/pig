@@ -418,9 +418,11 @@ public class SysGoodsServiceImpl implements SysGoodsService {
     public ResponseResult deleteSku(Integer id, Integer userId) {
         ResponseResult result = new ResponseResult();
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
-        GoodsSkuExample goodsSkuExample = new GoodsSkuExample();
-        goodsSkuExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andIdEqualTo(id);
-        goodsSkuMapper.deleteByExample(goodsSkuExample);
+        if (BeanUtils.isNotEmpty(id)) {
+            GoodsSkuExample goodsSkuExample = new GoodsSkuExample();
+            goodsSkuExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andIdEqualTo(id);
+            goodsSkuMapper.deleteByExample(goodsSkuExample);
+        }
         return result;
     }
 }
