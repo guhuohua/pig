@@ -7,6 +7,7 @@
 
 package com.ch.controller;
 
+import com.ch.base.BeanUtils;
 import com.ch.base.ResponseResult;
 import com.ch.dto.UserAddressDto;
 import com.ch.entity.UserAddress;
@@ -38,7 +39,7 @@ public class ViewUserAddressController {
         ResponseResult result = new ResponseResult();
         try {
             for (UserAddress record : userAddressDto.getRecords()) {
-                if (record.getId() == null) {
+                if (BeanUtils.isEmpty(record.getId())) {
                     result = viewUserAddressService.insert(record, openId, shopId);
                 } else {
                     result = viewUserAddressService.updateByPrimaryKey(record, openId, shopId);

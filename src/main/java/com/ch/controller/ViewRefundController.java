@@ -8,6 +8,7 @@
 package com.ch.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ch.base.BeanUtils;
 import com.ch.base.ResponseResult;
 import com.ch.config.WxRefundProperties;
 import com.ch.dao.*;
@@ -97,29 +98,41 @@ public class ViewRefundController {
     @PostMapping("refund")
     @ResponseBody
     @Transactional
-    public JSONObject refund(HttpServletRequest req, @RequestParam String orderId) {
+    public ResponseResult refund(HttpServletRequest req, @RequestParam String orderId) {
         // Long orderId, String refundId, Long totalFee,
         // Long refundFee, String refundAccount
 
         // checkConfig(weixinProperties);
+
+       ResponseResult result1 = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
         GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderId);
+
+
 
         ShopMiniProgram shopMiniProgram = viewShopNameService.shopPayInfo(shopId);
 
         String today = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         String code = PayUtil.createCode(8);
 
-        String refundId = shopMiniProgram.getMchIdd() + today + code;
 
         RefoundDto refoundDto = new RefoundDto();
         refoundDto.setAppid(shopMiniProgram.getAppId());
         refoundDto.setMch_id(shopMiniProgram.getMchIdd());
         refoundDto.setNonce_str(RandomUtils.generateMixString(32));
         refoundDto.setOut_trade_no(goodsOrder.getId());
-        refoundDto.setOut_refund_no(refundId);
+
+        if (BeanUtils.isNotEmpty(goodsOrder.getRefundId())){
+            refoundDto.setOut_refund_no(goodsOrder.getRefundId());
+        }else {
+            String refundId = shopMiniProgram.getMchIdd() + today + code;
+            refoundDto.setOut_refund_no(refundId);
+            goodsOrder.setRefundId(refundId);
+            goodsOrderMapper.updateByPrimaryKey(goodsOrder);
+        }
+
         refoundDto.setTotal_fee(goodsOrder.getOrderPrice() + "");
         refoundDto.setRefund_fee(goodsOrder.getPayPrice().toString());
 
@@ -189,32 +202,25 @@ public class ViewRefundController {
                     List<OrderItem> orderItems = orderItemMapper.selectByExample(example);
                     for (OrderItem orderItem : orderItems) {
                         GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderItem.getSkuAttrId());
-                        goodsSku.setSale(goodsSku.getSale() - orderItem.getNumber());
                         goodsSku.setInventory(goodsSku.getInventory() + orderItem.getNumber());
                         goodsSkuMapper.updateByPrimaryKey(goodsSku);
                         Goods goods = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
-                        goods.setSale(goods.getSale() - orderItem.getNumber());
                         goods.setInventory(goods.getInventory() + orderItem.getNumber());
                         goodsMapper.updateByPrimaryKey(goods);
                     }
-
                 }
-                JsonObject.put("code",0);
-                return JsonObject;
+
+                return result1;
             }else {
-                JsonObject.put("code",500);
-
-                return JsonObject;
+                result1.setCode(500);
+                return result1;
             }
-
-
-
         } catch (Exception e) {
             JSONObject JsonObject = new JSONObject();
-            JsonObject.put("错误信息", e);
-            JsonObject.put("code",500);
-
-            return JsonObject;
+            JsonObject.put("error", e);
+            result1.setCode(500);
+            result1.setData(JsonObject);
+            return result1;
 
         }
     }
