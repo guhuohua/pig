@@ -35,6 +35,7 @@ public class SysGoodsCategoryServiceImpl implements SysGoodsCategoryService {
         GoodsTypeExample goodsTypeExample = new GoodsTypeExample();
         GoodsTypeExample.Criteria criteria = goodsTypeExample.createCriteria();
         criteria.andShopIdEqualTo(sysUser.getShopId());
+        criteria.andStatusEqualTo(1);
         List<GoodsType> goodsTypes = goodsTypeMapper.selectByExample(goodsTypeExample);
         List<GoodsType> rootMenu = new ArrayList<GoodsType>();
         for (GoodsType nav : goodsTypes) {

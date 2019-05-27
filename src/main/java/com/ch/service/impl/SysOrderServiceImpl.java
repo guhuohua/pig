@@ -55,41 +55,8 @@ public class SysOrderServiceImpl implements SysOrderService {
     public ResponseResult list(SysOrderParam param, Integer userId) {
         ResponseResult result = new ResponseResult();
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
-        GoodsOrderExample orderExample = new GoodsOrderExample();
-        GoodsOrderExample.Criteria criteria = orderExample.createCriteria();
-        criteria.andShopIdEqualTo(sysUser.getShopId());
-        if (BeanUtils.isNotEmpty(param.getUserName())) {
-            UserInfoExample userInfoExample = new UserInfoExample();
-            userInfoExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andNicknameLike(param.getUserName());
-            List<UserInfo> userInfos = userInfoMapper.selectByExample(userInfoExample);
-            List<Integer> userIds = new ArrayList<>();
-            if (BeanUtils.isNotEmpty(userInfos)) {
-                for (UserInfo info:userInfos) {
-                    userIds.add(info.getId());
-                }
-            }
-            criteria.andUserIdIn(userIds);
-        }
-        if (BeanUtils.isNotEmpty(param.getId())) {
-            criteria.andIdEqualTo(param.getId());
-        }
-        if (BeanUtils.isNotEmpty(param.getOrderStatus())) {
-            criteria.andOrderStatusEqualTo(param.getOrderStatus());
-        }
-        if (BeanUtils.isNotEmpty(param.getBeginDate()) && BeanUtils.isNotEmpty(param.getEndDate())) {
-            criteria.andCreateDateGreaterThanOrEqualTo(new Date(param.getBeginDate()));
-            criteria.andCreateDateLessThanOrEqualTo(new Date(param.getEndDate()));
-        }
         PageHelper.startPage(param.getCurrentPage(), param.getPageSize());
-        List<GoodsOrder> orders = orderMapper.selectByExample(orderExample);
-        for (GoodsOrder goodsOrder:orders) {
-            UserInfoExample userInfoExample = new UserInfoExample();
-            userInfoExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andIdEqualTo(goodsOrder.getUserId());
-            List<UserInfo> userInfos = userInfoMapper.selectByExample(userInfoExample);
-            if (userInfos.stream().findFirst().isPresent()) {
-                goodsOrder.setUserName(userInfos.stream().findFirst().get().getNickname());
-            }
-        }
+        List<GoodsOrder> orders = userInfoMapper.orderList(param, sysUser.getShopId());
         PageInfo<GoodsOrder> pageInfo = new PageInfo<>(orders);
         result.setData(pageInfo);
         return result;

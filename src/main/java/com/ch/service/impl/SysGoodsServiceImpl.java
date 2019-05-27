@@ -194,7 +194,7 @@ public class SysGoodsServiceImpl implements SysGoodsService {
         System.out.println(JSON.toJSON(model));
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         List<SysGoodsSkuModel> sysGoodsSkuModelList = model.getSysGoodsSkuModelList();
-        long max = sysGoodsSkuModelList.stream().mapToLong(SysGoodsSkuModel::getPresentPrice).max().getAsLong();
+        long max = sysGoodsSkuModelList.stream().mapToLong(SysGoodsSkuModel::getOriginalPrice).max().getAsLong();
         long min = sysGoodsSkuModelList.stream().mapToLong(SysGoodsSkuModel::getPresentPrice).min().getAsLong();
         if (BeanUtils.isEmpty(model.getId())) {
 

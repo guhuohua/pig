@@ -1,6 +1,8 @@
 package com.ch.dao;
 
 import com.ch.dao.provider.UserInfoProvider;
+import com.ch.dto.SysOrderParam;
+import com.ch.entity.GoodsOrder;
 import com.ch.entity.UserInfo;
 import com.ch.entity.UserInfoExample;
 import java.util.List;
@@ -44,4 +46,7 @@ public interface UserInfoMapper {
 
     @Select("select count(*) from goods_order where user_id = #{userId} and shop_id = #{shopId} and order_status = 7")
     Long orderCount(@Param("userId") Integer userId, @Param("shopId") Integer shopId);
+
+    @SelectProvider(type = UserInfoProvider.class, method = "orderList")
+    List<GoodsOrder> orderList(@Param("param")SysOrderParam param, @Param("shopId") Integer shopId);
 }
