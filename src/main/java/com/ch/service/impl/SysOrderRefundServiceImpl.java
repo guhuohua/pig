@@ -119,7 +119,7 @@ public class SysOrderRefundServiceImpl implements SysOrderRefundService {
         refoundDto.setAppid(shopMiniProgram.getAppId());
         refoundDto.setMch_id(shopMiniProgram.getMchIdd());
         refoundDto.setNonce_str(RandomUtils.generateMixString(32));
-        refoundDto.setOut_trade_no(goodsOrder.getPayId());
+        refoundDto.setOut_trade_no(goodsOrder.getId());
         refoundDto.setOut_refund_no(refundId);
         refoundDto.setTotal_fee(goodsOrder.getPayPrice() + "");
         refoundDto.setRefund_fee(price.toString());
