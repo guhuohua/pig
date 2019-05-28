@@ -163,6 +163,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             }*/
         }
         GoodsOrder order = orderMapper.selectByPrimaryKey(orderId);
+
         OrderItemExample example = new OrderItemExample();
         OrderItemExample.Criteria criteria = example.createCriteria();
         criteria.andOrderIdEqualTo(orderId);
@@ -172,6 +173,9 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderItem.getSkuAttrId());
             orderItem.setImage(goodsSku.getGoodsImage());
             orderItem.setSkuName(goodsSku.getSkuName());
+            Goods goods = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
+            order.setFreight(goods.getFreight());
+
         }
         map.put("userAddresses1", userAddresses1);
         //map.put("userAddress", userAddress);
