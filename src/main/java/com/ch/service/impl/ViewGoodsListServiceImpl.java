@@ -39,13 +39,15 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
         ResponseResult result1 = new ResponseResult();
         Map params = new HashMap<>();
         String str = null;
+
+        int start = (solrDto.getStart() - 1) * solrDto.getRows();
         if (BeanUtils.isNotEmpty(solrDto.getCategoryId())) {
             String str1 =  "shopId:" + shopId + " AND " +"categoryId:" +solrDto.getCategoryId();
             //str = "\""+"shopId:" + shopId +"\"" + "," + "\""+"categoryId:" +solrDto.getCategoryId()+"\"" ;
            // System.out.println(str1);
             params.put("q","*:*");
             params.put("fq", str1);
-            params.put("start", solrDto.getStart());
+            params.put("start", start);
             params.put("rows", solrDto.getRows());
         }
        // System.out.println(params);
@@ -62,7 +64,7 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
             str = "goodsSalesArea:" + "\"" + solrDto.getCondition() + "\"" + " OR name:" + "\"" + solrDto.getCondition() + "\"" + " OR title:" + "\"" + solrDto.getCondition() + "\"";
             //System.out.println(str);
             params.put("fq", str);
-            params.put("start", solrDto.getStart());
+            params.put("start", start);
             params.put("rows", solrDto.getRows());
             params.put("q", "shopId:" + shopId);
         }
@@ -70,7 +72,7 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
             str = "goodsSalesArea:" + "\"" + solrDto.getCondition() + "\"" + " OR name:" + "\"" + solrDto.getCondition() + "\"" + " OR title:" + "\"" + solrDto.getCondition() + "\"";
             //System.out.println(str);
             params.put("fq", str);
-            params.put("start", solrDto.getStart());
+            params.put("start", start);
             params.put("rows", solrDto.getRows());
             params.put("sort", "newSort asc");
             params.put("q", "shopId:" + shopId);
@@ -78,7 +80,7 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
         if ("HOT".equals(solrDto.getCondition())) {
             str = "goodsSalesArea:" + "\"" + solrDto.getCondition() + "\"" + " OR name:" + "\"" + solrDto.getCondition() + "\"" + " OR title:" + "\"" + solrDto.getCondition() + "\"";
             params.put("fq", str);
-            params.put("start", solrDto.getStart());
+            params.put("start", start);
             params.put("rows", solrDto.getRows());
             params.put("sort", "hotSort asc");
             params.put("q", "shopId:" + shopId);
@@ -86,10 +88,10 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
         if ("BOUTIQUE".equals(solrDto.getCondition())) {
             str = "goodsSalesArea:" + "\"" + solrDto.getCondition() + "\"" + " OR name:" + "\"" + solrDto.getCondition() + "\"" + " OR title:" + "\"" + solrDto.getCondition() + "\"";
             params.put("fq", str);
-
-            params.put("start", solrDto.getStart());
+            params.put("start", start);
             params.put("rows", solrDto.getRows());
             params.put("sort", "boutiqueSort asc");
+            params.put("q", "shopId:" + shopId);
         }
         SolrParams mapSolrParams = new MapSolrParams(params);
         QueryResponse query1 = null;

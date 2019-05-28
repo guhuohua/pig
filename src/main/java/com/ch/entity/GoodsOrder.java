@@ -43,6 +43,26 @@ public class GoodsOrder {
 
     private String userName;
 
+    private Long freight;
+
+    private Long goodsFee;
+
+    public Long getFreight() {
+        return freight;
+    }
+
+    public void setFreight(Long freight) {
+        this.freight = freight;
+    }
+
+    public Long getGoodsFee() {
+        return goodsFee;
+    }
+
+    public void setGoodsFee(Long goodsFee) {
+        this.goodsFee = goodsFee;
+    }
+
     public String getUserName() {
         return userName;
     }
