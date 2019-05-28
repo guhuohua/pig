@@ -52,6 +52,7 @@ public class SolrServiceImpl implements SolrService {
                 GoodsSolrSchema goodsSolrSchema = new GoodsSolrSchema();
                 modelMapper.map(goods, goodsSolrSchema);
                 goodsSolrSchema.setId(UUID.randomUUID().toString());
+                goodsSolrSchema.setCategoryId(goods.getCatrgoryId());
                 GoodsAreaExample goodsAreaExample = new GoodsAreaExample();
                 goodsAreaExample.createCriteria().andShopIdEqualTo(shopId).andGoodsIdEqualTo(goods.getId());
                 goodsAreaMapper.selectByExample(goodsAreaExample).forEach(item -> {

@@ -40,6 +40,9 @@ public class UserInfoProvider {
         if (BeanUtils.isNotEmpty(param.getBeginDate()) && BeanUtils.isNotEmpty(param.getEndDate())) {
             sb.append(" and create_date between ").append(new Date(param.getBeginDate())).append(" and ").append(new Date(param.getEndDate()));
         }
+        if (BeanUtils.isNotEmpty(param.getOrderStatus())) {
+            sb.append(" and order_status = ").append(param.getOrderStatus());
+        }
         return sb.toString();
     }
 }
