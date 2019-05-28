@@ -41,39 +41,49 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
         String str = null;
         if (solrDto.getCategoryId() != null) {
             params.put("q", "categoryId :" + solrDto.getCategoryId());
+            params.put("q", "shopId:" + shopId);
+            params.put("start", solrDto.getStart());
+            params.put("rows", solrDto.getRows());
+            params.put("sort", "sort asc");
         }
 
         //System.out.println("categoryId :"+solrDto.getCategoryId()+" AND "+"shopId:"+sysUser.getShopId());
         //params.put("q","*:*");
 
-        params.put("q", "shopId:" + shopId);
+       /* params.put("q", "shopId:" + shopId);
         params.put("start", solrDto.getStart());
         params.put("rows", solrDto.getRows());
-        params.put("sort", "sort asc");
+        params.put("sort", "sort asc");*/
 
         if (solrDto.getCondition() != null) {
             str = "goodsSalesArea:" + "\"" + solrDto.getCondition() + "\"" + " OR name:" + "\"" + solrDto.getCondition() + "\"" + " OR title:" + "\"" + solrDto.getCondition() + "\"";
             //System.out.println(str);
             params.put("fq", str);
-
+            params.put("q", "shopId:" + shopId);
 
             if ("NEW".equals(solrDto.getCondition())) {
                 str = "goodsSalesArea:" + "\"" + solrDto.getCondition() + "\"" + " OR name:" + "\"" + solrDto.getCondition() + "\"" + " OR title:" + "\"" + solrDto.getCondition() + "\"";
                 //System.out.println(str);
                 params.put("fq", str);
                 params.remove("sort");
+                params.put("start", solrDto.getStart());
+                params.put("rows", solrDto.getRows());
                 params.put("sort", "newSort asc");
             }
             if ("HOT".equals(solrDto.getCondition())) {
                 str = "goodsSalesArea:" + "\"" + solrDto.getCondition() + "\"" + " OR name:" + "\"" + solrDto.getCondition() + "\"" + " OR title:" + "\"" + solrDto.getCondition() + "\"";
                 params.put("fq", str);
                 params.remove("sort");
+                params.put("start", solrDto.getStart());
+                params.put("rows", solrDto.getRows());
                 params.put("sort", "hotSort asc");
             }
             if ("BOUTIQUE".equals(solrDto.getCondition())) {
                 str = "goodsSalesArea:" + "\"" + solrDto.getCondition() + "\"" + " OR name:" + "\"" + solrDto.getCondition() + "\"" + " OR title:" + "\"" + solrDto.getCondition() + "\"";
                 params.put("fq", str);
                 params.remove("sort");
+                params.put("start", solrDto.getStart());
+                params.put("rows", solrDto.getRows());
                 params.put("sort", "boutiqueSort asc");
             }
         }
