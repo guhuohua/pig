@@ -153,7 +153,7 @@ public class ShopServiceImpl implements ShopService {
             user.setPassword(encodedPassword);
             user.setPhone(param.getPhone());
             user.setCreateTime(new Date());
-            user.setStatus(0);
+            user.setStatus(param.getStatus());
             sysUserMapper.insert(user);
             SysUserRole sysUserRole = new SysUserRole();
             sysUserRole.setRoleId(4);

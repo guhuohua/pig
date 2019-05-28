@@ -26,7 +26,7 @@ public class ShopConsumer {
         }
     }
 
-    @JmsListener(destination = "cancelOrder")
+    @JmsListener(destination = "delivery")
     public void delivery(String msg) {
         log.info("收到7天自动收货MQ，orderId:[{}]", msg);
         try {
