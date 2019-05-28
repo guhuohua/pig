@@ -101,29 +101,20 @@ public class ViewRefundController {
     public ResponseResult refund(HttpServletRequest req, @RequestParam String orderId) {
         // Long orderId, String refundId, Long totalFee,
         // Long refundFee, String refundAccount
-
         // checkConfig(weixinProperties);
-
        ResponseResult result1 = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
         GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderId);
-
-
-
         ShopMiniProgram shopMiniProgram = viewShopNameService.shopPayInfo(shopId);
-
         String today = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         String code = PayUtil.createCode(8);
-
-
         RefoundDto refoundDto = new RefoundDto();
         refoundDto.setAppid(shopMiniProgram.getAppId());
         refoundDto.setMch_id(shopMiniProgram.getMchIdd());
         refoundDto.setNonce_str(RandomUtils.generateMixString(32));
         refoundDto.setOut_trade_no(goodsOrder.getId());
-
         if (BeanUtils.isNotEmpty(goodsOrder.getRefundId())){
             refoundDto.setOut_refund_no(goodsOrder.getRefundId());
         }else {
@@ -132,10 +123,8 @@ public class ViewRefundController {
             goodsOrder.setRefundId(refundId);
             goodsOrderMapper.updateByPrimaryKey(goodsOrder);
         }
-
         refoundDto.setTotal_fee(goodsOrder.getOrderPrice() + "");
         refoundDto.setRefund_fee(goodsOrder.getPayPrice().toString());
-
         Map<String, Object> params = new TreeMap<>();
         params.put("appid", refoundDto.getAppid());
         params.put("mch_id", refoundDto.getMch_id());
@@ -150,25 +139,18 @@ public class ViewRefundController {
         Map sPara = PayUtil.paraFilter(params);
         String prestr = PayUtil.createLinkString(sPara); // 把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串
         StringBuilder stringSignTemp = new StringBuilder(prestr).append("&key=0EF1CDAFCC3327C1AF3B8D6CA37F9581");
-
         String sign = md5Password(stringSignTemp.toString()).toUpperCase();
-
         //MD5运算生成签名
         refoundDto.setSign(sign);
-
         try {
-
             String respXml = XmlUtil.messageToXML1(refoundDto);
             // 打印respXml发现，得到的xml中有“__”不对，应该替换成“_”
             respXml = respXml.replace("__", "_");
             String param = respXml;
             System.out.println(param);
-
             String xmlStr = doRefund("https://api.mch.weixin.qq.com/secapi/pay/refund", param, shopMiniProgram);
-
             //加入微信支付日志
             // payWechatLogService.insertPayWechatLog(Constants.PAY_REFUND_RESULT_LOG, xmlStr);
-
             System.out.println("请求微信退款接口，返回 result：" + xmlStr);
             // 将解析结果存储在Map中
             Map map = new HashMap();
@@ -190,9 +172,7 @@ public class ViewRefundController {
            /* System.out.println("请求微信预支付接口，返回 code：" + return_code);
             System.out.println("请求微信预支付接口，返回 msg：" + return_msg);*/
             JSONObject JsonObject = new JSONObject();
-
             if ("SUCCESS".equals(return_code) && "SUCCESS".equals(result_code)) {
-
                 if (goodsOrder.getOrderStatus() == 3) {
                     goodsOrder.setOrderStatus(10);
                     goodsOrderMapper.updateByPrimaryKey(goodsOrder);
@@ -209,7 +189,6 @@ public class ViewRefundController {
                         goodsMapper.updateByPrimaryKey(goods);
                     }
                 }
-
                 return result1;
             }else {
                 result1.setCode(500);
@@ -221,7 +200,6 @@ public class ViewRefundController {
             result1.setCode(500);
             result1.setData(JsonObject);
             return result1;
-
         }
     }
 

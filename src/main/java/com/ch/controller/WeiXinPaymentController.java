@@ -130,10 +130,8 @@ public class WeiXinPaymentController {
         // 除去数组中的空值和签名参数
         Map sPara = PayUtil.paraFilter(sParaTemp);
         String prestr = PayUtil.createLinkString(sPara); // 把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串
-        StringBuilder stringSignTemp = new StringBuilder(prestr).append("&key=0EF1CDAFCC3327C1AF3B8D6CA37F9581");
-
+        StringBuilder stringSignTemp = new StringBuilder(prestr).append("&key="+shopMiniProgram.getAppKey());
         String sign = md5Password(stringSignTemp.toString()).toUpperCase();
-
         //MD5运算生成签名
         paymentPo.setSign(sign);
         //打包要发送的xml
@@ -161,7 +159,6 @@ public class WeiXinPaymentController {
         String return_code = map.get("return_code").toString();//返回状态码
         String return_msg = map.get("return_msg").toString();//返回信息
         String result_code = map.get("result_code").toString();//返回状态码
-
         System.out.println("请求微信预支付接口，返回 code：" + return_code);
         System.out.println("请求微信预支付接口，返回 msg：" + return_msg);
         if ("SUCCESS".equals(return_code) && "SUCCESS".equals(result_code)) {
@@ -178,13 +175,11 @@ public class WeiXinPaymentController {
             JsonObject.put("paySign", paySign);
             result1.setData(JsonObject);
             return result1;
-
         }else {
             result1.setCode(500);
             return result1;
         }
     }
-
 
     /**
      * 预支付时填写的 notify_url ，支付成功后的回调接口
@@ -224,6 +219,4 @@ public class WeiXinPaymentController {
             e.printStackTrace();
         }
     }
-
-
 }
