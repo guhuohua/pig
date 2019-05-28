@@ -143,7 +143,7 @@ public class SysGoodsCategoryServiceImpl implements SysGoodsCategoryService {
         ResponseResult result = new ResponseResult();
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         GoodsTypeExample goodsTypeExample = new GoodsTypeExample();
-        goodsTypeExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andParentIdEqualTo(0);
+        goodsTypeExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andParentIdEqualTo(0).andStatusEqualTo(1);
         List<GoodsType> goodsTypes = goodsTypeMapper.selectByExample(goodsTypeExample);
         result.setData(goodsTypes);
         return result;
