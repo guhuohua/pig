@@ -3,14 +3,12 @@ package com.ch.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.ch.base.ResponseResult;
 import com.ch.config.WxRefundProperties;
-import com.ch.dao.GoodsOrderMapper;
-import com.ch.dao.OrderRefundMapper;
-import com.ch.dao.ShopMiniProgramMapper;
-import com.ch.dao.SysUserMapper;
+import com.ch.dao.*;
 import com.ch.dto.RefoundDto;
 import com.ch.dto.SysOrderRefundDTO;
 import com.ch.dto.SysOrderRefundParam;
 import com.ch.entity.*;
+import com.ch.enums.OderStatusEnum;
 import com.ch.model.SysRefundThroughParam;
 import com.ch.service.SysOrderRefundService;
 import com.ch.service.ViewShopNameService;
@@ -33,6 +31,7 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.net.ssl.SSLContext;
 import java.io.ByteArrayInputStream;
@@ -65,6 +64,12 @@ public class SysOrderRefundServiceImpl implements SysOrderRefundService {
     @Autowired
     ViewShopNameService viewShopNameService;
 
+    @Autowired
+    GoodsMapper goodsMapper;
+
+    @Autowired
+    GoodsSkuMapper goodsSkuMapper;
+
     @Override
     public ResponseResult list(SysOrderRefundParam param, Integer userId) {
         ResponseResult result = new ResponseResult();
@@ -77,6 +82,7 @@ public class SysOrderRefundServiceImpl implements SysOrderRefundService {
     }
 
     @Override
+    @Transactional
     public ResponseResult refundHandle(SysRefundThroughParam param, Integer userId) {
         ResponseResult result = new ResponseResult();
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
@@ -97,9 +103,28 @@ public class SysOrderRefundServiceImpl implements SysOrderRefundService {
                     // 调用微信退款
                     wxRefund(goodsOrder.getId(), sysUser.getShopId(), param.getPrice(), orderRefund.getId());
                     orderRefundMapper.updateByPrimaryKey(orderRefund);
+                    goodsOrder.setOrderStatus(Integer.valueOf(OderStatusEnum.EVALUATED.getCode()));
+                    goodsOrderMapper.updateByPrimaryKey(goodsOrder);
+
+                    Goods goods = goodsMapper.selectByPrimaryKey(orderRefund.getGoodsId());
+                    goods.setInventory(goods.getInventory() + orderRefund.getNumber());
+                    goodsMapper.updateByPrimaryKey(goods);
+
+                    GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderRefund.getSkuId());
+                    goodsSku.setInventory(goodsSku.getInventory() + orderRefund.getNumber());
+                    goodsSkuMapper.updateByPrimaryKey(goodsSku);
                 }
             }
             if (param.getRefundStatus() == 3) {
+                GoodsOrderExample goodsOrderExample = new GoodsOrderExample();
+                goodsOrderExample.createCriteria().andRefundIdEqualTo(orderRefund.getId()).andShopIdEqualTo(sysUser.getShopId());
+                boolean present = goodsOrderMapper.selectByExample(goodsOrderExample).stream().findFirst().isPresent();
+                if (present) {
+                    GoodsOrder goodsOrder = goodsOrderMapper.selectByExample(goodsOrderExample).stream().findFirst().get();
+                    goodsOrder.setOrderStatus(Integer.valueOf(OderStatusEnum.EVALUATED.getCode()));
+                    goodsOrderMapper.updateByPrimaryKey(goodsOrder);
+                }
+
                 orderRefund.setRefundStatus(3);
                 orderRefund.setModifyDate(new Date());
                 orderRefund.setRefuseReason(param.getRefuse());
