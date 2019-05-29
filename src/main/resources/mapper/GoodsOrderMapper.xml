@@ -21,6 +21,8 @@
     <result column="delivery_id" property="deliveryId" jdbcType="INTEGER" />
     <result column="refund_id" property="refundId" jdbcType="VARCHAR" />
     <result column="track_number" property="trackNumber" jdbcType="VARCHAR" />
+    <result column="freight" property="freight" jdbcType="VARCHAR" />
+    <result column="goods_fee" property="goodsFee" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -83,7 +85,7 @@
   <sql id="Base_Column_List" >
     id, shop_id, user_id, order_status, create_date, delivery_date, modify_date, order_price, 
     pay_date, pay_price, pay_type, remark, status, pay_id, take_date, order_type, delivery_id, 
-    refund_id, track_number
+    refund_id, track_number,freight,goods_fee
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.GoodsOrderExample" >
     select
@@ -123,14 +125,14 @@
       pay_price, pay_type, remark, 
       status, pay_id, take_date, 
       order_type, delivery_id, refund_id, 
-      track_number)
+      track_number,freight,goods_fee)
     values (#{id,jdbcType=VARCHAR}, #{shopId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
       #{orderStatus,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{deliveryDate,jdbcType=TIMESTAMP}, 
       #{modifyDate,jdbcType=TIMESTAMP}, #{orderPrice,jdbcType=BIGINT}, #{payDate,jdbcType=TIMESTAMP}, 
       #{payPrice,jdbcType=BIGINT}, #{payType,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{status,jdbcType=INTEGER}, #{payId,jdbcType=VARCHAR}, #{takeDate,jdbcType=TIMESTAMP}, 
       #{orderType,jdbcType=VARCHAR}, #{deliveryId,jdbcType=INTEGER}, #{refundId,jdbcType=VARCHAR}, 
-      #{trackNumber,jdbcType=VARCHAR})
+      #{trackNumber,jdbcType=VARCHAR},#{freight,jdbcType=BIGINT},#{goodsFee,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.ch.entity.GoodsOrder" >
     insert into goods_order
@@ -428,7 +430,9 @@
       order_type = #{orderType,jdbcType=VARCHAR},
       delivery_id = #{deliveryId,jdbcType=INTEGER},
       refund_id = #{refundId,jdbcType=VARCHAR},
-      track_number = #{trackNumber,jdbcType=VARCHAR}
+      track_number = #{trackNumber,jdbcType=VARCHAR},
+      freight = #{freight,jdbcType=BIGINT},
+      goods_fee = #{goodsFee,jdbcType=BIGINT}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>
