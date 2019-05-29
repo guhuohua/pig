@@ -14,7 +14,7 @@ public interface ViewOrderService {
 
     ResponseResult findAll(String openId, Integer shopId,String condition);
 
-    ResponseResult deleOrderById(String orderId);
+    ResponseResult deleOrderById(String orderId,Integer shopId);
 
     ResponseResult updateStatus(String orderId);
 
