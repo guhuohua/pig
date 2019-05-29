@@ -14,6 +14,7 @@ import com.ch.config.WxRefundProperties;
 import com.ch.dao.*;
 import com.ch.dto.RefoundDto;
 import com.ch.entity.*;
+import com.ch.service.SolrService;
 import com.ch.service.ViewShopNameService;
 import com.ch.util.PayUtil;
 import com.ch.util.RandomUtils;
@@ -65,6 +66,8 @@ public class ViewRefundController {
     GoodsSkuMapper goodsSkuMapper;
     @Autowired
     GoodsMapper goodsMapper;
+    @Autowired
+    SolrService solrService;
 
 
     public static String md5Password(String key) {
@@ -186,6 +189,7 @@ public class ViewRefundController {
                         Goods goods = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
                         goods.setInventory(goods.getInventory() + orderItem.getNumber());
                         goodsMapper.updateByPrimaryKey(goods);
+                        solrService.releaseGoods(goods.getId(),shopId);
                     }
                 }
                 return result1;

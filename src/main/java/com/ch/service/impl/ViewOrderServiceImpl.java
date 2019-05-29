@@ -12,8 +12,10 @@ import com.ch.base.ResponseResult;
 import com.ch.dao.*;
 import com.ch.dto.OrderDto;
 import com.ch.entity.*;
+import com.ch.service.SolrService;
 import com.ch.service.ViewOrderService;
 import com.ch.util.RandomUtils;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +45,8 @@ public class ViewOrderServiceImpl implements ViewOrderService {
     UserInfoMapper userInfoMapper;
     @Autowired
     UserAddressMapper userAddressMapper;
+    @Autowired
+    SolrService solrService;
 
 
     @Override
@@ -90,12 +94,13 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                 if (goodsSku.getInventory() > 0) {
                     goodsSku.setInventory(goodsSku.getInventory() - orderDto.getNum() );
                     goodsSku.setSale(goodsSku.getSale() + orderDto.getNum());
+
                     //Goods goods1 = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
                     orderItem.setName(orderDto.getName() + "" + goodsSku.getSkuName());
                    // orderItem.setSkuName(goodsSku.getSkuName());
                     orderItem.setGoodsName(orderDto.getName());
                     orderItem.setNumber(orderDto.getNum());
-                    orderItem.setPrice(goodsSku.getPresentPrice() * orderDto.getNum());
+                    orderItem.setPrice(goodsSku.getPresentPrice());
                     orderItem.setOrderId(order.getId());
                     orderItem.setShopId(shopId);
                     orderItem.setSkuAttrId(orderDto.getGoodsSku().getId());
@@ -106,6 +111,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                     return result;
                 }
                 goodsSkuMapper.updateByPrimaryKey(goodsSku);
+
                 if (goods.getInventory() > 0) {
                     goods.setInventory(goods.getInventory() - orderDto.getNum());
                     goods.setSalesVolume(goods.getSalesVolume() + orderDto.getNum());
@@ -115,6 +121,9 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                     return result;
                 }
                 goodsMapper.updateByPrimaryKey(goods);
+                solrService.releaseGoods(goods.getId(),shopId);
+
+
             }
             order.setUserId(userInfo.getId());
             order.setShopId(shopId);
@@ -175,6 +184,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             orderItem.setSkuName(goodsSku.getSkuName());
             Goods goods = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
             order.setFreight(goods.getFreight());
+            order.setGoodsFee(orderItem.getPrice() * orderItem.getNumber());
 
         }
         map.put("userAddresses1", userAddresses1);
@@ -776,7 +786,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
     }
 
     @Override
-    public ResponseResult deleOrderById(String orderId) {
+    public ResponseResult deleOrderById(String orderId, Integer shopId) {
         OrderItemExample example = new OrderItemExample();
         OrderItemExample.Criteria criteria = example.createCriteria();
         criteria.andOrderIdEqualTo(orderId);
@@ -790,8 +800,8 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             goods.setInventory(goods.getInventory() + orderItem.getNumber());
             goods.setSalesVolume(goods.getSalesVolume() - orderItem.getNumber());
             goodsMapper.updateByPrimaryKey(goods);
+            solrService.releaseGoods(goods.getId(),shopId);
         }
-
         orderMapper.deleteByPrimaryKey(orderId);
 
         ResponseResult result = new ResponseResult();
