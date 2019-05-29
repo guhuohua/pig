@@ -158,10 +158,10 @@ public class ViewGoodsCarServiceImpl implements ViewGoodsCarService {
                     goodsCar.setNum(carDto.getNum());
                     goodsCarMapper.updateByPrimaryKey(goodsCar);
                 }
-                GoodsCarExample exampl1 = new GoodsCarExample();
+                /*GoodsCarExample exampl1 = new GoodsCarExample();
                 GoodsCarExample.Criteria criteria1 = exampl1.createCriteria();
                 criteria1.andSkuIdNotEqualTo(carDto.getGoodsSku().getId());
-                goodsCarMapper.deleteByExample(exampl1);
+                goodsCarMapper.deleteByExample(exampl1);*/
             }
         }
         ResponseResult result = new ResponseResult();
