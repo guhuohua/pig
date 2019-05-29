@@ -1,5 +1,6 @@
 package com.ch.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.ch.dao.GoodsAreaMapper;
 import com.ch.dao.GoodsMapper;
 import com.ch.dao.SysUserMapper;
@@ -43,6 +44,7 @@ public class SolrServiceImpl implements SolrService {
     @Override
     @Async
     public void releaseGoods(Integer goodsId, Integer shopId) {
+        System.out.println("开始删除solr:"+goodsId);
         lowerShelf(goodsId);
         GoodsExample goodsExample = new GoodsExample();
         goodsExample.createCriteria().andShopIdEqualTo(shopId).andIdEqualTo(goodsId);
@@ -71,6 +73,7 @@ public class SolrServiceImpl implements SolrService {
                     }
                 });
                 try {
+                    System.out.println("准备同步solr:"+ JSON.toJSONString(goodsSolrSchema));
                     solrClient.addBean(goodsSolrSchema);
                     solrClient.commit();
                 } catch (IOException e) {
