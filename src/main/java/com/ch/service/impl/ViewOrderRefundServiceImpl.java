@@ -102,7 +102,9 @@ public class ViewOrderRefundServiceImpl implements ViewOrderRefundService {
                     GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderRefund.getOrderId());
                     OrderItemExample orderExample1 = new OrderItemExample();
                     OrderItemExample.Criteria criteria2 = orderExample1.createCriteria();
-                    criteria2.andOrderIdEqualTo(goodsOrder.getId());
+                    if (BeanUtils.isNotEmpty(goodsOrder)){
+                        criteria2.andOrderIdEqualTo(goodsOrder.getId());
+                    }
                     List<OrderItem> orderItems = orderItemMapper.selectByExample(orderExample1);
                     List list1 = new ArrayList();
                     for (OrderItem orderItem : orderItems) {
@@ -136,7 +138,9 @@ public class ViewOrderRefundServiceImpl implements ViewOrderRefundService {
                     GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderRefund.getOrderId());
                     OrderItemExample orderExample1 = new OrderItemExample();
                     OrderItemExample.Criteria criteria2 = orderExample1.createCriteria();
-                    criteria2.andOrderIdEqualTo(goodsOrder.getId());
+                    if (BeanUtils.isNotEmpty(goodsOrder)){
+                        criteria2.andOrderIdEqualTo(goodsOrder.getId());
+                    }
                     List<OrderItem> orderItems = orderItemMapper.selectByExample(orderExample1);
                     List list1 = new ArrayList();
                     for (OrderItem orderItem : orderItems) {
@@ -171,7 +175,9 @@ public class ViewOrderRefundServiceImpl implements ViewOrderRefundService {
                 GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderRefund.getOrderId());
                 OrderItemExample orderExample1 = new OrderItemExample();
                 OrderItemExample.Criteria criteria2 = orderExample1.createCriteria();
-                criteria2.andOrderIdEqualTo(goodsOrder.getId());
+                if (BeanUtils.isNotEmpty(goodsOrder)){
+                    criteria2.andOrderIdEqualTo(goodsOrder.getId());
+                }
                 List<OrderItem> orderItems = orderItemMapper.selectByExample(orderExample1);
                 List list1 = new ArrayList();
                 for (OrderItem orderItem : orderItems) {

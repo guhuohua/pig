@@ -139,8 +139,6 @@ public class ViewGoodsCarServiceImpl implements ViewGoodsCarService {
                     list.add(carDto);
                 }
             }
-
-
         }
 
         ResponseResult result = new ResponseResult();
