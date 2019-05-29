@@ -43,6 +43,7 @@ public class SolrServiceImpl implements SolrService {
     @Override
     @Async
     public void releaseGoods(Integer goodsId, Integer shopId) {
+        lowerShelf(goodsId);
         GoodsExample goodsExample = new GoodsExample();
         goodsExample.createCriteria().andShopIdEqualTo(shopId).andIdEqualTo(goodsId);
         List<Goods> goodsList = goodsMapper.selectByExample(goodsExample);

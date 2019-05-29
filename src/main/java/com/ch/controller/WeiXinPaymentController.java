@@ -2,6 +2,7 @@ package com.ch.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.ch.base.BeanUtils;
 import com.ch.base.ResponseResult;
 import com.ch.dao.*;
 import com.ch.dto.PaymentDto;
@@ -192,27 +193,31 @@ public class WeiXinPaymentController {
             Map<String, Object> dataMap = XmlUtil.parseXML(request);
             //{"transaction_id":"4200000109201805293331420304","nonce_str":"402880e963a9764b0163a979a16e0002","bank_type":"CFT","openid":"oXI6G5Jc4D44y2wixgxE3OPwpDVg","sign":"262978D36A3093ACBE4B55707D6EA7B2","fee_type":"CNY","mch_id":"1491307962","cash_fee":"10","out_trade_no":"14913079622018052909183048768217","appid":"wxa177427bc0e60aab","total_fee":"10","trade_type":"JSAPI","result_code":"SUCCESS","time_end":"20180529091834","is_subscribe":"N","return_code":"SUCCESS"}
             if ("SUCCESS".equals(dataMap.get("return_code"))) {
+                String xmlSuccess = "<xml><return_code><![CDATA[SUCCESS]]></return_code></xml>";
+                response.getWriter().write(xmlSuccess);
                 String transaction_id = (String) dataMap.get("transaction_id");
                 String orderId = (String) dataMap.get("out_trade_no");
                 Long total_fee = Long.valueOf(dataMap.get("total_fee").toString());
                 GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderId);
-                if (goodsOrder.getOrderStatus() == 10) {
-                    return;
-                }
-                goodsOrder.setPayDate(new Date());
-                goodsOrder.setPayPrice(total_fee);
-                goodsOrder.setOrderStatus(3);
-                goodsOrder.setPayId(transaction_id);
-                goodsOrderMapper.updateByPrimaryKey(goodsOrder);
-                OrderItemExample example = new OrderItemExample();
-                OrderItemExample.Criteria criteria = example.createCriteria();
-                criteria.andOrderIdEqualTo(orderId);
-                List<OrderItem> orderItems = orderItemMapper.selectByExample(example);
-                for (OrderItem orderItem : orderItems) {
-                    GoodsCarExample example1 = new GoodsCarExample();
-                    GoodsCarExample.Criteria criteria1 = example1.createCriteria();
-                    criteria1.andSkuIdEqualTo(orderItem.getSkuAttrId());
-                    goodsCarMapper.deleteByExample(example1);
+                if (BeanUtils.isNotEmpty(goodsOrder)) {
+                    if (goodsOrder.getOrderStatus() == 10) {
+                        return;
+                    }
+                    goodsOrder.setPayDate(new Date());
+                    goodsOrder.setPayPrice(total_fee);
+                    goodsOrder.setOrderStatus(3);
+                    goodsOrder.setPayId(transaction_id);
+                    goodsOrderMapper.updateByPrimaryKey(goodsOrder);
+                    OrderItemExample example = new OrderItemExample();
+                    OrderItemExample.Criteria criteria = example.createCriteria();
+                    criteria.andOrderIdEqualTo(orderId);
+                    List<OrderItem> orderItems = orderItemMapper.selectByExample(example);
+                    for (OrderItem orderItem : orderItems) {
+                        GoodsCarExample example1 = new GoodsCarExample();
+                        GoodsCarExample.Criteria criteria1 = example1.createCriteria();
+                        criteria1.andSkuIdEqualTo(orderItem.getSkuAttrId());
+                        goodsCarMapper.deleteByExample(example1);
+                    }
                 }
             }
         } catch (Exception e) {
