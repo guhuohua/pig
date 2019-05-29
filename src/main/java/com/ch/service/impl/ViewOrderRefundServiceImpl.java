@@ -208,6 +208,7 @@ public class ViewOrderRefundServiceImpl implements ViewOrderRefundService {
         OrderRefundExample.Criteria criteria1 = example1.createCriteria();
         criteria1.andUserIdEqualTo(userInfo.getId());
         criteria1.andShopIdEqualTo(shopId);
+         criteria1.andRefundStatusEqualTo(1);
         List<OrderRefund> orderRefunds = orderRefundMapper.selectByExample(example1);
         result.setData(orderRefunds.size());
         return result;
