@@ -147,7 +147,7 @@ public class SysGoodsSkuServiceImpl implements SysGoodsSkuService {
         ResponseResult result = new ResponseResult();
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         GoodsTypeExample goodsTypeExample = new GoodsTypeExample();
-        goodsTypeExample.createCriteria().andShopIdEqualTo(sysUser.getShopId());
+        goodsTypeExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andStatusEqualTo(1);
         List<GoodsType> goodsTypes = goodsTypeMapper.selectByExample(goodsTypeExample);
         List<GoodsType> rootMenu = new ArrayList<GoodsType>();
         for (GoodsType nav : goodsTypes) {

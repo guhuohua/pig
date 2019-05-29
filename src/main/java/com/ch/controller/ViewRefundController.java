@@ -183,14 +183,6 @@ public class ViewRefundController {
                         goodsMapper.updateByPrimaryKey(goods);
                     }
                 }
-                String returnxml = "<xml>" +
-                        "   <return_code><![CDATA[SUCCESS]]></return_code>" +
-                        "   <return_msg><![CDATA[OK]]></return_msg>" +
-                        "</xml>";
-
-                response.getWriter().write(returnxml);
-                response.getWriter().flush();
-                response.getWriter().close();
                 return result1;
             }else {
                 result1.setCode(500);

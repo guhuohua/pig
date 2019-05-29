@@ -196,9 +196,9 @@ public class WeiXinPaymentController {
                 String orderId = (String) dataMap.get("out_trade_no");
                 Long total_fee = Long.valueOf(dataMap.get("total_fee").toString());
                 GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderId);
-//                if (goodsOrder.getOrderStatus() == 10) {
-//                    return;
-//                }
+                if (goodsOrder.getOrderStatus() == 10) {
+                    return;
+                }
                 goodsOrder.setPayDate(new Date());
                 goodsOrder.setPayPrice(total_fee);
                 goodsOrder.setOrderStatus(3);
@@ -214,13 +214,6 @@ public class WeiXinPaymentController {
                     criteria1.andSkuIdEqualTo(orderItem.getSkuAttrId());
                     goodsCarMapper.deleteByExample(example1);
                 }
-                String returnxml = "<xml>" +
-                        "   <return_code><![CDATA[SUCCESS]]></return_code>" +
-                        "   <return_msg><![CDATA[OK]]></return_msg>" +
-                        "</xml>";
-                response.getWriter().write(returnxml);
-                response.getWriter().flush();
-                response.getWriter().close();
             }
         } catch (Exception e) {
             e.printStackTrace();
