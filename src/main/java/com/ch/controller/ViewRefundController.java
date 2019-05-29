@@ -97,7 +97,6 @@ public class ViewRefundController {
 
     @PostMapping("refund")
     @ResponseBody
-    @Transactional
     public ResponseResult refund(HttpServletRequest req, @RequestParam String orderId) {
         // Long orderId, String refundId, Long totalFee,
         // Long refundFee, String refundAccount

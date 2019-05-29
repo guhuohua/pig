@@ -1,6 +1,7 @@
 package com.ch.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ch.base.BeanUtils;
 import com.ch.base.ResponseResult;
 import com.ch.config.WxRefundProperties;
 import com.ch.dao.*;
@@ -107,12 +108,16 @@ public class SysOrderRefundServiceImpl implements SysOrderRefundService {
                     goodsOrderMapper.updateByPrimaryKey(goodsOrder);
 
                     Goods goods = goodsMapper.selectByPrimaryKey(orderRefund.getGoodsId());
-                    goods.setInventory(goods.getInventory() + orderRefund.getNumber());
-                    goodsMapper.updateByPrimaryKey(goods);
+                    if (BeanUtils.isNotEmpty(goods)) {
+                        goods.setInventory(goods.getInventory() + orderRefund.getNumber());
+                        goodsMapper.updateByPrimaryKey(goods);
+                    }
 
                     GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderRefund.getSkuId());
-                    goodsSku.setInventory(goodsSku.getInventory() + orderRefund.getNumber());
-                    goodsSkuMapper.updateByPrimaryKey(goodsSku);
+                    if (BeanUtils.isNotEmpty(goodsSku)) {
+                        goodsSku.setInventory(goodsSku.getInventory() + orderRefund.getNumber());
+                        goodsSkuMapper.updateByPrimaryKey(goodsSku);
+                    }
                 }
             }
             if (param.getRefundStatus() == 3) {
