@@ -39,10 +39,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.net.ssl.SSLContext;
 import javax.servlet.http.HttpServletRequest;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.security.KeyStore;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
@@ -100,11 +98,8 @@ public class ViewRefundController {
 
     @PostMapping("refund")
     @ResponseBody
-    public ResponseResult refund(HttpServletRequest req, @RequestParam String orderId) {
-        // Long orderId, String refundId, Long totalFee,
-        // Long refundFee, String refundAccount
-        // checkConfig(weixinProperties);
-       ResponseResult result1 = new ResponseResult();
+    public ResponseResult refund(HttpServletRequest req, HttpServletResponse response, @RequestParam String orderId) {
+        ResponseResult result1 = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
@@ -192,6 +187,14 @@ public class ViewRefundController {
                         solrService.releaseGoods(goods.getId(),shopId);
                     }
                 }
+                String returnxml = "<xml>" +
+                        "   <return_code><![CDATA[SUCCESS]]></return_code>" +
+                        "   <return_msg><![CDATA[OK]]></return_msg>" +
+                        "</xml>";
+
+                response.getWriter().write(returnxml);
+                response.getWriter().flush();
+                response.getWriter().close();
                 return result1;
             }else {
                 result1.setCode(500);

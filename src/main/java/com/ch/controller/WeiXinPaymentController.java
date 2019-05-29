@@ -20,9 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -188,17 +187,18 @@ public class WeiXinPaymentController {
      */
     @RequestMapping("/weixin/paycallback")
     @ResponseBody
-    public void paycallback(HttpServletRequest request) {
+    public void paycallback(HttpServletRequest request, HttpServletResponse response) {
         try {
             Map<String, Object> dataMap = XmlUtil.parseXML(request);
-            log.info("支付回调结果：", JSON.toJSONString(dataMap));
-            System.out.println(JSON.toJSONString(dataMap));
             //{"transaction_id":"4200000109201805293331420304","nonce_str":"402880e963a9764b0163a979a16e0002","bank_type":"CFT","openid":"oXI6G5Jc4D44y2wixgxE3OPwpDVg","sign":"262978D36A3093ACBE4B55707D6EA7B2","fee_type":"CNY","mch_id":"1491307962","cash_fee":"10","out_trade_no":"14913079622018052909183048768217","appid":"wxa177427bc0e60aab","total_fee":"10","trade_type":"JSAPI","result_code":"SUCCESS","time_end":"20180529091834","is_subscribe":"N","return_code":"SUCCESS"}
             if ("SUCCESS".equals(dataMap.get("return_code"))) {
                 String transaction_id = (String) dataMap.get("transaction_id");
                 String orderId = (String) dataMap.get("out_trade_no");
                 Long total_fee = Long.valueOf(dataMap.get("total_fee").toString());
                 GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderId);
+//                if (goodsOrder.getOrderStatus() == 10) {
+//                    return;
+//                }
                 goodsOrder.setPayDate(new Date());
                 goodsOrder.setPayPrice(total_fee);
                 goodsOrder.setOrderStatus(3);
@@ -214,6 +214,13 @@ public class WeiXinPaymentController {
                     criteria1.andSkuIdEqualTo(orderItem.getSkuAttrId());
                     goodsCarMapper.deleteByExample(example1);
                 }
+                String returnxml = "<xml>" +
+                        "   <return_code><![CDATA[SUCCESS]]></return_code>" +
+                        "   <return_msg><![CDATA[OK]]></return_msg>" +
+                        "</xml>";
+                response.getWriter().write(returnxml);
+                response.getWriter().flush();
+                response.getWriter().close();
             }
         } catch (Exception e) {
             e.printStackTrace();
