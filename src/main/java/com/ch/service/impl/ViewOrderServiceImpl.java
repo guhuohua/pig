@@ -129,6 +129,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             order.setShopId(shopId);
             order.setOrderStatus(1);
             order.setStatus(0);
+
             if(BeanUtils.isNotEmpty(userAddress)){
                 order.setDeliveryId(userAddress.getId());
             }else {
@@ -138,6 +139,8 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             }
             order.setCreateDate(new Date());
             order.setOrderPrice(orderFee + Collections.max(feeList));
+            order.setFreight(Collections.max(feeList));
+            order.setGoodsFee(orderFee);
             orderMapper.insert(order);
         }
         result.setData(order.getId());
@@ -182,9 +185,9 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderItem.getSkuAttrId());
             orderItem.setImage(goodsSku.getGoodsImage());
             orderItem.setSkuName(goodsSku.getSkuName());
-            Goods goods = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
+            /*Goods goods = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
             order.setFreight(goods.getFreight());
-            order.setGoodsFee(orderItem.getPrice() * orderItem.getNumber());
+            order.setGoodsFee(orderItem.getPrice() * orderItem.getNumber());*/
 
         }
         map.put("userAddresses1", userAddresses1);
