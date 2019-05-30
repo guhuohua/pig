@@ -18,6 +18,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,5 +52,22 @@ public class ViewGoodsTypeController {
         return result;
      }
 
+
+    @GetMapping("findDelFlag")
+    @ApiOperation("展示二级类目")
+    public ResponseResult findDelFlag(HttpServletRequest req ){
+        ResponseResult result = new ResponseResult();
+        String token = req.getHeader("Authorization");
+        Integer shopId = TokenUtil.getUserId(token);
+        try {
+            result = viewGoodsTypeService.findDelFlag(shopId);
+        } catch (Exception e) {
+            LOGGER.error("展示二级类目失败" + e.getMessage(), e);
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("展示二级类目失败");
+        }
+        return result;
+    }
 
 }

@@ -6,4 +6,6 @@ import io.swagger.models.auth.In;
 public interface ViewGoodsTypeService {
     public ResponseResult findTree(Integer shopId);
 
+    ResponseResult findDelFlag(Integer shopId);
+
 }

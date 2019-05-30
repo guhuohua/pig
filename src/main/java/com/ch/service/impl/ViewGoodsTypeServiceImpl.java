@@ -70,6 +70,17 @@ public class ViewGoodsTypeServiceImpl implements ViewGoodsTypeService {
         }
     }
 
+    @Override
+    public ResponseResult findDelFlag(Integer shopId) {
+        GoodsTypeExample example = new GoodsTypeExample();
+        GoodsTypeExample.Criteria criteria = example.createCriteria();
+        criteria.andDelFlagEqualTo(1);
+        criteria.andShopIdEqualTo(shopId);
+        List<GoodsType> goodsTypes = goodsTypeMapper.selectByExample(example);
+        ResponseResult result = new ResponseResult();
+        result.setData(goodsTypes);
+        return result;
+    }
 
     public List<GoodsType> getChild(Integer id, List<GoodsType> allMenu) {
         //子菜单
