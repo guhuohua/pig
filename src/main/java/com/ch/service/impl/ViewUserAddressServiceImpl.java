@@ -49,6 +49,8 @@ public class ViewUserAddressServiceImpl implements ViewUserAddressService {
         UserAddressExample example1 = new UserAddressExample();
         UserAddressExample.Criteria criteria1 = example1.createCriteria();
         criteria1.andStatusEqualTo(1);
+        criteria1.andUserIdEqualTo(userInfo.getId());
+        criteria1.andShopIdEqualTo(shopId);
         List<UserAddress> userAddresses = userAddressMapper.selectByExample(example1);
         if (userAddresses.size() > 0) {
             for (UserAddress userAddress : userAddresses) {
@@ -77,11 +79,12 @@ public class ViewUserAddressServiceImpl implements ViewUserAddressService {
         UserAddressExample example1 = new UserAddressExample();
         UserAddressExample.Criteria criteria1 = example1.createCriteria();
         criteria1.andStatusEqualTo(1);
+        criteria1.andUserIdEqualTo(userInfo.getId());
+        criteria1.andShopIdEqualTo(shopId);
         List<UserAddress> userAddresses = userAddressMapper.selectByExample(example1);
         if (userAddresses.size() > 0) {
             for (UserAddress userAddress : userAddresses) {
                 userAddress.setStatus(0);
-
                 userAddressMapper.updateByPrimaryKey(userAddress);
             }
         }
