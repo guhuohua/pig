@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class TokenUtil {
 
-    private static final long EXPIRE_TIME = 15 * 60 * 1000;
+    private static final long EXPIRE_TIME = 15 * 60 * 1000 * 1000;
     private static final String TOKEN_SECRET = "qazwsxedcrfvtgbyhnujmiklop";
 
 
