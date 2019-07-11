@@ -135,7 +135,7 @@ public class ViewRefundController {
         // 除去数组中的空值和签名参数
         Map sPara = PayUtil.paraFilter(params);
         String prestr = PayUtil.createLinkString(sPara); // 把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串
-        StringBuilder stringSignTemp = new StringBuilder(prestr).append("&key=0EF1CDAFCC3327C1AF3B8D6CA37F9581");
+        StringBuilder stringSignTemp = new StringBuilder(prestr).append("&key="+shopMiniProgram.getAppKey());
         String sign = md5Password(stringSignTemp.toString()).toUpperCase();
         //MD5运算生成签名
         refoundDto.setSign(sign);
