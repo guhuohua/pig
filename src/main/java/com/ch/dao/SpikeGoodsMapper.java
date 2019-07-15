@@ -6,7 +6,9 @@ import java.util.List;
 import com.ch.entity.SpikeGoods;
 import com.ch.entity.SpikeGoodsExample;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface SpikeGoodsMapper {
     int countByExample(SpikeGoodsExample example);
 
