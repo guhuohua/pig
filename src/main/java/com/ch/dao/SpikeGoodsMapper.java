@@ -14,13 +14,21 @@ public interface SpikeGoodsMapper {
 
     int deleteByExample(SpikeGoodsExample example);
 
+    int deleteByPrimaryKey(Integer id);
+
     int insert(SpikeGoods record);
 
     int insertSelective(SpikeGoods record);
 
     List<SpikeGoods> selectByExample(SpikeGoodsExample example);
 
+    SpikeGoods selectByPrimaryKey(Integer id);
+
     int updateByExampleSelective(@Param("record") SpikeGoods record, @Param("example") SpikeGoodsExample example);
 
     int updateByExample(@Param("record") SpikeGoods record, @Param("example") SpikeGoodsExample example);
+
+    int updateByPrimaryKeySelective(SpikeGoods record);
+
+    int updateByPrimaryKey(SpikeGoods record);
 }
