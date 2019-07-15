@@ -33,6 +33,17 @@ public class User {
 
     private Integer integral;
 
+
+    private Integer member;
+
+    public Integer getMember() {
+        return member;
+    }
+
+    public void setMember(Integer member) {
+        this.member = member;
+    }
+
     public Integer getIntegral() {
         return integral;
     }

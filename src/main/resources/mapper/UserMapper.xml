@@ -17,6 +17,7 @@
     <result column="qq_openid" jdbcType="VARCHAR" property="qqOpenid" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="integral" jdbcType="INTEGER" property="integral" />
+    <result column="member" jdbcType="INTEGER" property="member" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -78,7 +79,7 @@
   </sql>
   <sql id="Base_Column_List">
     user_id, username, password, salt, phone, avatar, shop_id, create_time, update_time, 
-    lock_flag, del_flag, wx_openid, qq_openid, status,integral
+    lock_flag, del_flag, wx_openid, qq_openid, status,integral,member
   </sql>
   <select id="selectByExample" parameterType="com.ch.entity.UserExample" resultMap="BaseResultMap">
     select
@@ -116,12 +117,12 @@
       salt, phone, avatar, 
       shop_id, create_time, update_time, 
       lock_flag, del_flag, wx_openid, 
-      qq_openid, status,integral)
+      qq_openid, status,integral,member)
     values (#{userId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{salt,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, 
       #{shopId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
       #{lockFlag,jdbcType=CHAR}, #{delFlag,jdbcType=CHAR}, #{wxOpenid,jdbcType=VARCHAR}, 
-      #{qqOpenid,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{integral,jdbcType=INTEGER})
+      #{qqOpenid,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{integral,jdbcType=INTEGER},#{member,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ch.entity.User">
     insert into user
@@ -350,7 +351,9 @@
       wx_openid = #{wxOpenid,jdbcType=VARCHAR},
       qq_openid = #{qqOpenid,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
-      integral = #{integral,jdbcType=INTEGER}
+      integral = #{integral,jdbcType=INTEGER},
+      member = #{member,jdbcType=INTEGER}
+
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
 </mapper>
