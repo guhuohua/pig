@@ -30,4 +30,10 @@ public class SysGoodsSkuModel {
     private Integer goodsId;
 
     private String skuName;
+
+    private Integer getIntegral;
+
+    private String goodsType;
+
+    private Integer consumptionIntegral;
 }

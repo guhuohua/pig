@@ -8,6 +8,7 @@ import com.ch.dto.GoodsParam;
 import com.ch.dto.GoodsSkuListDTO;
 import com.ch.dto.SpecificationAttrDTO;
 import com.ch.entity.*;
+import com.ch.enums.GoodsTypeEnum;
 import com.ch.enums.OderStatusEnum;
 import com.ch.model.*;
 import com.ch.service.SolrService;
@@ -227,6 +228,14 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                 sku.setShopId(sysUser.getShopId());
                 sku.setSkuName(sku.getSkuName());
                 sku.setCategoryId(model.getCategoryIds().get(1));
+                if (BeanUtils.isNotEmpty(sku.getGetIntegral())) {
+                    sku.setGetIntegral(sku.getGetIntegral());
+                    sku.setGoodsType(GoodsTypeEnum.ORDINARY.name());
+                }
+                if (BeanUtils.isNotEmpty(skuModel.getConsumptionIntegral())) {
+                    sku.setConsumptionIntegral(skuModel.getConsumptionIntegral());
+                    sku.setGoodsType(GoodsTypeEnum.INTEGRAL.name());
+                }
                 goodsSkuMapper.insert(sku);
                 count += skuModel.getInventory();
             }
@@ -330,6 +339,16 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                     sku.setPresentPrice(skuModel.getPresentPrice());
                     sku.setGoodsImage(skuModel.getGoodsImage());
                     sku.setInventory(skuModel.getInventory());
+                    if (BeanUtils.isNotEmpty(sku.getGetIntegral())) {
+                        sku.setGetIntegral(sku.getGetIntegral());
+                        sku.setGoodsType(GoodsTypeEnum.ORDINARY.name());
+                    }
+                    if (BeanUtils.isNotEmpty(skuModel.getConsumptionIntegral())) {
+                        sku.setConsumptionIntegral(skuModel.getConsumptionIntegral());
+                        sku.setGoodsType(GoodsTypeEnum.INTEGRAL.name());
+                    }
+                    goodsSkuMapper.insert(sku);
+                    count += skuModel.getInventory();
                     goodsSkuMapper.updateByPrimaryKey(sku);
                     count += skuModel.getInventory();
                 } else {
@@ -346,6 +365,16 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                     sku.setShopId(sysUser.getShopId());
                     sku.setSkuName(sku.getSkuName());
                     sku.setCategoryId(model.getCategoryIds().get(1));
+                    if (BeanUtils.isNotEmpty(sku.getGetIntegral())) {
+                        sku.setGetIntegral(sku.getGetIntegral());
+                        sku.setGoodsType(GoodsTypeEnum.ORDINARY.name());
+                    }
+                    if (BeanUtils.isNotEmpty(skuModel.getConsumptionIntegral())) {
+                        sku.setConsumptionIntegral(skuModel.getConsumptionIntegral());
+                        sku.setGoodsType(GoodsTypeEnum.INTEGRAL.name());
+                    }
+                    goodsSkuMapper.insert(sku);
+                    count += skuModel.getInventory();
                     goodsSkuMapper.insert(sku);
                     count += skuModel.getInventory();
                 }
