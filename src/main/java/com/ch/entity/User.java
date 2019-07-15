@@ -31,6 +31,16 @@ public class User {
 
     private Integer status;
 
+    private Integer integral;
+
+    public Integer getIntegral() {
+        return integral;
+    }
+
+    public void setIntegral(Integer integral) {
+        this.integral = integral;
+    }
+
     public Integer getUserId() {
         return userId;
     }

@@ -16,6 +16,7 @@
     <result column="wx_openid" jdbcType="VARCHAR" property="wxOpenid" />
     <result column="qq_openid" jdbcType="VARCHAR" property="qqOpenid" />
     <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="integral" jdbcType="INTEGER" property="integral" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -77,7 +78,7 @@
   </sql>
   <sql id="Base_Column_List">
     user_id, username, password, salt, phone, avatar, shop_id, create_time, update_time, 
-    lock_flag, del_flag, wx_openid, qq_openid, status
+    lock_flag, del_flag, wx_openid, qq_openid, status,integral
   </sql>
   <select id="selectByExample" parameterType="com.ch.entity.UserExample" resultMap="BaseResultMap">
     select
@@ -115,12 +116,12 @@
       salt, phone, avatar, 
       shop_id, create_time, update_time, 
       lock_flag, del_flag, wx_openid, 
-      qq_openid, status)
+      qq_openid, status,integral)
     values (#{userId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{salt,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, 
       #{shopId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
       #{lockFlag,jdbcType=CHAR}, #{delFlag,jdbcType=CHAR}, #{wxOpenid,jdbcType=VARCHAR}, 
-      #{qqOpenid,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER})
+      #{qqOpenid,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{integral,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ch.entity.User">
     insert into user
@@ -348,7 +349,8 @@
       del_flag = #{delFlag,jdbcType=CHAR},
       wx_openid = #{wxOpenid,jdbcType=VARCHAR},
       qq_openid = #{qqOpenid,jdbcType=VARCHAR},
-      status = #{status,jdbcType=INTEGER}
+      status = #{status,jdbcType=INTEGER},
+      integral = #{integral,jdbcType=INTEGER}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
 </mapper>

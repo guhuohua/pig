@@ -35,6 +35,36 @@ public class GoodsSku {
 
     private String skuName;
 
+    private Integer getIntegral;
+
+    private String goodsType;
+
+    private Integer consumptionIntegral;
+
+    public Integer getGetIntegral() {
+        return getIntegral;
+    }
+
+    public void setGetIntegral(Integer getIntegral) {
+        this.getIntegral = getIntegral;
+    }
+
+    public String getGoodsType() {
+        return goodsType;
+    }
+
+    public void setGoodsType(String goodsType) {
+        this.goodsType = goodsType;
+    }
+
+    public Integer getConsumptionIntegral() {
+        return consumptionIntegral;
+    }
+
+    public void setConsumptionIntegral(Integer consumptionIntegral) {
+        this.consumptionIntegral = consumptionIntegral;
+    }
+
     public Integer getId() {
         return id;
     }
