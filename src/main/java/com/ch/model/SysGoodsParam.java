@@ -11,4 +11,6 @@ public class SysGoodsParam extends PageQuery {
     private String name;
 
     private Integer sale;
+
+    private String goodsType;
 }

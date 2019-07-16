@@ -33,7 +33,5 @@ public class SysGoodsSkuModel {
 
     private Integer getIntegral;
 
-    private String goodsType;
-
     private Integer consumptionIntegral;
 }

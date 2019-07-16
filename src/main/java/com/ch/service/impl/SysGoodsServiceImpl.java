@@ -80,7 +80,9 @@ public class SysGoodsServiceImpl implements SysGoodsService {
         if (null != param.getSale()) {
             criteria.andSaleEqualTo(param.getSale());
         }
-        criteria.andGoodsTypeNotEqualTo(GoodsTypeEnum.INTEGRAL.name());
+        if (BeanUtils.isNotEmpty(param.getGoodsType())) {
+            criteria.andGoodsTypeEqualTo(param.getGoodsType());
+        }
         List<Goods> goodsList = goodsMapper.selectByExample(goodsExample);
         PageInfo<Goods> page = new PageInfo<>(goodsList);
         result.setData(page);
