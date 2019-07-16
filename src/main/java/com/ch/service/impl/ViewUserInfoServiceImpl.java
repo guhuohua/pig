@@ -7,6 +7,7 @@
 
 package com.ch.service.impl;
 
+import com.ch.base.ResponseResult;
 import com.ch.dao.SysUserMapper;
 import com.ch.dao.UserInfoMapper;
 import com.ch.dao.UserMapper;
@@ -98,6 +99,15 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
     @Override
     public void updateByPrimaryKey(UserInfo userInfo) {
         userInfoMapper.updateByPrimaryKey(userInfo);
+    }
+
+    @Override
+    public ResponseResult addTel(String openId, String tel) {
+        ResponseResult result = new ResponseResult();
+        UserInfo userInfo = findOneByOpenId(openId);
+        userInfo.setTel(tel);
+        userInfoMapper.updateByPrimaryKey(userInfo);
+        return result;
     }
 
 

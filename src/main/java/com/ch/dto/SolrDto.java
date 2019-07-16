@@ -16,6 +16,16 @@ public class SolrDto {
 
     private  Integer categoryId;
 
+    private String goodsType;
+
+    public String getGoodsType() {
+        return goodsType;
+    }
+
+    public void setGoodsType(String goodsType) {
+        this.goodsType = goodsType;
+    }
+
     public Integer getStart() {
         return start;
     }

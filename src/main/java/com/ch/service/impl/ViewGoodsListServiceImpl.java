@@ -42,7 +42,7 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
 
         int start = (solrDto.getStart() - 1) * solrDto.getRows();
         if (BeanUtils.isNotEmpty(solrDto.getCategoryId())) {
-            String str1 =  "shopId:" + shopId + " AND " +"categoryId:" +solrDto.getCategoryId();
+            String str1 =  "shopId:" + shopId + " AND " +"categoryId:" +solrDto.getCategoryId()+ " AND " +"goodsType:" +solrDto.getGoodsType();
             //str = "\""+"shopId:" + shopId +"\"" + "," + "\""+"categoryId:" +solrDto.getCategoryId()+"\"" ;
            // System.out.println(str1);
             params.put("q","*:*");
