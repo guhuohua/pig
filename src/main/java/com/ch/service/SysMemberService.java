@@ -18,5 +18,5 @@ public interface SysMemberService {
      * 同步所有人积分等级
      * @return
      */
-    ResponseResult synchronizedIntegral();
+    ResponseResult synchronizedIntegral(Integer userId);
 }

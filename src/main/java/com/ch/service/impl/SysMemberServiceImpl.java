@@ -7,12 +7,14 @@ import com.ch.dao.UserInfoMapper;
 import com.ch.entity.BaseIntegral;
 import com.ch.entity.MemberRank;
 import com.ch.entity.UserInfo;
+import com.ch.enums.MemberEnum;
 import com.ch.model.SysBaseSettingParam;
 import com.ch.service.SysMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -45,14 +47,37 @@ public class SysMemberServiceImpl implements SysMemberService {
         baseIntegral.setPerfect(param.getPerfect());
         baseIntegral.setSign(param.getSign());
         baseIntegralMapper.insert(baseIntegral);
+        synchronizedIntegral(null);
         return result;
     }
 
     @Override
-    public ResponseResult synchronizedIntegral() {
+    public ResponseResult synchronizedIntegral(Integer userId) {
+        List<UserInfo> userInfos = new ArrayList<>();
+        if (null != userId) {
+            UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
+            userInfos.add(userInfo);
+        } else {
+            userInfos = userInfoMapper.selectByExample(null);
+        }
         MemberRank memberRank = memberRankMapper.selectByExample(null).get(0);
-        List<UserInfo> userInfos = userInfoMapper.selectByExample(null);
         for (UserInfo userInfo:userInfos) {
+            if (userInfo.getIntegral() >= memberRank.getBronze()) {
+                userInfo.setMember(MemberEnum.BRONZE.getMessage());
+            }
+            if (userInfo.getIntegral() >= memberRank.getSilver()) {
+                userInfo.setMember(MemberEnum.SILVER.getMessage());
+            }
+            if (userInfo.getIntegral() >= memberRank.getGold()) {
+                userInfo.setMember(MemberEnum.GOLD.getMessage());
+            }
+            if (userInfo.getIntegral() >= memberRank.getPlatinum()) {
+                userInfo.setMember(MemberEnum.PLATINUM.getMessage());
+            }
+            if (userInfo.getIntegral() >= memberRank.getDiamonds()) {
+                userInfo.setMember(MemberEnum.MASONRY.getMessage());
+            }
+            userInfoMapper.updateByPrimaryKey(userInfo);
         }
         return null;
     }
