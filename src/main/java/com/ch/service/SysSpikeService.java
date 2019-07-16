@@ -11,4 +11,11 @@ public interface SysSpikeService {
      * @return
      */
     ResponseResult mange(SysSpikeGoodsModel model);
+
+    /**
+     * 秒杀列表
+     * @param sn
+     * @return
+     */
+    ResponseResult list(String sn, Integer currentPage, Integer pageSize);
 }

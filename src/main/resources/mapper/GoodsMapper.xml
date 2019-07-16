@@ -27,6 +27,7 @@
     <result column="freight" property="freight" jdbcType="DECIMAL" />
     <result column="units" property="units" jdbcType="VARCHAR" />
     <result column="goods_img_url" property="goodsImgUrl" jdbcType="VARCHAR" />
+    <result column="goods_type" property="goodsType" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -89,7 +90,7 @@
   <sql id="Base_Column_List" >
     id, shop_id, status, create_time, update_time, del_flag, title, `desc`, recommend,
     sale, sort, type, inventory, original_price, present_price, sn, member_discount,
-    limit_buy, sales_volume, name, catrgory_id, key_words, freight, units,goods_img_url
+    limit_buy, sales_volume, name, catrgory_id, key_words, freight, units,goods_img_url, goods_type
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.GoodsExample" >
     select
@@ -138,7 +139,7 @@
       #{originalPrice,jdbcType=BIGINT}, #{presentPrice,jdbcType=BIGINT}, #{sn,jdbcType=VARCHAR},
       #{memberDiscount,jdbcType=INTEGER}, #{limitBuy,jdbcType=INTEGER}, #{salesVolume,jdbcType=INTEGER}, 
       #{name,jdbcType=VARCHAR}, #{catrgoryId,jdbcType=INTEGER}, #{keyWords,jdbcType=VARCHAR}, 
-      #{freight,jdbcType=DECIMAL}, #{units,jdbcType=VARCHAR}, #{goodsImgUrl,jdbcType=VARCHAR})
+      #{freight,jdbcType=DECIMAL}, #{units,jdbcType=VARCHAR}, #{goodsImgUrl,jdbcType=VARCHAR}, #{goodsType,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.ch.entity.Goods" >
     insert into goods
@@ -508,7 +509,8 @@
       key_words = #{keyWords,jdbcType=VARCHAR},
       freight = #{freight,jdbcType=DECIMAL},
       units = #{units,jdbcType=VARCHAR},
-      goods_img_url = #{goodsImgUrl,jdbcType=VARCHAR}
+      goods_img_url = #{goodsImgUrl,jdbcType=VARCHAR},
+      goods_type = #{goodsType,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

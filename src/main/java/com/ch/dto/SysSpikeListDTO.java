@@ -1,27 +1,27 @@
-package com.ch.model;
+package com.ch.dto;
 
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
-public class SysSpikeGoodsModel {
+public class SysSpikeListDTO {
 
     private Integer id;
 
-    private Integer goodsId;
+    private String sn;
 
-    private Integer skuId;
-
-    private Integer shopId;
+    private String title;
 
     private Long beginDate;
 
     private Long endDate;
 
+    private Long presentPrice;
+
     private Long spikePrice;
 
     private Integer spikeNum;
+
+    private Integer inventory;
 
     private Integer maxNum;
 }

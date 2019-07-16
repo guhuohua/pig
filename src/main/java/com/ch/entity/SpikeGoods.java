@@ -19,6 +19,16 @@ public class SpikeGoods {
 
     private Integer spikeNum;
 
+    private Integer maxNum;
+
+    public Integer getMaxNum() {
+        return maxNum;
+    }
+
+    public void setMaxNum(Integer maxNum) {
+        this.maxNum = maxNum;
+    }
+
     public Integer getId() {
         return id;
     }

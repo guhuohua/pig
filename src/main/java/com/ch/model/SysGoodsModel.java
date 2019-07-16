@@ -54,6 +54,8 @@ public class SysGoodsModel {
 
     private String goodsImgUrl;
 
+    private Integer integralGoods;
+
     private List<SysGoodsImageModel> goodsImgList;
 
     private List<SysGoodsSkuModel> sysGoodsSkuModelList;
