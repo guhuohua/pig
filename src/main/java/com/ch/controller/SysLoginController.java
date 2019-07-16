@@ -11,6 +11,7 @@ import com.ch.base.ResponseResult;
 import com.ch.model.UserDto;
 import com.ch.service.SysUserService;
 import com.ch.util.TokenUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequestMapping(value = "user")
 //@Api(value = "登录接口")
+@Slf4j
 public class SysLoginController {
    @Autowired
     SysUserService sysUserService;
@@ -38,6 +40,7 @@ public class SysLoginController {
                result.setData(token);
            }
        } catch (Exception e) {
+           log.error("登录失败", e);
            result.setCode(404);
            result.setError(e.getMessage());
            result.setError_description("登录失败，请稍后再试");

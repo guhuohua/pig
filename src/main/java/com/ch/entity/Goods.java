@@ -54,6 +54,16 @@ public class Goods {
 
     private String goodsImgUrl;
 
+    private String goodsType;
+
+    public String getGoodsType() {
+        return goodsType;
+    }
+
+    public void setGoodsType(String goodsType) {
+        this.goodsType = goodsType;
+    }
+
     public String getGoodsImgUrl() {
         return goodsImgUrl;
     }

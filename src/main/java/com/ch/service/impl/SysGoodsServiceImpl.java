@@ -80,6 +80,7 @@ public class SysGoodsServiceImpl implements SysGoodsService {
         if (null != param.getSale()) {
             criteria.andSaleEqualTo(param.getSale());
         }
+        criteria.andGoodsTypeNotEqualTo(GoodsTypeEnum.INTEGRAL.name());
         List<Goods> goodsList = goodsMapper.selectByExample(goodsExample);
         PageInfo<Goods> page = new PageInfo<>(goodsList);
         result.setData(page);
@@ -214,6 +215,11 @@ public class SysGoodsServiceImpl implements SysGoodsService {
             goods.setOriginalPrice(max);
             goods.setPresentPrice(min);
             goods.setSalesVolume(0);
+            if (model.getIntegralGoods() == 1) {
+                goods.setGoodsType(GoodsTypeEnum.INTEGRAL.name());
+            } else {
+                goods.setGoodsType(GoodsTypeEnum.ORDINARY.name());
+            }
             goodsMapper.insert(goods);
             Integer count = 0;
 
@@ -230,11 +236,9 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                 sku.setCategoryId(model.getCategoryIds().get(1));
                 if (BeanUtils.isNotEmpty(sku.getGetIntegral())) {
                     sku.setGetIntegral(sku.getGetIntegral());
-                    sku.setGoodsType(GoodsTypeEnum.ORDINARY.name());
                 }
                 if (BeanUtils.isNotEmpty(skuModel.getConsumptionIntegral())) {
                     sku.setConsumptionIntegral(skuModel.getConsumptionIntegral());
-                    sku.setGoodsType(GoodsTypeEnum.INTEGRAL.name());
                 }
                 goodsSkuMapper.insert(sku);
                 count += skuModel.getInventory();
@@ -289,12 +293,14 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                 goods.setKeyWords(model.getKeyWords());
                 goods.setFreight(model.getFreight());
                 goods.setUnits(model.getUnits());
+                if (model.getIntegralGoods() == 1) {
+                    goods.setGoodsType(GoodsTypeEnum.INTEGRAL.name());
+                } else {
+                    goods.setGoodsType(GoodsTypeEnum.ORDINARY.name());
+                }
                 goods.setGoodsImgUrl(model.getGoodsImgUrl());
                 goodsMapper.updateByPrimaryKey(goods);
             }
-
-
-
             GoodsImageExample goodsImageExample = new GoodsImageExample();
             goodsImageExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andGoodsIdEqualTo(model.getId());
             goodsImageMapper.deleteByExample(goodsImageExample);
@@ -341,11 +347,9 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                     sku.setInventory(skuModel.getInventory());
                     if (BeanUtils.isNotEmpty(sku.getGetIntegral())) {
                         sku.setGetIntegral(sku.getGetIntegral());
-                        sku.setGoodsType(GoodsTypeEnum.ORDINARY.name());
                     }
                     if (BeanUtils.isNotEmpty(skuModel.getConsumptionIntegral())) {
                         sku.setConsumptionIntegral(skuModel.getConsumptionIntegral());
-                        sku.setGoodsType(GoodsTypeEnum.INTEGRAL.name());
                     }
                     goodsSkuMapper.insert(sku);
                     count += skuModel.getInventory();
@@ -367,11 +371,9 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                     sku.setCategoryId(model.getCategoryIds().get(1));
                     if (BeanUtils.isNotEmpty(sku.getGetIntegral())) {
                         sku.setGetIntegral(sku.getGetIntegral());
-                        sku.setGoodsType(GoodsTypeEnum.ORDINARY.name());
                     }
                     if (BeanUtils.isNotEmpty(skuModel.getConsumptionIntegral())) {
                         sku.setConsumptionIntegral(skuModel.getConsumptionIntegral());
-                        sku.setGoodsType(GoodsTypeEnum.INTEGRAL.name());
                     }
                     goodsSkuMapper.insert(sku);
                     count += skuModel.getInventory();

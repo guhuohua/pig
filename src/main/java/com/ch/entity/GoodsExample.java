@@ -686,6 +686,11 @@ public class GoodsExample {
             return (Criteria) this;
         }
 
+        public Criteria andGoodsTypeNotEqualTo(String value) {
+            addCriterion("goods_type <>", value, "goodsType");
+            return (Criteria) this;
+        }
+
         public Criteria andSaleGreaterThan(Integer value) {
             addCriterion("sale >", value, "sale");
             return (Criteria) this;

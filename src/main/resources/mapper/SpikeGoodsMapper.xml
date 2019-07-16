@@ -10,6 +10,7 @@
     <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
     <result column="spike_price" property="spikePrice" jdbcType="BIGINT" />
     <result column="spike_num" property="spikeNum" jdbcType="INTEGER" />
+    <result column="max_num" property="maxNum" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -70,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, goods_id, sku_id, shop_id, begin_date, end_date, spike_price, spike_num
+    id, goods_id, sku_id, shop_id, begin_date, end_date, spike_price, spike_num, max_num
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.SpikeGoodsExample" >
     select
@@ -106,10 +107,10 @@
   <insert id="insert" parameterType="com.ch.entity.SpikeGoods" >
     insert into spike_goods (id, goods_id, sku_id, 
       shop_id, begin_date, end_date, 
-      spike_price, spike_num)
+      spike_price, spike_num,max_num)
     values (#{id,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, 
       #{shopId,jdbcType=INTEGER}, #{beginDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, 
-      #{spikePrice,jdbcType=BIGINT}, #{spikeNum,jdbcType=INTEGER})
+      #{spikePrice,jdbcType=BIGINT}, #{spikeNum,jdbcType=INTEGER}, #{maxNum,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ch.entity.SpikeGoods" >
     insert into spike_goods
@@ -253,7 +254,8 @@
       begin_date = #{beginDate,jdbcType=TIMESTAMP},
       end_date = #{endDate,jdbcType=TIMESTAMP},
       spike_price = #{spikePrice,jdbcType=BIGINT},
-      spike_num = #{spikeNum,jdbcType=INTEGER}
+      spike_num = #{spikeNum,jdbcType=INTEGER},
+      max_num = #{maxNum,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

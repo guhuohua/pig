@@ -37,8 +37,6 @@ public class GoodsSku {
 
     private Integer getIntegral;
 
-    private String goodsType;
-
     private Integer consumptionIntegral;
 
     public Integer getGetIntegral() {
@@ -47,14 +45,6 @@ public class GoodsSku {
 
     public void setGetIntegral(Integer getIntegral) {
         this.getIntegral = getIntegral;
-    }
-
-    public String getGoodsType() {
-        return goodsType;
-    }
-
-    public void setGoodsType(String goodsType) {
-        this.goodsType = goodsType;
     }
 
     public Integer getConsumptionIntegral() {
