@@ -31,6 +31,9 @@ public class UserInfo {
 
     private String openId;
 
+    private Integer integral;
+
+    private String member;
 
     public Integer getId() {
         return id;
@@ -109,7 +112,7 @@ public class UserInfo {
     }
 
     public void setGender(String gender) {
-        this.gender = gender;
+        this.gender = gender == null ? null : gender.trim();
     }
 
     public String getUserHead() {
@@ -141,6 +144,22 @@ public class UserInfo {
     }
 
     public void setOpenId(String openId) {
-        this.openId = openId;
+        this.openId = openId == null ? null : openId.trim();
+    }
+
+    public Integer getIntegral() {
+        return integral;
+    }
+
+    public void setIntegral(Integer integral) {
+        this.integral = integral;
+    }
+
+    public String getMember() {
+        return member;
+    }
+
+    public void setMember(String member) {
+        this.member = member == null ? null : member.trim();
     }
 }

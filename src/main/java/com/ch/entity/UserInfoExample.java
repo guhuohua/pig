@@ -1024,6 +1024,136 @@ public class UserInfoExample {
             addCriterion("open_id not between", value1, value2, "openId");
             return (Criteria) this;
         }
+
+        public Criteria andIntegralIsNull() {
+            addCriterion("integral is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntegralIsNotNull() {
+            addCriterion("integral is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntegralEqualTo(Integer value) {
+            addCriterion("integral =", value, "integral");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntegralNotEqualTo(Integer value) {
+            addCriterion("integral <>", value, "integral");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntegralGreaterThan(Integer value) {
+            addCriterion("integral >", value, "integral");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntegralGreaterThanOrEqualTo(Integer value) {
+            addCriterion("integral >=", value, "integral");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntegralLessThan(Integer value) {
+            addCriterion("integral <", value, "integral");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntegralLessThanOrEqualTo(Integer value) {
+            addCriterion("integral <=", value, "integral");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntegralIn(List<Integer> values) {
+            addCriterion("integral in", values, "integral");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntegralNotIn(List<Integer> values) {
+            addCriterion("integral not in", values, "integral");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntegralBetween(Integer value1, Integer value2) {
+            addCriterion("integral between", value1, value2, "integral");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntegralNotBetween(Integer value1, Integer value2) {
+            addCriterion("integral not between", value1, value2, "integral");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberIsNull() {
+            addCriterion("member is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberIsNotNull() {
+            addCriterion("member is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberEqualTo(String value) {
+            addCriterion("member =", value, "member");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberNotEqualTo(String value) {
+            addCriterion("member <>", value, "member");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberGreaterThan(String value) {
+            addCriterion("member >", value, "member");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberGreaterThanOrEqualTo(String value) {
+            addCriterion("member >=", value, "member");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberLessThan(String value) {
+            addCriterion("member <", value, "member");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberLessThanOrEqualTo(String value) {
+            addCriterion("member <=", value, "member");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberLike(String value) {
+            addCriterion("member like", value, "member");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberNotLike(String value) {
+            addCriterion("member not like", value, "member");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberIn(List<String> values) {
+            addCriterion("member in", values, "member");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberNotIn(List<String> values) {
+            addCriterion("member not in", values, "member");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberBetween(String value1, String value2) {
+            addCriterion("member between", value1, value2, "member");
+            return (Criteria) this;
+        }
+
+        public Criteria andMemberNotBetween(String value1, String value2) {
+            addCriterion("member not between", value1, value2, "member");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

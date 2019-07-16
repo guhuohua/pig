@@ -30,10 +30,12 @@ public class ViewOrderEvaluteServiceImpl implements ViewOrderEvaluteService {
     GoodsEvaluationMapper goodsEvaluationMapper;
     @Autowired
     GoodsSkuMapper goodsSkuMapper;
+    @Autowired
+    BaseIntegralMapper baseIntegralMapper;
 
 
     @Override
-    public ResponseResult addEvalute(GoodsEvaluation goodsEvaluation, Integer shopId, String openId) {
+    public ResponseResult  addEvalute(GoodsEvaluation goodsEvaluation, Integer shopId, String openId) {
         ResponseResult result = new ResponseResult();
         UserInfoExample example = new UserInfoExample();
         UserInfoExample.Criteria criteria = example.createCriteria();
@@ -43,6 +45,9 @@ public class ViewOrderEvaluteServiceImpl implements ViewOrderEvaluteService {
         if (userInfos.size() > 0) {
             userInfo = userInfos.get(0);
         }
+        BaseIntegral baseIntegral = baseIntegralMapper.selectByPrimaryKey(1);
+        userInfo.setIntegral(userInfo.getIntegral()+baseIntegral.getComment());
+        userInfoMapper.updateByPrimaryKey(userInfo);
         String nickname = userInfo.getNickname();
         String name = nickname.substring(0, 1) + "**" + nickname.substring((nickname.length() - 1), nickname.length());
         goodsEvaluation.setShopId(shopId);

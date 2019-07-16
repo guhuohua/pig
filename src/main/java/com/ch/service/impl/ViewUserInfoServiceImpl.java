@@ -8,6 +8,7 @@
 package com.ch.service.impl;
 
 import com.ch.base.ResponseResult;
+import com.ch.dao.BaseIntegralMapper;
 import com.ch.dao.SysUserMapper;
 import com.ch.dao.UserInfoMapper;
 import com.ch.dao.UserMapper;
@@ -30,6 +31,8 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
 
     @Autowired
     UserInfoMapper userInfoMapper;
+    @Autowired
+    BaseIntegralMapper baseIntegralMapper;
 
     @Override
     public UserInfos findByOpenId(String openId) {
@@ -104,8 +107,14 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
     @Override
     public ResponseResult addTel(String openId, String tel) {
         ResponseResult result = new ResponseResult();
+        List<BaseIntegral> baseIntegrals = baseIntegralMapper.selectByExample(null);
+        BaseIntegral baseIntegral = null;
+        if (baseIntegrals.size()>0){
+            baseIntegral  = baseIntegrals.get(0);
+        }
         UserInfo userInfo = findOneByOpenId(openId);
         userInfo.setTel(tel);
+        userInfo.setIntegral(userInfo.getIntegral()+baseIntegral.getPerfect());
         userInfoMapper.updateByPrimaryKey(userInfo);
         return result;
     }

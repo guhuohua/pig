@@ -16,6 +16,7 @@ import com.ch.dto.UserConstant;
 import com.ch.dto.UserDto;
 import com.ch.entity.UserInfo;
 import com.ch.entity.UserInfoExample;
+import com.ch.enums.MemberEnum;
 import com.ch.service.ViewShopInfoService;
 import com.ch.service.ViewUserInfoService;
 import com.ch.util.HttpRequestUtil;
@@ -77,6 +78,8 @@ public class ViewUserConstantController {
             //userInfo.setUpdateTime(new Date());
             userInfo.setShopId(shopId);
             userInfo.setOpenId(userDto.getOpenId());
+            userInfo.setIntegral(0);
+            userInfo.setMember("BRONZE");
             userInfoMapper.insert(userInfo);
         }
         ResponseResult result = new ResponseResult();
