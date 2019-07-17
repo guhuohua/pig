@@ -46,7 +46,6 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
         Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
        // System.out.println(goods.getShopId());
 
-        if (shopId == goods.getShopId()) {
             goodsDetailsMap.put("goods", goods);
             //查询sku列表
             GoodsSkuExample exampleSku = new GoodsSkuExample();
@@ -148,7 +147,6 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
             goodsDetailsMap.put("goodsImages", goodsImages);
             goodsDetailsMap.put("goodsEvaluations", goodsEvaluations);
             goodsDetailsMap.put("goodsImages", goodsImages);
-        }
 
         result.setData(goodsDetailsMap);
         return result;

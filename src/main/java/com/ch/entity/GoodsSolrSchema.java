@@ -68,5 +68,6 @@ public class GoodsSolrSchema implements Serializable {
     @Field
     private Integer categoryId;
 
-
+    @Field
+    private String goodsType;
 }

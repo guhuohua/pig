@@ -29,11 +29,12 @@ public class SysMemberServiceImpl implements SysMemberService {
     @Autowired
     UserInfoMapper userInfoMapper;
 
+
     @Override
     @Transactional
     public ResponseResult baseSetting(SysBaseSettingParam param) {
         ResponseResult result = new ResponseResult();
-        MemberRank memberRank = new MemberRank();
+    /*    MemberRank memberRank = new MemberRank();
         memberRankMapper.deleteByExample(null);
         baseIntegralMapper.deleteByExample(null);
         memberRank.setBronze(param.getBronze());
@@ -47,13 +48,15 @@ public class SysMemberServiceImpl implements SysMemberService {
         baseIntegral.setPerfect(param.getPerfect());
         baseIntegral.setSign(param.getSign());
         baseIntegralMapper.insert(baseIntegral);
-        synchronizedIntegral(null);
+        synchronizedIntegral(null);*/
         return result;
     }
 
     @Override
     public ResponseResult synchronizedIntegral(Integer userId) {
-        List<UserInfo> userInfos = new ArrayList<>();
+
+        ResponseResult result = new ResponseResult();
+       /* List<UserInfo> userInfos = new ArrayList<>();
         if (null != userId) {
             UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
             userInfos.add(userInfo);
@@ -78,7 +81,7 @@ public class SysMemberServiceImpl implements SysMemberService {
                 userInfo.setMember(MemberEnum.MASONRY.getMessage());
             }
             userInfoMapper.updateByPrimaryKey(userInfo);
-        }
-        return null;
+        }*/
+        return result;
     }
 }

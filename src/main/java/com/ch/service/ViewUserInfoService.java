@@ -12,7 +12,6 @@ public interface ViewUserInfoService {
 
     void updateByPrimaryKey(User record);
 
-
     UserInfo findByUserId(Integer userId);
 
     void insert(UserInfo record);
@@ -22,6 +21,8 @@ public interface ViewUserInfoService {
     void updateByPrimaryKey(UserInfo userInfo);
 
      ResponseResult addTel(String openId , String tel);
+
+    ResponseResult sign(String openId);
 
 
 

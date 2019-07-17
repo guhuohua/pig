@@ -1,16 +1,17 @@
 package com.ch.entity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class MemberRankExample {
+public class SignExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public MemberRankExample() {
+    public SignExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -164,193 +165,193 @@ public class MemberRankExample {
             return (Criteria) this;
         }
 
-        public Criteria andMemberTypeIsNull() {
-            addCriterion("member_type is null");
+        public Criteria andSignDateIsNull() {
+            addCriterion("sign_date is null");
             return (Criteria) this;
         }
 
-        public Criteria andMemberTypeIsNotNull() {
-            addCriterion("member_type is not null");
+        public Criteria andSignDateIsNotNull() {
+            addCriterion("sign_date is not null");
             return (Criteria) this;
         }
 
-        public Criteria andMemberTypeEqualTo(String value) {
-            addCriterion("member_type =", value, "memberType");
+        public Criteria andSignDateEqualTo(Date value) {
+            addCriterion("sign_date =", value, "signDate");
             return (Criteria) this;
         }
 
-        public Criteria andMemberTypeNotEqualTo(String value) {
-            addCriterion("member_type <>", value, "memberType");
+        public Criteria andSignDateNotEqualTo(Date value) {
+            addCriterion("sign_date <>", value, "signDate");
             return (Criteria) this;
         }
 
-        public Criteria andMemberTypeGreaterThan(String value) {
-            addCriterion("member_type >", value, "memberType");
+        public Criteria andSignDateGreaterThan(Date value) {
+            addCriterion("sign_date >", value, "signDate");
             return (Criteria) this;
         }
 
-        public Criteria andMemberTypeGreaterThanOrEqualTo(String value) {
-            addCriterion("member_type >=", value, "memberType");
+        public Criteria andSignDateGreaterThanOrEqualTo(Date value) {
+            addCriterion("sign_date >=", value, "signDate");
             return (Criteria) this;
         }
 
-        public Criteria andMemberTypeLessThan(String value) {
-            addCriterion("member_type <", value, "memberType");
+        public Criteria andSignDateLessThan(Date value) {
+            addCriterion("sign_date <", value, "signDate");
             return (Criteria) this;
         }
 
-        public Criteria andMemberTypeLessThanOrEqualTo(String value) {
-            addCriterion("member_type <=", value, "memberType");
+        public Criteria andSignDateLessThanOrEqualTo(Date value) {
+            addCriterion("sign_date <=", value, "signDate");
             return (Criteria) this;
         }
 
-        public Criteria andMemberTypeLike(String value) {
-            addCriterion("member_type like", value, "memberType");
+        public Criteria andSignDateIn(List<Date> values) {
+            addCriterion("sign_date in", values, "signDate");
             return (Criteria) this;
         }
 
-        public Criteria andMemberTypeNotLike(String value) {
-            addCriterion("member_type not like", value, "memberType");
+        public Criteria andSignDateNotIn(List<Date> values) {
+            addCriterion("sign_date not in", values, "signDate");
             return (Criteria) this;
         }
 
-        public Criteria andMemberTypeIn(List<String> values) {
-            addCriterion("member_type in", values, "memberType");
+        public Criteria andSignDateBetween(Date value1, Date value2) {
+            addCriterion("sign_date between", value1, value2, "signDate");
             return (Criteria) this;
         }
 
-        public Criteria andMemberTypeNotIn(List<String> values) {
-            addCriterion("member_type not in", values, "memberType");
+        public Criteria andSignDateNotBetween(Date value1, Date value2) {
+            addCriterion("sign_date not between", value1, value2, "signDate");
             return (Criteria) this;
         }
 
-        public Criteria andMemberTypeBetween(String value1, String value2) {
-            addCriterion("member_type between", value1, value2, "memberType");
+        public Criteria andSignSatusIsNull() {
+            addCriterion("sign_satus is null");
             return (Criteria) this;
         }
 
-        public Criteria andMemberTypeNotBetween(String value1, String value2) {
-            addCriterion("member_type not between", value1, value2, "memberType");
+        public Criteria andSignSatusIsNotNull() {
+            addCriterion("sign_satus is not null");
             return (Criteria) this;
         }
 
-        public Criteria andIntegralIsNull() {
-            addCriterion("integral is null");
+        public Criteria andSignSatusEqualTo(String value) {
+            addCriterion("sign_satus =", value, "signSatus");
             return (Criteria) this;
         }
 
-        public Criteria andIntegralIsNotNull() {
-            addCriterion("integral is not null");
+        public Criteria andSignSatusNotEqualTo(String value) {
+            addCriterion("sign_satus <>", value, "signSatus");
             return (Criteria) this;
         }
 
-        public Criteria andIntegralEqualTo(Integer value) {
-            addCriterion("integral =", value, "integral");
+        public Criteria andSignSatusGreaterThan(String value) {
+            addCriterion("sign_satus >", value, "signSatus");
             return (Criteria) this;
         }
 
-        public Criteria andIntegralNotEqualTo(Integer value) {
-            addCriterion("integral <>", value, "integral");
+        public Criteria andSignSatusGreaterThanOrEqualTo(String value) {
+            addCriterion("sign_satus >=", value, "signSatus");
             return (Criteria) this;
         }
 
-        public Criteria andIntegralGreaterThan(Integer value) {
-            addCriterion("integral >", value, "integral");
+        public Criteria andSignSatusLessThan(String value) {
+            addCriterion("sign_satus <", value, "signSatus");
             return (Criteria) this;
         }
 
-        public Criteria andIntegralGreaterThanOrEqualTo(Integer value) {
-            addCriterion("integral >=", value, "integral");
+        public Criteria andSignSatusLessThanOrEqualTo(String value) {
+            addCriterion("sign_satus <=", value, "signSatus");
             return (Criteria) this;
         }
 
-        public Criteria andIntegralLessThan(Integer value) {
-            addCriterion("integral <", value, "integral");
+        public Criteria andSignSatusLike(String value) {
+            addCriterion("sign_satus like", value, "signSatus");
             return (Criteria) this;
         }
 
-        public Criteria andIntegralLessThanOrEqualTo(Integer value) {
-            addCriterion("integral <=", value, "integral");
+        public Criteria andSignSatusNotLike(String value) {
+            addCriterion("sign_satus not like", value, "signSatus");
             return (Criteria) this;
         }
 
-        public Criteria andIntegralIn(List<Integer> values) {
-            addCriterion("integral in", values, "integral");
+        public Criteria andSignSatusIn(List<String> values) {
+            addCriterion("sign_satus in", values, "signSatus");
             return (Criteria) this;
         }
 
-        public Criteria andIntegralNotIn(List<Integer> values) {
-            addCriterion("integral not in", values, "integral");
+        public Criteria andSignSatusNotIn(List<String> values) {
+            addCriterion("sign_satus not in", values, "signSatus");
             return (Criteria) this;
         }
 
-        public Criteria andIntegralBetween(Integer value1, Integer value2) {
-            addCriterion("integral between", value1, value2, "integral");
+        public Criteria andSignSatusBetween(String value1, String value2) {
+            addCriterion("sign_satus between", value1, value2, "signSatus");
             return (Criteria) this;
         }
 
-        public Criteria andIntegralNotBetween(Integer value1, Integer value2) {
-            addCriterion("integral not between", value1, value2, "integral");
+        public Criteria andSignSatusNotBetween(String value1, String value2) {
+            addCriterion("sign_satus not between", value1, value2, "signSatus");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountIsNull() {
-            addCriterion("discount is null");
+        public Criteria andUserIdIsNull() {
+            addCriterion("user_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountIsNotNull() {
-            addCriterion("discount is not null");
+        public Criteria andUserIdIsNotNull() {
+            addCriterion("user_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountEqualTo(Integer value) {
-            addCriterion("discount =", value, "discount");
+        public Criteria andUserIdEqualTo(Integer value) {
+            addCriterion("user_id =", value, "userId");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountNotEqualTo(Integer value) {
-            addCriterion("discount <>", value, "discount");
+        public Criteria andUserIdNotEqualTo(Integer value) {
+            addCriterion("user_id <>", value, "userId");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountGreaterThan(Integer value) {
-            addCriterion("discount >", value, "discount");
+        public Criteria andUserIdGreaterThan(Integer value) {
+            addCriterion("user_id >", value, "userId");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountGreaterThanOrEqualTo(Integer value) {
-            addCriterion("discount >=", value, "discount");
+        public Criteria andUserIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("user_id >=", value, "userId");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountLessThan(Integer value) {
-            addCriterion("discount <", value, "discount");
+        public Criteria andUserIdLessThan(Integer value) {
+            addCriterion("user_id <", value, "userId");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountLessThanOrEqualTo(Integer value) {
-            addCriterion("discount <=", value, "discount");
+        public Criteria andUserIdLessThanOrEqualTo(Integer value) {
+            addCriterion("user_id <=", value, "userId");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountIn(List<Integer> values) {
-            addCriterion("discount in", values, "discount");
+        public Criteria andUserIdIn(List<Integer> values) {
+            addCriterion("user_id in", values, "userId");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountNotIn(List<Integer> values) {
-            addCriterion("discount not in", values, "discount");
+        public Criteria andUserIdNotIn(List<Integer> values) {
+            addCriterion("user_id not in", values, "userId");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountBetween(Integer value1, Integer value2) {
-            addCriterion("discount between", value1, value2, "discount");
+        public Criteria andUserIdBetween(Integer value1, Integer value2) {
+            addCriterion("user_id between", value1, value2, "userId");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountNotBetween(Integer value1, Integer value2) {
-            addCriterion("discount not between", value1, value2, "discount");
+        public Criteria andUserIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("user_id not between", value1, value2, "userId");
             return (Criteria) this;
         }
     }

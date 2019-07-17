@@ -18,6 +18,10 @@
     <result column="open_id" property="openId" jdbcType="VARCHAR" />
     <result column="integral" property="integral" jdbcType="INTEGER" />
     <result column="member" property="member" jdbcType="VARCHAR" />
+    <result column="use_integral" property="useIntegral" jdbcType="INTEGER" />
+    <result column="superior_invitation_code" property="superiorInvitationCode" jdbcType="VARCHAR" />
+    <result column="invitation_code" property="invitationCode" jdbcType="VARCHAR" />
+    <result column="sign_status" property="signStatus" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -79,7 +83,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, shop_id, status, create_time, update_time, del_flag, tel, nickname, realname, 
-    gender, user_head, user_city, povince, open_id, integral, member
+    gender, user_head, user_city, povince, open_id, integral, member, use_integral, superior_invitation_code, 
+    invitation_code,sign_status
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.UserInfoExample" >
     select
@@ -118,13 +123,15 @@
       tel, nickname, realname, 
       gender, user_head, user_city, 
       povince, open_id, integral, 
-      member)
+      member, use_integral, superior_invitation_code, 
+      invitation_code,sign_status)
     values (#{id,jdbcType=INTEGER}, #{shopId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=INTEGER}, 
       #{tel,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, 
       #{gender,jdbcType=VARCHAR}, #{userHead,jdbcType=VARCHAR}, #{userCity,jdbcType=VARCHAR}, 
       #{povince,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{integral,jdbcType=INTEGER}, 
-      #{member,jdbcType=VARCHAR})
+      #{member,jdbcType=VARCHAR}, #{useIntegral,jdbcType=INTEGER}, #{superiorInvitationCode,jdbcType=VARCHAR}, 
+      #{invitationCode,jdbcType=VARCHAR},#{signStatus,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ch.entity.UserInfo" >
     insert into user_info
@@ -177,6 +184,15 @@
       <if test="member != null" >
         member,
       </if>
+      <if test="useIntegral != null" >
+        use_integral,
+      </if>
+      <if test="superiorInvitationCode != null" >
+        superior_invitation_code,
+      </if>
+      <if test="invitationCode != null" >
+        invitation_code,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -226,6 +242,15 @@
       </if>
       <if test="member != null" >
         #{member,jdbcType=VARCHAR},
+      </if>
+      <if test="useIntegral != null" >
+        #{useIntegral,jdbcType=INTEGER},
+      </if>
+      <if test="superiorInvitationCode != null" >
+        #{superiorInvitationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="invitationCode != null" >
+        #{invitationCode,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -286,6 +311,15 @@
       <if test="record.member != null" >
         member = #{record.member,jdbcType=VARCHAR},
       </if>
+      <if test="record.useIntegral != null" >
+        use_integral = #{record.useIntegral,jdbcType=INTEGER},
+      </if>
+      <if test="record.superiorInvitationCode != null" >
+        superior_invitation_code = #{record.superiorInvitationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.invitationCode != null" >
+        invitation_code = #{record.invitationCode,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -308,7 +342,10 @@
       povince = #{record.povince,jdbcType=VARCHAR},
       open_id = #{record.openId,jdbcType=VARCHAR},
       integral = #{record.integral,jdbcType=INTEGER},
-      member = #{record.member,jdbcType=VARCHAR}
+      member = #{record.member,jdbcType=VARCHAR},
+      use_integral = #{record.useIntegral,jdbcType=INTEGER},
+      superior_invitation_code = #{record.superiorInvitationCode,jdbcType=VARCHAR},
+      invitation_code = #{record.invitationCode,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -361,6 +398,15 @@
       <if test="member != null" >
         member = #{member,jdbcType=VARCHAR},
       </if>
+      <if test="useIntegral != null" >
+        use_integral = #{useIntegral,jdbcType=INTEGER},
+      </if>
+      <if test="superiorInvitationCode != null" >
+        superior_invitation_code = #{superiorInvitationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="invitationCode != null" >
+        invitation_code = #{invitationCode,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -380,7 +426,11 @@
       povince = #{povince,jdbcType=VARCHAR},
       open_id = #{openId,jdbcType=VARCHAR},
       integral = #{integral,jdbcType=INTEGER},
-      member = #{member,jdbcType=VARCHAR}
+      member = #{member,jdbcType=VARCHAR},
+      use_integral = #{useIntegral,jdbcType=INTEGER},
+      superior_invitation_code = #{superiorInvitationCode,jdbcType=VARCHAR},
+      invitation_code = #{invitationCode,jdbcType=VARCHAR},
+      sign_status = #{signStatus,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

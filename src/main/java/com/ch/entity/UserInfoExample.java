@@ -1154,6 +1154,206 @@ public class UserInfoExample {
             addCriterion("member not between", value1, value2, "member");
             return (Criteria) this;
         }
+
+        public Criteria andUseIntegralIsNull() {
+            addCriterion("use_integral is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseIntegralIsNotNull() {
+            addCriterion("use_integral is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseIntegralEqualTo(Integer value) {
+            addCriterion("use_integral =", value, "useIntegral");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseIntegralNotEqualTo(Integer value) {
+            addCriterion("use_integral <>", value, "useIntegral");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseIntegralGreaterThan(Integer value) {
+            addCriterion("use_integral >", value, "useIntegral");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseIntegralGreaterThanOrEqualTo(Integer value) {
+            addCriterion("use_integral >=", value, "useIntegral");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseIntegralLessThan(Integer value) {
+            addCriterion("use_integral <", value, "useIntegral");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseIntegralLessThanOrEqualTo(Integer value) {
+            addCriterion("use_integral <=", value, "useIntegral");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseIntegralIn(List<Integer> values) {
+            addCriterion("use_integral in", values, "useIntegral");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseIntegralNotIn(List<Integer> values) {
+            addCriterion("use_integral not in", values, "useIntegral");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseIntegralBetween(Integer value1, Integer value2) {
+            addCriterion("use_integral between", value1, value2, "useIntegral");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseIntegralNotBetween(Integer value1, Integer value2) {
+            addCriterion("use_integral not between", value1, value2, "useIntegral");
+            return (Criteria) this;
+        }
+
+        public Criteria andSuperiorInvitationCodeIsNull() {
+            addCriterion("superior_invitation_code is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSuperiorInvitationCodeIsNotNull() {
+            addCriterion("superior_invitation_code is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSuperiorInvitationCodeEqualTo(String value) {
+            addCriterion("superior_invitation_code =", value, "superiorInvitationCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSuperiorInvitationCodeNotEqualTo(String value) {
+            addCriterion("superior_invitation_code <>", value, "superiorInvitationCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSuperiorInvitationCodeGreaterThan(String value) {
+            addCriterion("superior_invitation_code >", value, "superiorInvitationCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSuperiorInvitationCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("superior_invitation_code >=", value, "superiorInvitationCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSuperiorInvitationCodeLessThan(String value) {
+            addCriterion("superior_invitation_code <", value, "superiorInvitationCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSuperiorInvitationCodeLessThanOrEqualTo(String value) {
+            addCriterion("superior_invitation_code <=", value, "superiorInvitationCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSuperiorInvitationCodeLike(String value) {
+            addCriterion("superior_invitation_code like", value, "superiorInvitationCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSuperiorInvitationCodeNotLike(String value) {
+            addCriterion("superior_invitation_code not like", value, "superiorInvitationCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSuperiorInvitationCodeIn(List<String> values) {
+            addCriterion("superior_invitation_code in", values, "superiorInvitationCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSuperiorInvitationCodeNotIn(List<String> values) {
+            addCriterion("superior_invitation_code not in", values, "superiorInvitationCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSuperiorInvitationCodeBetween(String value1, String value2) {
+            addCriterion("superior_invitation_code between", value1, value2, "superiorInvitationCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSuperiorInvitationCodeNotBetween(String value1, String value2) {
+            addCriterion("superior_invitation_code not between", value1, value2, "superiorInvitationCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvitationCodeIsNull() {
+            addCriterion("invitation_code is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvitationCodeIsNotNull() {
+            addCriterion("invitation_code is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvitationCodeEqualTo(String value) {
+            addCriterion("invitation_code =", value, "invitationCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvitationCodeNotEqualTo(String value) {
+            addCriterion("invitation_code <>", value, "invitationCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvitationCodeGreaterThan(String value) {
+            addCriterion("invitation_code >", value, "invitationCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvitationCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("invitation_code >=", value, "invitationCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvitationCodeLessThan(String value) {
+            addCriterion("invitation_code <", value, "invitationCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvitationCodeLessThanOrEqualTo(String value) {
+            addCriterion("invitation_code <=", value, "invitationCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvitationCodeLike(String value) {
+            addCriterion("invitation_code like", value, "invitationCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvitationCodeNotLike(String value) {
+            addCriterion("invitation_code not like", value, "invitationCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvitationCodeIn(List<String> values) {
+            addCriterion("invitation_code in", values, "invitationCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvitationCodeNotIn(List<String> values) {
+            addCriterion("invitation_code not in", values, "invitationCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvitationCodeBetween(String value1, String value2) {
+            addCriterion("invitation_code between", value1, value2, "invitationCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andInvitationCodeNotBetween(String value1, String value2) {
+            addCriterion("invitation_code not between", value1, value2, "invitationCode");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

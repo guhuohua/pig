@@ -9,11 +9,14 @@ package com.ch.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ch.base.ResponseResult;
+import com.ch.dao.SignMapper;
 import com.ch.dao.UserInfoMapper;
 import com.ch.dao.UserMapper;
 import com.ch.dto.ShopInfo;
 import com.ch.dto.UserConstant;
 import com.ch.dto.UserDto;
+import com.ch.entity.Sign;
+import com.ch.entity.SignExample;
 import com.ch.entity.UserInfo;
 import com.ch.entity.UserInfoExample;
 import com.ch.enums.MemberEnum;
@@ -26,10 +29,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.*;
 
 @RestController
 @RequestMapping("weixin")
@@ -44,6 +48,9 @@ public class ViewUserConstantController {
     UserMapper userMapper;
     @Autowired
     UserInfoMapper userInfoMapper;
+    @Autowired
+    SignMapper signMapper;
+
 
     @PostMapping("loginInfo1")
     public ResponseResult user_login(HttpServletRequest req, @RequestBody UserDto userDto) {
@@ -57,14 +64,19 @@ public class ViewUserConstantController {
         List<UserInfo> userInfos = userInfoMapper.selectByExample(example);
         if (userInfos.size() > 0) {
             UserInfo userInfo = userInfos.get(0);
-            /*userInfo.setUserHead(userDto.getUserHead());
-            userInfo.setNickname(userDto.getUserName());
-            userInfo.setPovince(userDto.getUserProvince());
-            userInfo.setGender(userDto.getUserGender());
-            userInfo.setUserCity(userDto.getUserCity());*/
+            Date endOfDay = getEndOfDay(new Date());
+            Date startDay = getStartOfDay(new Date());
+            SignExample example1 = new SignExample();
+            SignExample.Criteria criteria1 = example1.createCriteria();
+            criteria1.andUserIdEqualTo(userInfo.getId());
+            criteria1.andSignDateLessThan(endOfDay);
+            criteria1.andSignDateGreaterThan(startDay);
+            List<Sign> signs = signMapper.selectByExample(example1);
+            if (signs.size()==0){
+                userInfo.setSignStatus(0);
+
+            }
             userInfo.setUpdateTime(new Date());
-           /* userInfo.setShopId(shopId);
-            userInfo.setOpenId(userDto.getOpenId());*/
             userInfoMapper.updateByPrimaryKey(userInfo);
 
         } else {
@@ -80,6 +92,7 @@ public class ViewUserConstantController {
             userInfo.setOpenId(userDto.getOpenId());
             userInfo.setIntegral(0);
             userInfo.setMember("BRONZE");
+            userInfo.setSignStatus(0);
             userInfoMapper.insert(userInfo);
         }
         ResponseResult result = new ResponseResult();
@@ -122,6 +135,25 @@ public class ViewUserConstantController {
         return result1;
 
     }
+
+    public static Date getEndOfDay(Date date) {
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault());;
+        LocalDateTime endOfDay = localDateTime.with(LocalTime.MAX);
+        return Date.from(endOfDay.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    public static Date getStartOfDay(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Date zero = calendar.getTime();
+        return zero;
+
+    }
+
+
 
 }
 

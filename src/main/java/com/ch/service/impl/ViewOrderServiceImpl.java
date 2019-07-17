@@ -47,6 +47,8 @@ public class ViewOrderServiceImpl implements ViewOrderService {
     UserAddressMapper userAddressMapper;
     @Autowired
     SolrService solrService;
+    @Autowired
+    SpikeGoodsMapper spikeGoodsMapper;
 
 
     @Override
@@ -78,6 +80,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             for (OrderDto orderDto : orderDtoList) {
                 GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderDto.getGoodsSku().getId());
                 Goods goods = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
+
                 if (goods.getStatus() == 0) {
                     result.setCode(500);
                     result.setError_description("商品已下架");
@@ -87,19 +90,48 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                 GoodsExample example1 = new GoodsExample();
                 GoodsExample.Criteria criteria1 = example1.createCriteria();
                 goodsMapper.selectByExample(example1);
-                totalFee = (goodsSku.getPresentPrice() * orderDto.getNum());
-                orderFee += totalFee;
+
                 OrderItem orderItem = new OrderItem();
                 orderItem.setGoodsId(goodsSku.getGoodsId());
                 if (goodsSku.getInventory() > 0) {
-                    goodsSku.setInventory(goodsSku.getInventory() - orderDto.getNum() );
+                    goodsSku.setInventory(goodsSku.getInventory() - orderDto.getNum());
                     goodsSku.setSale(goodsSku.getSale() + orderDto.getNum());
+
 
                     //Goods goods1 = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
                     orderItem.setName(orderDto.getName() + "" + goodsSku.getSkuName());
-                   // orderItem.setSkuName(goodsSku.getSkuName());
+                    // orderItem.setSkuName(goodsSku.getSkuName());
                     orderItem.setGoodsName(orderDto.getName());
                     orderItem.setNumber(orderDto.getNum());
+                    SpikeGoodsExample example2 = new SpikeGoodsExample();
+                    SpikeGoodsExample.Criteria criteria3 = example2.createCriteria();
+                    criteria3.andSkuIdEqualTo(goodsSku.getId());
+                    List<SpikeGoods> spikeGoods = spikeGoodsMapper.selectByExample(example2);
+                    SpikeGoods spikeGoods1 = null;
+                    if (spikeGoods.size() > 0) {
+                        spikeGoods1 = spikeGoods.get(0);
+                        if (new Date().getTime() > spikeGoods1.getBeginDate().getTime() && new Date().getTime() < spikeGoods1.getEndDate().getTime()) {
+                            totalFee = (spikeGoods1.getSpikePrice() * orderDto.getNum());
+                            orderFee += totalFee;
+                            orderItem.setPrice(spikeGoods1.getSpikePrice());
+                            order.setOrderStatus(1);
+
+                        }
+                    }
+                    if("INTEGRAL".equals(goods.getGoodsType())){
+                        totalFee = (0l);
+                        orderFee += totalFee;
+                        orderItem.setPrice(0l);
+                        order.setOrderPrice(0l);
+                        order.setOrderStatus(7);
+                    }
+                    if ("ORDINARY".equals(goods.getGoodsType())){
+                        totalFee = (goodsSku.getPresentPrice() * orderDto.getNum());
+                        orderFee += totalFee;
+                        orderItem.setPrice(goodsSku.getPresentPrice());
+                        order.setOrderStatus(1);
+
+                    }
                     orderItem.setPrice(goodsSku.getPresentPrice());
                     orderItem.setOrderId(order.getId());
                     orderItem.setShopId(shopId);
@@ -121,18 +153,18 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                     return result;
                 }
                 goodsMapper.updateByPrimaryKey(goods);
-                solrService.releaseGoods(goods.getId(),shopId);
+                solrService.releaseGoods(goods.getId(), shopId);
 
 
             }
             order.setUserId(userInfo.getId());
             order.setShopId(shopId);
-            order.setOrderStatus(1);
+
             order.setStatus(0);
 
-            if(BeanUtils.isNotEmpty(userAddress)){
+            if (BeanUtils.isNotEmpty(userAddress)) {
                 order.setDeliveryId(userAddress.getId());
-            }else {
+            } else {
                 result.setCode(500);
                 result.setError_description("请选择地址");
                 return result;
@@ -141,6 +173,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             order.setOrderPrice(orderFee + Collections.max(feeList));
             order.setFreight(Collections.max(feeList));
             order.setGoodsFee(orderFee);
+
             orderMapper.insert(order);
         }
         result.setData(order.getId());
@@ -148,7 +181,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
     }
 
     @Override
-    public ResponseResult showOrder(String orderId, String openId,Integer shopId) {
+    public ResponseResult showOrder(String orderId, String openId, Integer shopId) {
         Map map = new HashMap();
         UserInfoExample exampleInfo = new UserInfoExample();
         UserInfoExample.Criteria criteria1 = exampleInfo.createCriteria();
@@ -181,7 +214,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
         criteria.andOrderIdEqualTo(orderId);
         criteria.andShopIdEqualTo(shopId);
         List<OrderItem> orderItems = orderItemMapper.selectByExample(example);
-        for (OrderItem orderItem : orderItems){
+        for (OrderItem orderItem : orderItems) {
             GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderItem.getSkuAttrId());
             orderItem.setImage(goodsSku.getGoodsImage());
             orderItem.setSkuName(goodsSku.getSkuName());
@@ -803,7 +836,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             goods.setInventory(goods.getInventory() + orderItem.getNumber());
             goods.setSalesVolume(goods.getSalesVolume() - orderItem.getNumber());
             goodsMapper.updateByPrimaryKey(goods);
-            solrService.releaseGoods(goods.getId(),shopId);
+            solrService.releaseGoods(goods.getId(), shopId);
         }
         orderMapper.deleteByPrimaryKey(orderId);
 

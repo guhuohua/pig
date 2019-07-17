@@ -10,7 +10,9 @@ package com.ch.service.impl;
 import com.ch.base.ResponseResult;
 import com.ch.dao.*;
 import com.ch.entity.*;
+import com.ch.service.SysMemberService;
 import com.ch.service.ViewOrderEvaluteService;
+import com.ch.util.FlowUtil;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -32,6 +34,10 @@ public class ViewOrderEvaluteServiceImpl implements ViewOrderEvaluteService {
     GoodsSkuMapper goodsSkuMapper;
     @Autowired
     BaseIntegralMapper baseIntegralMapper;
+    @Autowired
+    SysMemberService sysMemberService;
+
+
 
 
     @Override
@@ -47,7 +53,10 @@ public class ViewOrderEvaluteServiceImpl implements ViewOrderEvaluteService {
         }
         BaseIntegral baseIntegral = baseIntegralMapper.selectByPrimaryKey(1);
         userInfo.setIntegral(userInfo.getIntegral()+baseIntegral.getComment());
+        userInfo.setUseIntegral(userInfo.getUseIntegral()+baseIntegral.getComment());
         userInfoMapper.updateByPrimaryKey(userInfo);
+        sysMemberService.synchronizedIntegral(userInfo.getId());
+        FlowUtil.addFlowTel(baseIntegral.getPerfect().longValue(),"comment","INTEGRAL",0);
         String nickname = userInfo.getNickname();
         String name = nickname.substring(0, 1) + "**" + nickname.substring((nickname.length() - 1), nickname.length());
         goodsEvaluation.setShopId(shopId);

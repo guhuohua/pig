@@ -3,15 +3,11 @@ package com.ch.entity;
 public class MemberRank {
     private Integer id;
 
-    private Integer bronze;
+    private String memberType;
 
-    private Integer silver;
+    private Integer integral;
 
-    private Integer gold;
-
-    private Integer platinum;
-
-    private Integer diamonds;
+    private Integer discount;
 
     public Integer getId() {
         return id;
@@ -21,43 +17,27 @@ public class MemberRank {
         this.id = id;
     }
 
-    public Integer getBronze() {
-        return bronze;
+    public String getMemberType() {
+        return memberType;
     }
 
-    public void setBronze(Integer bronze) {
-        this.bronze = bronze;
+    public void setMemberType(String memberType) {
+        this.memberType = memberType == null ? null : memberType.trim();
     }
 
-    public Integer getSilver() {
-        return silver;
+    public Integer getIntegral() {
+        return integral;
     }
 
-    public void setSilver(Integer silver) {
-        this.silver = silver;
+    public void setIntegral(Integer integral) {
+        this.integral = integral;
     }
 
-    public Integer getGold() {
-        return gold;
+    public Integer getDiscount() {
+        return discount;
     }
 
-    public void setGold(Integer gold) {
-        this.gold = gold;
-    }
-
-    public Integer getPlatinum() {
-        return platinum;
-    }
-
-    public void setPlatinum(Integer platinum) {
-        this.platinum = platinum;
-    }
-
-    public Integer getDiamonds() {
-        return diamonds;
-    }
-
-    public void setDiamonds(Integer diamonds) {
-        this.diamonds = diamonds;
+    public void setDiscount(Integer discount) {
+        this.discount = discount;
     }
 }

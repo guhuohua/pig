@@ -17,14 +17,24 @@ import com.ch.service.ViewUserInfoService;
 import com.ch.util.Msg;
 import com.ch.util.TokenUtil;
 import com.ch.util.WXUtil;
+import org.apache.ibatis.annotations.Param;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("login")
 public class ViewLoginController {
+
+
+    private static final Logger LOGGER = LogManager.getLogger(ViewLoginController.class);
     @Autowired
     ViewShopInfoService viewShopInfoService;
     @Autowired
@@ -57,17 +67,48 @@ public class ViewLoginController {
     }*/
 
     @GetMapping("userInfo")
-    public ResponseResult parseUserInfo(String appId){
+    public ResponseResult parseUserInfo(String appId) {
         ResponseResult result = new ResponseResult();
         ShopInfo shopInfo = viewShopInfoService.findShopInfoByAppId(appId);
-       // System.out.println("shopinfo:"+ JSON.toJSONString(shopInfo));
+        // System.out.println("shopinfo:"+ JSON.toJSONString(shopInfo));
         String token = TokenUtil.sign(shopInfo.getShopId());
         //System.out.println(token);
         result.setData(token);
-        return  result;
+        return result;
 
     }
 
+    @GetMapping("addTel")
+    public ResponseResult addTel(HttpServletRequest req, @RequestParam String tel) {
+        ResponseResult result = new ResponseResult();
+        String openId = req.getHeader("openId");
+        try {
+            result = viewUserInfoService.addTel(openId, tel);
+        } catch (Exception e) {
+            LOGGER.error("绑定手机号失败" + e.getMessage(), e);
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("绑定手机号失败");
+        }
+        return result;
+
+    }
+
+    @GetMapping("sign")
+    public ResponseResult sign(HttpServletRequest req) {
+        ResponseResult result = new ResponseResult();
+        String openId = req.getHeader("openId");
+        try {
+            result = viewUserInfoService.sign(openId);
+        } catch (Exception e) {
+            LOGGER.error("签到失败" + e.getMessage(), e);
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("签到失败");
+        }
+        return result;
+
+    }
 
 }
 
