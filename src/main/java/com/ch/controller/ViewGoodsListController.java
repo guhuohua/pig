@@ -72,4 +72,19 @@ public class ViewGoodsListController {
         }
         return result;
     }
+
+    @GetMapping("spikeGoodsList")
+    @ApiOperation("秒杀列表")
+    public ResponseResult spikeGoodsList( HttpServletRequest req, Integer pageNum, Integer pageSize){
+        ResponseResult result = new ResponseResult();
+        try {
+            result = viewGoodsListService.spikeGoodsList(pageNum,pageSize);
+        } catch (Exception e) {
+            LOGGER.error("展示搜索项失败" + e.getMessage(), e);
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("展示搜索项失败");
+        }
+        return result;
+    }
 }

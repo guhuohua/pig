@@ -20,6 +20,7 @@
     <result column="sku_name" property="skuName" jdbcType="VARCHAR" />
     <result column="get_integral" property="getIntegral" jdbcType="INTEGER" />
     <result column="consumption_integral" property="consumptionIntegral" jdbcType="INTEGER" />
+    <result column="spike_goods" property="spikeGoods" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -81,7 +82,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, shop_id, status, create_time, update_time, del_flag, attrs, original_price, present_price, 
-    inventory, sn, sale, goods_image, goods_id, category_id, sku_name, get_integral, consumption_integral
+    inventory, sn, sale, goods_image, goods_id, category_id, sku_name, get_integral, consumption_integral,spike_goods
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.GoodsSkuExample" >
     select
@@ -120,13 +121,13 @@
       attrs, original_price, present_price, 
       inventory, sn, sale, 
       goods_image, goods_id, category_id, 
-      sku_name, get_integral, consumption_integral)
+      sku_name, get_integral, consumption_integral,spike_goods)
     values (#{id,jdbcType=INTEGER}, #{shopId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=INTEGER}, 
       #{attrs,jdbcType=INTEGER}, #{originalPrice,jdbcType=DECIMAL}, #{presentPrice,jdbcType=DECIMAL}, 
       #{inventory,jdbcType=INTEGER}, #{sn,jdbcType=VARCHAR}, #{sale,jdbcType=INTEGER}, 
       #{goodsImage,jdbcType=VARCHAR}, #{goodsId,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, 
-      #{skuName,jdbcType=VARCHAR}, #{getIntegral,jdbcType=INTEGER},#{consumptionIntegral,jdbcType=INTEGER} )
+      #{skuName,jdbcType=VARCHAR}, #{getIntegral,jdbcType=INTEGER},#{consumptionIntegral,jdbcType=INTEGER},,#{spikeGoods,jdbcType=INTEGER} )
   </insert>
   <insert id="insertSelective" parameterType="com.ch.entity.GoodsSku" >
     insert into goods_sku
@@ -384,7 +385,8 @@
       category_id = #{categoryId,jdbcType=INTEGER},
       sku_name = #{skuName,jdbcType=VARCHAR},
       get_integral = #{getIntegral,jdbcType=INTEGER},
-      consumption_integral = #{consumptionIntegral,jdbcType=INTEGER}
+      consumption_integral = #{consumptionIntegral,jdbcType=INTEGER},
+      spike_goods = #{spikeGoods,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

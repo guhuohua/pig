@@ -56,6 +56,14 @@ public class SysGoodsModel {
 
     private Integer integralGoods;
 
+    private String goodsType;
+
+    private Long beginDate;
+
+    private Long endDate;
+
+    private Integer maxNum;
+
     private List<SysGoodsImageModel> goodsImgList;
 
     private List<SysGoodsSkuModel> sysGoodsSkuModelList;

@@ -63,12 +63,16 @@ public class SysGoodsServiceImpl implements SysGoodsService {
     @Autowired
     GoodsAreaMapper goodsAreaMapper;
 
+    @Autowired
+    SpikeGoodsMapper spikeGoodsMapper;
+
     @Override
     public ResponseResult goodsList(SysGoodsParam param, Integer userId) {
         ResponseResult result = new ResponseResult();
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         PageHelper.startPage(param.getCurrentPage(), param.getPageSize());
         GoodsExample goodsExample = new GoodsExample();
+        goodsExample.setOrderByClause(" create_time desc");
         GoodsExample.Criteria criteria = goodsExample.createCriteria();
         criteria.andShopIdEqualTo(sysUser.getShopId());
         if (BeanUtils.isNotEmpty(param.getName())) {
@@ -217,10 +221,8 @@ public class SysGoodsServiceImpl implements SysGoodsService {
             goods.setOriginalPrice(max);
             goods.setPresentPrice(min);
             goods.setSalesVolume(0);
-            if (model.getIntegralGoods() == 1) {
-                goods.setGoodsType(GoodsTypeEnum.INTEGRAL.name());
-            } else {
-                goods.setGoodsType(GoodsTypeEnum.ORDINARY.name());
+            if (BeanUtils.isNotEmpty(model.getGoodsType())) {
+                goods.setGoodsType(model.getGoodsType());
             }
             goodsMapper.insert(goods);
             Integer count = 0;
@@ -295,10 +297,8 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                 goods.setKeyWords(model.getKeyWords());
                 goods.setFreight(model.getFreight());
                 goods.setUnits(model.getUnits());
-                if (model.getIntegralGoods() == 1) {
-                    goods.setGoodsType(GoodsTypeEnum.INTEGRAL.name());
-                } else {
-                    goods.setGoodsType(GoodsTypeEnum.ORDINARY.name());
+                if (BeanUtils.isNotEmpty(model.getGoodsType())) {
+                    goods.setGoodsType(model.getGoodsType());
                 }
                 goods.setGoodsImgUrl(model.getGoodsImgUrl());
                 goodsMapper.updateByPrimaryKey(goods);
@@ -353,8 +353,6 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                     if (BeanUtils.isNotEmpty(skuModel.getConsumptionIntegral())) {
                         sku.setConsumptionIntegral(skuModel.getConsumptionIntegral());
                     }
-                    goodsSkuMapper.insert(sku);
-                    count += skuModel.getInventory();
                     goodsSkuMapper.updateByPrimaryKey(sku);
                     count += skuModel.getInventory();
                 } else {
@@ -377,8 +375,6 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                     if (BeanUtils.isNotEmpty(skuModel.getConsumptionIntegral())) {
                         sku.setConsumptionIntegral(skuModel.getConsumptionIntegral());
                     }
-                    goodsSkuMapper.insert(sku);
-                    count += skuModel.getInventory();
                     goodsSkuMapper.insert(sku);
                     count += skuModel.getInventory();
                 }
@@ -435,6 +431,17 @@ public class SysGoodsServiceImpl implements SysGoodsService {
             List<GoodsSku> goodsSkus = goodsSkuMapper.selectByExample(goodsSkuExample);
             for (GoodsSku goodsSku:goodsSkus) {
                 SysGoodsSkuModel sysGoodsSkuModel = new SysGoodsSkuModel();
+                SpikeGoodsExample spikeGoodsExample = new SpikeGoodsExample();
+                spikeGoodsExample.createCriteria().andGoodsIdEqualTo(goods.getId()).andSkuIdEqualTo(goodsSku.getId());
+                List<SpikeGoods> spikeGoods1 = spikeGoodsMapper.selectByExample(spikeGoodsExample);
+                if (spikeGoods1.size() > 0) {
+                    SpikeGoods spikeGoods = spikeGoods1.get(0);
+                    sysGoodsSkuModel.setSpikeNum(spikeGoods.getSpikeNum());
+                    sysGoodsSkuModel.setSpikePrice(spikeGoods.getSpikePrice());
+                    sysGoodsModel.setBeginDate(spikeGoods.getBeginDate().getTime());
+                    sysGoodsModel.setEndDate(spikeGoods.getEndDate().getTime());
+                    sysGoodsModel.setMaxNum(spikeGoods.getMaxNum());
+                }
                 modelMapper.map(goodsSku, sysGoodsSkuModel);
                 sysGoodsSkuModelList.add(sysGoodsSkuModel);
             }

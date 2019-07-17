@@ -19,4 +19,10 @@ public interface SysMemberService {
      * @return
      */
     ResponseResult synchronizedIntegral(Integer userId);
+
+    /**
+     * 查找平台基本设置
+     * @return
+     */
+    ResponseResult findBaseSetting();
 }

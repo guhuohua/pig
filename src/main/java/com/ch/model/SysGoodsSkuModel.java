@@ -34,4 +34,8 @@ public class SysGoodsSkuModel {
     private Integer getIntegral;
 
     private Integer consumptionIntegral;
+
+    private Long spikePrice;
+
+    private Integer spikeNum;
 }

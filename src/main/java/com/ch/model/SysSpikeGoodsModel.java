@@ -2,7 +2,7 @@ package com.ch.model;
 
 import lombok.Data;
 
-import java.util.Date;
+import java.util.List;
 
 @Data
 public class SysSpikeGoodsModel {
@@ -11,17 +11,11 @@ public class SysSpikeGoodsModel {
 
     private Integer goodsId;
 
-    private Integer skuId;
-
-    private Integer shopId;
-
     private Long beginDate;
 
     private Long endDate;
 
-    private Long spikePrice;
-
-    private Integer spikeNum;
+    private List<SysSpikeSkuModel> sysSpikeSkuModels;
 
     private Integer maxNum;
 }

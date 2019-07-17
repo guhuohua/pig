@@ -3,6 +3,8 @@ package com.ch.service;
 import com.ch.base.ResponseResult;
 import com.ch.model.SysSpikeGoodsModel;
 
+import java.util.List;
+
 public interface SysSpikeService {
 
     /**
@@ -18,4 +20,12 @@ public interface SysSpikeService {
      * @return
      */
     ResponseResult list(String sn, Integer currentPage, Integer pageSize);
+
+
+    /**
+     * 删除秒杀
+     * @param id
+     * @return
+     */
+    ResponseResult delete(Integer id);
 }
