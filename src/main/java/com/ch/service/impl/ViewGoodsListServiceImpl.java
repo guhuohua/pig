@@ -7,19 +7,26 @@
 package com.ch.service.impl;
 
 import com.ch.base.BeanUtils;
+import com.ch.base.PageQuery;
 import com.ch.base.ResponseResult;
 import com.ch.dao.GoodsMapper;
+import com.ch.dao.SpikeGoodsMapper;
 import com.ch.dao.SysUserMapper;
 import com.ch.dto.SolrDto;
 import com.ch.entity.Goods;
 import com.ch.entity.GoodsExample;
+import com.ch.entity.SpikeGoods;
+import com.ch.model.ViewSpikeGoodsDTO;
 import com.ch.service.ViewGoodsListService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.MapSolrParams;
 import org.apache.solr.common.params.SolrParams;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -32,6 +39,9 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
     SysUserMapper userMapper;
     @Autowired
     GoodsMapper goodsMapper;
+
+    @Autowired
+    SpikeGoodsMapper spikeGoodsMapper;
 
     @Override
     public ResponseResult findGoodsList(SolrDto solrDto, Integer shopId) {
@@ -135,4 +145,21 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
         return result;
     }
 
+    @Override
+    public ResponseResult spikeGoodsList(Integer pageNum, Integer pageSize) {
+        ResponseResult result = new ResponseResult();
+        PageHelper.startPage(pageNum, pageSize);
+        List<ViewSpikeGoodsDTO> spikeGoods = spikeGoodsMapper.viewList();
+        for (ViewSpikeGoodsDTO viewSpikeGoodsDTO:spikeGoods) {
+            Goods goods = goodsMapper.selectByPrimaryKey(viewSpikeGoodsDTO.getGoodsId());
+            if (BeanUtils.isNotEmpty(goods)) {
+                viewSpikeGoodsDTO.setImg(goods.getGoodsImgUrl());
+                viewSpikeGoodsDTO.setOriginalPrice(goods.getOriginalPrice());
+                viewSpikeGoodsDTO.setTitle(goods.getTitle());
+            }
+        }
+        PageInfo<ViewSpikeGoodsDTO> pageInfo = new PageInfo<>(spikeGoods);
+        result.setData(pageInfo);
+        return result;
+    }
 }

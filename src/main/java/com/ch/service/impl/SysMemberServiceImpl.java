@@ -1,5 +1,6 @@
 package com.ch.service.impl;
 
+import com.ch.base.BeanUtils;
 import com.ch.base.ResponseResult;
 import com.ch.dao.BaseIntegralMapper;
 import com.ch.dao.MemberRankMapper;
@@ -82,6 +83,30 @@ public class SysMemberServiceImpl implements SysMemberService {
             }
             userInfoMapper.updateByPrimaryKey(userInfo);
         }*/
+        return result;
+    }
+
+    @Override
+    public ResponseResult findBaseSetting() {
+        ResponseResult result = new ResponseResult();
+        SysBaseSettingParam param = new SysBaseSettingParam();
+        List<MemberRank> memberRanks = memberRankMapper.selectByExample(null);
+        if (BeanUtils.isNotEmpty(memberRanks)) {
+            MemberRank memberRank = memberRanks.get(0);
+            param.setBronze(memberRank.getBronze());
+            param.setSilver(memberRank.getSilver());
+            param.setGold(memberRank.getGold());
+            param.setPlatinum(memberRank.getPlatinum());
+            param.setDiamonds(memberRank.getDiamonds());
+        }
+        List<BaseIntegral> baseIntegrals = baseIntegralMapper.selectByExample(null);
+        if (BeanUtils.isNotEmpty(baseIntegrals)) {
+            BaseIntegral baseIntegral = baseIntegrals.get(0);
+            param.setSign(baseIntegral.getSign());
+            param.setPerfect(baseIntegral.getPerfect());
+            param.setComment(baseIntegral.getComment());
+        }
+        result.setData(param);
         return result;
     }
 }

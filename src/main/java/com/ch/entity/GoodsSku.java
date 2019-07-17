@@ -39,6 +39,16 @@ public class GoodsSku {
 
     private Integer consumptionIntegral;
 
+    private Integer spikeGoods;
+
+    public Integer getSpikeGoods() {
+        return spikeGoods;
+    }
+
+    public void setSpikeGoods(Integer spikeGoods) {
+        this.spikeGoods = spikeGoods;
+    }
+
     public Integer getGetIntegral() {
         return getIntegral;
     }

@@ -131,7 +131,7 @@
       original_price, present_price, sn, 
       member_discount, limit_buy, sales_volume, 
       name, catrgory_id, key_words, 
-      freight, units,goods_img_url)
+      freight, units,goods_img_url, goods_type)
     values (#{id,jdbcType=INTEGER}, #{shopId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=INTEGER}, 
       #{title,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, #{recommend,jdbcType=INTEGER}, 
