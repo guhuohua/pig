@@ -89,24 +89,24 @@ public class SysMemberServiceImpl implements SysMemberService {
     @Override
     public ResponseResult findBaseSetting() {
         ResponseResult result = new ResponseResult();
-        SysBaseSettingParam param = new SysBaseSettingParam();
-        List<MemberRank> memberRanks = memberRankMapper.selectByExample(null);
-        if (BeanUtils.isNotEmpty(memberRanks)) {
-            MemberRank memberRank = memberRanks.get(0);
-            param.setBronze(memberRank.getBronze());
-            param.setSilver(memberRank.getSilver());
-            param.setGold(memberRank.getGold());
-            param.setPlatinum(memberRank.getPlatinum());
-            param.setDiamonds(memberRank.getDiamonds());
-        }
-        List<BaseIntegral> baseIntegrals = baseIntegralMapper.selectByExample(null);
-        if (BeanUtils.isNotEmpty(baseIntegrals)) {
-            BaseIntegral baseIntegral = baseIntegrals.get(0);
-            param.setSign(baseIntegral.getSign());
-            param.setPerfect(baseIntegral.getPerfect());
-            param.setComment(baseIntegral.getComment());
-        }
-        result.setData(param);
+        //SysBaseSettingParam param = new SysBaseSettingParam();
+        //List<MemberRank> memberRanks = memberRankMapper.selectByExample(null);
+        //if (BeanUtils.isNotEmpty(memberRanks)) {
+        //    MemberRank memberRank = memberRanks.get(0);
+        //    param.setBronze(memberRank.getBronze());
+        //    param.setSilver(memberRank.getSilver());
+        //    param.setGold(memberRank.getGold());
+        //    param.setPlatinum(memberRank.getPlatinum());
+        //    param.setDiamonds(memberRank.getDiamonds());
+        //}
+        //List<BaseIntegral> baseIntegrals = baseIntegralMapper.selectByExample(null);
+        //if (BeanUtils.isNotEmpty(baseIntegrals)) {
+        //    BaseIntegral baseIntegral = baseIntegrals.get(0);
+        //    param.setSign(baseIntegral.getSign());
+        //    param.setPerfect(baseIntegral.getPerfect());
+        //    param.setComment(baseIntegral.getComment());
+        //}
+        //result.setData(param);
         return result;
     }
 }

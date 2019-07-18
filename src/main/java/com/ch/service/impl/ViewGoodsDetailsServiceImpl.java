@@ -10,6 +10,7 @@ package com.ch.service.impl;
 import com.ch.base.ResponseResult;
 import com.ch.dao.*;
 import com.ch.entity.*;
+import com.ch.enums.GoodsTypeEnum;
 import com.ch.service.ViewGoodsDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,9 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
     SpecificationAttributeMapper specificationAttributeMapper;
     @Autowired
     GoodsImageMapper goodsImageMapper;
+    @Autowired
+    SpikeGoodsMapper spikeGoodsMapper;
+
 
     @Override
     public ResponseResult findGoodsDetailsByGoodsId(Integer goodsId, Integer shopId) {
@@ -47,6 +51,10 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
        // System.out.println(goods.getShopId());
 
             goodsDetailsMap.put("goods", goods);
+            if (GoodsTypeEnum.SPIKE.name().equals(goods.getGoodsType())){
+
+
+            }
             //查询sku列表
             GoodsSkuExample exampleSku = new GoodsSkuExample();
             GoodsSkuExample.Criteria criteria2 = exampleSku.createCriteria();

@@ -62,7 +62,15 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
         }
 
         return userInfos;
+
+
+      
+
     }
+
+
+
+
 
     @Override
     public User findUserByOpenId(String openId) {

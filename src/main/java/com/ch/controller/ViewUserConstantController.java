@@ -62,8 +62,9 @@ public class ViewUserConstantController {
         UserInfoExample.Criteria criteria = example.createCriteria();
         criteria.andOpenIdEqualTo(userDto.getOpenId());
         List<UserInfo> userInfos = userInfoMapper.selectByExample(example);
+        UserInfo userInfo =null;
         if (userInfos.size() > 0) {
-            UserInfo userInfo = userInfos.get(0);
+             userInfo = userInfos.get(0);
             Date endOfDay = getEndOfDay(new Date());
             Date startDay = getStartOfDay(new Date());
             SignExample example1 = new SignExample();
@@ -80,7 +81,7 @@ public class ViewUserConstantController {
             userInfoMapper.updateByPrimaryKey(userInfo);
 
         } else {
-            UserInfo userInfo = new UserInfo();
+            userInfo = new UserInfo();
             userInfo.setUserHead(userDto.getUserHead());
             userInfo.setNickname(userDto.getUserName());
             userInfo.setPovince(userDto.getUserProvince());
@@ -96,6 +97,7 @@ public class ViewUserConstantController {
             userInfoMapper.insert(userInfo);
         }
         ResponseResult result = new ResponseResult();
+        result.setData(userInfo);
         return result;
     }
 
