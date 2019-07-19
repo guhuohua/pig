@@ -7,13 +7,16 @@
 
 package com.ch.service.impl;
 
+import com.ch.base.BeanUtils;
 import com.ch.base.ResponseResult;
 import com.ch.dao.*;
 import com.ch.dto.UserInfos;
 import com.ch.entity.*;
+import com.ch.model.TelParam;
 import com.ch.service.SysMemberService;
 import com.ch.service.ViewUserInfoService;
 import com.ch.util.FlowUtil;
+import com.ch.util.RandomUtil;
 import com.sun.org.apache.regexp.internal.RE;
 import org.apache.commons.math3.analysis.function.Sin;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,17 +128,31 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
     }
 
     @Override
-    public ResponseResult addTel(String openId, String tel) {
+    public ResponseResult addTel(String openId, TelParam telParam) {
         ResponseResult result = new ResponseResult();
+        String stringRandom = RandomUtil.getStringRandom(6);
         List<BaseIntegral> baseIntegrals = baseIntegralMapper.selectByExample(null);
         BaseIntegral baseIntegral = null;
         if (baseIntegrals.size()>0){
             baseIntegral  = baseIntegrals.get(0);
         }
         UserInfo userInfo = findOneByOpenId(openId);
-        userInfo.setTel(tel);
-        userInfo.setIntegral(userInfo.getIntegral()+baseIntegral.getPerfect());
-        userInfo.setUseIntegral(userInfo.getUseIntegral()+baseIntegral.getPerfect());
+
+        if (BeanUtils.isEmpty(userInfo.getTel())){
+            userInfo.setTel(telParam.getTel());
+            userInfo.setIntegral(userInfo.getIntegral()+baseIntegral.getPerfect());
+            userInfo.setUseIntegral(userInfo.getUseIntegral()+baseIntegral.getPerfect());
+        }
+        if (BeanUtils.isEmpty(userInfo.getSuperiorInvitationCode())){
+            userInfo.setSuperiorInvitationCode(telParam.getSuperiorInvitationCode());
+            //userInfo.setIntegral(userInfo.getIntegral()+baseIntegral);
+            userInfo.setUseIntegral(userInfo.getUseIntegral()+baseIntegral.getPerfect());
+
+        }
+        if (BeanUtils.isEmpty(userInfo.getInvitationCode())){
+            userInfo.setInvitationCode(stringRandom);
+        }
+
         userInfoMapper.updateByPrimaryKey(userInfo);
         sysMemberService.synchronizedIntegral(userInfo.getId());
         FlowUtil.addFlowTel(baseIntegral.getPerfect().longValue(),"tel","INTEGRAL",0);
