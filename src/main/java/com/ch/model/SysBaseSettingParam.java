@@ -14,4 +14,12 @@ public class SysBaseSettingParam {
     private Integer perfect;
 
     private Integer comment;
+
+    private Integer firstShare;
+
+    private Integer paymentIntegral;
+
+    private Integer superintendence;
+
+    private Integer cashIntegral;
 }

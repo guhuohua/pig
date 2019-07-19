@@ -9,6 +9,46 @@ public class BaseIntegral {
 
     private Integer comment;
 
+    private Integer firstShare;
+
+    private Integer paymentIntegral;
+
+    private Integer superintendence;
+
+    private Integer cashIntegral;
+
+    public Integer getFirstShare() {
+        return firstShare;
+    }
+
+    public void setFirstShare(Integer firstShare) {
+        this.firstShare = firstShare;
+    }
+
+    public Integer getPaymentIntegral() {
+        return paymentIntegral;
+    }
+
+    public void setPaymentIntegral(Integer paymentIntegral) {
+        this.paymentIntegral = paymentIntegral;
+    }
+
+    public Integer getSuperintendence() {
+        return superintendence;
+    }
+
+    public void setSuperintendence(Integer superintendence) {
+        this.superintendence = superintendence;
+    }
+
+    public Integer getCashIntegral() {
+        return cashIntegral;
+    }
+
+    public void setCashIntegral(Integer cashIntegral) {
+        this.cashIntegral = cashIntegral;
+    }
+
     public Integer getId() {
         return id;
     }

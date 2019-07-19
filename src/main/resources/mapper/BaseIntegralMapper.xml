@@ -6,6 +6,10 @@
     <result column="sign" property="sign" jdbcType="INTEGER" />
     <result column="perfect" property="perfect" jdbcType="INTEGER" />
     <result column="comment" property="comment" jdbcType="INTEGER" />
+    <result column="first_share" property="firstShare" jdbcType="INTEGER" />
+    <result column="payment_integral" property="paymentIntegral" jdbcType="INTEGER" />
+    <result column="superintendence" property="superintendence" jdbcType="INTEGER" />
+    <result column="cash_integral" property="cashIntegral" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -101,9 +105,9 @@
   </delete>
   <insert id="insert" parameterType="com.ch.entity.BaseIntegral" >
     insert into base_integral (id, sign, perfect, 
-      comment)
+      comment, first_share, payment_integral, superintendence, cash_integral)
     values (#{id,jdbcType=INTEGER}, #{sign,jdbcType=INTEGER}, #{perfect,jdbcType=INTEGER}, 
-      #{comment,jdbcType=INTEGER})
+      #{comment,jdbcType=INTEGER},#{firstShare,jdbcType=INTEGER},#{paymentIntegral,jdbcType=INTEGER},#{superintendence,jdbcType=INTEGER},#{cashIntegral,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ch.entity.BaseIntegral" >
     insert into base_integral
@@ -191,7 +195,11 @@
     update base_integral
     set sign = #{sign,jdbcType=INTEGER},
       perfect = #{perfect,jdbcType=INTEGER},
-      comment = #{comment,jdbcType=INTEGER}
+      comment = #{comment,jdbcType=INTEGER},
+      first_share = #{firstShare,jdbcType=INTEGER},
+      payment_integral = #{paymentIntegral,jdbcType=INTEGER},
+      superintendence = #{superintendence,jdbcType=INTEGER},
+      cash_integral = #{cashIntegral,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

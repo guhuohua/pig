@@ -63,6 +63,10 @@ public class SysMemberServiceImpl implements SysMemberService {
         baseIntegral.setComment(param.getComment());
         baseIntegral.setPerfect(param.getPerfect());
         baseIntegral.setSign(param.getSign());
+        baseIntegral.setFirstShare(param.getFirstShare());
+        baseIntegral.setCashIntegral(param.getCashIntegral());
+        baseIntegral.setSuperintendence(param.getSuperintendence());
+        baseIntegral.setPaymentIntegral(param.getPaymentIntegral());
         baseIntegralMapper.insert(baseIntegral);
         synchronizedIntegral(null);
         return result;
@@ -70,7 +74,6 @@ public class SysMemberServiceImpl implements SysMemberService {
 
     @Override
     public ResponseResult synchronizedIntegral(Integer userId) {
-
         ResponseResult result = new ResponseResult();
         List<UserInfo> userInfos = new ArrayList<>();
         if (null != userId) {
