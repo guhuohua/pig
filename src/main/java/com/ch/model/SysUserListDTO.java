@@ -7,15 +7,17 @@ public class SysUserListDTO {
 
     private Integer id;
 
-    private String userHead;
-
     private String nickname;
 
     private String tel;
 
-    private Integer gender;
+    private String member;
 
-    private Long orderPrice;
+    private Integer integral;
 
-    private Long orderCount;
+    private Integer useIntegral;
+
+    private Long invitation_code;
+
+    private String superiorInvitationCode;
 }

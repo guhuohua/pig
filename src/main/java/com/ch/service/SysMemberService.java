@@ -15,6 +15,14 @@ public interface SysMemberService {
 
 
     /**
+     * 积分获取方式
+     * @param param
+     * @return
+     */
+    ResponseResult acquisitionMethod(SysBaseSettingParam param);
+
+
+    /**
      * 同步所有人积分等级
      * @return
      */

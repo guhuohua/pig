@@ -64,13 +64,9 @@ public class SysSpikeServiceImpl implements SysSpikeService {
             goodsSkuMapper.updateByPrimaryKey(goodsSku);
 
             SpikeGoodsExample spikeGoodsExample = new SpikeGoodsExample();
-            spikeGoodsExample.createCriteria().andGoodsIdEqualTo(sysSpikeGoodsModel.getGoodsId()).andSkuIdEqualTo(model.getId());
-            List<SpikeGoods> spikeGoods1 = spikeGoodsMapper.selectByExample(spikeGoodsExample);
-            if (spikeGoods1.size() > 0) {
-                spikeGoodsMapper.updateByPrimaryKey(spikeGoods);
-            } else {
-                spikeGoodsMapper.insert(spikeGoods);
-            }
+            spikeGoodsExample.createCriteria().andGoodsIdEqualTo(sysSpikeGoodsModel.getGoodsId());
+            spikeGoodsMapper.deleteByExample(spikeGoodsExample);
+            spikeGoodsMapper.insert(spikeGoods);
         }
         return result;
     }

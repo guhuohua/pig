@@ -8,7 +8,7 @@ import com.ch.dao.UserInfoMapper;
 import com.ch.entity.BaseIntegral;
 import com.ch.entity.MemberRank;
 import com.ch.entity.UserInfo;
-import com.ch.enums.MemberEnum;
+import com.ch.model.MemberModel;
 import com.ch.model.SysBaseSettingParam;
 import com.ch.service.SysMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,21 +35,36 @@ public class SysMemberServiceImpl implements SysMemberService {
     @Transactional
     public ResponseResult baseSetting(SysBaseSettingParam param) {
         ResponseResult result = new ResponseResult();
-    /*    MemberRank memberRank = new MemberRank();
-        memberRankMapper.deleteByExample(null);
+        for (MemberModel memberModel:param.getMemberModels()) {
+            if (BeanUtils.isEmpty(memberModel.getId())) {
+                MemberRank memberRank = new MemberRank();
+                memberRank.setMemberType(memberModel.getMemberType());
+                memberRank.setIntegral(memberModel.getIntegral());
+                memberRank.setDiscount(memberModel.getDiscount());
+                memberRankMapper.insert(memberRank);
+            } else {
+                MemberRank memberRank = memberRankMapper.selectByPrimaryKey(memberModel.getId());
+                memberRank.setMemberType(memberModel.getMemberType());
+                memberRank.setIntegral(memberModel.getIntegral());
+                memberRank.setDiscount(memberModel.getDiscount());
+                memberRankMapper.updateByPrimaryKey(memberRank);
+            }
+
+        }
+        synchronizedIntegral(null);
+        return result;
+    }
+
+    @Override
+    public ResponseResult acquisitionMethod(SysBaseSettingParam param) {
+        ResponseResult result = new ResponseResult();
         baseIntegralMapper.deleteByExample(null);
-        memberRank.setBronze(param.getBronze());
-        memberRank.setDiamonds(param.getDiamonds());
-        memberRank.setGold(param.getGold());
-        memberRank.setPlatinum(param.getPlatinum());
-        memberRank.setSilver(param.getSilver());
-        memberRankMapper.insert(memberRank);
         BaseIntegral baseIntegral = new BaseIntegral();
         baseIntegral.setComment(param.getComment());
         baseIntegral.setPerfect(param.getPerfect());
         baseIntegral.setSign(param.getSign());
         baseIntegralMapper.insert(baseIntegral);
-        synchronizedIntegral(null);*/
+        synchronizedIntegral(null);
         return result;
     }
 
@@ -57,32 +72,22 @@ public class SysMemberServiceImpl implements SysMemberService {
     public ResponseResult synchronizedIntegral(Integer userId) {
 
         ResponseResult result = new ResponseResult();
-       /* List<UserInfo> userInfos = new ArrayList<>();
+        List<UserInfo> userInfos = new ArrayList<>();
         if (null != userId) {
             UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
             userInfos.add(userInfo);
         } else {
             userInfos = userInfoMapper.selectByExample(null);
         }
-        MemberRank memberRank = memberRankMapper.selectByExample(null).get(0);
+        List<MemberRank> memberRanks = memberRankMapper.selectByExample(null);
         for (UserInfo userInfo:userInfos) {
-            if (userInfo.getIntegral() >= memberRank.getBronze()) {
-                userInfo.setMember(MemberEnum.BRONZE.getMessage());
+            for (MemberRank memberRank:memberRanks) {
+                if (userInfo.getIntegral() >= memberRank.getIntegral()) {
+                    userInfo.setMember(memberRank.getMemberType());
+                    userInfoMapper.updateByPrimaryKey(userInfo);
+                }
             }
-            if (userInfo.getIntegral() >= memberRank.getSilver()) {
-                userInfo.setMember(MemberEnum.SILVER.getMessage());
-            }
-            if (userInfo.getIntegral() >= memberRank.getGold()) {
-                userInfo.setMember(MemberEnum.GOLD.getMessage());
-            }
-            if (userInfo.getIntegral() >= memberRank.getPlatinum()) {
-                userInfo.setMember(MemberEnum.PLATINUM.getMessage());
-            }
-            if (userInfo.getIntegral() >= memberRank.getDiamonds()) {
-                userInfo.setMember(MemberEnum.MASONRY.getMessage());
-            }
-            userInfoMapper.updateByPrimaryKey(userInfo);
-        }*/
+        }
         return result;
     }
 
@@ -90,14 +95,17 @@ public class SysMemberServiceImpl implements SysMemberService {
     public ResponseResult findBaseSetting() {
         ResponseResult result = new ResponseResult();
         SysBaseSettingParam param = new SysBaseSettingParam();
+        List<MemberModel> memberModels = new ArrayList<>();
         List<MemberRank> memberRanks = memberRankMapper.selectByExample(null);
         if (BeanUtils.isNotEmpty(memberRanks)) {
-            MemberRank memberRank = memberRanks.get(0);
-            param.setBronze(memberRank.getBronze());
-            param.setSilver(memberRank.getSilver());
-            param.setGold(memberRank.getGold());
-            param.setPlatinum(memberRank.getPlatinum());
-            param.setDiamonds(memberRank.getDiamonds());
+            for (MemberRank memberRank:memberRanks) {
+                MemberModel memberModel = new MemberModel();
+                memberModel.setId(memberRank.getId());
+                memberModel.setDiscount(memberRank.getDiscount());
+                memberModel.setIntegral(memberRank.getIntegral());
+                memberModel.setMemberType(memberRank.getMemberType());
+                memberModels.add(memberModel);
+            }
         }
         List<BaseIntegral> baseIntegrals = baseIntegralMapper.selectByExample(null);
         if (BeanUtils.isNotEmpty(baseIntegrals)) {
@@ -106,6 +114,7 @@ public class SysMemberServiceImpl implements SysMemberService {
             param.setPerfect(baseIntegral.getPerfect());
             param.setComment(baseIntegral.getComment());
         }
+        param.setMemberModels(memberModels);
         result.setData(param);
         return result;
     }

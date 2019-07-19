@@ -6,7 +6,7 @@ public enum MemberEnum {
     SILVER(2, "白银会员"),
     GOLD(3, "黄金会员"),
     PLATINUM(4, "白金会员"),
-    MASONRY(5, "砖石会员");
+    DIAMONDS(5, "砖石会员");
     public final Integer code;
 
     public final String message;
