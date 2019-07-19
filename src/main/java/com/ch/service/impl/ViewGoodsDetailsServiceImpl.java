@@ -10,6 +10,7 @@ package com.ch.service.impl;
 import com.ch.base.ResponseResult;
 import com.ch.dao.*;
 import com.ch.entity.*;
+import com.ch.enums.GoodsTypeEnum;
 import com.ch.service.ViewGoodsDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,9 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
     SpecificationAttributeMapper specificationAttributeMapper;
     @Autowired
     GoodsImageMapper goodsImageMapper;
+    @Autowired
+    SpikeGoodsMapper spikeGoodsMapper;
+
 
     @Override
     public ResponseResult findGoodsDetailsByGoodsId(Integer goodsId, Integer shopId) {
@@ -47,12 +51,24 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
        // System.out.println(goods.getShopId());
 
             goodsDetailsMap.put("goods", goods);
+
             //查询sku列表
             GoodsSkuExample exampleSku = new GoodsSkuExample();
             GoodsSkuExample.Criteria criteria2 = exampleSku.createCriteria();
             criteria2.andGoodsIdEqualTo(goodsId);
             List<GoodsSku> goodsSkus = goodsSkuMapper.selectByExample(exampleSku);
             goodsDetailsMap.put("goodsSkus", goodsSkus);
+        for (GoodsSku skus : goodsSkus) {
+            SpikeGoodsExample example = new SpikeGoodsExample();
+            SpikeGoodsExample.Criteria criteria = example.createCriteria();
+            criteria.andSkuIdEqualTo(skus.getId());
+            criteria.andBeginDateLessThan(new Date());
+            criteria.andEndDateGreaterThan(new Date());
+            List<SpikeGoods> spikeGoods = spikeGoodsMapper.selectByExample(example);
+            if (spikeGoods.size()>0){
+                goodsDetailsMap.put("spikeGoods",spikeGoods.get(0));
+            }
+        }
 
            /* GoodsSkuAttributeExample example = new GoodsSkuAttributeExample();
             GoodsSkuAttributeExample.Criteria criteria = example.createCriteria();
