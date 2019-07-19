@@ -48,4 +48,19 @@ public class SysMemberController {
         }
         return result;
     }
+
+    @PostMapping("acquisitionMethod")
+    @ApiOperation("设置积分获取方式")
+    public ResponseResult acquisitionMethod(@RequestBody SysBaseSettingParam param) {
+        ResponseResult result = new ResponseResult();
+        try {
+            result = sysMemberService.acquisitionMethod(param);
+        } catch (Exception e) {
+            log.error("设置积分获取方式失败", e);
+            result.setCode(600);
+            result.setError(e.getMessage());
+            result.setError_description("设置积分获取方式失败");
+        }
+        return result;
+    }
 }

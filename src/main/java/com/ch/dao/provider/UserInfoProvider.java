@@ -13,7 +13,7 @@ public class UserInfoProvider {
         String name = (String) map.get("name");
         String tel = (String) map.get("tel");
         Integer shopId = (Integer) map.get("shopId");
-        StringBuilder sb = new StringBuilder("select ui.id, ui.user_head,ui.nickname,ui.tel, ui.gender from user_info ui where 1 = 1");
+        StringBuilder sb = new StringBuilder("select * from user_info ui where 1 = 1");
         sb.append(" and ui.shop_id = ").append(shopId);
         if (BeanUtils.isNotEmpty(name)) {
             sb.append(" and ui.nickname  like '%").append(name).append("%'");

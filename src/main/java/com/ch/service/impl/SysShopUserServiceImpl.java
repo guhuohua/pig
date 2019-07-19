@@ -31,21 +31,6 @@ public class SysShopUserServiceImpl implements SysShopUserService {
         PageHelper.startPage(param.getCurrentPage(), param.getPageSize());
         List<SysUserListDTO> userInfos = userInfoMapper.list(param.getNickname(), param.getPhone(), sysUser.getShopId());
         PageInfo<SysUserListDTO> pageInfo = new PageInfo<>(userInfos);
-        for (SysUserListDTO sysUserListDTO:pageInfo.getList()) {
-            Long orderPrice = userInfoMapper.orderPrice(sysUserListDTO.getId(), sysUser.getShopId());
-            if (BeanUtils.isNotEmpty(orderPrice)) {
-                sysUserListDTO.setOrderPrice(orderPrice);
-            } else {
-                sysUserListDTO.setOrderPrice(0l);
-            }
-            Long orderCount = userInfoMapper.orderCount(sysUserListDTO.getId(), sysUser.getShopId());
-            if (BeanUtils.isNotEmpty(orderCount)) {
-                sysUserListDTO.setOrderCount(orderCount);
-            } else {
-                sysUserListDTO.setOrderCount(0l);
-            }
-
-        }
         result.setData(pageInfo);
         return result;
     }
