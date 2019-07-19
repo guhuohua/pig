@@ -94,6 +94,8 @@ public class ViewUserConstantController {
             userInfo.setIntegral(0);
             userInfo.setMember("BRONZE");
             userInfo.setSignStatus(0);
+            userInfo.setIntegral(0);
+            userInfo.setUseIntegral(0);
             userInfoMapper.insert(userInfo);
         }
         ResponseResult result = new ResponseResult();

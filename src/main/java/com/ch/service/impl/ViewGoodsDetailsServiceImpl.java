@@ -51,16 +51,24 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
        // System.out.println(goods.getShopId());
 
             goodsDetailsMap.put("goods", goods);
-            if (GoodsTypeEnum.SPIKE.name().equals(goods.getGoodsType())){
 
-
-            }
             //查询sku列表
             GoodsSkuExample exampleSku = new GoodsSkuExample();
             GoodsSkuExample.Criteria criteria2 = exampleSku.createCriteria();
             criteria2.andGoodsIdEqualTo(goodsId);
             List<GoodsSku> goodsSkus = goodsSkuMapper.selectByExample(exampleSku);
             goodsDetailsMap.put("goodsSkus", goodsSkus);
+        for (GoodsSku skus : goodsSkus) {
+            SpikeGoodsExample example = new SpikeGoodsExample();
+            SpikeGoodsExample.Criteria criteria = example.createCriteria();
+            criteria.andSkuIdEqualTo(skus.getId());
+            criteria.andBeginDateLessThan(new Date());
+            criteria.andEndDateGreaterThan(new Date());
+            List<SpikeGoods> spikeGoods = spikeGoodsMapper.selectByExample(example);
+            if (spikeGoods.size()>0){
+                goodsDetailsMap.put("spikeGoods",spikeGoods.get(0));
+            }
+        }
 
            /* GoodsSkuAttributeExample example = new GoodsSkuAttributeExample();
             GoodsSkuAttributeExample.Criteria criteria = example.createCriteria();
