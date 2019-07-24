@@ -12,6 +12,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.ch.base.ResponseResult;
 import com.ch.dto.ShopInfo;
 import com.ch.dto.UserInfos;
+import com.ch.model.TelParam;
 import com.ch.service.ViewShopInfoService;
 import com.ch.service.ViewUserInfoService;
 import com.ch.util.Msg;
@@ -22,10 +23,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -79,11 +77,11 @@ public class ViewLoginController {
     }
 
     @GetMapping("addTel")
-    public ResponseResult addTel(HttpServletRequest req, @RequestParam String tel) {
+    public ResponseResult addTel(HttpServletRequest req, @RequestBody TelParam telParam) {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         try {
-            result = viewUserInfoService.addTel(openId, tel);
+            result = viewUserInfoService.addTel(openId, telParam);
         } catch (Exception e) {
             LOGGER.error("绑定手机号失败" + e.getMessage(), e);
             result.setCode(500);

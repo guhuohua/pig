@@ -9,22 +9,22 @@ package com.ch.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ch.base.ResponseResult;
+import com.ch.dao.MemberLevelMapper;
 import com.ch.dao.SignMapper;
 import com.ch.dao.UserInfoMapper;
 import com.ch.dao.UserMapper;
+import com.ch.dto.LoginDTO;
 import com.ch.dto.ShopInfo;
 import com.ch.dto.UserConstant;
 import com.ch.dto.UserDto;
-import com.ch.entity.Sign;
-import com.ch.entity.SignExample;
-import com.ch.entity.UserInfo;
-import com.ch.entity.UserInfoExample;
+import com.ch.entity.*;
 import com.ch.enums.MemberEnum;
 import com.ch.service.ViewShopInfoService;
 import com.ch.service.ViewUserInfoService;
 import com.ch.util.HttpRequestUtil;
 import com.ch.util.TokenUtil;
 import io.swagger.annotations.Api;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,11 +50,16 @@ public class ViewUserConstantController {
     UserInfoMapper userInfoMapper;
     @Autowired
     SignMapper signMapper;
+    @Autowired
+    MemberLevelMapper memberLevelMapper;
+    @Autowired
+    ModelMapper modelMapper;
 
 
     @PostMapping("loginInfo1")
     public ResponseResult user_login(HttpServletRequest req, @RequestBody UserDto userDto) {
-
+        ResponseResult result = new ResponseResult();
+        LoginDTO loginDTO = new LoginDTO();
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
         //User user = userMapper.selectByPrimaryKey(userId);
@@ -92,14 +97,20 @@ public class ViewUserConstantController {
             userInfo.setShopId(shopId);
             userInfo.setOpenId(userDto.getOpenId());
             userInfo.setIntegral(0);
-            userInfo.setMember("BRONZE");
+            userInfo.setMember("TOURIST");
             userInfo.setSignStatus(0);
             userInfo.setIntegral(0);
             userInfo.setUseIntegral(0);
             userInfoMapper.insert(userInfo);
         }
-        ResponseResult result = new ResponseResult();
-        result.setData(userInfo);
+        MemberLevelExample example1 = new MemberLevelExample();
+        MemberLevelExample.Criteria criteria1 = example1.createCriteria();
+        criteria1.andNameEqualTo(userInfo.getMember());
+        List<MemberLevel> memberLevels = memberLevelMapper.selectByExample(example1);
+        MemberLevel memberLevel = memberLevels.get(0);
+        modelMapper.map(userInfo, loginDTO);
+        loginDTO.setDiscount(memberLevel.getDiscount());
+        result.setData(loginDTO);
         return result;
     }
 
