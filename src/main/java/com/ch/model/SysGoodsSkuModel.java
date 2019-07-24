@@ -38,4 +38,6 @@ public class SysGoodsSkuModel {
     private Long spikePrice;
 
     private Integer spikeNum;
+
+    private Integer spikeGoods;
 }

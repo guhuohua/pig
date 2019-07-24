@@ -441,6 +441,7 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                     sysGoodsModel.setBeginDate(spikeGoods.getBeginDate().getTime());
                     sysGoodsModel.setEndDate(spikeGoods.getEndDate().getTime());
                     sysGoodsModel.setMaxNum(spikeGoods.getMaxNum());
+                    sysGoodsSkuModel.setSpikeGoods(1);
                 }
                 modelMapper.map(goodsSku, sysGoodsSkuModel);
                 sysGoodsSkuModelList.add(sysGoodsSkuModel);

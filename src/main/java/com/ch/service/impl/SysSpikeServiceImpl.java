@@ -20,6 +20,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -42,31 +43,46 @@ public class SysSpikeServiceImpl implements SysSpikeService {
     public ResponseResult mange(SysSpikeGoodsModel sysSpikeGoodsModel) {
         ResponseResult result = new ResponseResult();
         for (SysSpikeSkuModel model:sysSpikeGoodsModel.getSysSpikeSkuModels()) {
-            SpikeGoods spikeGoods = new SpikeGoods();
-            Goods goods = goodsMapper.selectByPrimaryKey(sysSpikeGoodsModel.getGoodsId());
-            if (GoodsTypeEnum.INTEGRAL.name().equals(goods.getGoodsType())) {
-                result.setCode(600);
-                result.setError("该商品为积分兑换商品，不允许设置秒杀");
-                result.setError_description("该商品为积分兑换商品，");
-                return result;
-            }
-            goods.setGoodsType(GoodsTypeEnum.SPIKE.name());
-            goodsMapper.updateByPrimaryKey(goods);
-            spikeGoods.setGoodsId(sysSpikeGoodsModel.getGoodsId());
-            spikeGoods.setBeginDate(new Date(sysSpikeGoodsModel.getBeginDate()));
-            spikeGoods.setEndDate(new Date(sysSpikeGoodsModel.getEndDate()));
-            spikeGoods.setSkuId(model.getId());
-            spikeGoods.setSpikePrice(model.getSpikePrice());
-            spikeGoods.setSpikeNum(model.getSpikeNum());
-            spikeGoods.setMaxNum(sysSpikeGoodsModel.getMaxNum());
             GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(model.getId());
-            goodsSku.setSpikeGoods(1);
+            goodsSku.setSpikeGoods(model.getSpikeGoods());
             goodsSkuMapper.updateByPrimaryKey(goodsSku);
-
-            SpikeGoodsExample spikeGoodsExample = new SpikeGoodsExample();
-            spikeGoodsExample.createCriteria().andGoodsIdEqualTo(sysSpikeGoodsModel.getGoodsId());
-            spikeGoodsMapper.deleteByExample(spikeGoodsExample);
-            spikeGoodsMapper.insert(spikeGoods);
+            if (0 == model.getSpikeGoods()) {
+                SpikeGoodsExample spikeGoodsExample = new SpikeGoodsExample();
+                spikeGoodsExample.createCriteria().andGoodsIdEqualTo(sysSpikeGoodsModel.getGoodsId()).andSkuIdEqualTo(model.getId());
+                spikeGoodsMapper.deleteByExample(spikeGoodsExample);
+            }
+            if (1 == model.getSpikeGoods()) {
+                Goods goods = goodsMapper.selectByPrimaryKey(sysSpikeGoodsModel.getGoodsId());
+                if (GoodsTypeEnum.INTEGRAL.name().equals(goods.getGoodsType())) {
+                    result.setCode(600);
+                    result.setError("该商品为积分兑换商品，不允许设置秒杀");
+                    result.setError_description("该商品为积分兑换商品，");
+                    return result;
+                }
+                goods.setGoodsType(GoodsTypeEnum.SPIKE.name());
+                goodsMapper.updateByPrimaryKey(goods);
+                SpikeGoodsExample spikeGoodsExample = new SpikeGoodsExample();
+                spikeGoodsExample.createCriteria().andGoodsIdEqualTo(sysSpikeGoodsModel.getGoodsId()).andSkuIdEqualTo(model.getId());
+                List<SpikeGoods> spikeGoods = spikeGoodsMapper.selectByExample(spikeGoodsExample);
+                if (spikeGoods.size() > 0) {
+                    SpikeGoods spikeGoods1 = spikeGoods.get(0);
+                    BigDecimal subtract = model.getSpikePrice().multiply(new BigDecimal("100.00"));
+                    spikeGoods1.setSpikePrice(subtract.longValue());
+                    spikeGoods1.setSpikeNum(model.getSpikeNum());
+                    spikeGoodsMapper.updateByPrimaryKey(spikeGoods1);
+                } else {
+                    SpikeGoods spikeGoods2 = new SpikeGoods();
+                    spikeGoods2.setGoodsId(sysSpikeGoodsModel.getGoodsId());
+                    spikeGoods2.setBeginDate(new Date(sysSpikeGoodsModel.getBeginDate()));
+                    spikeGoods2.setEndDate(new Date(sysSpikeGoodsModel.getEndDate()));
+                    spikeGoods2.setSkuId(model.getId());
+                    BigDecimal subtract = model.getSpikePrice().multiply(new BigDecimal("100.00"));
+                    spikeGoods2.setSpikePrice(subtract.longValue());
+                    spikeGoods2.setSpikeNum(model.getSpikeNum());
+                    spikeGoods2.setMaxNum(sysSpikeGoodsModel.getMaxNum());
+                    spikeGoodsMapper.insert(spikeGoods2);
+                }
+            }
         }
         return result;
     }
