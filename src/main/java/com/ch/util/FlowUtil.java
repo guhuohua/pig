@@ -26,6 +26,9 @@ public class FlowUtil {
                 if ("comment".equals(flowReason)) {
                     userAccountFlow.setFlowReason("评论获得积分");
                 }
+                if ("first".equals(flowReason)) {
+                    userAccountFlow.setFlowReason("绑定上级获得积分");
+                }
             } else {
                 userAccountFlow.setType("MONEY");
                 userAccountFlow.setFlowReason("购买商品获得积分");

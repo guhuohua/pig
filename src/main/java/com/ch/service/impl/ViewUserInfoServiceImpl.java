@@ -142,20 +142,21 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
             userInfo.setTel(telParam.getTel());
             userInfo.setIntegral(userInfo.getIntegral()+baseIntegral.getPerfect());
             userInfo.setUseIntegral(userInfo.getUseIntegral()+baseIntegral.getPerfect());
+            FlowUtil.addFlowTel(baseIntegral.getPerfect().longValue(),"tel","INTEGRAL",0);
         }
         if (BeanUtils.isEmpty(userInfo.getSuperiorInvitationCode())){
             userInfo.setSuperiorInvitationCode(telParam.getSuperiorInvitationCode());
-            //userInfo.setIntegral(userInfo.getIntegral()+baseIntegral);
-            userInfo.setUseIntegral(userInfo.getUseIntegral()+baseIntegral.getPerfect());
+            userInfo.setIntegral(userInfo.getIntegral()+baseIntegral.getFirstShare());
+            userInfo.setUseIntegral(userInfo.getUseIntegral()+baseIntegral.getFirstShare());
+            FlowUtil.addFlowTel(baseIntegral.getFirstShare().longValue(),"first","INTEGRAL",0);
 
         }
         if (BeanUtils.isEmpty(userInfo.getInvitationCode())){
             userInfo.setInvitationCode(stringRandom);
         }
-
         userInfoMapper.updateByPrimaryKey(userInfo);
         sysMemberService.synchronizedIntegral(userInfo.getId());
-        FlowUtil.addFlowTel(baseIntegral.getPerfect().longValue(),"tel","INTEGRAL",0);
+
         return result;
     }
 
@@ -178,8 +179,6 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
             sign.setUserId(userInfo.getId());
             sign.setSignSatus(1+"");
             signMapper.insert(sign);
-            result.setCode(0);
-            result.setError_description("签到成功");
             BaseIntegral baseIntegral = baseIntegralMapper.selectByPrimaryKey(1);
             userInfo.setIntegral(userInfo.getIntegral()+baseIntegral.getSign());
             userInfo.setUseIntegral(userInfo.getUseIntegral()+baseIntegral.getSign());
