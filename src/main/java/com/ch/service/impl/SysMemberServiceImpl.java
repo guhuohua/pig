@@ -116,6 +116,10 @@ public class SysMemberServiceImpl implements SysMemberService {
             param.setSign(baseIntegral.getSign());
             param.setPerfect(baseIntegral.getPerfect());
             param.setComment(baseIntegral.getComment());
+            param.setFirstShare(baseIntegral.getFirstShare());
+            param.setPaymentIntegral(baseIntegral.getPaymentIntegral());
+            param.setSuperintendence(baseIntegral.getSuperintendence());
+            param.setCashIntegral(baseIntegral.getCashIntegral());
         }
         param.setMemberModels(memberModels);
         result.setData(param);

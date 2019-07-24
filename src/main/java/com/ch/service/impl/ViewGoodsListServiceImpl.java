@@ -157,6 +157,8 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
                 viewSpikeGoodsDTO.setOriginalPrice(goods.getOriginalPrice());
                 viewSpikeGoodsDTO.setTitle(goods.getTitle());
             }
+            viewSpikeGoodsDTO.setBeginDate(viewSpikeGoodsDTO.getBeginDate() - new Date().getTime() < 0 ? 0 : viewSpikeGoodsDTO.getBeginDate() - new Date().getTime());
+            viewSpikeGoodsDTO.setEndDate(viewSpikeGoodsDTO.getEndDate() - new Date().getTime() < 0 ? 0 : viewSpikeGoodsDTO.getEndDate() - new Date().getTime());
         }
         PageInfo<ViewSpikeGoodsDTO> pageInfo = new PageInfo<>(spikeGoods);
         result.setData(pageInfo);
