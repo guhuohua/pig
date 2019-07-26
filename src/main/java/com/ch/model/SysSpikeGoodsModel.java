@@ -11,10 +11,6 @@ public class SysSpikeGoodsModel {
 
     private Integer goodsId;
 
-    private Long beginDate;
-
-    private Long endDate;
-
     private List<SysSpikeSkuModel> sysSpikeSkuModels;
 
     private Integer maxNum;

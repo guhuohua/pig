@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class SysSpikeListDTO {
 
+    private Integer spikeId;
+
     private Integer id;
 
     private String sn;
