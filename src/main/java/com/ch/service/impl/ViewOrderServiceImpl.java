@@ -131,9 +131,9 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                         }
                     }
                     if ("INTEGRAL".equals(goods.getGoodsType())) {
-                        totalFee = (0l);
+                        totalFee = (Long.valueOf(goodsSku.getInventory()* orderDto.getNum()));
                         orderFee += totalFee;
-                        orderItem.setPrice(0l);
+                        orderItem.setPrice(Long.valueOf(goodsSku.getInventory()));
                         order.setOrderPrice(0l);
                         order.setOrderStatus(7);
                     }
