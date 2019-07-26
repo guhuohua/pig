@@ -25,6 +25,8 @@ public interface ViewUserInfoService {
 
     ResponseResult sign(String openId);
 
+    String findDiscountByOpenId(String openId);
+
 
 
 

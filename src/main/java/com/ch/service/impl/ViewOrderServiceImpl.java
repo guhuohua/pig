@@ -79,6 +79,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
         if (orderDtoList.length > 0) {
             for (OrderDto orderDto : orderDtoList) {
                 GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderDto.getGoodsSku().getId());
+
                 Goods goods = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
 
                 if (goods.getStatus() == 0) {
@@ -111,26 +112,36 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                     if (spikeGoods.size() > 0) {
                         spikeGoods1 = spikeGoods.get(0);
                         if (new Date().getTime() > spikeGoods1.getBeginDate().getTime() && new Date().getTime() < spikeGoods1.getEndDate().getTime()) {
-                            totalFee = (spikeGoods1.getSpikePrice() * orderDto.getNum());
-                            orderFee += totalFee;
-                            orderItem.setPrice(spikeGoods1.getSpikePrice());
-                            order.setOrderStatus(1);
+                            if (spikeGoods1.getSpikeNum() > orderDto.getNum()) {
+                                result.setCode(500);
+                                result.setError_description("超出限购数量");
+                                return result;
+                            }
+                            if ((spikeGoods1.getMaxNum() - orderDto.getNum()) > 0) {
+                                totalFee = (spikeGoods1.getSpikePrice() * orderDto.getNum());
+                                orderFee += totalFee;
+                                orderItem.setPrice(spikeGoods1.getSpikePrice());
+                                order.setOrderStatus(1);
+                            } else {
+                                result.setCode(500);
+                                result.setError_description("超出秒杀数量");
+                                return result;
+                            }
 
                         }
                     }
-                    if("INTEGRAL".equals(goods.getGoodsType())){
+                    if ("INTEGRAL".equals(goods.getGoodsType())) {
                         totalFee = (0l);
                         orderFee += totalFee;
                         orderItem.setPrice(0l);
                         order.setOrderPrice(0l);
                         order.setOrderStatus(7);
                     }
-                    if ("ORDINARY".equals(goods.getGoodsType())){
+                    if ("ORDINARY".equals(goods.getGoodsType())) {
                         totalFee = (goodsSku.getPresentPrice() * orderDto.getNum());
                         orderFee += totalFee;
                         orderItem.setPrice(goodsSku.getPresentPrice());
                         order.setOrderStatus(1);
-
                     }
                     orderItem.setPrice(goodsSku.getPresentPrice());
                     orderItem.setOrderId(order.getId());
@@ -159,7 +170,6 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             }
             order.setUserId(userInfo.getId());
             order.setShopId(shopId);
-
             order.setStatus(0);
 
             if (BeanUtils.isNotEmpty(userAddress)) {
@@ -173,7 +183,6 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             order.setOrderPrice(orderFee + Collections.max(feeList));
             order.setFreight(Collections.max(feeList));
             order.setGoodsFee(orderFee);
-
             orderMapper.insert(order);
         }
         result.setData(order.getId());

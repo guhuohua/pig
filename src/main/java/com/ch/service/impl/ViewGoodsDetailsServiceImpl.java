@@ -12,6 +12,7 @@ import com.ch.dao.*;
 import com.ch.entity.*;
 import com.ch.enums.GoodsTypeEnum;
 import com.ch.service.ViewGoodsDetailsService;
+import com.ch.service.ViewUserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,14 +39,21 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
     GoodsImageMapper goodsImageMapper;
     @Autowired
     SpikeGoodsMapper spikeGoodsMapper;
+    @Autowired
+    ViewUserInfoService viewUserInfoService;
 
 
     @Override
-    public ResponseResult findGoodsDetailsByGoodsId(Integer goodsId, Integer shopId) {
+    public ResponseResult findGoodsDetailsByGoodsId(Integer goodsId, Integer shopId,String openId) {
+
         //SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         //商品详情的map
         ResponseResult result = new ResponseResult();
+        String discount = viewUserInfoService.findDiscountByOpenId(openId);
+
+
         Map goodsDetailsMap = new HashMap();
+        goodsDetailsMap.put("discount",discount);
         //查询商品表
         Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
         // System.out.println(goods.getShopId());

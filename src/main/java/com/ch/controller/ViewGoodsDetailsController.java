@@ -35,11 +35,12 @@ public class ViewGoodsDetailsController {
    @GetMapping("details")
    public ResponseResult findGoodsDetailsByGoodsId(Integer goodsId, HttpServletRequest req){
        ResponseResult result = new ResponseResult();
+       String openId = req.getHeader("openId");
        String token = req.getHeader("Authorization");
        Integer shopId = TokenUtil.getUserId(token);
        //Integer userId = 6;
        try {
-           result = viewGoodsDetailsService.findGoodsDetailsByGoodsId(goodsId,shopId);
+           result = viewGoodsDetailsService.findGoodsDetailsByGoodsId(goodsId,shopId,openId);
        } catch (Exception e) {
            LOGGER.error("展示商品详情" + e.getMessage(), e);
            result.setCode(500);

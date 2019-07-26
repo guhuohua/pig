@@ -56,6 +56,10 @@ public class Goods {
 
     private String goodsType;
 
+
+
+
+
     public String getGoodsType() {
         return goodsType;
     }

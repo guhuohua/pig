@@ -26,6 +26,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -48,6 +49,8 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
     UserAccountFlowMapper userAccountFlowMapper;
     @Autowired
     SignMapper signMapper;
+    @Autowired
+    MemberLevelMapper memberLevelMapper;
 
     @Override
     public UserInfos findByOpenId(String openId) {
@@ -188,6 +191,24 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
             FlowUtil.addFlowTel(baseIntegral.getPerfect().longValue(),"sign","INTEGRAL",0);
         }
         return result;
+    }
+
+    @Override
+    public String findDiscountByOpenId(String openId) {
+        UserInfoExample example = new UserInfoExample();
+        UserInfoExample.Criteria criteria = example.createCriteria();
+        criteria.andOpenIdEqualTo(openId);
+        List<UserInfo> userInfos = userInfoMapper.selectByExample(example);
+        UserInfo userInfo = null;
+        List<MemberLevel> memberLevels = new ArrayList<>();
+        if (userInfos.size() > 0) {
+            userInfo = userInfos.get(0);
+            MemberLevelExample example1 =new MemberLevelExample();
+            MemberLevelExample.Criteria criteria1 = example1.createCriteria();
+            criteria1.andNameEqualTo(userInfo.getMember());
+            memberLevels = memberLevelMapper.selectByExample(example1);
+        }
+        return memberLevels.get(0).getDiscount();
     }
 
 
