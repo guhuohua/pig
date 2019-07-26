@@ -10,12 +10,15 @@ import com.ch.dto.SysOrderParam;
 import com.ch.entity.*;
 import com.ch.enums.OderStatusEnum;
 import com.ch.handler.ActiveMQHandler;
+import com.ch.service.SysMemberService;
 import com.ch.service.SysOrderService;
+import com.ch.util.FlowUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -49,6 +52,10 @@ public class SysOrderServiceImpl implements SysOrderService {
 
     @Autowired
     ActiveMQHandler activeMQHandler;
+    @Autowired
+    BaseIntegralMapper baseIntegralMapper;
+    @Autowired
+    SysMemberService sysMemberService;
 
 
     @Override
@@ -140,7 +147,7 @@ public class SysOrderServiceImpl implements SysOrderService {
             OrderItemExample orderItemExample = new OrderItemExample();
             orderItemExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andOrderIdEqualTo(order.getId());
             List<OrderItem> orderItems = orderItemMapper.selectByExample(orderItemExample);
-            for (OrderItem orderItem:orderItems) {
+            for (OrderItem orderItem : orderItems) {
                 SysDeliveryInfoDTO sysDeliveryInfoDTO = new SysDeliveryInfoDTO();
                 sysDeliveryInfoDTO.setGoodsId(orderItem.getGoodsId());
                 sysDeliveryInfoDTO.setGoodsName(orderItem.getGoodsName());
@@ -184,11 +191,54 @@ public class SysOrderServiceImpl implements SysOrderService {
     @Override
     public ResponseResult deliver(String oderId) {
         ResponseResult result = new ResponseResult();
+        BaseIntegral baseIntegral = baseIntegralMapper.selectByPrimaryKey(1);
         GoodsOrder goodsOrder = orderMapper.selectByPrimaryKey(oderId);
         if (BeanUtils.isNotEmpty(goodsOrder) && Integer.valueOf(OderStatusEnum.UNRECEIVED.code) == goodsOrder.getOrderStatus()) {
             goodsOrder.setOrderStatus(Integer.valueOf(OderStatusEnum.UNEVALUATED.code));
             goodsOrder.setModifyDate(new Date());
             orderMapper.updateByPrimaryKey(goodsOrder);
+            //消费返积分
+            UserInfo userInfo = userInfoMapper.selectByPrimaryKey(goodsOrder.getUserId());
+            OrderItemExample example = new OrderItemExample();
+            OrderItemExample.Criteria criteria = example.createCriteria();
+            criteria.andOrderIdEqualTo(oderId);
+            List<OrderItem> orderItems = orderItemMapper.selectByExample(example);
+            for (OrderItem orderItem : orderItems) {
+                Goods goods = goodsMapper.selectByPrimaryKey(orderItem.getGoodsId());
+                if ("ORDINARY".equals(goods.getGoodsType()) && BeanUtils.isNotEmpty(userInfo.getSuperiorInvitationCode())) {
+                    BigDecimal orderPrice = new BigDecimal(orderItem.getNumber() * orderItem.getPrice());
+                    BigDecimal pp = new BigDecimal("100.00");
+                    BigDecimal divide = orderPrice.divide(pp);
+                    double d = baseIntegral.getPerfect();
+                    double s = baseIntegral.getSuperintendence();
+                    double e = 100;
+                    double f = d / e;
+                    double z = s /e;
+                    BigDecimal multiply = divide.multiply(new BigDecimal(f));
+                    BigDecimal multiply1 = divide.multiply(new BigDecimal(z));
+                    double v = multiply.doubleValue();
+                    double v1 = multiply1.doubleValue();
+                    int floor = (int) Math.floor(v);
+                    int floors = (int) Math.floor(v1);
+                    userInfo.setUseIntegral(userInfo.getUseIntegral() + floor);
+                    userInfo.setIntegral(userInfo.getIntegral() + floor);
+                    userInfoMapper.updateByPrimaryKey(userInfo);
+                    long floor1 = floor;
+                    long floors1 = floors;
+                    FlowUtil.addFlowTel(floor1, "payment", "INTEGRAL", 0);
+                    sysMemberService.synchronizedIntegral(userInfo.getId());
+                    UserInfoExample example1 = new UserInfoExample();
+                    UserInfoExample.Criteria criteria1 = example1.createCriteria();
+                    criteria1.andSuperiorInvitationCodeEqualTo(userInfo.getSuperiorInvitationCode());
+                    List<UserInfo> userInfos = userInfoMapper.selectByExample(example1);
+                    UserInfo userInfo1 = userInfos.get(0);
+                    userInfo1.setIntegral(userInfo1.getIntegral() + floors);
+                    userInfo1.setUseIntegral(userInfo1.getUseIntegral() + floors);
+                    userInfoMapper.updateByPrimaryKey(userInfo);
+                    FlowUtil.addFlowTel(floors1, "super", "INTEGRAL", 0);
+                    sysMemberService.synchronizedIntegral(userInfo.getId());
+                }
+            }
         }
         return result;
     }

@@ -49,6 +49,8 @@ public class ActiveMQHandler {
     }
 
     public void delivery(String queueName, String orderId) {
+
+
         log.info("====>>> 延时任务（7天自动收货）:" + queueName + ",data:" + orderId);
         //获取连接工厂
         ConnectionFactory connectionFactory = jmsMessagingTemplate.getConnectionFactory();
