@@ -431,6 +431,7 @@ public class SysGoodsServiceImpl implements SysGoodsService {
             List<GoodsSku> goodsSkus = goodsSkuMapper.selectByExample(goodsSkuExample);
             for (GoodsSku goodsSku:goodsSkus) {
                 SysGoodsSkuModel sysGoodsSkuModel = new SysGoodsSkuModel();
+                modelMapper.map(goodsSku, sysGoodsSkuModel);
                 SpikeGoodsExample spikeGoodsExample = new SpikeGoodsExample();
                 spikeGoodsExample.createCriteria().andGoodsIdEqualTo(goods.getId()).andSkuIdEqualTo(goodsSku.getId());
                 List<SpikeGoods> spikeGoods1 = spikeGoodsMapper.selectByExample(spikeGoodsExample);
@@ -438,12 +439,11 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                     SpikeGoods spikeGoods = spikeGoods1.get(0);
                     sysGoodsSkuModel.setSpikeNum(spikeGoods.getSpikeNum());
                     sysGoodsSkuModel.setSpikePrice(spikeGoods.getSpikePrice());
-                    sysGoodsModel.setBeginDate(spikeGoods.getBeginDate().getTime());
-                    sysGoodsModel.setEndDate(spikeGoods.getEndDate().getTime());
                     sysGoodsModel.setMaxNum(spikeGoods.getMaxNum());
                     sysGoodsSkuModel.setSpikeGoods(1);
+                    sysGoodsSkuModel.setBeginDate(spikeGoods.getBeginDate().getTime());
+                    sysGoodsSkuModel.setEndDate(spikeGoods.getEndDate().getTime());
                 }
-                modelMapper.map(goodsSku, sysGoodsSkuModel);
                 sysGoodsSkuModelList.add(sysGoodsSkuModel);
             }
             sysGoodsModel.setGoodsImgList(goodsImageModelList);

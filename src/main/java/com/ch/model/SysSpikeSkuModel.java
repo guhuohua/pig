@@ -14,4 +14,8 @@ public class SysSpikeSkuModel {
     private Integer spikeNum;
 
     private Integer spikeGoods;
+
+    private Long beginDate;
+
+    private Long endDate;
 }

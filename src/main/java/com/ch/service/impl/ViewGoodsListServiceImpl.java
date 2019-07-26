@@ -6,6 +6,7 @@
 
 package com.ch.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.ch.base.BeanUtils;
 import com.ch.base.PageQuery;
 import com.ch.base.ResponseResult;
@@ -157,11 +158,12 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
                 viewSpikeGoodsDTO.setOriginalPrice(goods.getOriginalPrice());
                 viewSpikeGoodsDTO.setTitle(goods.getTitle());
             }
-            viewSpikeGoodsDTO.setBeginDate(viewSpikeGoodsDTO.getBeginDate() - new Date().getTime() < 0 ? 0 : viewSpikeGoodsDTO.getBeginDate() - new Date().getTime());
-            viewSpikeGoodsDTO.setEndDate(viewSpikeGoodsDTO.getEndDate() - new Date().getTime() < 0 ? 0 : viewSpikeGoodsDTO.getEndDate() - new Date().getTime());
+            viewSpikeGoodsDTO.setBeginDate(viewSpikeGoodsDTO.getBeginDate() * 1000 - new Date().getTime() < 0 ? 0 : viewSpikeGoodsDTO.getBeginDate() * 1000 - new Date().getTime());
+            viewSpikeGoodsDTO.setEndDate(viewSpikeGoodsDTO.getEndDate() * 1000 - new Date().getTime() < 0 ? 0 : viewSpikeGoodsDTO.getEndDate() * 1000 - new Date().getTime());
         }
         PageInfo<ViewSpikeGoodsDTO> pageInfo = new PageInfo<>(spikeGoods);
         result.setData(pageInfo);
         return result;
     }
+
 }
