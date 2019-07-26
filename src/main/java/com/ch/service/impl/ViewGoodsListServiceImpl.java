@@ -156,7 +156,7 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
             if (BeanUtils.isNotEmpty(goods)) {
                 viewSpikeGoodsDTO.setImg(goods.getGoodsImgUrl());
                 viewSpikeGoodsDTO.setOriginalPrice(goods.getOriginalPrice());
-                viewSpikeGoodsDTO.setTitle(goods.getTitle());
+                viewSpikeGoodsDTO.setTitle(goods.getName());
             }
             viewSpikeGoodsDTO.setBeginDate(viewSpikeGoodsDTO.getBeginDate() * 1000 - new Date().getTime() < 0 ? 0 : viewSpikeGoodsDTO.getBeginDate() * 1000 - new Date().getTime());
             viewSpikeGoodsDTO.setEndDate(viewSpikeGoodsDTO.getEndDate() * 1000 - new Date().getTime() < 0 ? 0 : viewSpikeGoodsDTO.getEndDate() * 1000 - new Date().getTime());
