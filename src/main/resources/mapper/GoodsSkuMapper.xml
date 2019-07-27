@@ -127,7 +127,7 @@
       #{attrs,jdbcType=INTEGER}, #{originalPrice,jdbcType=DECIMAL}, #{presentPrice,jdbcType=DECIMAL}, 
       #{inventory,jdbcType=INTEGER}, #{sn,jdbcType=VARCHAR}, #{sale,jdbcType=INTEGER}, 
       #{goodsImage,jdbcType=VARCHAR}, #{goodsId,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, 
-      #{skuName,jdbcType=VARCHAR}, #{getIntegral,jdbcType=INTEGER},#{consumptionIntegral,jdbcType=INTEGER},,#{spikeGoods,jdbcType=INTEGER} )
+      #{skuName,jdbcType=VARCHAR}, #{getIntegral,jdbcType=INTEGER},#{consumptionIntegral,jdbcType=INTEGER},#{spikeGoods,jdbcType=INTEGER} )
   </insert>
   <insert id="insertSelective" parameterType="com.ch.entity.GoodsSku" >
     insert into goods_sku

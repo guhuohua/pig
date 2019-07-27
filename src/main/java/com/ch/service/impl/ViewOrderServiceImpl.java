@@ -78,9 +78,11 @@ public class ViewOrderServiceImpl implements ViewOrderService {
         List<Long> feeList = new ArrayList<>();
         if (orderDtoList.length > 0) {
             for (OrderDto orderDto : orderDtoList) {
+
                 GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderDto.getGoodsSku().getId());
 
                 Goods goods = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
+
 
                 if (goods.getStatus() == 0) {
                     result.setCode(500);
@@ -88,9 +90,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                     return result;
                 }
                 feeList.add(goods.getFreight());
-                GoodsExample example1 = new GoodsExample();
-                GoodsExample.Criteria criteria1 = example1.createCriteria();
-                goodsMapper.selectByExample(example1);
+
 
                 OrderItem orderItem = new OrderItem();
                 orderItem.setGoodsId(goodsSku.getGoodsId());
@@ -131,7 +131,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                         }
                     }
                     if ("INTEGRAL".equals(goods.getGoodsType())) {
-                        totalFee = (Long.valueOf(goodsSku.getInventory()* orderDto.getNum()));
+                        totalFee = (Long.valueOf(goodsSku.getConsumptionIntegral()* orderDto.getNum()));
                         orderFee += totalFee;
                         orderItem.setPrice(Long.valueOf(goodsSku.getInventory()));
                         order.setOrderPrice(0l);

@@ -204,7 +204,7 @@ public class SysGoodsServiceImpl implements SysGoodsService {
         List<SysGoodsSkuModel> sysGoodsSkuModelList = model.getSysGoodsSkuModelList();
         long max = sysGoodsSkuModelList.stream().mapToLong(SysGoodsSkuModel::getOriginalPrice).max().getAsLong();
         long min = sysGoodsSkuModelList.stream().mapToLong(SysGoodsSkuModel::getPresentPrice).min().getAsLong();
-        String integral = sysGoodsSkuModelList.stream().mapToLong(SysGoodsSkuModel::getConsumptionIntegral).min().toString();
+        long integral = sysGoodsSkuModelList.stream().mapToLong(SysGoodsSkuModel::getConsumptionIntegral).min().getAsLong();
 
         if (BeanUtils.isEmpty(model.getId())) {
 
@@ -217,7 +217,7 @@ public class SysGoodsServiceImpl implements SysGoodsService {
             goods.setRecommend(0);
             goods.setSn(sn.toString());
             goods.setSale(0);
-            goods.setIntegral(Integer.valueOf(integral));
+            goods.setIntegral((int)integral);
             goods.setShopId(sysUser.getShopId());
             goods.setCatrgoryId(model.getCategoryIds().get(1));
             goods.setCreateTime(new Date());

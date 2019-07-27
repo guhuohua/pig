@@ -58,6 +58,16 @@ public class Goods {
 
     private Integer integral;
 
+    private Long memberPrice;
+
+    public Long getMemberPrice() {
+        return memberPrice;
+    }
+
+    public void setMemberPrice(Long memberPrice) {
+        this.memberPrice = memberPrice;
+    }
+
     public Integer getIntegral() {
         return integral;
     }

@@ -512,7 +512,7 @@
       units = #{units,jdbcType=VARCHAR},
       goods_img_url = #{goodsImgUrl,jdbcType=VARCHAR},
       goods_type = #{goodsType,jdbcType=VARCHAR},
-      integral = #{integral,,jdbcType=INTEGER}
+      integral = #{integral,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
