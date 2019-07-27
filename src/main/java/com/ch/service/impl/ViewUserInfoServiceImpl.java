@@ -145,13 +145,13 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
             userInfo.setTel(telParam.getTel());
             userInfo.setIntegral(userInfo.getIntegral()+baseIntegral.getPerfect());
             userInfo.setUseIntegral(userInfo.getUseIntegral()+baseIntegral.getPerfect());
-            FlowUtil.addFlowTel(baseIntegral.getPerfect().longValue(),"tel","INTEGRAL",0);
+            FlowUtil.addFlowTel(baseIntegral.getPerfect().longValue(),"tel","INTEGRAL",0,userInfo.getId());
         }
         if (BeanUtils.isEmpty(userInfo.getSuperiorInvitationCode())){
             userInfo.setSuperiorInvitationCode(telParam.getSuperiorInvitationCode());
             userInfo.setIntegral(userInfo.getIntegral()+baseIntegral.getFirstShare());
             userInfo.setUseIntegral(userInfo.getUseIntegral()+baseIntegral.getFirstShare());
-            FlowUtil.addFlowTel(baseIntegral.getFirstShare().longValue(),"first","INTEGRAL",0);
+            FlowUtil.addFlowTel(baseIntegral.getFirstShare().longValue(),"first","INTEGRAL",0,userInfo.getId());
 
         }
         if (BeanUtils.isEmpty(userInfo.getInvitationCode())){
@@ -187,8 +187,8 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
             userInfo.setUseIntegral(userInfo.getUseIntegral()+baseIntegral.getSign());
             userInfo.setSignStatus(1);
             userInfoMapper.updateByPrimaryKey(userInfo);
+            FlowUtil.addFlowTel(baseIntegral.getPerfect().longValue(),"sign","INTEGRAL",0,userInfo.getId());
             sysMemberService.synchronizedIntegral(userInfo.getId());
-            FlowUtil.addFlowTel(baseIntegral.getPerfect().longValue(),"sign","INTEGRAL",0);
         }
         return result;
     }

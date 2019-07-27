@@ -70,4 +70,7 @@ public class GoodsSolrSchema implements Serializable {
 
     @Field
     private String goodsType;
+
+    @Field
+    private Integer integral;
 }

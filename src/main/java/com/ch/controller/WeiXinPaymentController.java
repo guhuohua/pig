@@ -206,9 +206,8 @@ public class WeiXinPaymentController {
                 GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderId);
 
                 UserInfo userInfo = userInfoMapper.selectByPrimaryKey(goodsOrder.getUserId());
-                if (BeanUtils.isNotEmpty(userInfo.getSuperiorInvitationCode())){
 
-                }
+
 
                 if (BeanUtils.isNotEmpty(goodsOrder)) {
                     if (goodsOrder.getOrderStatus() == 10) {
