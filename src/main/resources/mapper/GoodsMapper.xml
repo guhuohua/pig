@@ -28,6 +28,7 @@
     <result column="units" property="units" jdbcType="VARCHAR" />
     <result column="goods_img_url" property="goodsImgUrl" jdbcType="VARCHAR" />
     <result column="goods_type" property="goodsType" jdbcType="VARCHAR" />
+    <result column="integral" property="integral" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -90,7 +91,7 @@
   <sql id="Base_Column_List" >
     id, shop_id, status, create_time, update_time, del_flag, title, `desc`, recommend,
     sale, sort, type, inventory, original_price, present_price, sn, member_discount,
-    limit_buy, sales_volume, name, catrgory_id, key_words, freight, units,goods_img_url, goods_type
+    limit_buy, sales_volume, name, catrgory_id, key_words, freight, units,goods_img_url, goods_type, integral
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.GoodsExample" >
     select
@@ -131,7 +132,7 @@
       original_price, present_price, sn, 
       member_discount, limit_buy, sales_volume, 
       name, catrgory_id, key_words, 
-      freight, units,goods_img_url, goods_type)
+      freight, units,goods_img_url, goods_type,integral)
     values (#{id,jdbcType=INTEGER}, #{shopId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=INTEGER}, 
       #{title,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, #{recommend,jdbcType=INTEGER}, 
@@ -139,7 +140,7 @@
       #{originalPrice,jdbcType=BIGINT}, #{presentPrice,jdbcType=BIGINT}, #{sn,jdbcType=VARCHAR},
       #{memberDiscount,jdbcType=INTEGER}, #{limitBuy,jdbcType=INTEGER}, #{salesVolume,jdbcType=INTEGER}, 
       #{name,jdbcType=VARCHAR}, #{catrgoryId,jdbcType=INTEGER}, #{keyWords,jdbcType=VARCHAR}, 
-      #{freight,jdbcType=DECIMAL}, #{units,jdbcType=VARCHAR}, #{goodsImgUrl,jdbcType=VARCHAR}, #{goodsType,jdbcType=VARCHAR})
+      #{freight,jdbcType=DECIMAL}, #{units,jdbcType=VARCHAR}, #{goodsImgUrl,jdbcType=VARCHAR}, #{goodsType,jdbcType=VARCHAR}, #{integral,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ch.entity.Goods" >
     insert into goods
@@ -510,7 +511,8 @@
       freight = #{freight,jdbcType=DECIMAL},
       units = #{units,jdbcType=VARCHAR},
       goods_img_url = #{goodsImgUrl,jdbcType=VARCHAR},
-      goods_type = #{goodsType,jdbcType=VARCHAR}
+      goods_type = #{goodsType,jdbcType=VARCHAR},
+      integral = #{integral,,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
