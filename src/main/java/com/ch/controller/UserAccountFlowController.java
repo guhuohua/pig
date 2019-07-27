@@ -7,9 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 @Api(value = "积分明细",description = "积分明细")
 public class UserAccountFlowController {
     private static final Logger LOGGER = LogManager.getLogger(UserAccountFlowController.class);
-
     @Autowired
     UserAccountFlowService userAccountFlowService;
 
@@ -38,4 +35,23 @@ public class UserAccountFlowController {
         }
         return result;
     }
+
+
+    @GetMapping("addFlowAccount")
+    @ApiOperation("添加积分明细")
+    public ResponseResult addFlowAccount(HttpServletRequest req,@RequestParam String orderId){
+        ResponseResult result = new ResponseResult();
+        String openId = req.getHeader("openId");
+        try {
+            result = userAccountFlowService.addAccountFlow(orderId);
+        } catch (Exception e) {
+            LOGGER.error("添加积分明细失败" + e.getMessage(), e);
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("添加积分明细 失败");
+        }
+        return result;
+    }
+
+
 }

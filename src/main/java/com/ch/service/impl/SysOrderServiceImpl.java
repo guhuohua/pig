@@ -225,7 +225,7 @@ public class SysOrderServiceImpl implements SysOrderService {
                     userInfoMapper.updateByPrimaryKey(userInfo);
                     long floor1 = floor;
                     long floors1 = floors;
-                    FlowUtil.addFlowTel(floor1, "payment", "INTEGRAL", 0);
+                    FlowUtil.addFlowTel(floor1, "payment", "INTEGRAL", 0,userInfo.getId());
                     sysMemberService.synchronizedIntegral(userInfo.getId());
                     UserInfoExample example1 = new UserInfoExample();
                     UserInfoExample.Criteria criteria1 = example1.createCriteria();
@@ -235,7 +235,7 @@ public class SysOrderServiceImpl implements SysOrderService {
                     userInfo1.setIntegral(userInfo1.getIntegral() + floors);
                     userInfo1.setUseIntegral(userInfo1.getUseIntegral() + floors);
                     userInfoMapper.updateByPrimaryKey(userInfo);
-                    FlowUtil.addFlowTel(floors1, "super", "INTEGRAL", 0);
+                    FlowUtil.addFlowTel(floors1, "super", "INTEGRAL", 0,userInfo.getId());
                     sysMemberService.synchronizedIntegral(userInfo.getId());
                 }
             }

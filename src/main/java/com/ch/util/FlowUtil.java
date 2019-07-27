@@ -10,7 +10,7 @@ public class FlowUtil {
     @Autowired
    static UserAccountFlowMapper userAccountFlowMapper;
 
-    public static void addFlowTel(long price, String flowReason, String type, Integer status) {
+    public static void addFlowTel(long price, String flowReason, String type, Integer status,Integer userId) {
         UserAccountFlow userAccountFlow = new UserAccountFlow();
         userAccountFlow.setCreateDate(new Date());
         userAccountFlow.setPrice(price);
