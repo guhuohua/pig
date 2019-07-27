@@ -56,9 +56,15 @@ public class Goods {
 
     private String goodsType;
 
+    private Integer integral;
 
+    public Integer getIntegral() {
+        return integral;
+    }
 
-
+    public void setIntegral(Integer integral) {
+        this.integral = integral;
+    }
 
     public String getGoodsType() {
         return goodsType;
