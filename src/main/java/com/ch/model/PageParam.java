@@ -1,18 +1,18 @@
 package com.ch.model;
 
 public class PageParam {
-    private Integer pageSzie;
+    private Integer pageSize;
 
     private Integer pageNum;
 
     private String openId;
 
-    public Integer getPageSzie() {
-        return pageSzie;
+    public Integer getPageSize() {
+        return pageSize;
     }
 
-    public void setPageSzie(Integer pageSzie) {
-        this.pageSzie = pageSzie;
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
     }
 
     public Integer getPageNum() {

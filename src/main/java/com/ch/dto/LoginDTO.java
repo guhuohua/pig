@@ -1,5 +1,7 @@
 package com.ch.dto;
 
+import io.swagger.models.auth.In;
+
 public class LoginDTO {
     private String member;
 
@@ -7,11 +9,53 @@ public class LoginDTO {
 
     private String superiorInvitationCode;
 
+    private String tel;
+
     private String invitationCode;
 
     private Integer signStatus;
 
-    private String discount;
+    private Integer discount;
+
+    private Integer nextMemberIntegral;
+
+    private  String nextMember;
+
+    private Integer integral;
+
+
+
+    public Integer getIntegral() {
+        return integral;
+    }
+
+    public void setIntegral(Integer integral) {
+        this.integral = integral;
+    }
+
+    public Integer getNextMemberIntegral() {
+        return nextMemberIntegral;
+    }
+
+    public void setNextMemberIntegral(Integer nextMemberIntegral) {
+        this.nextMemberIntegral = nextMemberIntegral;
+    }
+
+    public String getNextMember() {
+        return nextMember;
+    }
+
+    public void setNextMember(String nextMember) {
+        this.nextMember = nextMember;
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
 
     public String getMember() {
         return member;
@@ -53,11 +97,11 @@ public class LoginDTO {
         this.signStatus = signStatus;
     }
 
-    public String getDiscount() {
+    public Integer getDiscount() {
         return discount;
     }
 
-    public void setDiscount(String discount) {
+    public void setDiscount(Integer discount) {
         this.discount = discount;
     }
 }

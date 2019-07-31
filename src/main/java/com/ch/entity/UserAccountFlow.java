@@ -19,6 +19,16 @@ public class UserAccountFlow {
 
     private String flowReason;
 
+    private Long formartTime;
+
+    public Long getFormartTime() {
+        return formartTime;
+    }
+
+    public void setFormartTime(Long formartTime) {
+        this.formartTime = formartTime;
+    }
+
     public Integer getId() {
         return id;
     }

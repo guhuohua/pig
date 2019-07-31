@@ -49,9 +49,7 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
         //SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         //商品详情的map
         ResponseResult result = new ResponseResult();
-        String discount = viewUserInfoService.findDiscountByOpenId(openId);
-
-
+        int discount = viewUserInfoService.findDiscountByOpenId(openId);
         Map goodsDetailsMap = new HashMap();
         goodsDetailsMap.put("discount",discount);
         //查询商品表
@@ -170,7 +168,7 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
         List<GoodsImage> goodsImages = goodsImageMapper.selectByExample(exampleImg);
         goodsDetailsMap.put("goodsImages", goodsImages);
         goodsDetailsMap.put("goodsEvaluations", goodsEvaluations);
-        goodsDetailsMap.put("goodsImages", goodsImages);
+        //goodsDetailsMap.put("goodsImages", goodsImages);
 
         result.setData(goodsDetailsMap);
         return result;

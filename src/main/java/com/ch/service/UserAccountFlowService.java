@@ -4,7 +4,9 @@ import com.ch.base.ResponseResult;
 import com.ch.model.PageParam;
 
 public interface UserAccountFlowService {
-    ResponseResult list(String openId);
+    ResponseResult list(PageParam pageParam);
 
     ResponseResult addAccountFlow(String orderId);
+
+
 }

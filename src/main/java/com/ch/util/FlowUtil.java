@@ -3,16 +3,18 @@ package com.ch.util;
 import com.ch.dao.UserAccountFlowMapper;
 import com.ch.entity.UserAccountFlow;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
-
+@Component
 public class FlowUtil {
     @Autowired
-   static UserAccountFlowMapper userAccountFlowMapper;
+  UserAccountFlowMapper userAccountFlowMapper;
 
-    public static void addFlowTel(long price, String flowReason, String type, Integer status,Integer userId) {
+    public  void addFlowTel(long price, String flowReason, String type, Integer status,Integer userId) {
         UserAccountFlow userAccountFlow = new UserAccountFlow();
         userAccountFlow.setCreateDate(new Date());
+        userAccountFlow.setUserId(userId);
         userAccountFlow.setPrice(price);
         if (0 == status) {
             if ("INTEGRAL".equals(type)) {

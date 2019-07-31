@@ -34,18 +34,23 @@ public class UserAccountFlowServiceImpl implements UserAccountFlowService {
     GoodsSkuMapper goodsSkuMapper;
     @Autowired
     SysMemberService sysMemberService;
-
-
+    @Autowired
+    FlowUtil flowUtil;
 
     @Override
-    public ResponseResult list(String openId) {
+    public ResponseResult list(PageParam pageParam) {
         ResponseResult result = new ResponseResult();
-        UserInfo userInfo = viewUserInfoService.findOneByOpenId(openId);
-       // PageHelper.startPage(pageParam.getPageNum(),pageParam.getPageSzie());
+        UserInfo userInfo = viewUserInfoService.findOneByOpenId(pageParam.getOpenId());
+        PageHelper.startPage(pageParam.getPageNum(), pageParam.getPageSize());
         UserAccountFlowExample example = new UserAccountFlowExample();
+        example.setOrderByClause("create_date desc");
         UserAccountFlowExample.Criteria criteria = example.createCriteria();
         criteria.andUserIdEqualTo(userInfo.getId());
         List<UserAccountFlow> userAccountFlows = userAccountFlowMapper.selectByExample(example);
+        for (UserAccountFlow userAccountFlow : userAccountFlows) {
+            userAccountFlow.setFormartTime(userAccountFlow.getCreateDate().getTime());
+        }
+        // List<UserAccountFlow> userAccountFlows = userAccountFlowMapper.selectByUserId(userInfo.getId());
         PageInfo<UserAccountFlow> pageInfo = new PageInfo<>(userAccountFlows);
         result.setData(pageInfo);
         return result;
@@ -62,7 +67,7 @@ public class UserAccountFlowServiceImpl implements UserAccountFlowService {
         OrderItem orderItem = orderItems.get(0);
         UserInfo userInfo = userInfoMapper.selectByPrimaryKey(goodsOrder.getUserId());
         GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderItem.getSkuAttrId());
-        FlowUtil.addFlowTel(Long.valueOf(goodsSku.getConsumptionIntegral()),"INTEGRAL","INTEGRAL",1,userInfo.getId());
+        flowUtil.addFlowTel(Long.valueOf(goodsSku.getConsumptionIntegral()), "INTEGRAL", "INTEGRAL", 1, userInfo.getId());
         sysMemberService.synchronizedIntegral(userInfo.getId());
         return result;
     }

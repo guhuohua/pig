@@ -256,4 +256,12 @@
       flow_reason = #{flowReason,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from user_account_flow
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
 </mapper>

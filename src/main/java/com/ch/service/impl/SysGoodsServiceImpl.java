@@ -204,11 +204,11 @@ public class SysGoodsServiceImpl implements SysGoodsService {
         List<SysGoodsSkuModel> sysGoodsSkuModelList = model.getSysGoodsSkuModelList();
         long max = sysGoodsSkuModelList.stream().mapToLong(SysGoodsSkuModel::getOriginalPrice).max().getAsLong();
         long min = sysGoodsSkuModelList.stream().mapToLong(SysGoodsSkuModel::getPresentPrice).min().getAsLong();
-<<<<<<< .merge_file_a08232
+
         long integral = sysGoodsSkuModelList.stream().mapToLong(SysGoodsSkuModel::getConsumptionIntegral).min().getAsLong();
 
-=======
-        String integral = sysGoodsSkuModelList.stream().mapToLong(SysGoodsSkuModel::getConsumptionIntegral).min().toString();
+
+       // String integral = sysGoodsSkuModelList.stream().mapToLong(SysGoodsSkuModel::getConsumptionIntegral).min().toString();
         if (GoodsTypeEnum.INTEGRAL.name().equals(model.getGoodsType())) {
             if (model.getSysGoodsSkuModelList().size() > 1) {
                 result.setCode(600);
@@ -217,7 +217,7 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                 return result;
             }
         }
->>>>>>> .merge_file_a04160
+
         if (BeanUtils.isEmpty(model.getId())) {
 
             StringBuilder sn = new StringBuilder(sysUser.getShopId());

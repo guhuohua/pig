@@ -7,6 +7,7 @@ import com.ch.base.ResponseResult;
 import com.ch.dao.*;
 import com.ch.dto.PaymentDto;
 import com.ch.entity.*;
+import com.ch.service.ForRecordService;
 import com.ch.service.ViewShopNameService;
 import com.ch.util.PayUtil;
 import com.ch.util.TokenUtil;
@@ -59,6 +60,8 @@ public class WeiXinPaymentController {
     UserInfoMapper userInfoMapper;
     @Autowired
     GoodsMapper goodsMapper;
+    @Autowired
+    ForRecordService forRecordService;
 
 
     public static String md5Password(String key) {
@@ -205,7 +208,8 @@ public class WeiXinPaymentController {
                 Long total_fee = Long.valueOf(dataMap.get("total_fee").toString());
                 GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderId);
 
-                UserInfo userInfo = userInfoMapper.selectByPrimaryKey(goodsOrder.getUserId());
+
+                //UserInfo userInfo = userInfoMapper.selectByPrimaryKey(goodsOrder.getUserId());
 
 
 
@@ -223,6 +227,10 @@ public class WeiXinPaymentController {
                     criteria.andOrderIdEqualTo(orderId);
                     List<OrderItem> orderItems = orderItemMapper.selectByExample(example);
                     for (OrderItem orderItem : orderItems) {
+                        Goods goods = goodsMapper.selectByPrimaryKey(orderItem.getGoodsId());
+                        if ("INTEGRAL".equals(goods.getGoodsType())){
+                            forRecordService.add(orderId);
+                        }
                         GoodsCarExample example1 = new GoodsCarExample();
                         GoodsCarExample.Criteria criteria1 = example1.createCriteria();
                         criteria1.andSkuIdEqualTo(orderItem.getSkuAttrId());

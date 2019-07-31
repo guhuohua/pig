@@ -4,7 +4,6 @@
  * Description: 订单
  */
 
-
 package com.ch.service.impl;
 
 import com.ch.base.BeanUtils;
@@ -50,7 +49,6 @@ public class ViewOrderServiceImpl implements ViewOrderService {
     @Autowired
     SpikeGoodsMapper spikeGoodsMapper;
 
-
     @Override
     public ResponseResult addOrder(OrderDto[] orderDtoList, String openId, Integer shopId) {
         ResponseResult result = new ResponseResult();
@@ -83,7 +81,6 @@ public class ViewOrderServiceImpl implements ViewOrderService {
 
                 Goods goods = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
 
-
                 if (goods.getStatus() == 0) {
                     result.setCode(500);
                     result.setError_description("商品已下架");
@@ -91,13 +88,11 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                 }
                 feeList.add(goods.getFreight());
 
-
                 OrderItem orderItem = new OrderItem();
                 orderItem.setGoodsId(goodsSku.getGoodsId());
                 if (goodsSku.getInventory() > 0) {
                     goodsSku.setInventory(goodsSku.getInventory() - orderDto.getNum());
                     goodsSku.setSale(goodsSku.getSale() + orderDto.getNum());
-
 
                     //Goods goods1 = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
                     orderItem.setName(orderDto.getName() + "" + goodsSku.getSkuName());
@@ -122,6 +117,8 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                                 orderFee += totalFee;
                                 orderItem.setPrice(spikeGoods1.getSpikePrice());
                                 order.setOrderStatus(1);
+                                order.setOrderPrice(orderFee + Collections.max(feeList));
+                                order.setGoodsFee(orderFee);
                             } else {
                                 result.setCode(500);
                                 result.setError_description("超出秒杀数量");
@@ -131,17 +128,21 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                         }
                     }
                     if ("INTEGRAL".equals(goods.getGoodsType())) {
-                        totalFee = (Long.valueOf(goodsSku.getConsumptionIntegral()* orderDto.getNum()));
+                        totalFee = goods.getFreight();
                         orderFee += totalFee;
-                        orderItem.setPrice(Long.valueOf(goodsSku.getInventory()));
-                        order.setOrderPrice(0l);
-                        order.setOrderStatus(7);
+                        orderItem.setPrice(goodsSku.getPresentPrice());
+                        order.setOrderPrice(orderFee);
+                        order.setOrderStatus(1);
+                        order.setIntegral(goodsSku.getConsumptionIntegral());
+
                     }
                     if ("ORDINARY".equals(goods.getGoodsType())) {
                         totalFee = (goodsSku.getPresentPrice() * orderDto.getNum());
                         orderFee += totalFee;
                         orderItem.setPrice(goodsSku.getPresentPrice());
                         order.setOrderStatus(1);
+                        order.setOrderPrice(orderFee + Collections.max(feeList));
+                        order.setGoodsFee(orderFee);
                     }
                     orderItem.setPrice(goodsSku.getPresentPrice());
                     orderItem.setOrderId(order.getId());
@@ -166,7 +167,6 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                 goodsMapper.updateByPrimaryKey(goods);
                 solrService.releaseGoods(goods.getId(), shopId);
 
-
             }
             order.setUserId(userInfo.getId());
             order.setShopId(shopId);
@@ -180,9 +180,8 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                 return result;
             }
             order.setCreateDate(new Date());
-            order.setOrderPrice(orderFee + Collections.max(feeList));
             order.setFreight(Collections.max(feeList));
-            order.setGoodsFee(orderFee);
+
             orderMapper.insert(order);
         }
         result.setData(order.getId());
@@ -217,7 +216,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             }*/
         }
         GoodsOrder order = orderMapper.selectByPrimaryKey(orderId);
-
+        order.setFormartDate(order.getCreateDate().getTime());
         OrderItemExample example = new OrderItemExample();
         OrderItemExample.Criteria criteria = example.createCriteria();
         criteria.andOrderIdEqualTo(orderId);
@@ -248,7 +247,6 @@ public class ViewOrderServiceImpl implements ViewOrderService {
         ResponseResult result = new ResponseResult();
         return result;
     }
-
 
     @Override
     public ResponseResult manageOrder(Integer status, String openId, Integer shopId, String condition) {
@@ -701,7 +699,6 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             }
         }
 
-
         return result;
     }
 
@@ -856,6 +853,9 @@ public class ViewOrderServiceImpl implements ViewOrderService {
     @Override
     public ResponseResult updateStatus(String orderId) {
         GoodsOrder goodsOrder = orderMapper.selectByPrimaryKey(orderId);
+        if (BeanUtils.isEmpty(goodsOrder.getIntegral())){
+            goodsOrder.setOrderStatus(7);
+        }
         goodsOrder.setOrderStatus(9);
         goodsOrder.setDeliveryDate(new Date());
         orderMapper.updateByPrimaryKey(goodsOrder);
@@ -950,6 +950,5 @@ public class ViewOrderServiceImpl implements ViewOrderService {
         ResponseResult result = new ResponseResult();
         return result;
     }
-
 
 }

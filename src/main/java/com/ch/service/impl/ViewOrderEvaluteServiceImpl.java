@@ -36,6 +36,8 @@ public class ViewOrderEvaluteServiceImpl implements ViewOrderEvaluteService {
     BaseIntegralMapper baseIntegralMapper;
     @Autowired
     SysMemberService sysMemberService;
+    @Autowired
+    FlowUtil flowUtil;
 
 
 
@@ -56,7 +58,7 @@ public class ViewOrderEvaluteServiceImpl implements ViewOrderEvaluteService {
         userInfo.setUseIntegral(userInfo.getUseIntegral()+baseIntegral.getComment());
         userInfoMapper.updateByPrimaryKey(userInfo);
         sysMemberService.synchronizedIntegral(userInfo.getId());
-        FlowUtil.addFlowTel(baseIntegral.getPerfect().longValue(),"comment","INTEGRAL",0,userInfo.getId());
+        flowUtil.addFlowTel(baseIntegral.getPerfect().longValue(),"comment","INTEGRAL",0,userInfo.getId());
         String nickname = userInfo.getNickname();
         String name = nickname.substring(0, 1) + "**" + nickname.substring((nickname.length() - 1), nickname.length());
         goodsEvaluation.setShopId(shopId);

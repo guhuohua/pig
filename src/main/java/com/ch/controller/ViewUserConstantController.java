@@ -9,10 +9,7 @@ package com.ch.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ch.base.ResponseResult;
-import com.ch.dao.MemberLevelMapper;
-import com.ch.dao.SignMapper;
-import com.ch.dao.UserInfoMapper;
-import com.ch.dao.UserMapper;
+import com.ch.dao.*;
 import com.ch.dto.LoginDTO;
 import com.ch.dto.ShopInfo;
 import com.ch.dto.UserConstant;
@@ -22,6 +19,7 @@ import com.ch.enums.MemberEnum;
 import com.ch.service.ViewShopInfoService;
 import com.ch.service.ViewUserInfoService;
 import com.ch.util.HttpRequestUtil;
+import com.ch.util.RandomUtil;
 import com.ch.util.TokenUtil;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
@@ -51,7 +49,7 @@ public class ViewUserConstantController {
     @Autowired
     SignMapper signMapper;
     @Autowired
-    MemberLevelMapper memberLevelMapper;
+    MemberRankMapper memberRankMapper;
     @Autowired
     ModelMapper modelMapper;
 
@@ -59,29 +57,22 @@ public class ViewUserConstantController {
     @PostMapping("loginInfo1")
     public ResponseResult user_login(HttpServletRequest req, @RequestBody UserDto userDto) {
         ResponseResult result = new ResponseResult();
+       // String stringRandom = RandomUtil.getStringRandom(6);
         LoginDTO loginDTO = new LoginDTO();
         String token = req.getHeader("Authorization");
+        String openId = req.getHeader("openId");
         Integer shopId = TokenUtil.getUserId(token);
         //User user = userMapper.selectByPrimaryKey(userId);
         UserInfoExample example = new UserInfoExample();
         UserInfoExample.Criteria criteria = example.createCriteria();
-        criteria.andOpenIdEqualTo(userDto.getOpenId());
+        criteria.andOpenIdEqualTo(openId);
         List<UserInfo> userInfos = userInfoMapper.selectByExample(example);
         UserInfo userInfo =null;
         if (userInfos.size() > 0) {
              userInfo = userInfos.get(0);
             Date endOfDay = getEndOfDay(new Date());
             Date startDay = getStartOfDay(new Date());
-            SignExample example1 = new SignExample();
-            SignExample.Criteria criteria1 = example1.createCriteria();
-            criteria1.andUserIdEqualTo(userInfo.getId());
-            criteria1.andSignDateLessThan(endOfDay);
-            criteria1.andSignDateGreaterThan(startDay);
-            List<Sign> signs = signMapper.selectByExample(example1);
-            if (signs.size()==0){
-                userInfo.setSignStatus(0);
 
-            }
             userInfo.setUpdateTime(new Date());
             userInfoMapper.updateByPrimaryKey(userInfo);
 
@@ -95,21 +86,20 @@ public class ViewUserConstantController {
             userInfo.setCreateTime(new Date());
             //userInfo.setUpdateTime(new Date());
             userInfo.setShopId(shopId);
-            userInfo.setOpenId(userDto.getOpenId());
+            userInfo.setOpenId(openId);
             userInfo.setIntegral(0);
             userInfo.setMember("TOURIST");
             userInfo.setSignStatus(0);
-            userInfo.setIntegral(0);
             userInfo.setUseIntegral(0);
             userInfoMapper.insert(userInfo);
         }
-        MemberLevelExample example1 = new MemberLevelExample();
-        MemberLevelExample.Criteria criteria1 = example1.createCriteria();
-        criteria1.andNameEqualTo(userInfo.getMember());
-        List<MemberLevel> memberLevels = memberLevelMapper.selectByExample(example1);
-        MemberLevel memberLevel = memberLevels.get(0);
+       MemberRankExample example1 = new MemberRankExample();
+        MemberRankExample.Criteria criteria1 = example1.createCriteria();
+        criteria1.andMemberTypeEqualTo(userInfo.getMember());
+        List<MemberRank> memberRanks = memberRankMapper.selectByExample(example1);
+        MemberRank memberRank = memberRanks.get(0);
         modelMapper.map(userInfo, loginDTO);
-        loginDTO.setDiscount(memberLevel.getDiscount());
+        loginDTO.setDiscount(memberRank.getDiscount());
         result.setData(loginDTO);
         return result;
     }

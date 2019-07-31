@@ -47,6 +47,26 @@ public class GoodsOrder {
 
     private Long goodsFee;
 
+    private Long formartDate;
+
+    private int integral;
+
+    public int getIntegral() {
+        return integral;
+    }
+
+    public void setIntegral(int integral) {
+        this.integral = integral;
+    }
+
+    public Long getFormartDate() {
+        return formartDate;
+    }
+
+    public void setFormartDate(Long formartDate) {
+        this.formartDate = formartDate;
+    }
+
     public Long getFreight() {
         return freight;
     }

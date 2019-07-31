@@ -21,11 +21,17 @@ public interface ViewUserInfoService {
 
     void updateByPrimaryKey(UserInfo userInfo);
 
-     ResponseResult addTel(String openId , TelParam telParam);
+
+     ResponseResult addTel(String openId , String tel);
+
+    ResponseResult addInvitationCode(String openId , String invitationCode);
 
     ResponseResult sign(String openId);
 
-    String findDiscountByOpenId(String openId);
+    int findDiscountByOpenId(String openId);
+
+    ResponseResult signStatus(String openId);
+
 
 
 

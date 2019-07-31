@@ -12,6 +12,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.ch.base.ResponseResult;
 import com.ch.dto.ShopInfo;
 import com.ch.dto.UserInfos;
+import com.ch.entity.UserInfo;
 import com.ch.model.TelParam;
 import com.ch.service.ViewShopInfoService;
 import com.ch.service.ViewUserInfoService;
@@ -77,11 +78,11 @@ public class ViewLoginController {
     }
 
     @GetMapping("addTel")
-    public ResponseResult addTel(HttpServletRequest req, @RequestBody TelParam telParam) {
+    public ResponseResult addTel(HttpServletRequest req, @RequestParam String tel) {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         try {
-            result = viewUserInfoService.addTel(openId, telParam);
+            result = viewUserInfoService.addTel(openId, tel);
         } catch (Exception e) {
             LOGGER.error("绑定手机号失败" + e.getMessage(), e);
             result.setCode(500);
@@ -103,6 +104,39 @@ public class ViewLoginController {
             result.setCode(500);
             result.setError(e.getMessage());
             result.setError_description("签到失败");
+        }
+        return result;
+
+    }
+
+    @GetMapping ("addInvitationCode")
+    public ResponseResult addInvitationCode(HttpServletRequest req, @RequestParam String invitationCode) {
+        ResponseResult result = new ResponseResult();
+        String openId = req.getHeader("openId");
+        try {
+            result = viewUserInfoService.addInvitationCode(openId,invitationCode);
+        } catch (Exception e) {
+            LOGGER.error("绑定上级邀请码失败" + e.getMessage(), e);
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("绑定上级邀请码失败");
+        }
+        return result;
+
+    }
+
+    @GetMapping ("memberStatus")
+    public ResponseResult signStatus(HttpServletRequest req) {
+        ResponseResult result = new ResponseResult();
+        String openId = req.getHeader("openId");
+        try {
+            result = viewUserInfoService.signStatus(openId);
+
+        } catch (Exception e) {
+            LOGGER.error("人员状态失败" + e.getMessage(), e);
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("人员状态失败");
         }
         return result;
 

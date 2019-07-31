@@ -30,12 +30,11 @@ public class SysMemberServiceImpl implements SysMemberService {
     @Autowired
     UserInfoMapper userInfoMapper;
 
-
     @Override
     @Transactional
     public ResponseResult baseSetting(SysBaseSettingParam param) {
         ResponseResult result = new ResponseResult();
-        for (MemberModel memberModel:param.getMemberModels()) {
+        for (MemberModel memberModel : param.getMemberModels()) {
             if (BeanUtils.isEmpty(memberModel.getId())) {
                 MemberRank memberRank = new MemberRank();
                 memberRank.setMemberType(memberModel.getMemberType());
@@ -75,7 +74,7 @@ public class SysMemberServiceImpl implements SysMemberService {
     @Override
     public ResponseResult synchronizedIntegral(Integer userId) {
         ResponseResult result = new ResponseResult();
-        List<UserInfo> userInfos = new ArrayList<>();
+       /* List<UserInfo> userInfos = new ArrayList<>();
         if (null != userId) {
             UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
             userInfos.add(userInfo);
@@ -90,7 +89,21 @@ public class SysMemberServiceImpl implements SysMemberService {
                     userInfoMapper.updateByPrimaryKey(userInfo);
                 }
             }
+        }*/
+        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
+        if (userInfo.getIntegral() >= 4800) {
+            userInfo.setMember("DIAMONDS");
         }
+        if (userInfo.getIntegral() >= 2400 && userInfo.getIntegral() < 4800) {
+            userInfo.setMember("PLATINUM");
+        }
+        if (userInfo.getIntegral() >= 1200 && userInfo.getIntegral() < 2400) {
+            userInfo.setMember("GOLD");
+        }
+        if (userInfo.getIntegral() >= 0 && userInfo.getIntegral() < 1200) {
+            userInfo.setMember("TOURIST");
+        }
+        userInfoMapper.updateByPrimaryKey(userInfo);
         return result;
     }
 
@@ -101,7 +114,7 @@ public class SysMemberServiceImpl implements SysMemberService {
         List<MemberModel> memberModels = new ArrayList<>();
         List<MemberRank> memberRanks = memberRankMapper.selectByExample(null);
         if (BeanUtils.isNotEmpty(memberRanks)) {
-            for (MemberRank memberRank:memberRanks) {
+            for (MemberRank memberRank : memberRanks) {
                 MemberModel memberModel = new MemberModel();
                 memberModel.setId(memberRank.getId());
                 memberModel.setDiscount(memberRank.getDiscount());

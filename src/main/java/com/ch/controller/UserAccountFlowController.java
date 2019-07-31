@@ -1,6 +1,7 @@
 package com.ch.controller;
 
 import com.ch.base.ResponseResult;
+import com.ch.model.PageParam;
 import com.ch.service.UserAccountFlowService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,11 +23,12 @@ public class UserAccountFlowController {
 
     @PostMapping("list")
     @ApiOperation("列表展示")
-    public ResponseResult list(HttpServletRequest req){
+    public ResponseResult list(HttpServletRequest req ,@RequestBody PageParam PageParam){
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         try {
-            result = userAccountFlowService.list(openId);
+            PageParam.setOpenId(openId);
+            result = userAccountFlowService.list(PageParam);
         } catch (Exception e) {
             LOGGER.error("列表展示失败" + e.getMessage(), e);
             result.setCode(500);
@@ -52,6 +54,8 @@ public class UserAccountFlowController {
         }
         return result;
     }
+
+
 
 
 }
