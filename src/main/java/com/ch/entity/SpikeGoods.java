@@ -21,6 +21,26 @@ public class SpikeGoods {
 
     private Integer maxNum;
 
+    private Long beginTimeStamp;
+
+    private Long endTimeStamp;
+
+    public Long getBeginTimeStamp() {
+        return beginTimeStamp;
+    }
+
+    public void setBeginTimeStamp(Long beginTimeStamp) {
+        this.beginTimeStamp = beginTimeStamp;
+    }
+
+    public Long getEndTimeStamp() {
+        return endTimeStamp;
+    }
+
+    public void setEndTimeStamp(Long endTimeStamp) {
+        this.endTimeStamp = endTimeStamp;
+    }
+
     public Integer getMaxNum() {
         return maxNum;
     }

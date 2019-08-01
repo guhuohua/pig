@@ -128,6 +128,11 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                         }
                     }
                     if ("INTEGRAL".equals(goods.getGoodsType())) {
+                        if(goodsSku.getConsumptionIntegral()< userInfo.getUseIntegral()){
+                            result.setCode(500);
+                            result.setError_description("可用积分不足");
+                            return result;
+                        }
                         totalFee = goods.getFreight();
                         orderFee += totalFee;
                         orderItem.setPrice(goodsSku.getPresentPrice());

@@ -44,7 +44,8 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
 
 
     @Override
-    public ResponseResult findGoodsDetailsByGoodsId(Integer goodsId, Integer shopId,String openId) {
+    public ResponseResult
+    findGoodsDetailsByGoodsId(Integer goodsId, Integer shopId,String openId) {
 
         //SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         //商品详情的map
@@ -71,8 +72,12 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
             criteria.andBeginDateLessThan(new Date());
             criteria.andEndDateGreaterThan(new Date());
             List<SpikeGoods> spikeGoods = spikeGoodsMapper.selectByExample(example);
+
             if (spikeGoods.size() > 0) {
-                goodsDetailsMap.put("spikeGoods", spikeGoods.get(0));
+                SpikeGoods spikeGoods1 = spikeGoods.get(0);
+                spikeGoods1.setBeginTimeStamp(spikeGoods1.getBeginDate().getTime()-new Date().getTime());
+                spikeGoods1.setEndTimeStamp(spikeGoods1. getEndDate().getTime()- new Date().getTime());
+                goodsDetailsMap.put("spikeGoods", spikeGoods1);
             }
         }
 
