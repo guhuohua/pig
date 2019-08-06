@@ -51,6 +51,16 @@ public class GoodsOrder {
 
     private int integral;
 
+    private Integer integralStatus;
+
+    public Integer getIntegralStatus() {
+        return integralStatus;
+    }
+
+    public void setIntegralStatus(Integer integralStatus) {
+        this.integralStatus = integralStatus;
+    }
+
     public int getIntegral() {
         return integral;
     }

@@ -1,6 +1,5 @@
 package com.ch.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ch.base.BeanUtils;
 import com.ch.base.ResponseResult;
@@ -9,10 +8,8 @@ import com.ch.dto.PaymentDto;
 import com.ch.entity.*;
 import com.ch.service.ForRecordService;
 import com.ch.service.ViewShopNameService;
-import com.ch.util.PayUtil;
-import com.ch.util.TokenUtil;
-import com.ch.util.UUIDHexGenerator;
-import com.ch.util.XmlUtil;
+import com.ch.service.ViewUserInfoService;
+import com.ch.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -23,7 +20,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -62,6 +61,12 @@ public class WeiXinPaymentController {
     GoodsMapper goodsMapper;
     @Autowired
     ForRecordService forRecordService;
+    @Autowired
+    ViewUserInfoService viewUserInfoService;
+    @Autowired
+    FlowUtil flowUtil;
+    @Autowired
+    BaseIntegralMapper baseIntegralMapper;
 
 
     public static String md5Password(String key) {
@@ -94,7 +99,7 @@ public class WeiXinPaymentController {
 
     @GetMapping("wxpay")
     @ResponseBody
-    public ResponseResult payment(HttpServletRequest req, @RequestParam String orderId) throws UnsupportedEncodingException, DocumentException {
+    public ResponseResult payment(HttpServletRequest req, @RequestParam String orderId, @RequestParam Integer integralStatus) throws UnsupportedEncodingException, DocumentException {
         ResponseResult result1 = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
@@ -102,6 +107,10 @@ public class WeiXinPaymentController {
         //获取店铺信息
         ShopMiniProgram shopMiniProgram = viewShopNameService.shopPayInfo(shopId);
         GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderId);
+        goodsOrder.setIntegralStatus(integralStatus);
+        goodsOrderMapper.updateByPrimaryKey(goodsOrder);
+        List<BaseIntegral> baseIntegrals = baseIntegralMapper.selectByExample(null);
+        BaseIntegral baseIntegral = baseIntegrals.get(0);
         //  Shop shop = shopMapper.selectByPrimaryKey(shopId);
         JSONObject JsonObject = new JSONObject();
         String body = "test";
@@ -117,7 +126,18 @@ public class WeiXinPaymentController {
         String newbody = new String(body.getBytes("ISO-8859-1"), "UTF-8");//以utf-8编码放入paymentPo，微信支付要求字符编码统一采用UTF-8字符编码
         paymentPo.setBody(newbody);
         paymentPo.setOut_trade_no(out_trade_no);
-        paymentPo.setTotal_fee(goodsOrder.getOrderPrice().toString());
+        if (1 == integralStatus) {
+            UserInfo userInfo = viewUserInfoService.findOneByOpenId(openId);
+            int i = userInfo.getUseIntegral() / baseIntegral.getCashIntegral();
+           // int integral = i * baseIntegral.getCashIntegral();
+            /*userInfo.setUseIntegral(userInfo.getUseIntegral() - integral);
+            userInfoMapper.updateByPrimaryKey(userInfo);
+            flowUtil.addFlowTel(integral, "INTEGRAL_MONEY", "INTEGRAL", 1, userInfo.getId());*/
+            paymentPo.setTotal_fee((goodsOrder.getOrderPrice() - i * 100) + "");
+            System.out.println((goodsOrder.getOrderPrice() - i * 100) + "");
+        } else {
+            paymentPo.setTotal_fee(goodsOrder.getOrderPrice().toString());
+        }
         paymentPo.setSpbill_create_ip(spbill_create_ip);
         paymentPo.setNotify_url(shopMiniProgram.getBackUrl());
         paymentPo.setTrade_type("JSAPI");
@@ -137,7 +157,7 @@ public class WeiXinPaymentController {
         // 除去数组中的空值和签名参数
         Map sPara = PayUtil.paraFilter(sParaTemp);
         String prestr = PayUtil.createLinkString(sPara); // 把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串
-        StringBuilder stringSignTemp = new StringBuilder(prestr).append("&key="+shopMiniProgram.getAppKey());
+        StringBuilder stringSignTemp = new StringBuilder(prestr).append("&key=" + shopMiniProgram.getAppKey());
         String sign = md5Password(stringSignTemp.toString()).toUpperCase();
         //MD5运算生成签名
         paymentPo.setSign(sign);
@@ -182,7 +202,7 @@ public class WeiXinPaymentController {
             JsonObject.put("paySign", paySign);
             result1.setData(JsonObject);
             return result1;
-        }else {
+        } else {
             result1.setCode(500);
             return result1;
         }
@@ -209,10 +229,7 @@ public class WeiXinPaymentController {
                 GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderId);
 
 
-                //UserInfo userInfo = userInfoMapper.selectByPrimaryKey(goodsOrder.getUserId());
-
-
-
+                // UserInfo userInfo = userInfoMapper.selectByPrimaryKey(goodsOrder.getUserId());
                 if (BeanUtils.isNotEmpty(goodsOrder)) {
                     if (goodsOrder.getOrderStatus() == 10) {
                         return;
@@ -228,7 +245,7 @@ public class WeiXinPaymentController {
                     List<OrderItem> orderItems = orderItemMapper.selectByExample(example);
                     for (OrderItem orderItem : orderItems) {
                         Goods goods = goodsMapper.selectByPrimaryKey(orderItem.getGoodsId());
-                        if ("INTEGRAL".equals(goods.getGoodsType())){
+                        if ("INTEGRAL".equals(goods.getGoodsType())) {
                             forRecordService.add(orderId);
                         }
                         GoodsCarExample example1 = new GoodsCarExample();

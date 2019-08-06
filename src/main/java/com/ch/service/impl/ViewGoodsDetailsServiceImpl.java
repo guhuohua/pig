@@ -10,7 +10,6 @@ package com.ch.service.impl;
 import com.ch.base.ResponseResult;
 import com.ch.dao.*;
 import com.ch.entity.*;
-import com.ch.enums.GoodsTypeEnum;
 import com.ch.service.ViewGoodsDetailsService;
 import com.ch.service.ViewUserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,14 +44,14 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
 
     @Override
     public ResponseResult
-    findGoodsDetailsByGoodsId(Integer goodsId, Integer shopId,String openId) {
+    findGoodsDetailsByGoodsId(Integer goodsId, Integer shopId,Integer skuId, String openId) {
 
         //SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         //商品详情的map
         ResponseResult result = new ResponseResult();
         int discount = viewUserInfoService.findDiscountByOpenId(openId);
         Map goodsDetailsMap = new HashMap();
-        goodsDetailsMap.put("discount",discount);
+        goodsDetailsMap.put("discount", discount);
         //查询商品表
         Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
         // System.out.println(goods.getShopId());
@@ -65,21 +64,23 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
         criteria2.andGoodsIdEqualTo(goodsId);
         List<GoodsSku> goodsSkus = goodsSkuMapper.selectByExample(exampleSku);
         goodsDetailsMap.put("goodsSkus", goodsSkus);
-        for (GoodsSku skus : goodsSkus) {
+        if (skuId!= null){
             SpikeGoodsExample example = new SpikeGoodsExample();
             SpikeGoodsExample.Criteria criteria = example.createCriteria();
-            criteria.andSkuIdEqualTo(skus.getId());
+            criteria.andSkuIdEqualTo(skuId);
             criteria.andBeginDateLessThan(new Date());
             criteria.andEndDateGreaterThan(new Date());
             List<SpikeGoods> spikeGoods = spikeGoodsMapper.selectByExample(example);
-
             if (spikeGoods.size() > 0) {
                 SpikeGoods spikeGoods1 = spikeGoods.get(0);
-                spikeGoods1.setBeginTimeStamp(spikeGoods1.getBeginDate().getTime()-new Date().getTime());
-                spikeGoods1.setEndTimeStamp(spikeGoods1. getEndDate().getTime()- new Date().getTime());
+                spikeGoods1.setBeginTimeStamp(spikeGoods1.getBeginDate().getTime() - new Date().getTime());
+                spikeGoods1.setEndTimeStamp(spikeGoods1.getEndDate().getTime() - new Date().getTime());
                 goodsDetailsMap.put("spikeGoods", spikeGoods1);
             }
+
         }
+
+
 
            /* GoodsSkuAttributeExample example = new GoodsSkuAttributeExample();
             GoodsSkuAttributeExample.Criteria criteria = example.createCriteria();

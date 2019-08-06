@@ -45,10 +45,15 @@ public class FlowUtil {
         }
         if (1 == status) {
             userAccountFlow.setStatus(1);
-            if ("INTEGRAL".equals(type)) {
+            if ("INTEGRAL".equals(flowReason)) {
                 userAccountFlow.setType("INTEGRAL");
                 userAccountFlow.setFlowReason("积分购物");
             }
+            if ("INTEGRAL_MONEY".equals(flowReason)) {
+                userAccountFlow.setType("INTEGRAL");
+                userAccountFlow.setFlowReason("购买商品消耗积分");
+            }
+
         }
 
         userAccountFlowMapper.insert(userAccountFlow);

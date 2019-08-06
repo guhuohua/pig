@@ -24,7 +24,7 @@
     <result column="freight" property="freight" jdbcType="VARCHAR" />
     <result column="goods_fee" property="goodsFee" jdbcType="VARCHAR" />
     <result column="integral" property="integral" jdbcType="INTEGER" />
-
+    <result column="integral_status" property="integralStatus" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -87,7 +87,7 @@
   <sql id="Base_Column_List" >
     id, shop_id, user_id, order_status, create_date, delivery_date, modify_date, order_price, 
     pay_date, pay_price, pay_type, remark, status, pay_id, take_date, order_type, delivery_id, 
-    refund_id, track_number,freight,goods_fee,integral
+    refund_id, track_number,freight,goods_fee,integral,integral_status
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ch.entity.GoodsOrderExample" >
     select
@@ -127,14 +127,14 @@
       pay_price, pay_type, remark, 
       status, pay_id, take_date, 
       order_type, delivery_id, refund_id, 
-      track_number,freight,goods_fee,integral)
+      track_number,freight,goods_fee,integral,integral_status)
     values (#{id,jdbcType=VARCHAR}, #{shopId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
       #{orderStatus,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{deliveryDate,jdbcType=TIMESTAMP}, 
       #{modifyDate,jdbcType=TIMESTAMP}, #{orderPrice,jdbcType=BIGINT}, #{payDate,jdbcType=TIMESTAMP}, 
       #{payPrice,jdbcType=BIGINT}, #{payType,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{status,jdbcType=INTEGER}, #{payId,jdbcType=VARCHAR}, #{takeDate,jdbcType=TIMESTAMP}, 
       #{orderType,jdbcType=VARCHAR}, #{deliveryId,jdbcType=INTEGER}, #{refundId,jdbcType=VARCHAR}, 
-      #{trackNumber,jdbcType=VARCHAR},#{freight,jdbcType=BIGINT},#{goodsFee,jdbcType=BIGINT},#{integral,jdbcType=INTEGER})
+      #{trackNumber,jdbcType=VARCHAR},#{freight,jdbcType=BIGINT},#{goodsFee,jdbcType=BIGINT},#{integral,jdbcType=INTEGER},#{integralStatus,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ch.entity.GoodsOrder" >
     insert into goods_order
@@ -435,7 +435,8 @@
       track_number = #{trackNumber,jdbcType=VARCHAR},
       freight = #{freight,jdbcType=BIGINT},
       goods_fee = #{goodsFee,jdbcType=BIGINT},
-      integral = #{integral,jdbcType=INTEGER}
+      integral = #{integral,jdbcType=INTEGER},
+      integral_status = #{integralStatus,jdbcType=INTEGER}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

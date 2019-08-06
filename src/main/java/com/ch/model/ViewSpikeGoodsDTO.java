@@ -2,10 +2,14 @@ package com.ch.model;
 
 import lombok.Data;
 
+import javax.print.attribute.standard.PrinterURI;
+
 @Data
 public class ViewSpikeGoodsDTO {
 
     private Integer goodsId;
+
+    private Integer skuId;
 
     private String title;
 

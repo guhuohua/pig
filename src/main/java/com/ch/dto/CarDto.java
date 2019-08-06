@@ -8,12 +8,22 @@
 package com.ch.dto;
 
 import com.ch.entity.GoodsSku;
+import com.ch.entity.SpikeGoods;
 
 public class CarDto {
     GoodsSku goodsSku;
     Integer num;
     String name;
     Integer flag;
+    SpikeGoods spikeGoods;
+
+    public SpikeGoods getSpikeGoods() {
+        return spikeGoods;
+    }
+
+    public void setSpikeGoods(SpikeGoods spikeGoods) {
+        this.spikeGoods = spikeGoods;
+    }
 
     public Integer getFlag() {
         return flag;

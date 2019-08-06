@@ -11,11 +11,13 @@ import com.ch.base.BeanUtils;
 import com.ch.base.PageQuery;
 import com.ch.base.ResponseResult;
 import com.ch.dao.GoodsMapper;
+import com.ch.dao.GoodsSkuMapper;
 import com.ch.dao.SpikeGoodsMapper;
 import com.ch.dao.SysUserMapper;
 import com.ch.dto.SolrDto;
 import com.ch.entity.Goods;
 import com.ch.entity.GoodsExample;
+import com.ch.entity.GoodsSku;
 import com.ch.entity.SpikeGoods;
 import com.ch.model.ViewSpikeGoodsDTO;
 import com.ch.service.ViewGoodsListService;
@@ -43,6 +45,8 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
 
     @Autowired
     SpikeGoodsMapper spikeGoodsMapper;
+    @Autowired
+    GoodsSkuMapper goodsSkuMapper;
 
     @Override
     public ResponseResult findGoodsList(SolrDto solrDto, Integer shopId) {
@@ -160,10 +164,11 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
         List<ViewSpikeGoodsDTO> spikeGoods = spikeGoodsMapper.viewList();
         for (ViewSpikeGoodsDTO viewSpikeGoodsDTO:spikeGoods) {
             Goods goods = goodsMapper.selectByPrimaryKey(viewSpikeGoodsDTO.getGoodsId());
-            if (BeanUtils.isNotEmpty(goods)) {
+            GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(viewSpikeGoodsDTO.getSkuId());
+            if (BeanUtils.isNotEmpty(goods) && BeanUtils.isNotEmpty(goodsSku)) {
                 viewSpikeGoodsDTO.setImg(goods.getGoodsImgUrl());
-                viewSpikeGoodsDTO.setOriginalPrice(goods.getOriginalPrice());
-                viewSpikeGoodsDTO.setTitle(goods.getName());
+                viewSpikeGoodsDTO.setOriginalPrice(goodsSku.getOriginalPrice());
+                viewSpikeGoodsDTO.setTitle(goods.getTitle()+goodsSku.getSkuName());
             }
             viewSpikeGoodsDTO.setBeginDate(viewSpikeGoodsDTO.getBeginDate() * 1000 - new Date().getTime() < 0 ? 0 : viewSpikeGoodsDTO.getBeginDate() * 1000 - new Date().getTime());
             viewSpikeGoodsDTO.setEndDate(viewSpikeGoodsDTO.getEndDate() * 1000 - new Date().getTime() < 0 ? 0 : viewSpikeGoodsDTO.getEndDate() * 1000 - new Date().getTime());

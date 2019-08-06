@@ -12,6 +12,7 @@ import com.ch.enums.OderStatusEnum;
 import com.ch.handler.ActiveMQHandler;
 import com.ch.service.SysMemberService;
 import com.ch.service.SysOrderService;
+import com.ch.service.ViewUserInfoService;
 import com.ch.util.FlowUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -58,6 +59,8 @@ public class SysOrderServiceImpl implements SysOrderService {
     SysMemberService sysMemberService;
     @Autowired
     FlowUtil flowUtil;
+    @Autowired
+    ViewUserInfoService viewUserInfoService;
 
 
     @Override
@@ -207,39 +210,49 @@ public class SysOrderServiceImpl implements SysOrderService {
             List<OrderItem> orderItems = orderItemMapper.selectByExample(example);
             for (OrderItem orderItem : orderItems) {
                 Goods goods = goodsMapper.selectByPrimaryKey(orderItem.getGoodsId());
-                if ("ORDINARY".equals(goods.getGoodsType()) && BeanUtils.isNotEmpty(userInfo.getSuperiorInvitationCode())) {
-                    BigDecimal orderPrice = new BigDecimal(orderItem.getNumber() * orderItem.getPrice());
-                    BigDecimal pp = new BigDecimal("100.00");
-                    BigDecimal divide = orderPrice.divide(pp);
-                    double d = baseIntegral.getPerfect();
-                    double s = baseIntegral.getSuperintendence();
-                    double e = 100;
-                    double f = d / e;
-                    double z = s /e;
-                    BigDecimal multiply = divide.multiply(new BigDecimal(f));
-                    BigDecimal multiply1 = divide.multiply(new BigDecimal(z));
-                    double v = multiply.doubleValue();
-                    double v1 = multiply1.doubleValue();
-                    int floor = (int) Math.floor(v);
-                    int floors = (int) Math.floor(v1);
-                    userInfo.setUseIntegral(userInfo.getUseIntegral() + floor);
-                    userInfo.setIntegral(userInfo.getIntegral() + floor);
+                if (goodsOrder.getIntegralStatus() == 1) {
+                    int i = userInfo.getUseIntegral() / baseIntegral.getCashIntegral();
+                    int integral = i * baseIntegral.getCashIntegral();
+                    userInfo.setUseIntegral(userInfo.getUseIntegral() - integral);
                     userInfoMapper.updateByPrimaryKey(userInfo);
-                    long floor1 = floor;
-                    long floors1 = floors;
-                    flowUtil.addFlowTel(floor1, "payment", "INTEGRAL", 0,userInfo.getId());
-                    sysMemberService.synchronizedIntegral(userInfo.getId());
-                    UserInfoExample example1 = new UserInfoExample();
-                    UserInfoExample.Criteria criteria1 = example1.createCriteria();
-                    criteria1.andSuperiorInvitationCodeEqualTo(userInfo.getSuperiorInvitationCode());
-                    List<UserInfo> userInfos = userInfoMapper.selectByExample(example1);
-                    UserInfo userInfo1 = userInfos.get(0);
-                    userInfo1.setIntegral(userInfo1.getIntegral() + floors);
-                    userInfo1.setUseIntegral(userInfo1.getUseIntegral() + floors);
-                    userInfoMapper.updateByPrimaryKey(userInfo);
-                    flowUtil.addFlowTel(floors1, "super", "INTEGRAL", 0,userInfo.getId());
-                    sysMemberService.synchronizedIntegral(userInfo.getId());
+                    flowUtil.addFlowTel(integral, "INTEGRAL_MONEY", "INTEGRAL", 1, userInfo.getId());
+                } else {
+                    if ("ORDINARY".equals(goods.getGoodsType()) && BeanUtils.isNotEmpty(userInfo.getSuperiorInvitationCode())) {
+                        BigDecimal orderPrice = new BigDecimal(orderItem.getNumber() * orderItem.getPrice());
+                        BigDecimal pp = new BigDecimal("100.00");
+                        BigDecimal divide = orderPrice.divide(pp);
+                        double d = baseIntegral.getPerfect();
+                        double s = baseIntegral.getSuperintendence();
+                        double e = 100;
+                        double f = d / e;
+                        double z = s / e;
+                        BigDecimal multiply = divide.multiply(new BigDecimal(f));
+                        BigDecimal multiply1 = divide.multiply(new BigDecimal(z));
+                        double v = multiply.doubleValue();
+                        double v1 = multiply1.doubleValue();
+                        int floor = (int) Math.floor(v);
+                        int floors = (int) Math.floor(v1);
+                        userInfo.setUseIntegral(userInfo.getUseIntegral() + floor);
+                        userInfo.setIntegral(userInfo.getIntegral() + floor);
+                        userInfoMapper.updateByPrimaryKey(userInfo);
+                        long floor1 = floor;
+                        long floors1 = floors;
+                        flowUtil.addFlowTel(floor1, "payment", "INTEGRAL", 0, userInfo.getId());
+                        sysMemberService.synchronizedIntegral(userInfo.getId());
+                        UserInfoExample example1 = new UserInfoExample();
+                        UserInfoExample.Criteria criteria1 = example1.createCriteria();
+                        criteria1.andSuperiorInvitationCodeEqualTo(userInfo.getSuperiorInvitationCode());
+                        List<UserInfo> userInfos = userInfoMapper.selectByExample(example1);
+                        UserInfo userInfo1 = userInfos.get(0);
+                        userInfo1.setIntegral(userInfo1.getIntegral() + floors);
+                        userInfo1.setUseIntegral(userInfo1.getUseIntegral() + floors);
+                        userInfoMapper.updateByPrimaryKey(userInfo);
+                        flowUtil.addFlowTel(floors1, "super", "INTEGRAL", 0, userInfo.getId());
+                        sysMemberService.synchronizedIntegral(userInfo.getId());
+                    }
                 }
+
+
             }
         }
         return result;

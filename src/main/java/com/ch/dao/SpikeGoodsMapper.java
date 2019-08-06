@@ -41,9 +41,9 @@ public interface SpikeGoodsMapper {
     List<SysSpikeListDTO> list(@Param("sn") String sn);
 
 
-    @Select("select sg.goods_id, unix_timestamp(sg.begin_date) as begin_date, unix_timestamp(sg.end_date) as end_date, spike_price,count(distinct sg.goods_id)" +
-            "  from spike_goods sg where date_sub(sg.begin_date,interval 1 day)<=now() and sg.end_date > now()" +
-            "      and sg.goods_id in (select id from goods where status = 1)  group by sg.goods_id  order by sg.begin_date desc, sg.spike_price desc")
+    @Select("select sg.goods_id, unix_timestamp(sg.begin_date) as begin_date,sku_id, unix_timestamp(sg.end_date) as end_date, spike_price" +
+            "  from spike_goods sg where sg.begin_date<=now() and sg.end_date > now()" +
+            "      and sg.goods_id in (select id from goods where status = 1)   order by sg.begin_date desc, sg.spike_price desc")
     List<ViewSpikeGoodsDTO> viewList();
 
 }

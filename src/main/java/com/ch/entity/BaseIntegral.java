@@ -80,4 +80,6 @@ public class BaseIntegral {
     public void setComment(Integer comment) {
         this.comment = comment;
     }
+
+
 }

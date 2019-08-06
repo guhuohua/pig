@@ -10,9 +10,7 @@ import com.ch.service.ViewUserInfoService;
 import com.ch.util.FlowUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,6 +44,9 @@ public class UserAccountFlowServiceImpl implements UserAccountFlowService {
         example.setOrderByClause("create_date desc");
         UserAccountFlowExample.Criteria criteria = example.createCriteria();
         criteria.andUserIdEqualTo(userInfo.getId());
+        if (1 == pageParam.getStatus()) {
+            criteria.andFlowReasonLike("%"+"积分购物"+"%");
+        }
         List<UserAccountFlow> userAccountFlows = userAccountFlowMapper.selectByExample(example);
         for (UserAccountFlow userAccountFlow : userAccountFlows) {
             userAccountFlow.setFormartTime(userAccountFlow.getCreateDate().getTime());

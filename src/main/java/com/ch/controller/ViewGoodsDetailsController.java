@@ -17,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,14 +34,14 @@ public class ViewGoodsDetailsController {
 
    @ApiOperation("展示商品详情")
    @GetMapping("details")
-   public ResponseResult findGoodsDetailsByGoodsId(Integer goodsId, HttpServletRequest req){
+   public ResponseResult findGoodsDetailsByGoodsId(@RequestParam Integer goodsId, @RequestParam Integer skuId, HttpServletRequest req){
        ResponseResult result = new ResponseResult();
        String openId = req.getHeader("openId");
        String token = req.getHeader("Authorization");
        Integer shopId = TokenUtil.getUserId(token);
        //Integer userId = 6;
        try {
-           result = viewGoodsDetailsService.findGoodsDetailsByGoodsId(goodsId,shopId,openId);
+           result = viewGoodsDetailsService.findGoodsDetailsByGoodsId(goodsId,shopId,skuId,openId);
        } catch (Exception e) {
            LOGGER.error("展示商品详情" + e.getMessage(), e);
            result.setCode(500);

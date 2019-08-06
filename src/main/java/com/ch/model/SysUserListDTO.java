@@ -17,7 +17,7 @@ public class SysUserListDTO {
 
     private Integer useIntegral;
 
-    private Long invitation_code;
+    private String invitationCode;
 
     private String superiorInvitationCode;
 }

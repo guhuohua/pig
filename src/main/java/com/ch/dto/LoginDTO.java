@@ -23,7 +23,15 @@ public class LoginDTO {
 
     private Integer integral;
 
+    private Integer cashIntegral;
 
+    public Integer getCashIntegral() {
+        return cashIntegral;
+    }
+
+    public void setCashIntegral(Integer cashIntegral) {
+        this.cashIntegral = cashIntegral;
+    }
 
     public Integer getIntegral() {
         return integral;
