@@ -32,7 +32,7 @@ public class UploadController {
         response.setHeader("Access-Control-Allow-Origin", "*");
         ResponseResult result = new ResponseResult();
         try {
-            result =  uploadService.uploadFile(file);
+            result = uploadService.uploadFile(file);
             result.setCode(410);
         } catch (Exception e) {
             e.printStackTrace();

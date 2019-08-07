@@ -25,35 +25,36 @@ import javax.servlet.http.HttpServletResponse;
 //@Api(value = "登录接口")
 @Slf4j
 public class SysLoginController {
-   @Autowired
-    SysUserService sysUserService;
     private static final Logger LOGGER = LogManager.getLogger(SysLoginController.class);
-   //@ApiOperation("登录")
-   @PostMapping(value = "login")
-    public ResponseResult login(@RequestBody UserDto dto){
-       ResponseResult result = new ResponseResult();
-       try {
-           result = sysUserService.login(dto);
-           if (result.getCode() == 0) {
-               UserDto data = (UserDto) result.getData();
-               String token = TokenUtil.sign(data.getUserId());
-               result.setData(token);
-           }
-       } catch (Exception e) {
-           log.error("登录失败", e);
-           result.setCode(404);
-           result.setError(e.getMessage());
-           result.setError_description("登录失败，请稍后再试");
-       }
-       return result;
+    @Autowired
+    SysUserService sysUserService;
+
+    //@ApiOperation("登录")
+    @PostMapping(value = "login")
+    public ResponseResult login(@RequestBody UserDto dto) {
+        ResponseResult result = new ResponseResult();
+        try {
+            result = sysUserService.login(dto);
+            if (result.getCode() == 0) {
+                UserDto data = (UserDto) result.getData();
+                String token = TokenUtil.sign(data.getUserId());
+                result.setData(token);
+            }
+        } catch (Exception e) {
+            log.error("登录失败", e);
+            result.setCode(404);
+            result.setError(e.getMessage());
+            result.setError_description("登录失败，请稍后再试");
+        }
+        return result;
     }
 
     @GetMapping(value = "info")
     public ResponseResult getUserInfo(HttpServletRequest req, HttpServletResponse res) {
         String token = req.getHeader("Authorization");
         Integer userId = TokenUtil.getUserId(token);
-        System.out.println("后台token"+token);
-        System.out.println("后台userId"+userId);
+        System.out.println("后台token" + token);
+        System.out.println("后台userId" + userId);
         ResponseResult result = new ResponseResult();
         try {
             result.setData(sysUserService.findById(userId));

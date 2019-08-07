@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("goods")
-@Api(value = "商品评价",description = "商品评价")
+@Api(value = "商品评价", description = "商品评价")
 public class ViewOrderEvaluteController {
 
     private static final Logger LOGGER = LogManager.getLogger(ViewOrderEvaluteController.class);
@@ -31,14 +31,14 @@ public class ViewOrderEvaluteController {
 
     @PostMapping("evalution")
     @ApiOperation("商品评价")
-    public ResponseResult evalute(HttpServletRequest req, @RequestBody GoodsEvaluation goodsEvaluation){
+    public ResponseResult evalute(HttpServletRequest req, @RequestBody GoodsEvaluation goodsEvaluation) {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
-            result = viewOrderEvaluteService.addEvalute(goodsEvaluation,shopId,openId);
+            result = viewOrderEvaluteService.addEvalute(goodsEvaluation, shopId, openId);
         } catch (Exception e) {
             LOGGER.error("商品评价失败" + e.getMessage(), e);
             result.setCode(500);
@@ -51,14 +51,14 @@ public class ViewOrderEvaluteController {
 
     @GetMapping("showGoodEvluate")
     @ApiOperation("展示好评")
-    public ResponseResult showGoodEvluate(HttpServletRequest req, @RequestParam Integer goodsId){
+    public ResponseResult showGoodEvluate(HttpServletRequest req, @RequestParam Integer goodsId) {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
-            result = viewOrderEvaluteService.showGoodEvluate(goodsId,shopId);
+            result = viewOrderEvaluteService.showGoodEvluate(goodsId, shopId);
         } catch (Exception e) {
             LOGGER.error("展示好评失败" + e.getMessage(), e);
             result.setCode(500);
@@ -70,14 +70,14 @@ public class ViewOrderEvaluteController {
 
     @GetMapping("showBadEvluate")
     @ApiOperation("展示差评")
-    public ResponseResult showBadEvluate(HttpServletRequest req, @RequestParam Integer goodsId){
+    public ResponseResult showBadEvluate(HttpServletRequest req, @RequestParam Integer goodsId) {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
-            result = viewOrderEvaluteService.showBadEvluate(goodsId,shopId);
+            result = viewOrderEvaluteService.showBadEvluate(goodsId, shopId);
         } catch (Exception e) {
             LOGGER.error("展示差评失败" + e.getMessage(), e);
             result.setCode(500);
@@ -90,14 +90,14 @@ public class ViewOrderEvaluteController {
 
     @GetMapping("showMediumEvluate")
     @ApiOperation("展示中评")
-    public ResponseResult showMediumEvluate(HttpServletRequest req, @RequestParam Integer goodsId){
+    public ResponseResult showMediumEvluate(HttpServletRequest req, @RequestParam Integer goodsId) {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
-            result = viewOrderEvaluteService.showMediumEvluate(goodsId,shopId);
+            result = viewOrderEvaluteService.showMediumEvluate(goodsId, shopId);
         } catch (Exception e) {
             LOGGER.error("展示中评失败" + e.getMessage(), e);
             result.setCode(500);
@@ -110,14 +110,14 @@ public class ViewOrderEvaluteController {
 
     @GetMapping("showAllEvluate")
     @ApiOperation("展示全部评价")
-    public ResponseResult showAllEvluate(HttpServletRequest req,@RequestParam Integer goodsId ){
+    public ResponseResult showAllEvluate(HttpServletRequest req, @RequestParam Integer goodsId) {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
-            result = viewOrderEvaluteService.showAllEvluate(goodsId,shopId);
+            result = viewOrderEvaluteService.showAllEvluate(goodsId, shopId);
         } catch (Exception e) {
             LOGGER.error("展示全部评价失败" + e.getMessage(), e);
             result.setCode(500);
@@ -128,17 +128,16 @@ public class ViewOrderEvaluteController {
     }
 
 
-
     @GetMapping("showMyEvluate")
     @ApiOperation("展示我的评价")
-    public ResponseResult showMyEvluate(HttpServletRequest req ){
+    public ResponseResult showMyEvluate(HttpServletRequest req) {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
-            result = viewOrderEvaluteService.showMyEvluate(shopId,openId);
+            result = viewOrderEvaluteService.showMyEvluate(shopId, openId);
         } catch (Exception e) {
             LOGGER.error("展示我的评价失败" + e.getMessage(), e);
             result.setCode(500);

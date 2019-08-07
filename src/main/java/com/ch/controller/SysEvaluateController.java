@@ -30,7 +30,7 @@ public class SysEvaluateController {
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysEvaluateService.list(param, userId);
+            result = sysEvaluateService.list(param, userId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());
@@ -48,7 +48,7 @@ public class SysEvaluateController {
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysEvaluateService.count(userId);
+            result = sysEvaluateService.count(userId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());
@@ -66,7 +66,7 @@ public class SysEvaluateController {
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysEvaluateService.reply(param, userId);
+            result = sysEvaluateService.reply(param, userId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());
@@ -84,7 +84,7 @@ public class SysEvaluateController {
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysEvaluateService.delete(param, userId);
+            result = sysEvaluateService.delete(param, userId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());

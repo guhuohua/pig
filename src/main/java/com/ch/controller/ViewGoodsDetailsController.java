@@ -24,30 +24,30 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("goods")
-@Api(value = "商品详情",description = "商品详情")
+@Api(value = "商品详情", description = "商品详情")
 public class ViewGoodsDetailsController {
 
 
-   @Autowired
-   ViewGoodsDetailsService viewGoodsDetailsService;
-   private static final Logger LOGGER = LogManager.getLogger(ViewGoodsDetailsController.class);
+    private static final Logger LOGGER = LogManager.getLogger(ViewGoodsDetailsController.class);
+    @Autowired
+    ViewGoodsDetailsService viewGoodsDetailsService;
 
-   @ApiOperation("展示商品详情")
-   @GetMapping("details")
-   public ResponseResult findGoodsDetailsByGoodsId(@RequestParam Integer goodsId, @RequestParam Integer skuId, HttpServletRequest req){
-       ResponseResult result = new ResponseResult();
-       String openId = req.getHeader("openId");
-       String token = req.getHeader("Authorization");
-       Integer shopId = TokenUtil.getUserId(token);
-       //Integer userId = 6;
-       try {
-           result = viewGoodsDetailsService.findGoodsDetailsByGoodsId(goodsId,shopId,skuId,openId);
-       } catch (Exception e) {
-           LOGGER.error("展示商品详情" + e.getMessage(), e);
-           result.setCode(500);
-           result.setError(e.getMessage());
-           result.setError_description("展示商品详情");
-       }
-       return result;
-   }
+    @ApiOperation("展示商品详情")
+    @GetMapping("details")
+    public ResponseResult findGoodsDetailsByGoodsId(@RequestParam Integer goodsId, @RequestParam Integer skuId, HttpServletRequest req) {
+        ResponseResult result = new ResponseResult();
+        String openId = req.getHeader("openId");
+        String token = req.getHeader("Authorization");
+        Integer shopId = TokenUtil.getUserId(token);
+        //Integer userId = 6;
+        try {
+            result = viewGoodsDetailsService.findGoodsDetailsByGoodsId(goodsId, shopId, skuId, openId);
+        } catch (Exception e) {
+            LOGGER.error("展示商品详情" + e.getMessage(), e);
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("展示商品详情");
+        }
+        return result;
+    }
 }

@@ -7,24 +7,18 @@
 
 package com.ch.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.ch.base.ResponseResult;
 import com.ch.dto.ShopInfo;
-import com.ch.dto.UserInfos;
-import com.ch.entity.UserInfo;
-import com.ch.model.TelParam;
 import com.ch.service.ViewShopInfoService;
 import com.ch.service.ViewUserInfoService;
-import com.ch.util.Msg;
 import com.ch.util.TokenUtil;
-import com.ch.util.WXUtil;
-import org.apache.ibatis.annotations.Param;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -109,12 +103,12 @@ public class ViewLoginController {
 
     }
 
-    @GetMapping ("addInvitationCode")
+    @GetMapping("addInvitationCode")
     public ResponseResult addInvitationCode(HttpServletRequest req, @RequestParam String invitationCode) {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         try {
-            result = viewUserInfoService.addInvitationCode(openId,invitationCode);
+            result = viewUserInfoService.addInvitationCode(openId, invitationCode);
         } catch (Exception e) {
             LOGGER.error("绑定上级邀请码失败" + e.getMessage(), e);
             result.setCode(500);
@@ -125,7 +119,7 @@ public class ViewLoginController {
 
     }
 
-    @GetMapping ("memberStatus")
+    @GetMapping("memberStatus")
     public ResponseResult signStatus(HttpServletRequest req) {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");

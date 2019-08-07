@@ -27,7 +27,7 @@ public class SysGoodsCategoryController {
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysGoodsCategoryService.list(userId);
+            result = sysGoodsCategoryService.list(userId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());
@@ -44,7 +44,7 @@ public class SysGoodsCategoryController {
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysGoodsCategoryService.mange(goodsType, userId);
+            result = sysGoodsCategoryService.mange(goodsType, userId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());
@@ -61,7 +61,7 @@ public class SysGoodsCategoryController {
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysGoodsCategoryService.delete(id, userId);
+            result = sysGoodsCategoryService.delete(id, userId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());
@@ -78,7 +78,7 @@ public class SysGoodsCategoryController {
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysGoodsCategoryService.findOneCategory(userId);
+            result = sysGoodsCategoryService.findOneCategory(userId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());
@@ -95,7 +95,7 @@ public class SysGoodsCategoryController {
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysGoodsCategoryService.findById(id, userId);
+            result = sysGoodsCategoryService.findById(id, userId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());
@@ -112,7 +112,7 @@ public class SysGoodsCategoryController {
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysGoodsCategoryService.updateStatus(param, userId);
+            result = sysGoodsCategoryService.updateStatus(param, userId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());

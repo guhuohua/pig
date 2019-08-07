@@ -9,17 +9,21 @@ package com.ch.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ch.base.ResponseResult;
-import com.ch.dao.*;
+import com.ch.dao.MemberRankMapper;
+import com.ch.dao.SignMapper;
+import com.ch.dao.UserInfoMapper;
+import com.ch.dao.UserMapper;
 import com.ch.dto.LoginDTO;
 import com.ch.dto.ShopInfo;
 import com.ch.dto.UserConstant;
 import com.ch.dto.UserDto;
-import com.ch.entity.*;
-import com.ch.enums.MemberEnum;
+import com.ch.entity.MemberRank;
+import com.ch.entity.MemberRankExample;
+import com.ch.entity.UserInfo;
+import com.ch.entity.UserInfoExample;
 import com.ch.service.ViewShopInfoService;
 import com.ch.service.ViewUserInfoService;
 import com.ch.util.HttpRequestUtil;
-import com.ch.util.RandomUtil;
 import com.ch.util.TokenUtil;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
@@ -53,11 +57,27 @@ public class ViewUserConstantController {
     @Autowired
     ModelMapper modelMapper;
 
+    public static Date getEndOfDay(Date date) {
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault());
+        LocalDateTime endOfDay = localDateTime.with(LocalTime.MAX);
+        return Date.from(endOfDay.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    public static Date getStartOfDay(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Date zero = calendar.getTime();
+        return zero;
+
+    }
 
     @PostMapping("loginInfo1")
     public ResponseResult user_login(HttpServletRequest req, @RequestBody UserDto userDto) {
         ResponseResult result = new ResponseResult();
-       // String stringRandom = RandomUtil.getStringRandom(6);
+        // String stringRandom = RandomUtil.getStringRandom(6);
         LoginDTO loginDTO = new LoginDTO();
         String token = req.getHeader("Authorization");
         String openId = req.getHeader("openId");
@@ -67,9 +87,9 @@ public class ViewUserConstantController {
         UserInfoExample.Criteria criteria = example.createCriteria();
         criteria.andOpenIdEqualTo(openId);
         List<UserInfo> userInfos = userInfoMapper.selectByExample(example);
-        UserInfo userInfo =null;
+        UserInfo userInfo = null;
         if (userInfos.size() > 0) {
-             userInfo = userInfos.get(0);
+            userInfo = userInfos.get(0);
             Date endOfDay = getEndOfDay(new Date());
             Date startDay = getStartOfDay(new Date());
 
@@ -93,7 +113,7 @@ public class ViewUserConstantController {
             userInfo.setUseIntegral(0);
             userInfoMapper.insert(userInfo);
         }
-       MemberRankExample example1 = new MemberRankExample();
+        MemberRankExample example1 = new MemberRankExample();
         MemberRankExample.Criteria criteria1 = example1.createCriteria();
         criteria1.andMemberTypeEqualTo(userInfo.getMember());
         List<MemberRank> memberRanks = memberRankMapper.selectByExample(example1);
@@ -122,10 +142,10 @@ public class ViewUserConstantController {
         if (jsonObject != null) {
             // 获取参数返回的
             session_key = jsonObject.get("session_key").toString();
-           // System.out.println(session_key);
+            // System.out.println(session_key);
 
             open_id = jsonObject.get("openid").toString();
-           // System.out.println(open_id);
+            // System.out.println(open_id);
            /* UserInfo userInfo = new UserInfo();
            userInfo.setOpenId(open_id);
            userInfo.setCreateTime(new Date());
@@ -140,24 +160,6 @@ public class ViewUserConstantController {
         return result1;
 
     }
-
-    public static Date getEndOfDay(Date date) {
-        LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault());;
-        LocalDateTime endOfDay = localDateTime.with(LocalTime.MAX);
-        return Date.from(endOfDay.atZone(ZoneId.systemDefault()).toInstant());
-    }
-
-    public static Date getStartOfDay(Date date){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        Date zero = calendar.getTime();
-        return zero;
-
-    }
-
 
 
 }

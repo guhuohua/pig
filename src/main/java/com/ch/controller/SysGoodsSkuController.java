@@ -29,7 +29,7 @@ public class SysGoodsSkuController {
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysGoodsSkuService.list(title, userId, currentPage, pageSize);
+            result = sysGoodsSkuService.list(title, userId, currentPage, pageSize);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());
@@ -46,7 +46,7 @@ public class SysGoodsSkuController {
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysGoodsSkuService.mange(param, userId);
+            result = sysGoodsSkuService.mange(param, userId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());
@@ -63,7 +63,7 @@ public class SysGoodsSkuController {
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysGoodsSkuService.delete(id, userId);
+            result = sysGoodsSkuService.delete(id, userId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());
@@ -80,7 +80,7 @@ public class SysGoodsSkuController {
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysGoodsSkuService.findById(id, userId);
+            result = sysGoodsSkuService.findById(id, userId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());
@@ -98,7 +98,7 @@ public class SysGoodsSkuController {
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysGoodsSkuService.goodsClassification(userId);
+            result = sysGoodsSkuService.goodsClassification(userId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());

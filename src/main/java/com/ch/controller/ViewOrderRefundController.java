@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("order")
-@Api(value = "售后",description = "售后")
+@Api(value = "售后", description = "售后")
 public class ViewOrderRefundController {
     private static final Logger LOGGER = LogManager.getLogger(ViewOrderRefundController.class);
     @Autowired
@@ -30,14 +30,14 @@ public class ViewOrderRefundController {
 
     @PostMapping("applyRefund")
     @ApiOperation("售后")
-    public ResponseResult refund(HttpServletRequest req, @RequestBody OrderRefund orderRefund){
+    public ResponseResult refund(HttpServletRequest req, @RequestBody OrderRefund orderRefund) {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
-            result = viewOrderRefundService.addOrderRefund(orderRefund,openId,shopId);
+            result = viewOrderRefundService.addOrderRefund(orderRefund, openId, shopId);
         } catch (Exception e) {
             LOGGER.error("申请售后失败" + e.getMessage(), e);
             result.setCode(500);
@@ -50,14 +50,14 @@ public class ViewOrderRefundController {
 
     @GetMapping("showRefundList")
     @ApiOperation("展示售后列表")
-    public ResponseResult showRefundList( HttpServletRequest req,@RequestParam Integer status ){
+    public ResponseResult showRefundList(HttpServletRequest req, @RequestParam Integer status) {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
-            result = viewOrderRefundService.showRefundList(status,openId,shopId);
+            result = viewOrderRefundService.showRefundList(status, openId, shopId);
         } catch (Exception e) {
             LOGGER.error("展示售后列表失败" + e.getMessage(), e);
             result.setCode(500);
@@ -70,14 +70,14 @@ public class ViewOrderRefundController {
 
     @GetMapping("refounCount")
     @ApiOperation("统计售后信息")
-    public ResponseResult refounCount( HttpServletRequest req ){
+    public ResponseResult refounCount(HttpServletRequest req) {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
-            result = viewOrderRefundService.refundCount(openId,shopId);
+            result = viewOrderRefundService.refundCount(openId, shopId);
         } catch (Exception e) {
             LOGGER.error("统计售后信息失败" + e.getMessage(), e);
             result.setCode(500);

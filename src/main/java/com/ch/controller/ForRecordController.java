@@ -2,7 +2,6 @@ package com.ch.controller;
 
 import com.ch.base.ResponseResult;
 import com.ch.service.ForRecordService;
-import com.ch.util.TokenUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
@@ -16,16 +15,16 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/forRecord")
-@Api(value = "兑换记录",description = "兑换记录")
+@Api(value = "兑换记录", description = "兑换记录")
 public class ForRecordController {
 
+    private static final Logger LOGGER = LogManager.getLogger(ForRecordController.class);
     @Autowired
     ForRecordService forRecordService;
-    private static final Logger LOGGER = LogManager.getLogger(ForRecordController.class);
 
     @ApiOperation("兑换记录列表")
     @GetMapping("list")
-    public ResponseResult list(HttpServletRequest req){
+    public ResponseResult list(HttpServletRequest req) {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         /*String token = req.getHeader("Authorization");

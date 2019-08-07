@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("user/account")
-@Api(value = "积分明细",description = "积分明细")
+@Api(value = "积分明细", description = "积分明细")
 public class UserAccountFlowController {
     private static final Logger LOGGER = LogManager.getLogger(UserAccountFlowController.class);
     @Autowired
@@ -23,7 +23,7 @@ public class UserAccountFlowController {
 
     @PostMapping("list")
     @ApiOperation("列表展示")
-    public ResponseResult list(HttpServletRequest req ,@RequestBody PageParam PageParam){
+    public ResponseResult list(HttpServletRequest req, @RequestBody PageParam PageParam) {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         try {
@@ -41,7 +41,7 @@ public class UserAccountFlowController {
 
     @GetMapping("addFlowAccount")
     @ApiOperation("添加积分明细")
-    public ResponseResult addFlowAccount(HttpServletRequest req,@RequestParam String orderId){
+    public ResponseResult addFlowAccount(HttpServletRequest req, @RequestParam String orderId) {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         try {
@@ -54,8 +54,6 @@ public class UserAccountFlowController {
         }
         return result;
     }
-
-
 
 
 }

@@ -33,14 +33,15 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.net.ssl.SSLContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
@@ -69,7 +70,7 @@ public class ViewRefundController {
 
 
     public static String md5Password(String key) {
-        char hexDigits[] = {
+        char[] hexDigits = {
                 '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
         };
         try {
@@ -82,7 +83,7 @@ public class ViewRefundController {
             byte[] md = mdInst.digest();
             // 把密文转换成十六进制的字符串形式
             int j = md.length;
-            char str[] = new char[j * 2];
+            char[] str = new char[j * 2];
             int k = 0;
             for (int i = 0; i < j; i++) {
                 byte byte0 = md[i];
@@ -112,9 +113,9 @@ public class ViewRefundController {
         refoundDto.setMch_id(shopMiniProgram.getMchIdd());
         refoundDto.setNonce_str(RandomUtils.generateMixString(32));
         refoundDto.setOut_trade_no(goodsOrder.getId());
-        if (BeanUtils.isNotEmpty(goodsOrder.getRefundId())){
+        if (BeanUtils.isNotEmpty(goodsOrder.getRefundId())) {
             refoundDto.setOut_refund_no(goodsOrder.getRefundId());
-        }else {
+        } else {
             String refundId = shopMiniProgram.getMchIdd() + today + code;
             refoundDto.setOut_refund_no(refundId);
             goodsOrder.setRefundId(refundId);
@@ -135,7 +136,7 @@ public class ViewRefundController {
         // 除去数组中的空值和签名参数
         Map sPara = PayUtil.paraFilter(params);
         String prestr = PayUtil.createLinkString(sPara); // 把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串
-        StringBuilder stringSignTemp = new StringBuilder(prestr).append("&key="+shopMiniProgram.getAppKey());
+        StringBuilder stringSignTemp = new StringBuilder(prestr).append("&key=" + shopMiniProgram.getAppKey());
         String sign = md5Password(stringSignTemp.toString()).toUpperCase();
         //MD5运算生成签名
         refoundDto.setSign(sign);
@@ -184,11 +185,11 @@ public class ViewRefundController {
                         Goods goods = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
                         goods.setInventory(goods.getInventory() + orderItem.getNumber());
                         goodsMapper.updateByPrimaryKey(goods);
-                        solrService.releaseGoods(goods.getId(),shopId);
+                        solrService.releaseGoods(goods.getId(), shopId);
                     }
                 }
                 return result1;
-            }else {
+            } else {
                 result1.setCode(500);
                 return result1;
             }

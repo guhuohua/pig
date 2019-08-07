@@ -58,7 +58,7 @@ public class ViewOrderController {
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
         try {
-            result = viewOrderService.showOrder(orderId, openId,shopId);
+            result = viewOrderService.showOrder(orderId, openId, shopId);
         } catch (Exception e) {
             LOGGER.error("展示订单失败" + e.getMessage(), e);
             result.setCode(500);
@@ -142,7 +142,7 @@ public class ViewOrderController {
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
         try {
-            result = viewOrderService.deleOrderById(orderId,shopId);
+            result = viewOrderService.deleOrderById(orderId, shopId);
         } catch (Exception e) {
             LOGGER.error("取消订单失败" + e.getMessage(), e);
             result.setCode(500);

@@ -28,8 +28,8 @@ public class ViewShopNameController {
     @Autowired
     ViewShopNameService viewShopNameService;
 
-   @GetMapping("name")
-    public ResponseResult showName(HttpServletRequest req){
+    @GetMapping("name")
+    public ResponseResult showName(HttpServletRequest req) {
         ResponseResult result = new ResponseResult();
 
         String token = req.getHeader("Authorization");

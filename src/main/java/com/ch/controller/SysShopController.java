@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("sys_shop")
-@Api(value = "系统管理下店铺管理",description = "系统管理下店铺管理")
+@Api(value = "系统管理下店铺管理", description = "系统管理下店铺管理")
 public class SysShopController {
     private static final Logger LOGGER = LogManager.getLogger(SysShopController.class);
 

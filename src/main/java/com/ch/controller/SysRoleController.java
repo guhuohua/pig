@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("role")
-public class SysRoleController{
+public class SysRoleController {
 
     @Autowired
     SysRoleService sysRoleService;

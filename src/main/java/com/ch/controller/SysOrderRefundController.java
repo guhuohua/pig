@@ -31,7 +31,7 @@ public class SysOrderRefundController {
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysOrderRefundService.list(param, userId);
+            result = sysOrderRefundService.list(param, userId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());
@@ -49,7 +49,7 @@ public class SysOrderRefundController {
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysOrderRefundService.refundHandle(param, userId);
+            result = sysOrderRefundService.refundHandle(param, userId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());

@@ -9,7 +9,6 @@ package com.ch.controller;
 
 import com.ch.base.ResponseResult;
 import com.ch.dao.UserMapper;
-import com.ch.dto.CarDto;
 import com.ch.dto.GoodsCarDto;
 import com.ch.service.ViewGoodsCarService;
 import com.ch.util.TokenUtil;
@@ -37,7 +36,7 @@ public class ViewGoodsCarController {
 
     @GetMapping("car")
     @ApiOperation("购物车")
-    public ResponseResult addCar(HttpServletRequest req , @RequestParam Integer skuId,@RequestParam Integer num ) {
+    public ResponseResult addCar(HttpServletRequest req, @RequestParam Integer skuId, @RequestParam Integer num) {
         ResponseResult result = new ResponseResult();
         try {
             String openId = req.getHeader("openId");
@@ -57,13 +56,13 @@ public class ViewGoodsCarController {
 
     @GetMapping("showCar")
     @ApiOperation("购物车")
-    public ResponseResult showCar(HttpServletRequest req ) {
+    public ResponseResult showCar(HttpServletRequest req) {
         ResponseResult result = new ResponseResult();
         try {
             String openId = req.getHeader("openId");
             String token = req.getHeader("Authorization");
             Integer shopId = TokenUtil.getUserId(token);
-            result = viewGoodsCarService.showCar(openId,shopId);
+            result = viewGoodsCarService.showCar(openId, shopId);
         } catch (Exception e) {
             LOGGER.error("展示购物车失败" + e.getMessage(), e);
             result.setCode(500);
@@ -74,7 +73,7 @@ public class ViewGoodsCarController {
     }
 
 
-    @PostMapping ("updateCar")
+    @PostMapping("updateCar")
     @ApiOperation("修改购物车")
     public ResponseResult updateCar(HttpServletRequest req, @RequestBody GoodsCarDto goodsCarDto) {
         ResponseResult result = new ResponseResult();
@@ -94,7 +93,7 @@ public class ViewGoodsCarController {
     }
 
 
-    @PostMapping ("deleCar")
+    @PostMapping("deleCar")
     @ApiOperation("删除购物车")
     public ResponseResult deleCar(HttpServletRequest req, @RequestBody GoodsCarDto goodsCarDto) {
         ResponseResult result = new ResponseResult();

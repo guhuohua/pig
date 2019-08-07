@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -70,7 +71,7 @@ public class WeiXinPaymentController {
 
 
     public static String md5Password(String key) {
-        char hexDigits[] = {
+        char[] hexDigits = {
                 '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
         };
         try {
@@ -83,7 +84,7 @@ public class WeiXinPaymentController {
             byte[] md = mdInst.digest();
             // 把密文转换成十六进制的字符串形式
             int j = md.length;
-            char str[] = new char[j * 2];
+            char[] str = new char[j * 2];
             int k = 0;
             for (int i = 0; i < j; i++) {
                 byte byte0 = md[i];
@@ -114,7 +115,7 @@ public class WeiXinPaymentController {
         //  Shop shop = shopMapper.selectByPrimaryKey(shopId);
         JSONObject JsonObject = new JSONObject();
         String body = "test";
-        body = new String(body.getBytes("UTF-8"), "ISO-8859-1");
+        body = new String(body.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
         String nonce_str = UUIDHexGenerator.generate();//随机字符串
         String today = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         String code = PayUtil.createCode(8);
@@ -123,13 +124,13 @@ public class WeiXinPaymentController {
         paymentPo.setAppid(shopMiniProgram.getAppId());
         paymentPo.setMch_id(shopMiniProgram.getMchIdd());
         paymentPo.setNonce_str(nonce_str);
-        String newbody = new String(body.getBytes("ISO-8859-1"), "UTF-8");//以utf-8编码放入paymentPo，微信支付要求字符编码统一采用UTF-8字符编码
+        String newbody = new String(body.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);//以utf-8编码放入paymentPo，微信支付要求字符编码统一采用UTF-8字符编码
         paymentPo.setBody(newbody);
         paymentPo.setOut_trade_no(out_trade_no);
         if (1 == integralStatus) {
             UserInfo userInfo = viewUserInfoService.findOneByOpenId(openId);
             int i = userInfo.getUseIntegral() / baseIntegral.getCashIntegral();
-           // int integral = i * baseIntegral.getCashIntegral();
+            // int integral = i * baseIntegral.getCashIntegral();
             /*userInfo.setUseIntegral(userInfo.getUseIntegral() - integral);
             userInfoMapper.updateByPrimaryKey(userInfo);
             flowUtil.addFlowTel(integral, "INTEGRAL_MONEY", "INTEGRAL", 1, userInfo.getId());*/

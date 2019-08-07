@@ -36,7 +36,7 @@ public class SysUserMangeController {
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysShopUserService.list(param, userId);
+            result = sysShopUserService.list(param, userId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());
@@ -54,7 +54,7 @@ public class SysUserMangeController {
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysUserAddressService.list(param, userId);
+            result = sysUserAddressService.list(param, userId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());

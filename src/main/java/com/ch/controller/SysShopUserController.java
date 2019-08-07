@@ -20,21 +20,21 @@ public class SysShopUserController {
     SysUserMangeService sysUserMangeService;
 
     @GetMapping("list")
-    @ApiOperation(value="获取店铺下所有人员列表")
+    @ApiOperation(value = "获取店铺下所有人员列表")
     @ApiImplicitParam(name = "shopUserParam", value = "传入参数", required = true, dataType = "ShopUserParam")
     public ResponseResult list(@RequestBody ShopUserParam shopUserParam) {
         return sysUserMangeService.findByShopId(shopUserParam);
     }
 
     @PostMapping("user_mange")
-    @ApiOperation(value="管理店铺下的人员新增编辑")
+    @ApiOperation(value = "管理店铺下的人员新增编辑")
     @ApiImplicitParam(name = "sysUserParam", value = "传入参数", required = true, dataType = "SysUserParam")
     public ResponseResult userMange(@RequestBody SysUserParam sysUserParam) {
         return sysUserMangeService.insertUser(sysUserParam);
     }
 
     @GetMapping("delete_user")
-    @ApiOperation(value="删除人员")
+    @ApiOperation(value = "删除人员")
     public ResponseResult deleteUser(HttpServletRequest req, @RequestParam Integer id) {
         String token = req.getHeader("Authorization");
         Integer tokenUserId = TokenUtil.getUserId(token);

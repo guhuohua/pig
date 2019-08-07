@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("view")
-@Api(value = "轮播图管理",description = "轮播图管理")
+@Api(value = "轮播图管理", description = "轮播图管理")
 public class ViewGoodsAdvertController {
 
     private static final Logger LOGGER = LogManager.getLogger(ViewGoodsAdvertController.class);
@@ -36,7 +36,7 @@ public class ViewGoodsAdvertController {
 
     @GetMapping("showAdvert")
     @ApiOperation("轮播图展示")
-    public ResponseResult findByCategory(HttpServletRequest req){
+    public ResponseResult findByCategory(HttpServletRequest req) {
         ResponseResult result = new ResponseResult();
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);

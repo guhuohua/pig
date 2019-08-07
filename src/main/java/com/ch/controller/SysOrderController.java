@@ -33,7 +33,7 @@ public class SysOrderController {
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysOrderService.list(param, userId);
+            result = sysOrderService.list(param, userId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());
@@ -50,7 +50,7 @@ public class SysOrderController {
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysOrderService.detail(orderId, userId);
+            result = sysOrderService.detail(orderId, userId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());
@@ -67,7 +67,7 @@ public class SysOrderController {
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysOrderService.deliverGoods(param, userId);
+            result = sysOrderService.deliverGoods(param, userId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());

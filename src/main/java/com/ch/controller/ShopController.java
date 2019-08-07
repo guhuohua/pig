@@ -3,7 +3,6 @@ package com.ch.controller;
 import com.ch.base.ResponseResult;
 import com.ch.dto.SysShopInfoDTO;
 import com.ch.model.PersonMangeParam;
-import com.ch.model.SysShopInfoParam;
 import com.ch.service.ShopService;
 import com.ch.util.TokenUtil;
 import io.swagger.annotations.Api;
@@ -15,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/shop")
-@Api(value = "店铺管理",description = "店铺管理")
+@Api(value = "店铺管理", description = "店铺管理")
 public class ShopController {
 
     @Autowired

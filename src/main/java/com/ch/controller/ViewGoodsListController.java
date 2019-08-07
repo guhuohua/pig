@@ -7,9 +7,7 @@
 
 package com.ch.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.ch.base.ResponseResult;
-import com.ch.dto.GoodsDto;
 import com.ch.dto.SolrDto;
 import com.ch.service.ViewGoodsListService;
 import com.ch.util.TokenUtil;
@@ -23,25 +21,24 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@Api(value = "展示商品列表",description = "展示商品列表")
+@Api(value = "展示商品列表", description = "展示商品列表")
 @RequestMapping("goods")
 public class ViewGoodsListController {
 
+    private static final Logger LOGGER = LogManager.getLogger(ViewGoodsListController.class);
     @Autowired
     ViewGoodsListService viewGoodsListService;
 
-    private static final Logger LOGGER = LogManager.getLogger(ViewGoodsListController.class);
-
     @PostMapping("viewList")
     @ApiOperation("展示商品列表")
-    public ResponseResult findGoodsList(@RequestBody SolrDto solrDto, HttpServletRequest req){
+    public ResponseResult findGoodsList(@RequestBody SolrDto solrDto, HttpServletRequest req) {
         ResponseResult result = new ResponseResult();
         String token = req.getHeader("Authorization");
-       // System.out.println("token:" + token);
-       // System.out.println("SolrDto:" + JSON.toJSONString(solrDto));
+        // System.out.println("token:" + token);
+        // System.out.println("SolrDto:" + JSON.toJSONString(solrDto));
         Integer shopId = TokenUtil.getUserId(token);
-       // System.out.println("shopId" + shopId);
-       // Integer shopId = 1;
+        // System.out.println("shopId" + shopId);
+        // Integer shopId = 1;
         try {
             result = viewGoodsListService.findGoodsList(solrDto, shopId);
         } catch (Exception e) {
@@ -54,16 +51,15 @@ public class ViewGoodsListController {
     }
 
 
-
     @GetMapping("showCondition")
     @ApiOperation("展示搜索项")
-    public ResponseResult showCondition( HttpServletRequest req,@RequestParam String condition){
+    public ResponseResult showCondition(HttpServletRequest req, @RequestParam String condition) {
         ResponseResult result = new ResponseResult();
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
         //Integer shopId = 1;
         try {
-            result = viewGoodsListService.shouCondition(condition,shopId);
+            result = viewGoodsListService.shouCondition(condition, shopId);
         } catch (Exception e) {
             LOGGER.error("展示搜索项失败" + e.getMessage(), e);
             result.setCode(500);
@@ -75,10 +71,10 @@ public class ViewGoodsListController {
 
     @GetMapping("spikeGoodsList")
     @ApiOperation("秒杀列表")
-    public ResponseResult spikeGoodsList( HttpServletRequest req, Integer pageNum, Integer pageSize){
+    public ResponseResult spikeGoodsList(HttpServletRequest req, Integer pageNum, Integer pageSize) {
         ResponseResult result = new ResponseResult();
         try {
-            result = viewGoodsListService.spikeGoodsList(pageNum,pageSize);
+            result = viewGoodsListService.spikeGoodsList(pageNum, pageSize);
         } catch (Exception e) {
             LOGGER.error("展示搜索项失败" + e.getMessage(), e);
             result.setCode(500);

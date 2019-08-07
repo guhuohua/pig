@@ -18,14 +18,13 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("goods")
-@Api(value = "商品类目",description = "商品类目")
+@Api(value = "商品类目", description = "商品类目")
 public class ViewGoodsTypeController {
     private static final Logger LOGGER = LogManager.getLogger(ViewGoodsAdvertController.class);
 
@@ -37,7 +36,7 @@ public class ViewGoodsTypeController {
 
     @GetMapping("findTree")
     @ApiOperation("展示商品类目")
-    public ResponseResult findTree(HttpServletRequest req){
+    public ResponseResult findTree(HttpServletRequest req) {
         ResponseResult result = new ResponseResult();
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);
@@ -50,12 +49,12 @@ public class ViewGoodsTypeController {
             result.setError_description("展示类目失败");
         }
         return result;
-     }
+    }
 
 
     @GetMapping("findDelFlag")
     @ApiOperation("展示二级类目")
-    public ResponseResult findDelFlag(HttpServletRequest req ){
+    public ResponseResult findDelFlag(HttpServletRequest req) {
         ResponseResult result = new ResponseResult();
         String token = req.getHeader("Authorization");
         Integer shopId = TokenUtil.getUserId(token);

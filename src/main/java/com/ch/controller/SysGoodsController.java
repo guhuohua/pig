@@ -30,7 +30,7 @@ public class SysGoodsController {
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysGoodsService.goodsList(param, userId);
+            result = sysGoodsService.goodsList(param, userId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());
@@ -47,7 +47,7 @@ public class SysGoodsController {
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysGoodsService.findById(goodsId, userId);
+            result = sysGoodsService.findById(goodsId, userId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());
@@ -136,7 +136,7 @@ public class SysGoodsController {
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result =  sysGoodsService.skuList(categoryIds, userId, goodsId);
+            result = sysGoodsService.skuList(categoryIds, userId, goodsId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());
