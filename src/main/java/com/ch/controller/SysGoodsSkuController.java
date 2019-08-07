@@ -74,6 +74,23 @@ public class SysGoodsSkuController {
         return result;
     }
 
+    @GetMapping("deleteSpecificationAttribute")
+    public ResponseResult deleteSpecificationAttribute(HttpServletRequest req, @RequestParam Integer id) {
+        ResponseResult result = new ResponseResult();
+        try {
+            String token = req.getHeader("Authorization");
+            Integer userId = TokenUtil.getUserId(token);
+            result =  sysGoodsSkuService.deleteSpecificationAttribute(id, userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("删除商品规格值失败，请稍后重试");
+        }
+        return result;
+    }
+
     @GetMapping("findById")
     public ResponseResult findById(HttpServletRequest req, @RequestParam Integer id) {
         ResponseResult result = new ResponseResult();

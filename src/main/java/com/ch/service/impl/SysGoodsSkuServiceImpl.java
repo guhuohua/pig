@@ -143,6 +143,16 @@ public class SysGoodsSkuServiceImpl implements SysGoodsSkuService {
     }
 
     @Override
+    public ResponseResult deleteSpecificationAttribute(Integer id, Integer userId) {
+        ResponseResult result = new ResponseResult();
+        SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
+        SpecificationAttributeExample example = new SpecificationAttributeExample();
+        example.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andIdEqualTo(id);
+        specificationAttributeMapper.deleteByExample(example);
+        return result;
+    }
+
+    @Override
     public ResponseResult goodsClassification(Integer userId) {
         ResponseResult result = new ResponseResult();
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
