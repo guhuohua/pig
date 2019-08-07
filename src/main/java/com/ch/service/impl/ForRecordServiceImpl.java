@@ -1,5 +1,6 @@
 package com.ch.service.impl;
 
+import com.ch.base.BeanUtils;
 import com.ch.base.ResponseResult;
 import com.ch.dao.*;
 import com.ch.entity.*;
@@ -38,15 +39,16 @@ public class ForRecordServiceImpl implements ForRecordService {
         if (forRecords.size() > 0) {
             for (ForRecord forRecord : forRecords) {
                 Map map = new HashMap();
-                map.put("forRecord", forRecord);
                 Goods goods = goodsMapper.selectByPrimaryKey(forRecord.getGoosId());
-                map.put("goods", goods);
-                GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(forRecord.getGoodsSkuId());
-                map.put("goodsSku", goodsSku);
-                result.setData(map);
-                list.add(map);
+                if (BeanUtils.isNotEmpty(goods)) {
+                    map.put("goods", goods);
+                    map.put("forRecord", forRecord);
+                    GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(forRecord.getGoodsSkuId());
+                    map.put("goodsSku", goodsSku);
+                    result.setData(map);
+                    list.add(map);
+                }
             }
-
         }
         Collections.reverse(list);
         result.setData(list);

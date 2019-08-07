@@ -202,19 +202,21 @@ public class SysGoodsServiceImpl implements SysGoodsService {
         System.out.println(JSON.toJSON(model));
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         List<SysGoodsSkuModel> sysGoodsSkuModelList = model.getSysGoodsSkuModelList();
-        for (SysGoodsSkuModel sysGoodsSkuModel:sysGoodsSkuModelList) {
-            BigDecimal subtract = sysGoodsSkuModel.getOriginalPrice2().multiply(new BigDecimal("100.00"));
-            sysGoodsSkuModel.setOriginalPrice(subtract.longValue());
-            BigDecimal subtract2 = sysGoodsSkuModel.getPresentPrice2().multiply(new BigDecimal("100.00"));
-            sysGoodsSkuModel.setPresentPrice(subtract2.longValue());
+        if (!model.getGoodsType().equals(GoodsTypeEnum.INTEGRAL.name())) {
+            for (SysGoodsSkuModel sysGoodsSkuModel:sysGoodsSkuModelList) {
+                BigDecimal subtract = sysGoodsSkuModel.getOriginalPrice2().multiply(new BigDecimal("100.00"));
+                sysGoodsSkuModel.setOriginalPrice(subtract.longValue());
+                BigDecimal subtract2 = sysGoodsSkuModel.getPresentPrice2().multiply(new BigDecimal("100.00"));
+                sysGoodsSkuModel.setPresentPrice(subtract2.longValue());
+            }
         }
-        long max = sysGoodsSkuModelList.stream().mapToLong(SysGoodsSkuModel::getOriginalPrice).max().getAsLong();
-        long min = sysGoodsSkuModelList.stream().mapToLong(SysGoodsSkuModel::getPresentPrice).min().getAsLong();
-
+        long max = 0l;
+        long min = 0l;
+        if (!model.getGoodsType().equals(GoodsTypeEnum.INTEGRAL.name())) {
+            max = sysGoodsSkuModelList.stream().mapToLong(SysGoodsSkuModel::getOriginalPrice).max().getAsLong();
+            min = sysGoodsSkuModelList.stream().mapToLong(SysGoodsSkuModel::getPresentPrice).min().getAsLong();
+        }
         long integral = sysGoodsSkuModelList.stream().mapToLong(SysGoodsSkuModel::getConsumptionIntegral).min().getAsLong();
-
-
-       // String integral = sysGoodsSkuModelList.stream().mapToLong(SysGoodsSkuModel::getConsumptionIntegral).min().toString();
         if (GoodsTypeEnum.INTEGRAL.name().equals(model.getGoodsType())) {
             if (model.getSysGoodsSkuModelList().size() > 1) {
                 result.setCode(600);
@@ -315,6 +317,7 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                 goods.setDesc(model.getDesc());
                 goods.setUpdateTime(new Date());
                 goods.setOriginalPrice(max);
+                goods.setIntegral((int)integral);
                 goods.setPresentPrice(min);
                 goods.setCatrgoryId(model.getCategoryIds().get(1));
                 goods.setKeyWords(model.getKeyWords());
@@ -455,8 +458,12 @@ public class SysGoodsServiceImpl implements SysGoodsService {
             for (GoodsSku goodsSku:goodsSkus) {
                 SysGoodsSkuModel sysGoodsSkuModel = new SysGoodsSkuModel();
                 modelMapper.map(goodsSku, sysGoodsSkuModel);
-                sysGoodsSkuModel.setOriginalPrice2(new BigDecimal(goodsSku.getOriginalPrice()));
-                sysGoodsSkuModel.setPresentPrice2(new BigDecimal(goodsSku.getPresentPrice()));
+                if (BeanUtils.isNotEmpty(goodsSku.getOriginalPrice())) {
+                    sysGoodsSkuModel.setOriginalPrice2(new BigDecimal(goodsSku.getOriginalPrice()));
+                }
+                if (BeanUtils.isNotEmpty(goodsSku.getPresentPrice())) {
+                    sysGoodsSkuModel.setPresentPrice2(new BigDecimal(goodsSku.getPresentPrice()));
+                }
                 SpikeGoodsExample spikeGoodsExample = new SpikeGoodsExample();
                 spikeGoodsExample.createCriteria().andGoodsIdEqualTo(goods.getId()).andSkuIdEqualTo(goodsSku.getId());
                 List<SpikeGoods> spikeGoods1 = spikeGoodsMapper.selectByExample(spikeGoodsExample);

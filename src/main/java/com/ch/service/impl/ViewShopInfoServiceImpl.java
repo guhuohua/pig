@@ -7,6 +7,7 @@
 
 package com.ch.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.ch.dao.ShopMapper;
 import com.ch.dao.ShopMiniProgramMapper;
 import com.ch.dto.ShopInfo;
@@ -30,22 +31,16 @@ public class ViewShopInfoServiceImpl implements ViewShopInfoService {
 
     @Override
     public ShopInfo findShopInfoByAppId(String appId) {
-
-        ShopMiniProgramExample example = new ShopMiniProgramExample();
-        ShopMiniProgramExample.Criteria criteria = example.createCriteria();
-        criteria.andAppIdEqualTo(appId);
-        List<ShopMiniProgram> shopMiniPrograms = shopMiniProgramMapper.selectByExample(example);
+        ShopMiniProgram shopMiniProgram = shopMiniProgramMapper.findByAppid(appId);
         ShopInfo shopInfo = new ShopInfo();
-        if (shopMiniPrograms.size() > 0) {
-            ShopMiniProgram shopMiniProgram = shopMiniPrograms.get(0);
-            shopInfo.setSecret(shopMiniProgram.getSecret());
-            Integer shopId = shopMiniProgram.getShopId();
-            Shop shop = shopMapper.selectByPrimaryKey(shopId);
-            if (shop.getStartTime().getTime() <= new Date().getTime() && shop.getEndTime().getTime() >=  new Date().getTime()){
-                shopInfo.setShopId(shop.getId());
-                System.out.println("登录获取shopId:"+shopInfo.getShopId());
+        System.out.println("ShopMiniProgram:" + JSON.toJSON(shopMiniProgram));
+        shopInfo.setSecret(shopMiniProgram.getSecret());
+        Integer shopId = shopMiniProgram.getShopId();
+        Shop shop = shopMapper.selectByPrimaryKey(shopId);
+        if (shop.getStartTime().getTime() <= new Date().getTime() && shop.getEndTime().getTime() >= new Date().getTime()) {
+            shopInfo.setShopId(shop.getId());
+            System.out.println("登录获取shopId:" + shopInfo.getShopId());
 
-            }
         }
         return shopInfo;
     }

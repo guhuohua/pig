@@ -4,6 +4,7 @@ import com.ch.entity.ShopMiniProgram;
 import com.ch.entity.ShopMiniProgramExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -29,4 +30,8 @@ public interface ShopMiniProgramMapper {
     int updateByPrimaryKeySelective(ShopMiniProgram record);
 
     int updateByPrimaryKey(ShopMiniProgram record);
+
+
+    @Select("select * from shop_mini_program where app_id = #{appid}")
+    ShopMiniProgram findByAppid(@Param("appid") String appid);
 }

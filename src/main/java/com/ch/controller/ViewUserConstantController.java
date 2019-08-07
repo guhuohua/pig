@@ -7,6 +7,7 @@
 
 package com.ch.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ch.base.ResponseResult;
 import com.ch.dao.MemberRankMapper;
@@ -128,6 +129,7 @@ public class ViewUserConstantController {
     public ResponseResult user_login(String code, String appId) {
         // 配置请求参数
         ShopInfo shopInfo = viewShopInfoService.findShopInfoByAppId(appId);
+        System.out.println(JSON.toJSON(shopInfo));
         Map<String, String> param = new HashMap<>();
         param.put("appid", appId);
         param.put("secret", shopInfo.getSecret());
@@ -136,7 +138,7 @@ public class ViewUserConstantController {
         // 发送请求
         String wxResult = HttpRequestUtil.doGet(UserConstant.WX_LOGIN_URL, param);
         JSONObject jsonObject = JSONObject.parseObject(wxResult);
-        //System.out.println(jsonObject);
+        System.out.println(jsonObject);
         String session_key = null;
         String open_id = null;
         if (jsonObject != null) {
