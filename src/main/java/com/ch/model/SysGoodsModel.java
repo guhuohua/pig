@@ -3,6 +3,7 @@ package com.ch.model;
 import com.ch.dto.GoodsSkuListDTO;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class SysGoodsModel {
 
     private String keyWords;
 
-    private Long freight;
+    private BigDecimal freight;
 
     private String units;
 

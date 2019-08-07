@@ -33,6 +33,15 @@ public interface SysGoodsSkuService {
 
 
     /**
+     * 规格值删除
+     * @param id
+     * @param userId
+     * @return
+     */
+    ResponseResult deleteSpecificationAttribute(Integer id, Integer userId);
+
+
+    /**
      * 商品分类下拉菜单
      * @param userId
      * @return
