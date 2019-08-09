@@ -113,14 +113,14 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
         if (BeanUtils.isNotEmpty(solrDto.getCondition())) {
             if (BeanUtils.isNotEmpty(solrDto.getGoodsType())) {
 
-                params.put("q", "goodsType+" + ":" + solrDto.getGoodsType());
+                params.put("q", "goodsType" + ":" + solrDto.getGoodsType());
             }
             str = "goodsSalesArea:" + "\"" + solrDto.getCondition() + "\"" + " OR name:" + "\"" + solrDto.getCondition() + "\"" + " OR title:" + "\"" + solrDto.getCondition() + "\"";
             //System.out.println(str);
             params.put("fq", str);
             params.put("start", start);
             params.put("rows", solrDto.getRows());
-            params.put("q", "shopId:" + shopId);
+           //params.put("q", "shopId:" + shopId);
             // params.put("sort", "createTime desc");
         }
         if ("NEW".equals(solrDto.getCondition())) {
