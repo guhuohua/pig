@@ -43,6 +43,7 @@ public class UserInfoProvider {
         if (BeanUtils.isNotEmpty(param.getOrderStatus())) {
             sb.append(" and order_status = ").append(param.getOrderStatus());
         }
+        sb.append(" order by create_date desc");
         return sb.toString();
     }
 }

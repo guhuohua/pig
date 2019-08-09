@@ -76,7 +76,7 @@ public class SysGoodsServiceImpl implements SysGoodsService {
         GoodsExample.Criteria criteria = goodsExample.createCriteria();
         criteria.andShopIdEqualTo(sysUser.getShopId());
         if (BeanUtils.isNotEmpty(param.getName())) {
-            criteria.andNameLike(param.getName());
+            criteria.andNameLike("%" + param.getName() + "%");
         }
         if (BeanUtils.isNotEmpty(param.getSn())) {
             criteria.andSnEqualTo(param.getSn());
