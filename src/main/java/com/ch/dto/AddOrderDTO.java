@@ -3,7 +3,7 @@ package com.ch.dto;
 public class AddOrderDTO {
     private String orderId;
     private Integer useIntegral;
-    private Integer money;
+    private double money;
 
     public String getOrderId() {
         return orderId;
@@ -21,11 +21,11 @@ public class AddOrderDTO {
         this.useIntegral = useIntegral;
     }
 
-    public Integer getMoney() {
+    public double getMoney() {
         return money;
     }
 
-    public void setMoney(Integer money) {
+    public void setMoney(double money) {
         this.money = money;
     }
 }

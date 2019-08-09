@@ -13,9 +13,7 @@ import com.ch.entity.*;
 import com.ch.service.SysMemberService;
 import com.ch.service.ViewOrderEvaluteService;
 import com.ch.util.FlowUtil;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -40,10 +38,8 @@ public class ViewOrderEvaluteServiceImpl implements ViewOrderEvaluteService {
     FlowUtil flowUtil;
 
 
-
-
     @Override
-    public ResponseResult  addEvalute(GoodsEvaluation goodsEvaluation, Integer shopId, String openId) {
+    public ResponseResult addEvalute(GoodsEvaluation goodsEvaluation, Integer shopId, String openId) {
         ResponseResult result = new ResponseResult();
         UserInfoExample example = new UserInfoExample();
         UserInfoExample.Criteria criteria = example.createCriteria();
@@ -54,13 +50,13 @@ public class ViewOrderEvaluteServiceImpl implements ViewOrderEvaluteService {
             userInfo = userInfos.get(0);
         }
         BaseIntegral baseIntegral = baseIntegralMapper.selectByPrimaryKey(1);
-        userInfo.setIntegral(userInfo.getIntegral()+baseIntegral.getComment());
-        userInfo.setUseIntegral(userInfo.getUseIntegral()+baseIntegral.getComment());
+        userInfo.setIntegral(userInfo.getIntegral() + baseIntegral.getComment());
+        userInfo.setUseIntegral(userInfo.getUseIntegral() + baseIntegral.getComment());
         userInfoMapper.updateByPrimaryKey(userInfo);
         sysMemberService.synchronizedIntegral(userInfo.getId());
-        flowUtil.addFlowTel(baseIntegral.getPerfect().longValue(),"comment","INTEGRAL",0,userInfo.getId());
+        flowUtil.addFlowTel(baseIntegral.getPerfect().longValue(), "comment", "INTEGRAL", 0, userInfo.getId());
         String nickname = userInfo.getNickname();
-        String name = nickname.substring(0, 1) + "**" + nickname.substring((nickname.length() - 1), nickname.length());
+        String name = nickname.substring(0, 1) + "**" + nickname.substring((nickname.length() - 1));
         goodsEvaluation.setShopId(shopId);
         goodsEvaluation.setCreateTime(new Date());
         goodsEvaluation.setStatus(0);
@@ -108,15 +104,14 @@ public class ViewOrderEvaluteServiceImpl implements ViewOrderEvaluteService {
 
     @Override
     public ResponseResult showMediumEvluate(Integer goodsId, Integer shopId) {
+        List<Integer> list1 = new ArrayList<>();
+        list1.add(3);
+        list1.add(4);
         GoodsEvaluationExample example = new GoodsEvaluationExample();
         example.setOrderByClause("create_time desc");
         GoodsEvaluationExample.Criteria criteria = example.createCriteria();
         criteria.andGoodsIdEqualTo(goodsId);
-        criteria.andScoreEqualTo(3);
-        criteria.andShopIdEqualTo(shopId);
-        GoodsEvaluationExample.Criteria criteria1 = example.createCriteria();
-        criteria1.andScoreEqualTo(4);
-        example.or(criteria1);
+        criteria.andScoreIn(list1);
         List<GoodsEvaluation> list = goodsEvaluationMapper.selectByExample(example);
         ResponseResult result = new ResponseResult();
         Collections.reverse(list);
@@ -150,7 +145,7 @@ public class ViewOrderEvaluteServiceImpl implements ViewOrderEvaluteService {
             userInfo = userInfos.get(0);
         }
         String nickname = userInfo.getNickname();
-        String name = nickname.substring(0, 1) + "**" + nickname.substring((nickname.length() - 1), nickname.length());
+        String name = nickname.substring(0, 1) + "**" + nickname.substring((nickname.length() - 1));
         GoodsEvaluationExample example1 = new GoodsEvaluationExample();
         GoodsEvaluationExample.Criteria criteria1 = example1.createCriteria();
         criteria1.andNameEqualTo(name);

@@ -2,6 +2,7 @@ package com.ch.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.ch.dao.GoodsAreaMapper;
+import com.ch.dao.GoodsEvaluationMapper;
 import com.ch.dao.GoodsMapper;
 import com.ch.dao.SysUserMapper;
 import com.ch.entity.*;
@@ -40,12 +41,15 @@ public class SolrServiceImpl implements SolrService {
 
     @Autowired
     ModelMapper modelMapper;
+    @Autowired
+    GoodsEvaluationMapper goodsEvaluationMapper;
+
 
     @Override
     @Async
     public void releaseGoods(Integer goodsId, Integer shopId) {
         System.out.println("开始删除solr:"+goodsId);
-        lowerShelf(goodsId);
+       lowerShelf(goodsId);
         GoodsExample goodsExample = new GoodsExample();
         goodsExample.createCriteria().andShopIdEqualTo(shopId).andIdEqualTo(goodsId);
         List<Goods> goodsList = goodsMapper.selectByExample(goodsExample);
@@ -54,6 +58,12 @@ public class SolrServiceImpl implements SolrService {
             if (goods.getStatus() == 1) {
                 GoodsSolrSchema goodsSolrSchema = new GoodsSolrSchema();
                 modelMapper.map(goods, goodsSolrSchema);
+                GoodsEvaluationExample evaluationExample = new GoodsEvaluationExample();
+                GoodsEvaluationExample.Criteria criteria = evaluationExample.createCriteria();
+                criteria.andGoodsIdEqualTo(goodsId);
+                List<GoodsEvaluation> goodsEvaluations = goodsEvaluationMapper.selectByExample(evaluationExample);
+                goodsSolrSchema.setEvaluationNum(goodsEvaluations.size());
+                goodsSolrSchema.setCreateTime(goods.getCreateTime().getTime());
                 goodsSolrSchema.setId(UUID.randomUUID().toString());
                 goodsSolrSchema.setCategoryId(goods.getCatrgoryId());
                 GoodsAreaExample goodsAreaExample = new GoodsAreaExample();
