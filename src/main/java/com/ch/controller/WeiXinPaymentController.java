@@ -6,6 +6,7 @@ import com.ch.base.ResponseResult;
 import com.ch.dao.*;
 import com.ch.dto.PaymentDto;
 import com.ch.entity.*;
+import com.ch.model.WeiXinParam;
 import com.ch.service.ForRecordService;
 import com.ch.service.ViewShopNameService;
 import com.ch.service.ViewUserInfoService;
@@ -98,9 +99,9 @@ public class WeiXinPaymentController {
     }
 
 
-    @GetMapping("wxpay")
+    @PostMapping("wxpay")
     @ResponseBody
-    public ResponseResult payment(HttpServletRequest req, @RequestParam String orderId, @RequestParam Integer integralStatus, @RequestParam double money, @RequestParam Integer useIntegral) throws UnsupportedEncodingException, DocumentException {
+    public ResponseResult payment(HttpServletRequest req, @RequestBody WeiXinParam weiXinParam) throws UnsupportedEncodingException, DocumentException {
         ResponseResult result1 = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
@@ -117,9 +118,9 @@ public class WeiXinPaymentController {
 
         //获取店铺信息
         ShopMiniProgram shopMiniProgram = viewShopNameService.shopPayInfo(shopId);
-        GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderId);
-        goodsOrder.setIntegralStatus(integralStatus);
-        goodsOrderMapper.updateByPrimaryKey(goodsOrder);
+        GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(weiXinParam.getOrderId());
+      /*  goodsOrder.setOrderStatus(integralStatus);
+        goodsOrderMapper.updateByPrimaryKey(goodsOrder);*/
         List<BaseIntegral> baseIntegrals = baseIntegralMapper.selectByExample(null);
         BaseIntegral baseIntegral = baseIntegrals.get(0);
         //  Shop shop = shopMapper.selectByPrimaryKey(shopId);
@@ -137,16 +138,22 @@ public class WeiXinPaymentController {
         String newbody = new String(body.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);//以utf-8编码放入paymentPo，微信支付要求字符编码统一采用UTF-8字符编码
         paymentPo.setBody(newbody);
         paymentPo.setOut_trade_no(out_trade_no);
-        if (1 == integralStatus) {
+        Integer integralStatus1 = goodsOrder.getIntegralStatus();
+
+        if (integralStatus1==1 || weiXinParam.getIntegralStatus()==1){
             UserInfo userInfo = viewUserInfoService.findOneByOpenId(openId);
-            userInfo.setUseIntegral(userInfo.getUseIntegral() - useIntegral);
+            userInfo.setUseIntegral(userInfo.getUseIntegral() - weiXinParam.getUseIntegral());
             userInfoMapper.updateByPrimaryKey(userInfo);
-            paymentPo.setTotal_fee((goodsOrder.getOrderPrice() - money * 100) + "");
+            paymentPo.setTotal_fee((goodsOrder.getOrderPrice() - weiXinParam.getMoney() * 100) + "");
             goodsOrder.setOrderPrice(Long.parseLong(paymentPo.getTotal_fee()));
+            goodsOrder.setIntegralStatus(weiXinParam.getIntegralStatus());
             goodsOrderMapper.updateByPrimaryKey(goodsOrder);
-        } else {
+        }else {
+            goodsOrder.setIntegralStatus(0);
+            goodsOrderMapper.updateByPrimaryKey(goodsOrder);
             paymentPo.setTotal_fee(goodsOrder.getOrderPrice().toString());
         }
+
         paymentPo.setSpbill_create_ip(spbill_create_ip);
         paymentPo.setNotify_url(shopMiniProgram.getBackUrl());
         paymentPo.setTrade_type("JSAPI");
