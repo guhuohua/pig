@@ -29,8 +29,16 @@ public class SysEvaluateController {
         ResponseResult result = new ResponseResult();
         try {
             String token = req.getHeader("Authorization");
-            Integer userId = TokenUtil.getUserId(token);
-            result = sysEvaluateService.list(param, userId);
+            boolean verify = TokenUtil.verify(token);
+            if (verify) {
+                Integer userId = TokenUtil.getUserId(token);
+                result = sysEvaluateService.list(param, userId);
+            } else {
+                result.setCode(999);
+                result.setError("token已过期");
+                result.setError_description("请重新登录");
+                return result;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());

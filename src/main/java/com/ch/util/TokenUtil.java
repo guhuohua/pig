@@ -13,7 +13,11 @@ import java.util.Map;
 
 public class TokenUtil {
 
+<<<<<<< HEAD
     private static final long EXPIRE_TIME = 15*1000*1000*60;
+=======
+    private static final long EXPIRE_TIME = 15 *  60 * 1000;
+>>>>>>> 361655ac8bcfd985d47e2291c2a6b09fc3a9df17
     private static final String TOKEN_SECRET = "qazwsxedcrfvtgbyhnujmiklop";
 
 
@@ -41,6 +45,7 @@ public class TokenUtil {
             return JWT.create()
                     .withHeader(header)
                     .withClaim("userId", userId)
+                    .withIssuedAt(new Date())
                     .withExpiresAt(date)
                     .sign(algorithm);
         } catch (Exception e) {
