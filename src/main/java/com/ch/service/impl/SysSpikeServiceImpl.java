@@ -61,7 +61,7 @@ public class SysSpikeServiceImpl implements SysSpikeService {
                     return result;
                 }
                 goods.setGoodsType(GoodsTypeEnum.SPIKE.name());
-                goodsMapper.updateByPrimaryKey(goods);
+                //goodsMapper.updateByPrimaryKey(goods);
                 SpikeGoodsExample spikeGoodsExample = new SpikeGoodsExample();
                 spikeGoodsExample.createCriteria().andGoodsIdEqualTo(sysSpikeGoodsModel.getGoodsId()).andSkuIdEqualTo(model.getId());
                 List<SpikeGoods> spikeGoods = spikeGoodsMapper.selectByExample(spikeGoodsExample);

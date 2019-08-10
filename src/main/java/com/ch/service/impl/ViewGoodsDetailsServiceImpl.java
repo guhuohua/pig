@@ -44,14 +44,13 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
 
     @Override
     public ResponseResult
-    findGoodsDetailsByGoodsId(Integer goodsId, Integer shopId,Integer skuId, String openId) {
+    findGoodsDetailsByGoodsId(Integer goodsId, Integer shopId, Integer skuId) {
 
         //SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         //商品详情的map
         ResponseResult result = new ResponseResult();
-        int discount = viewUserInfoService.findDiscountByOpenId(openId);
         Map goodsDetailsMap = new HashMap();
-        goodsDetailsMap.put("discount", discount);
+
         //查询商品表
         Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
         // System.out.println(goods.getShopId());
@@ -63,8 +62,11 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
         GoodsSkuExample.Criteria criteria2 = exampleSku.createCriteria();
         criteria2.andGoodsIdEqualTo(goodsId);
         List<GoodsSku> goodsSkus = goodsSkuMapper.selectByExample(exampleSku);
+      /*  for (GoodsSku skus : goodsSkus) {
+            skus.setPresentPrice(skus.getOriginalPrice()*discount/100);
+        }*/
         goodsDetailsMap.put("goodsSkus", goodsSkus);
-        if (skuId!= null){
+        if (skuId != null) {
             SpikeGoodsExample example = new SpikeGoodsExample();
             SpikeGoodsExample.Criteria criteria = example.createCriteria();
             criteria.andSkuIdEqualTo(skuId);
@@ -75,6 +77,8 @@ public class ViewGoodsDetailsServiceImpl implements ViewGoodsDetailsService {
                 SpikeGoods spikeGoods1 = spikeGoods.get(0);
                 spikeGoods1.setBeginTimeStamp(spikeGoods1.getBeginDate().getTime() - new Date().getTime());
                 spikeGoods1.setEndTimeStamp(spikeGoods1.getEndDate().getTime() - new Date().getTime());
+
+
                 goodsDetailsMap.put("spikeGoods", spikeGoods1);
             }
 

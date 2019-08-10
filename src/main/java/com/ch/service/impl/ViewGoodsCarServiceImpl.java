@@ -12,6 +12,7 @@ import com.ch.dao.*;
 import com.ch.dto.CarDto;
 import com.ch.entity.*;
 import com.ch.service.ViewGoodsCarService;
+import com.ch.service.ViewUserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,10 @@ public class ViewGoodsCarServiceImpl implements ViewGoodsCarService {
     GoodsCarMapper goodsCarMapper;
     @Autowired
     SpikeGoodsMapper spikeGoodsMapper;
+    @Autowired
+    ViewUserInfoService viewUserInfoService;
+
+
 
     @Override
 
@@ -45,6 +50,7 @@ public class ViewGoodsCarServiceImpl implements ViewGoodsCarService {
         if (userInfos.size() > 0) {
             userInfo = userInfos.get(0);
         }
+
         GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(skuId);
         GoodsCarExample example1 = new GoodsCarExample();
         GoodsCarExample.Criteria criteria1 = example1.createCriteria();
@@ -135,6 +141,7 @@ public class ViewGoodsCarServiceImpl implements ViewGoodsCarService {
         if (userInfos.size() > 0) {
             userInfo = userInfos.get(0);
         }
+        int discount = viewUserInfoService.findDiscountByOpenId(openId);
         GoodsCarExample example1 = new GoodsCarExample();
         GoodsCarExample.Criteria criteria1 = example1.createCriteria();
         criteria1.andUserIdEqualTo(userInfo.getId());
@@ -146,6 +153,7 @@ public class ViewGoodsCarServiceImpl implements ViewGoodsCarService {
         for (GoodsCar goodsCar : goodsCars) {
             CarDto carDto = new CarDto();
             GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(goodsCar.getSkuId());
+            goodsSku.setPresentPrice(goodsSku.getPresentPrice()*discount/100);
             Goods goods = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
 
             SpikeGoodsExample spikeGoodsExample = new SpikeGoodsExample();

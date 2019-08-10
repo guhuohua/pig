@@ -7,6 +7,7 @@ import org.springframework.data.solr.core.mapping.SolrDocument;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -73,4 +74,12 @@ public class GoodsSolrSchema implements Serializable {
 
     @Field
     private Integer integral;
+
+    @Field
+    private Long createTime;
+
+    @Field
+    private Integer evaluationNum;
+
+
 }

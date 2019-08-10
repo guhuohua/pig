@@ -41,7 +41,7 @@ public class ViewGoodsDetailsController {
         Integer shopId = TokenUtil.getUserId(token);
         //Integer userId = 6;
         try {
-            result = viewGoodsDetailsService.findGoodsDetailsByGoodsId(goodsId, shopId, skuId, openId);
+            result = viewGoodsDetailsService.findGoodsDetailsByGoodsId(goodsId, shopId, skuId);
         } catch (Exception e) {
             LOGGER.error("展示商品详情" + e.getMessage(), e);
             result.setCode(500);

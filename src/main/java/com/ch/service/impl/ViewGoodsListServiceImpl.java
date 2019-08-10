@@ -6,9 +6,7 @@
 
 package com.ch.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.ch.base.BeanUtils;
-import com.ch.base.PageQuery;
 import com.ch.base.ResponseResult;
 import com.ch.dao.GoodsMapper;
 import com.ch.dao.GoodsSkuMapper;
@@ -18,7 +16,6 @@ import com.ch.dto.SolrDto;
 import com.ch.entity.Goods;
 import com.ch.entity.GoodsExample;
 import com.ch.entity.GoodsSku;
-import com.ch.entity.SpikeGoods;
 import com.ch.model.ViewSpikeGoodsDTO;
 import com.ch.service.ViewGoodsListService;
 import com.github.pagehelper.PageHelper;
@@ -29,7 +26,6 @@ import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.MapSolrParams;
 import org.apache.solr.common.params.SolrParams;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -56,23 +52,55 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
         String str = null;
 
         int start = (solrDto.getStart() - 1) * solrDto.getRows();
-        if(BeanUtils.isNotEmpty(solrDto.getGoodsType())){
-            String str1 =  "shopId:" + shopId +" AND " +"goodsType:" +solrDto.getGoodsType();
-            params.put("q","*:*");
+
+        if (null != solrDto.getStatus()) {
+            if (0 == solrDto.getStatus()) {
+                params.put("q", "*:*");
+                params.put("sort", "presentPrice desc");
+            }
+
+            if (1 == solrDto.getStatus()) {
+                params.put("q", "*:*");
+                params.put("sort", "presentPrice asc");
+            }
+
+        }
+
+        if (null != solrDto.getSalesVolume()) {
+            params.put("q", "*:*");
+            params.put("sort", "salesVolume desc");
+        }
+
+        if (null != solrDto.getEvaluationNum()) {
+            params.put("q", "*:*");
+            params.put("sort", "evaluationNum desc");
+        }
+
+        if (BeanUtils.isNotEmpty(solrDto.getCreateTime())) {
+            params.put("q", "*:*");
+            params.put("sort", "createTime desc");
+        }
+
+
+        if (BeanUtils.isNotEmpty(solrDto.getGoodsType())) {
+            String str1 = "shopId:" + shopId + " AND " + "goodsType:" + solrDto.getGoodsType();
+            params.put("q", "*:*");
             params.put("fq", str1);
             params.put("start", start);
             params.put("rows", solrDto.getRows());
+            //params.put("sort", "createTime desc");
         }
         if (BeanUtils.isNotEmpty(solrDto.getCategoryId())) {
-            String str1 =  "shopId:" + shopId + " AND " +"categoryId:" +solrDto.getCategoryId();
+            String str1 = "shopId:" + shopId + " AND " + "categoryId:" + solrDto.getCategoryId();
             //str = "\""+"shopId:" + shopId +"\"" + "," + "\""+"categoryId:" +solrDto.getCategoryId()+"\"" ;
-           // System.out.println(str1);
-            params.put("q","*:*");
+            // System.out.println(str1);
+            params.put("q", "*:*");
             params.put("fq", str1);
             params.put("start", start);
             params.put("rows", solrDto.getRows());
+            params.put("sort", "createTime desc");
         }
-       // System.out.println(params);
+        // System.out.println(params);
 
         //System.out.println("categoryId :"+solrDto.getCategoryId()+" AND "+"shopId:"+sysUser.getShopId());
         //params.put("q","*:*");
@@ -83,12 +111,17 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
         params.put("sort", "sort asc");*/
 
         if (BeanUtils.isNotEmpty(solrDto.getCondition())) {
+            if (BeanUtils.isNotEmpty(solrDto.getGoodsType())) {
+
+                params.put("q", "goodsType" + ":" + solrDto.getGoodsType());
+            }
             str = "goodsSalesArea:" + "\"" + solrDto.getCondition() + "\"" + " OR name:" + "\"" + solrDto.getCondition() + "\"" + " OR title:" + "\"" + solrDto.getCondition() + "\"";
             //System.out.println(str);
             params.put("fq", str);
             params.put("start", start);
             params.put("rows", solrDto.getRows());
-            params.put("q", "shopId:" + shopId);
+           //params.put("q", "shopId:" + shopId);
+            // params.put("sort", "createTime desc");
         }
         if ("NEW".equals(solrDto.getCondition())) {
             str = "goodsSalesArea:" + "\"" + solrDto.getCondition() + "\"" + " OR name:" + "\"" + solrDto.getCondition() + "\"" + " OR title:" + "\"" + solrDto.getCondition() + "\"";
@@ -98,6 +131,7 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
             params.put("rows", solrDto.getRows());
             params.put("sort", "newSort asc");
             params.put("q", "shopId:" + shopId);
+
         }
         if ("HOT".equals(solrDto.getCondition())) {
             str = "goodsSalesArea:" + "\"" + solrDto.getCondition() + "\"" + " OR name:" + "\"" + solrDto.getCondition() + "\"" + " OR title:" + "\"" + solrDto.getCondition() + "\"";
@@ -115,6 +149,7 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
             params.put("sort", "boutiqueSort asc");
             params.put("q", "shopId:" + shopId);
         }
+        System.out.println(params);
         SolrParams mapSolrParams = new MapSolrParams(params);
         QueryResponse query1 = null;
         try {
@@ -162,13 +197,13 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
         ResponseResult result = new ResponseResult();
         PageHelper.startPage(pageNum, pageSize);
         List<ViewSpikeGoodsDTO> spikeGoods = spikeGoodsMapper.viewList();
-        for (ViewSpikeGoodsDTO viewSpikeGoodsDTO:spikeGoods) {
+        for (ViewSpikeGoodsDTO viewSpikeGoodsDTO : spikeGoods) {
             Goods goods = goodsMapper.selectByPrimaryKey(viewSpikeGoodsDTO.getGoodsId());
             GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(viewSpikeGoodsDTO.getSkuId());
             if (BeanUtils.isNotEmpty(goods) && BeanUtils.isNotEmpty(goodsSku)) {
                 viewSpikeGoodsDTO.setImg(goods.getGoodsImgUrl());
                 viewSpikeGoodsDTO.setOriginalPrice(goodsSku.getOriginalPrice());
-                viewSpikeGoodsDTO.setTitle(goods.getTitle()+goodsSku.getSkuName());
+                viewSpikeGoodsDTO.setTitle(goods.getTitle() + goodsSku.getSkuName());
             }
             viewSpikeGoodsDTO.setBeginDate(viewSpikeGoodsDTO.getBeginDate() * 1000 - new Date().getTime() < 0 ? 0 : viewSpikeGoodsDTO.getBeginDate() * 1000 - new Date().getTime());
             viewSpikeGoodsDTO.setEndDate(viewSpikeGoodsDTO.getEndDate() * 1000 - new Date().getTime() < 0 ? 0 : viewSpikeGoodsDTO.getEndDate() * 1000 - new Date().getTime());
