@@ -33,14 +33,11 @@ public class ViewShopNameController {
     public ResponseResult showName(HttpServletRequest req) {
         ResponseResult result = new ResponseResult();
         String token = req.getHeader("Authorization");
-        if (BeanUtils.isEmpty(token)) {
-            result.setCode(999);
-            result.setError("token失效请重新登录");
-            result.setError_description("token失效请重新登录");
-            return result;
-        }
-        Integer shopId = TokenUtil.getUserId(token);
-        if (BeanUtils.isEmpty(shopId)) {
+        Integer shopId = null;
+        boolean verify = TokenUtil.verify(token);
+        if (verify) {
+            shopId = TokenUtil.getUserId(token);
+        } else {
             result.setCode(999);
             result.setError("token失效请重新登录");
             result.setError_description("token失效请重新登录");

@@ -104,19 +104,17 @@ public class WeiXinPaymentController {
         ResponseResult result1 = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
-        if (BeanUtils.isEmpty(token)) {
+        boolean verify = TokenUtil.verify(token);
+        Integer shopId = null;
+        if (verify) {
+            shopId = TokenUtil.getUserId(token);
+        } else {
             result1.setCode(999);
-            result1.setError("token失效请重新登录");
-            result1.setError_description("token失效请重新登录");
+            result1.setError("token已过期");
+            result1.setError_description("请重新登录");
             return result1;
         }
-        Integer shopId = TokenUtil.getUserId(token);
-        if (BeanUtils.isEmpty(shopId)) {
-            result1.setCode(999);
-            result1.setError("token失效请重新登录");
-            result1.setError_description("token失效请重新登录");
-            return result1;
-        }
+
         //获取店铺信息
         ShopMiniProgram shopMiniProgram = viewShopNameService.shopPayInfo(shopId);
         GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderId);

@@ -36,7 +36,16 @@ public class ViewGoodsListController {
         String token = req.getHeader("Authorization");
         // System.out.println("token:" + token);
         // System.out.println("SolrDto:" + JSON.toJSONString(solrDto));
-        Integer shopId = TokenUtil.getUserId(token);
+        Integer shopId = null;
+        boolean verify = TokenUtil.verify(token);
+        if (verify) {
+            shopId = TokenUtil.getUserId(token);
+        } else {
+            result.setCode(999);
+            result.setError("token失效请重新登录");
+            result.setError_description("token失效请重新登录");
+            return result;
+        }
         // System.out.println("shopId" + shopId);
         // Integer shopId = 1;
         try {
@@ -56,7 +65,16 @@ public class ViewGoodsListController {
     public ResponseResult showCondition(HttpServletRequest req, @RequestParam String condition) {
         ResponseResult result = new ResponseResult();
         String token = req.getHeader("Authorization");
-        Integer shopId = TokenUtil.getUserId(token);
+        Integer shopId = null;
+        boolean verify = TokenUtil.verify(token);
+        if (verify) {
+            shopId = TokenUtil.getUserId(token);
+        } else {
+            result.setCode(999);
+            result.setError("token失效请重新登录");
+            result.setError_description("token失效请重新登录");
+            return result;
+        }
         //Integer shopId = 1;
         try {
             result = viewGoodsListService.shouCondition(condition, shopId);

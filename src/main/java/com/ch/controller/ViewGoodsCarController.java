@@ -41,7 +41,16 @@ public class ViewGoodsCarController {
         try {
             String openId = req.getHeader("openId");
             String token = req.getHeader("Authorization");
-            Integer shopId = TokenUtil.getUserId(token);
+            Integer shopId = null;
+            boolean verify = TokenUtil.verify(token);
+            if (verify) {
+                shopId = TokenUtil.getUserId(token);
+            } else {
+                result.setCode(999);
+                result.setError("token失效请重新登录");
+                result.setError_description("token失效请重新登录");
+                return result;
+            }
             result = viewGoodsCarService.addCar(skuId, num, openId, shopId);
         } catch (Exception e) {
             LOGGER.error("加入购物车失败" + e.getMessage(), e);
@@ -61,7 +70,17 @@ public class ViewGoodsCarController {
         try {
             String openId = req.getHeader("openId");
             String token = req.getHeader("Authorization");
-            Integer shopId = TokenUtil.getUserId(token);
+            Integer shopId = null;
+            boolean verify = TokenUtil.verify(token);
+            if (verify) {
+                shopId = TokenUtil.getUserId(token);
+            } else {
+                result.setCode(999);
+                result.setError("token失效请重新登录");
+                result.setError_description("token失效请重新登录");
+                return result;
+            }
+
             result = viewGoodsCarService.showCar(openId, shopId);
         } catch (Exception e) {
             LOGGER.error("展示购物车失败" + e.getMessage(), e);

@@ -39,7 +39,16 @@ public class ViewGoodsTypeController {
     public ResponseResult findTree(HttpServletRequest req) {
         ResponseResult result = new ResponseResult();
         String token = req.getHeader("Authorization");
-        Integer shopId = TokenUtil.getUserId(token);
+        Integer shopId = null;
+        boolean verify = TokenUtil.verify(token);
+        if (verify) {
+            shopId = TokenUtil.getUserId(token);
+        } else {
+            result.setCode(999);
+            result.setError("token失效请重新登录");
+            result.setError_description("token失效请重新登录");
+            return result;
+        }
         try {
             result = viewGoodsTypeService.findTree(shopId);
         } catch (Exception e) {
@@ -57,7 +66,16 @@ public class ViewGoodsTypeController {
     public ResponseResult findDelFlag(HttpServletRequest req) {
         ResponseResult result = new ResponseResult();
         String token = req.getHeader("Authorization");
-        Integer shopId = TokenUtil.getUserId(token);
+        Integer shopId = null;
+        boolean verify = TokenUtil.verify(token);
+        if (verify) {
+            shopId = TokenUtil.getUserId(token);
+        } else {
+            result.setCode(999);
+            result.setError("token失效请重新登录");
+            result.setError_description("token失效请重新登录");
+            return result;
+        }
         try {
             result = viewGoodsTypeService.findDelFlag(shopId);
         } catch (Exception e) {

@@ -35,7 +35,16 @@ public class ViewOrderEvaluteController {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
-        Integer shopId = TokenUtil.getUserId(token);
+        Integer shopId = null;
+        boolean verify = TokenUtil.verify(token);
+        if (verify) {
+            shopId = TokenUtil.getUserId(token);
+        } else {
+            result.setCode(999);
+            result.setError("token失效请重新登录");
+            result.setError_description("token失效请重新登录");
+            return result;
+        }
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
             result = viewOrderEvaluteService.addEvalute(goodsEvaluation, shopId, openId);
@@ -55,7 +64,16 @@ public class ViewOrderEvaluteController {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
-        Integer shopId = TokenUtil.getUserId(token);
+        Integer shopId = null;
+        boolean verify = TokenUtil.verify(token);
+        if (verify) {
+            shopId = TokenUtil.getUserId(token);
+        } else {
+            result.setCode(999);
+            result.setError("token失效请重新登录");
+            result.setError_description("token失效请重新登录");
+            return result;
+        }
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
             result = viewOrderEvaluteService.showGoodEvluate(goodsId, shopId);
@@ -74,7 +92,16 @@ public class ViewOrderEvaluteController {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
-        Integer shopId = TokenUtil.getUserId(token);
+        Integer shopId = null;
+        boolean verify = TokenUtil.verify(token);
+        if (verify) {
+            shopId = TokenUtil.getUserId(token);
+        } else {
+            result.setCode(999);
+            result.setError("token失效请重新登录");
+            result.setError_description("token失效请重新登录");
+            return result;
+        }
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
             result = viewOrderEvaluteService.showBadEvluate(goodsId, shopId);
@@ -94,7 +121,16 @@ public class ViewOrderEvaluteController {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
-        Integer shopId = TokenUtil.getUserId(token);
+        Integer shopId = null;
+        boolean verify = TokenUtil.verify(token);
+        if (verify) {
+            shopId = TokenUtil.getUserId(token);
+        } else {
+            result.setCode(999);
+            result.setError("token失效请重新登录");
+            result.setError_description("token失效请重新登录");
+            return result;
+        }
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
             result = viewOrderEvaluteService.showMediumEvluate(goodsId, shopId);
@@ -114,7 +150,16 @@ public class ViewOrderEvaluteController {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
-        Integer shopId = TokenUtil.getUserId(token);
+        Integer shopId = null;
+        boolean verify = TokenUtil.verify(token);
+        if (verify) {
+            shopId = TokenUtil.getUserId(token);
+        } else {
+            result.setCode(999);
+            result.setError("token失效请重新登录");
+            result.setError_description("token失效请重新登录");
+            return result;
+        }
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
             result = viewOrderEvaluteService.showAllEvluate(goodsId, shopId);
@@ -134,7 +179,16 @@ public class ViewOrderEvaluteController {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
-        Integer shopId = TokenUtil.getUserId(token);
+        Integer shopId = null;
+        boolean verify = TokenUtil.verify(token);
+        if (verify) {
+            shopId = TokenUtil.getUserId(token);
+        } else {
+            result.setCode(999);
+            result.setError("token失效请重新登录");
+            result.setError_description("token失效请重新登录");
+            return result;
+        }
         try {
             //User user = userMapper.selectByPrimaryKey(userId);
             result = viewOrderEvaluteService.showMyEvluate(shopId, openId);

@@ -33,10 +33,20 @@ public class ViewUserAddressController {
     @PostMapping("edit")
     @ApiOperation("编辑地址")
     public ResponseResult addAddress(HttpServletRequest req, @RequestBody UserAddressDto userAddressDto) {
+        ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
-        Integer shopId = TokenUtil.getUserId(token);
-        ResponseResult result = new ResponseResult();
+        Integer shopId = null;
+        boolean verify = TokenUtil.verify(token);
+        if (verify) {
+            shopId = TokenUtil.getUserId(token);
+        } else {
+            result.setCode(999);
+            result.setError("token失效请重新登录");
+            result.setError_description("token失效请重新登录");
+            return result;
+        }
+
         try {
             for (UserAddress record : userAddressDto.getRecords()) {
                 if (BeanUtils.isEmpty(record.getId())) {
@@ -97,7 +107,16 @@ public class ViewUserAddressController {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
-        Integer shopId = TokenUtil.getUserId(token);
+        Integer shopId = null;
+        boolean verify = TokenUtil.verify(token);
+        if (verify) {
+            shopId = TokenUtil.getUserId(token);
+        } else {
+            result.setCode(999);
+            result.setError("token失效请重新登录");
+            result.setError_description("token失效请重新登录");
+            return result;
+        }
         try {
             result = viewUserAddressService.findAll(openId, shopId);
             System.out.println(result);

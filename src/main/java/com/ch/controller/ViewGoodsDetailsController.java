@@ -38,7 +38,16 @@ public class ViewGoodsDetailsController {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
-        Integer shopId = TokenUtil.getUserId(token);
+        Integer shopId = null;
+        boolean verify = TokenUtil.verify(token);
+        if (verify) {
+            shopId = TokenUtil.getUserId(token);
+        } else {
+            result.setCode(999);
+            result.setError("token失效请重新登录");
+            result.setError_description("token失效请重新登录");
+            return result;
+        }
         //Integer userId = 6;
         try {
             result = viewGoodsDetailsService.findGoodsDetailsByGoodsId(goodsId, shopId, skuId);

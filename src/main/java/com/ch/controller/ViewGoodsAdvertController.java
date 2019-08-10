@@ -38,10 +38,18 @@ public class ViewGoodsAdvertController {
     @ApiOperation("轮播图展示")
     public ResponseResult findByCategory(HttpServletRequest req) {
         ResponseResult result = new ResponseResult();
-        String token = req.getHeader("Authorization");
-        Integer shopId = TokenUtil.getUserId(token);
         try {
-            result = viewGoodsAdvertService.findByShopId(shopId);
+            String token = req.getHeader("Authorization");
+            boolean verify = TokenUtil.verify(token);
+            if (verify) {
+                Integer shopId = TokenUtil.getUserId(token);
+                result = viewGoodsAdvertService.findByShopId(shopId);
+            } else {
+                result.setCode(999);
+                result.setError("token已过期");
+                result.setError_description("请重新登录");
+                return result;
+            }
         } catch (Exception e) {
             LOGGER.error("展示轮播图失败" + e.getMessage(), e);
             result.setCode(500);
