@@ -4,7 +4,7 @@ public class WeiXinParam {
     private String orderId;
     private int integralStatus;
     private double money;
-    private Integer useIntegral;
+    private int useIntegral;
 
     public String getOrderId() {
         return orderId;
@@ -30,11 +30,11 @@ public class WeiXinParam {
         this.money = money;
     }
 
-    public Integer getUseIntegral() {
+    public int getUseIntegral() {
         return useIntegral;
     }
 
-    public void setUseIntegral(Integer useIntegral) {
+    public void setUseIntegral(int useIntegral) {
         this.useIntegral = useIntegral;
     }
 }

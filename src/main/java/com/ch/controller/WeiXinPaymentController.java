@@ -69,6 +69,8 @@ public class WeiXinPaymentController {
     FlowUtil flowUtil;
     @Autowired
     BaseIntegralMapper baseIntegralMapper;
+    @Autowired
+    UserAddressMapper userAddressMapper;
 
 
     public static String md5Password(String key) {
@@ -119,7 +121,22 @@ public class WeiXinPaymentController {
         //获取店铺信息
         ShopMiniProgram shopMiniProgram = viewShopNameService.shopPayInfo(shopId);
         GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(weiXinParam.getOrderId());
-      /*  goodsOrder.setOrderStatus(integralStatus);
+        UserInfo userInfo = viewUserInfoService.findOneByOpenId(openId);
+        UserAddressExample example = new UserAddressExample();
+        UserAddressExample.Criteria criteria = example.createCriteria();
+        criteria.andUserIdEqualTo(userInfo.getId());
+        criteria.andStatusEqualTo(1);
+        List<UserAddress> userAddresses = userAddressMapper.selectByExample(example);
+        if (userAddresses.size() > 0) {
+            goodsOrder.setDeliveryId(userAddresses.get(0).getId());
+            goodsOrderMapper.updateByPrimaryKey(goodsOrder);
+        } else {
+            result1.setCode(600);
+            result1.setError("请选择收货地址");
+            result1.setError_description("请选择收货地址");
+            return result1;
+        }
+        /*  goodsOrder.setOrderStatus(integralStatus);
         goodsOrderMapper.updateByPrimaryKey(goodsOrder);*/
         List<BaseIntegral> baseIntegrals = baseIntegralMapper.selectByExample(null);
         BaseIntegral baseIntegral = baseIntegrals.get(0);
@@ -138,21 +155,39 @@ public class WeiXinPaymentController {
         String newbody = new String(body.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);//以utf-8编码放入paymentPo，微信支付要求字符编码统一采用UTF-8字符编码
         paymentPo.setBody(newbody);
         paymentPo.setOut_trade_no(out_trade_no);
-        Integer integralStatus1 = goodsOrder.getIntegralStatus();
+        Double money = weiXinParam.getMoney() * 100;
+        long l = money.longValue();
+        if (null != goodsOrder.getIntegralStatus()) {
+            if (goodsOrder.getIntegralStatus() == 1) {
+                userInfo.setUseIntegral(userInfo.getUseIntegral() - weiXinParam.getUseIntegral());
+                userInfoMapper.updateByPrimaryKey(userInfo);
 
-        if (integralStatus1==1 || weiXinParam.getIntegralStatus()==1){
-            UserInfo userInfo = viewUserInfoService.findOneByOpenId(openId);
-            userInfo.setUseIntegral(userInfo.getUseIntegral() - weiXinParam.getUseIntegral());
-            userInfoMapper.updateByPrimaryKey(userInfo);
-            paymentPo.setTotal_fee((goodsOrder.getOrderPrice() - weiXinParam.getMoney() * 100) + "");
-            goodsOrder.setOrderPrice(Long.parseLong(paymentPo.getTotal_fee()));
-            goodsOrder.setIntegralStatus(weiXinParam.getIntegralStatus());
-            goodsOrderMapper.updateByPrimaryKey(goodsOrder);
-        }else {
-            goodsOrder.setIntegralStatus(0);
-            goodsOrderMapper.updateByPrimaryKey(goodsOrder);
-            paymentPo.setTotal_fee(goodsOrder.getOrderPrice().toString());
+                goodsOrder.setOrderPrice(goodsOrder.getOrderPrice() - l);
+                goodsOrder.setIntegralStatus(weiXinParam.getIntegralStatus());
+                paymentPo.setTotal_fee(goodsOrder.getOrderPrice().toString());
+                goodsOrderMapper.updateByPrimaryKey(goodsOrder);
+            } else {
+                goodsOrder.setIntegralStatus(0);
+                goodsOrderMapper.updateByPrimaryKey(goodsOrder);
+                paymentPo.setTotal_fee(goodsOrder.getOrderPrice().toString());
+            }
+        } else {
+            if (1 == weiXinParam.getIntegralStatus()) {
+                userInfo.setUseIntegral(userInfo.getUseIntegral() - weiXinParam.getUseIntegral());
+                userInfoMapper.updateByPrimaryKey(userInfo);
+                paymentPo.setTotal_fee(goodsOrder.getOrderPrice().toString());
+                goodsOrder.setOrderPrice(goodsOrder.getOrderPrice() - l);
+                goodsOrder.setIntegralStatus(weiXinParam.getIntegralStatus());
+                goodsOrderMapper.updateByPrimaryKey(goodsOrder);
+
+            } else {
+                goodsOrder.setIntegralStatus(0);
+                goodsOrderMapper.updateByPrimaryKey(goodsOrder);
+                paymentPo.setTotal_fee(goodsOrder.getOrderPrice().toString());
+            }
+
         }
+
 
         paymentPo.setSpbill_create_ip(spbill_create_ip);
         paymentPo.setNotify_url(shopMiniProgram.getBackUrl());
@@ -184,6 +219,8 @@ public class WeiXinPaymentController {
         String param = respXml;
         //String result = SendRequestForUrl.sendRequest(url, param);//发起请求
         String result = PayUtil.httpRequest(url, "POST", param);
+        System.out.println(param);
+
         System.out.println("请求微信预支付接口，返回 result：" + result);
         // 将解析结果存储在Map中
         Map map = new HashMap();
