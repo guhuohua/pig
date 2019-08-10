@@ -149,7 +149,7 @@ public class ViewGoodsListServiceImpl implements ViewGoodsListService {
             params.put("sort", "boutiqueSort asc");
             params.put("q", "shopId:" + shopId);
         }
-        System.out.println(params);
+      //  System.out.println(params);
         SolrParams mapSolrParams = new MapSolrParams(params);
         QueryResponse query1 = null;
         try {

@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -12,7 +13,7 @@ import java.util.Map;
 
 public class TokenUtil {
 
-    private static final long EXPIRE_TIME = 15 * 60 * 1000 * 1000;
+    private static final long EXPIRE_TIME = 15*1000*1000*60;
     private static final String TOKEN_SECRET = "qazwsxedcrfvtgbyhnujmiklop";
 
 
@@ -25,7 +26,11 @@ public class TokenUtil {
     public static String sign(Integer userId) {
         try {
             // 设置过期时间
+            long l = System.currentTimeMillis();
+            //System.out.println(l);
+
             Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
+           // System.out.println(date);
             // 私钥和加密算法
             Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
             // 设置头部信息

@@ -7,6 +7,7 @@
 
 package com.ch.controller;
 
+import com.ch.base.BeanUtils;
 import com.ch.base.ResponseResult;
 import com.ch.service.ViewShopNameService;
 import com.ch.util.TokenUtil;
@@ -31,9 +32,22 @@ public class ViewShopNameController {
     @GetMapping("name")
     public ResponseResult showName(HttpServletRequest req) {
         ResponseResult result = new ResponseResult();
-
         String token = req.getHeader("Authorization");
+        if (BeanUtils.isEmpty(token)) {
+            result.setCode(999);
+            result.setError("token失效请重新登录");
+            result.setError_description("token失效请重新登录");
+            return result;
+        }
         Integer shopId = TokenUtil.getUserId(token);
+        if (BeanUtils.isEmpty(shopId)) {
+            result.setCode(999);
+            result.setError("token失效请重新登录");
+            result.setError_description("token失效请重新登录");
+            return result;
+        }
+
+
         try {
             result = viewShopNameService.showShopName(shopId);
         } catch (Exception e) {

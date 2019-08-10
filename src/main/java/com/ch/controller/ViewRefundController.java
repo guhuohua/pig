@@ -102,8 +102,21 @@ public class ViewRefundController {
     public ResponseResult refund(HttpServletRequest req, HttpServletResponse response, @RequestParam String orderId) {
         ResponseResult result1 = new ResponseResult();
         String openId = req.getHeader("openId");
+        ResponseResult result = new ResponseResult();
         String token = req.getHeader("Authorization");
+        if (BeanUtils.isEmpty(token)) {
+            result.setCode(999);
+            result.setError("token失效请重新登录");
+            result.setError_description("token失效请重新登录");
+            return result;
+        }
         Integer shopId = TokenUtil.getUserId(token);
+        if (BeanUtils.isEmpty(shopId)) {
+            result.setCode(999);
+            result.setError("token失效请重新登录");
+            result.setError_description("token失效请重新登录");
+            return result;
+        }
         GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderId);
         ShopMiniProgram shopMiniProgram = viewShopNameService.shopPayInfo(shopId);
         String today = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());

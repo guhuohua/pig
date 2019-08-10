@@ -100,11 +100,23 @@ public class WeiXinPaymentController {
 
     @GetMapping("wxpay")
     @ResponseBody
-    public ResponseResult payment(HttpServletRequest req, @RequestParam String orderId, @RequestParam Integer integralStatus) throws UnsupportedEncodingException, DocumentException {
+    public ResponseResult payment(HttpServletRequest req, @RequestParam String orderId, @RequestParam Integer integralStatus, @RequestParam double money, @RequestParam Integer useIntegral) throws UnsupportedEncodingException, DocumentException {
         ResponseResult result1 = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
+        if (BeanUtils.isEmpty(token)) {
+            result1.setCode(999);
+            result1.setError("token失效请重新登录");
+            result1.setError_description("token失效请重新登录");
+            return result1;
+        }
         Integer shopId = TokenUtil.getUserId(token);
+        if (BeanUtils.isEmpty(shopId)) {
+            result1.setCode(999);
+            result1.setError("token失效请重新登录");
+            result1.setError_description("token失效请重新登录");
+            return result1;
+        }
         //获取店铺信息
         ShopMiniProgram shopMiniProgram = viewShopNameService.shopPayInfo(shopId);
         GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderId);
@@ -129,13 +141,11 @@ public class WeiXinPaymentController {
         paymentPo.setOut_trade_no(out_trade_no);
         if (1 == integralStatus) {
             UserInfo userInfo = viewUserInfoService.findOneByOpenId(openId);
-            int i = userInfo.getUseIntegral() / baseIntegral.getCashIntegral();
-            // int integral = i * baseIntegral.getCashIntegral();
-            /*userInfo.setUseIntegral(userInfo.getUseIntegral() - integral);
+            userInfo.setUseIntegral(userInfo.getUseIntegral() - useIntegral);
             userInfoMapper.updateByPrimaryKey(userInfo);
-            flowUtil.addFlowTel(integral, "INTEGRAL_MONEY", "INTEGRAL", 1, userInfo.getId());*/
-            paymentPo.setTotal_fee((goodsOrder.getOrderPrice() - i * 100) + "");
-            System.out.println((goodsOrder.getOrderPrice() - i * 100) + "");
+            paymentPo.setTotal_fee((goodsOrder.getOrderPrice() - money * 100) + "");
+            goodsOrder.setOrderPrice(Long.parseLong(paymentPo.getTotal_fee()));
+            goodsOrderMapper.updateByPrimaryKey(goodsOrder);
         } else {
             paymentPo.setTotal_fee(goodsOrder.getOrderPrice().toString());
         }
@@ -228,8 +238,6 @@ public class WeiXinPaymentController {
                 String orderId = (String) dataMap.get("out_trade_no");
                 Long total_fee = Long.valueOf(dataMap.get("total_fee").toString());
                 GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderId);
-
-
                 // UserInfo userInfo = userInfoMapper.selectByPrimaryKey(goodsOrder.getUserId());
                 if (BeanUtils.isNotEmpty(goodsOrder)) {
                     if (goodsOrder.getOrderStatus() == 10) {
