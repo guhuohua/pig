@@ -142,57 +142,69 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                             }
 
                         }
-                    }
-                    if ("ORDINARY".equals(goods.getGoodsType())) {
+                    } else {
+                        if ("INTEGRAL".equals(goods.getGoodsType())) {
+                            if (goodsSku.getConsumptionIntegral() > userInfo.getUseIntegral()) {
+                                result.setCode(500);
+                                result.setError_description("可用积分不足");
+                                return result;
+                            }
 
+                            totalFee = goods.getFreight();
+                            orderFee += totalFee;
+                            orderItem.setPrice(goodsSku.getPresentPrice());
+                            order.setOrderPrice(0l);
+                            order.setOrderStatus(1);
+                            order.setFreight(0l);
+                            order.setIntegral(goodsSku.getConsumptionIntegral());
 
-                        int i = userInfo.getUseIntegral() / baseIntegral.getCashIntegral() * 100;
+                        } else {
+                            int i = userInfo.getUseIntegral() / baseIntegral.getCashIntegral() * 100;
 
-                        //int integral = i * baseIntegral.getCashIntegral();
-                        //addOrderDTO.setUseIntegral(userInfo.getUseIntegral());
+                            //int integral = i * baseIntegral.getCashIntegral();
+                            //addOrderDTO.setUseIntegral(userInfo.getUseIntegral());
 
                        /* userInfo.setUseIntegral(userInfo.getUseIntegral() - integral);
                         userInfoMapper.updateByPrimaryKey(userInfo);
                         flowUtil.addFlowTel(integral,"INTEGRAL_MONEY","INTEGRAL",1,userInfo.getId());*/
-                        totalFee = (goodsSku.getPresentPrice() * orderDto.getNum());
-                        orderFee += totalFee;
+                            totalFee = (goodsSku.getPresentPrice() * orderDto.getNum());
+                            orderFee += totalFee;
 
-                        order.setOrderStatus(1);
-                        MemberRankExample exampleRank = new MemberRankExample();
-                        MemberRankExample.Criteria criteria1 = exampleRank.createCriteria();
-                        criteria1.andMemberTypeEqualTo(userInfo.getMember());
-                        List<MemberRank> memberRanks = memberRankMapper.selectByExample(exampleRank);
-                        MemberRank memberRank = memberRanks.get(0);
-                        orderItem.setPrice(goodsSku.getPresentPrice() * memberRank.getDiscount() / 100);
-                        order.setGoodsFee(orderFee * memberRank.getDiscount() / 100);
-                        order.setOrderPrice(order.getGoodsFee() + Collections.max(feeList));
-                        order.setFreight(Collections.max(feeList));
-                        if (i <= order.getOrderPrice()) {
-                            addOrderDTO.setMoney(i / 100);
-                            addOrderDTO.setUseIntegral(userInfo.getUseIntegral());
-                        } else {
-                            Long l = order.getOrderPrice() / 100 * 1000;
-                            addOrderDTO.setUseIntegral(l.intValue());
-                            addOrderDTO.setMoney(Math.ceil(order.getOrderPrice() / 100));
+                            order.setOrderStatus(1);
+                            MemberRankExample exampleRank = new MemberRankExample();
+                            MemberRankExample.Criteria criteria1 = exampleRank.createCriteria();
+                            criteria1.andMemberTypeEqualTo(userInfo.getMember());
+                            List<MemberRank> memberRanks = memberRankMapper.selectByExample(exampleRank);
+                            MemberRank memberRank = memberRanks.get(0);
+                            orderItem.setPrice(goodsSku.getPresentPrice() * memberRank.getDiscount() / 100);
+                            order.setGoodsFee(orderFee * memberRank.getDiscount() / 100);
+                            order.setOrderPrice(order.getGoodsFee() + Collections.max(feeList));
+                            order.setFreight(Collections.max(feeList));
+                            SpikeGoodsExample spExample = new SpikeGoodsExample();
+                            SpikeGoodsExample.Criteria exampleCriteria = spExample.createCriteria();
+                            exampleCriteria.andSkuIdEqualTo(goodsSku.getId());
+                            List<SpikeGoods> spikeGoods2 = spikeGoodsMapper.selectByExample(spExample);
+                            if (spikeGoods2.size()>0){
+                                result.setCode(500);
+                                result.setError_description("秒杀商品不能抵扣积分");
+                                return result;
+
+                            }else {
+                                if (i <= order.getOrderPrice()) {
+                                    addOrderDTO.setMoney(i / 100);
+                                    addOrderDTO.setUseIntegral(userInfo.getUseIntegral());
+                                } else {
+                                    Long l = order.getOrderPrice() / 100 * 1000;
+                                    addOrderDTO.setUseIntegral(l.intValue());
+                                    addOrderDTO.setMoney(Math.ceil(order.getOrderPrice() / 100));
+                                }
+                            }
+
+
                         }
-
                     }
-                    if ("INTEGRAL".equals(goods.getGoodsType())) {
-                        if (goodsSku.getConsumptionIntegral() > userInfo.getUseIntegral()) {
-                            result.setCode(500);
-                            result.setError_description("可用积分不足");
-                            return result;
-                        }
 
-                        totalFee = goods.getFreight();
-                        orderFee += totalFee;
-                        orderItem.setPrice(goodsSku.getPresentPrice());
-                        order.setOrderPrice(0l);
-                        order.setOrderStatus(1);
-                        order.setFreight(0l);
-                        order.setIntegral(goodsSku.getConsumptionIntegral());
 
-                    }
                     //orderItem.setPrice(goodsSku.getPresentPrice());
                     orderItem.setOrderId(order.getId());
                     orderItem.setShopId(shopId);
@@ -219,10 +231,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             order.setUserId(userInfo.getId());
             order.setShopId(shopId);
             order.setStatus(0);
-
-
             order.setCreateDate(new Date());
-
             orderMapper.insert(order);
         }
         addOrderDTO.setOrderId(order.getId());

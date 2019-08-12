@@ -70,6 +70,7 @@ public class SysSpikeServiceImpl implements SysSpikeService {
                     BigDecimal subtract = model.getSpikePrice().multiply(new BigDecimal("100.00"));
                     spikeGoods1.setSpikePrice(subtract.longValue());
                     spikeGoods1.setSpikeNum(model.getSpikeNum());
+                    //spikeGoods1.setMaxNum(model.g);
                     spikeGoods1.setBeginDate(new Date(model.getBeginDate()));
                     spikeGoods1.setEndDate(new Date(model.getEndDate()));
                     spikeGoodsMapper.updateByPrimaryKey(spikeGoods1);

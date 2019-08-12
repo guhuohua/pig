@@ -90,7 +90,6 @@ public class ViewGoodsCarServiceImpl implements ViewGoodsCarService {
                             totalFee = goodsSku.getPresentPrice() * goodsCar2.getNum();
                         }
 
-
                         goodsCar2.setTotalFee(totalFee);
                         goodsCarMapper.updateByPrimaryKey(goodsCar2);
                         break;

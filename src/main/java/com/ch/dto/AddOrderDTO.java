@@ -5,6 +5,7 @@ public class AddOrderDTO {
     private Integer useIntegral;
     private double money;
 
+
     public String getOrderId() {
         return orderId;
     }

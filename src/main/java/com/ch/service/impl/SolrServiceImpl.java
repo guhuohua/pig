@@ -1,10 +1,7 @@
 package com.ch.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.ch.dao.GoodsAreaMapper;
-import com.ch.dao.GoodsEvaluationMapper;
-import com.ch.dao.GoodsMapper;
-import com.ch.dao.SysUserMapper;
+import com.ch.dao.*;
 import com.ch.entity.*;
 import com.ch.enums.GoodsSaleAreaEnum;
 import com.ch.service.SolrService;
@@ -43,19 +40,34 @@ public class SolrServiceImpl implements SolrService {
     ModelMapper modelMapper;
     @Autowired
     GoodsEvaluationMapper goodsEvaluationMapper;
+    @Autowired
+    GoodsSkuMapper goodsSkuMapper;
+    @Autowired
+    SpikeGoodsMapper spikeGoodsMapper;
 
 
     @Override
     @Async
     public void releaseGoods(Integer goodsId, Integer shopId) {
-        System.out.println("开始删除solr:"+goodsId);
-       lowerShelf(goodsId);
+        System.out.println("开始删除solr:" + goodsId);
+        lowerShelf(goodsId);
         GoodsExample goodsExample = new GoodsExample();
         goodsExample.createCriteria().andShopIdEqualTo(shopId).andIdEqualTo(goodsId);
         List<Goods> goodsList = goodsMapper.selectByExample(goodsExample);
         if (goodsList.stream().findFirst().isPresent()) {
             Goods goods = goodsList.stream().findFirst().get();
-            if (goods.getStatus() == 1) {
+            GoodsSkuExample example = new GoodsSkuExample();
+            GoodsSkuExample.Criteria criteria1 = example.createCriteria();
+            criteria1.andGoodsIdEqualTo(goodsId);
+            List<GoodsSku> goodsSkus = goodsSkuMapper.selectByExample(example);
+            List<SpikeGoods> spikeGoods = new ArrayList<>();
+            for (GoodsSku skus : goodsSkus) {
+                SpikeGoodsExample spExample = new SpikeGoodsExample();
+                SpikeGoodsExample.Criteria exampleCriteria = spExample.createCriteria();
+                exampleCriteria.andSkuIdEqualTo(skus.getId());
+                spikeGoods = spikeGoodsMapper.selectByExample(spExample);
+            }
+            if (0 == spikeGoods.size() && 1 == goods.getStatus()) {
                 GoodsSolrSchema goodsSolrSchema = new GoodsSolrSchema();
                 modelMapper.map(goods, goodsSolrSchema);
                 GoodsEvaluationExample evaluationExample = new GoodsEvaluationExample();
@@ -83,7 +95,7 @@ public class SolrServiceImpl implements SolrService {
                     }
                 });
                 try {
-                    System.out.println("准备同步solr:"+ JSON.toJSONString(goodsSolrSchema));
+                    System.out.println("准备同步solr:" + JSON.toJSONString(goodsSolrSchema));
                     solrClient.addBean(goodsSolrSchema);
                     solrClient.commit();
                 } catch (IOException e) {
