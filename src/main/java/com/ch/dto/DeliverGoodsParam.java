@@ -8,4 +8,6 @@ public class DeliverGoodsParam {
     private String orderId;
 
     private String expressCode;
+
+    private Integer expressId;
 }

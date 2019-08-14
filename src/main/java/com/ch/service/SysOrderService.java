@@ -3,6 +3,7 @@ package com.ch.service;
 import com.ch.base.ResponseResult;
 import com.ch.dto.DeliverGoodsParam;
 import com.ch.dto.SysOrderParam;
+import com.ch.entity.Express;
 
 public interface SysOrderService {
 
@@ -44,4 +45,17 @@ public interface SysOrderService {
      * @return
      */
     ResponseResult deliver(String oderId);
+
+    /**
+     * 快递公司列表
+     * @return
+     */
+    ResponseResult expressList();
+
+    /**
+     * 物流跟踪
+     * @param orderId
+     * @return
+     */
+    ResponseResult expressTracking(String orderId);
 }

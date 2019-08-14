@@ -60,8 +60,6 @@ public class SysSpikeServiceImpl implements SysSpikeService {
                     result.setError_description("该商品为积分兑换商品，");
                     return result;
                 }
-                goods.setGoodsType(GoodsTypeEnum.SPIKE.name());
-                //goodsMapper.updateByPrimaryKey(goods);
                 SpikeGoodsExample spikeGoodsExample = new SpikeGoodsExample();
                 spikeGoodsExample.createCriteria().andGoodsIdEqualTo(sysSpikeGoodsModel.getGoodsId()).andSkuIdEqualTo(model.getId());
                 List<SpikeGoods> spikeGoods = spikeGoodsMapper.selectByExample(spikeGoodsExample);
@@ -70,7 +68,7 @@ public class SysSpikeServiceImpl implements SysSpikeService {
                     BigDecimal subtract = model.getSpikePrice().multiply(new BigDecimal("100.00"));
                     spikeGoods1.setSpikePrice(subtract.longValue());
                     spikeGoods1.setSpikeNum(model.getSpikeNum());
-                    //spikeGoods1.setMaxNum(model.g);
+                    spikeGoods1.setMaxNum(sysSpikeGoodsModel.getMaxNum());
                     spikeGoods1.setBeginDate(new Date(model.getBeginDate()));
                     spikeGoods1.setEndDate(new Date(model.getEndDate()));
                     spikeGoodsMapper.updateByPrimaryKey(spikeGoods1);
@@ -79,6 +77,7 @@ public class SysSpikeServiceImpl implements SysSpikeService {
                     spikeGoods2.setGoodsId(sysSpikeGoodsModel.getGoodsId());
                     spikeGoods2.setBeginDate(new Date(model.getBeginDate()));
                     spikeGoods2.setEndDate(new Date(model.getEndDate()));
+                    spikeGoods2.setMaxNum(sysSpikeGoodsModel.getMaxNum());
                     spikeGoods2.setSkuId(model.getId());
                     BigDecimal subtract = model.getSpikePrice().multiply(new BigDecimal("100.00"));
                     spikeGoods2.setSpikePrice(subtract.longValue());

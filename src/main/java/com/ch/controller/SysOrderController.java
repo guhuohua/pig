@@ -7,6 +7,7 @@ import com.ch.handler.ActiveMQHandler;
 import com.ch.service.SysOrderService;
 import com.ch.util.TokenUtil;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +58,38 @@ public class SysOrderController {
             result.setCode(500);
             result.setError(e.getMessage());
             result.setError_description("获取订单详情失败，请稍后重试");
+        }
+        return result;
+    }
+
+    @ApiOperation("快递公司列表")
+    @GetMapping("expressList")
+    public ResponseResult expressList() {
+        ResponseResult result = new ResponseResult();
+        try {
+            result = sysOrderService.expressList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("获取快递公司列表失败，请稍后重试");
+        }
+        return result;
+    }
+
+    @ApiOperation("物流跟踪")
+    @GetMapping("expressTracking")
+    public ResponseResult expressTracking(@RequestParam String orderId) {
+        ResponseResult result = new ResponseResult();
+        try {
+            result = sysOrderService.expressTracking(orderId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("获取快递公司列表失败，请稍后重试");
         }
         return result;
     }

@@ -33,7 +33,7 @@ public class UserInfoProvider {
         sb.append(" and shop_id = ").append(shopId);
         if (BeanUtils.isNotEmpty(param.getId())) {
             sb.append(" and id = ").append(param.getId());
-        }
+    }
         if (BeanUtils.isNotEmpty(param.getUserName())) {
             sb.append(" and delivery_id in (select id from user_address where name like '%").append(param.getUserName()).append("%')");
         }

@@ -53,6 +53,16 @@ public class GoodsOrder {
 
     private Integer integralStatus;
 
+    private Integer expressId;
+
+    public Integer getExpressId() {
+        return expressId;
+    }
+
+    public void setExpressId(Integer expressId) {
+        this.expressId = expressId;
+    }
+
     public Integer getIntegralStatus() {
         return integralStatus;
     }

@@ -8,17 +8,18 @@
     <!-- mysql-connector-java-5.1.46.jar的绝对路径 -->
     <classPathEntry location="/Users/changhan/Downloads/repository/repository/mysql/mysql-connector-java/8.0.15/mysql-connector-java-8.0.15.jar" />
 
-    <context id="DB2Tables" targetRuntime="MyBatis3">
+    <context id="context1">
+        <commentGenerator>
+            <!-- 去除自动生成的注释 -->
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
         <!-- 配置数据源 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://192.168.1.118:3306/pig?useUnicode=true&amp;characterEncoding=UTF-8&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"
+                        connectionURL="jdbc:mysql://rm-bp1qbr1a08374nn3bpo.mysql.rds.aliyuncs.com/pig?useUnicode=true&amp;characterEncoding=UTF-8&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"
                         userId="root"
-                        password="root">
+                        password="CHANGhan208">
+            <property name="useInformationSchema" value="true"/>
         </jdbcConnection>
-
-        <javaTypeResolver >
-            <property name="forceBigDecimals" value="false" />
-        </javaTypeResolver>
 
         <!-- 配置生成的javabean所存放的路径和包（使用绝对路径） -->
         <javaModelGenerator targetPackage="com.ch.entity" targetProject="/Users/changhan/Documents/batu/pig/src/main/java">
@@ -33,7 +34,6 @@
 
         <!-- 配置生成的**Mapper.java接口文件所存放的路径和包（使用绝对路径） -->
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.ch.dao"  targetProject="/Users/changhan/Documents/batu/pig/src/main/java">
-            <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
 
@@ -44,7 +44,7 @@
 <!--        <table tableName="goods_details" domainObjectName="GoodsDetails" enableCountByExample="true" enableUpdateByExample="true"-->
 <!--               enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true"/>-->
 
-        <table tableName="goods_details" domainObjectName="GoodsDetails" enableCountByExample="true" enableUpdateByExample="true"
+        <table tableName="express" domainObjectName="Express" enableCountByExample="true" enableUpdateByExample="true"
                enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true"/>
 
     </context>

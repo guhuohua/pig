@@ -1,5 +1,7 @@
 package com.ch.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.ch.base.BeanUtils;
 import com.ch.base.ResponseResult;
 import com.ch.dao.*;
@@ -14,6 +16,7 @@ import com.ch.service.SysMemberService;
 import com.ch.service.SysOrderService;
 import com.ch.service.ViewUserInfoService;
 import com.ch.util.FlowUtil;
+import com.ch.util.KdniaoTrackQueryAPI;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +65,12 @@ public class SysOrderServiceImpl implements SysOrderService {
     @Autowired
     ViewUserInfoService viewUserInfoService;
 
+    @Autowired
+    ExpressMapper expressMapper;
+
+    @Autowired
+    KdniaoTrackQueryAPI kdniaoTrackQueryAPI;
+
 
     @Override
     public ResponseResult list(SysOrderParam param, Integer userId) {
@@ -85,6 +94,7 @@ public class SysOrderServiceImpl implements SysOrderService {
         if (orders.stream().findFirst().isPresent()) {
             GoodsOrder order = orders.stream().findFirst().get();
             order.setTrackNumber(param.getExpressCode());
+            order.setExpressId(param.getExpressId());
             order.setModifyDate(new Date());
             order.setOrderStatus(Integer.valueOf(OderStatusEnum.UNRECEIVED.code));
             order.setTakeDate(new Date());
@@ -189,6 +199,33 @@ public class SysOrderServiceImpl implements SysOrderService {
             goodsOrder.setOrderStatus(Integer.valueOf(OderStatusEnum.CANCEL.code));
             goodsOrder.setModifyDate(new Date());
             orderMapper.updateByPrimaryKey(goodsOrder);
+        }
+        return result;
+    }
+
+    @Override
+    public ResponseResult expressList() {
+        ResponseResult result = new ResponseResult();
+        List<Express> expresses = expressMapper.selectByExample(null);
+        result.setData(expresses);
+        return result;
+    }
+
+    @Override
+    public ResponseResult expressTracking(String orderId) {
+        ResponseResult result = new ResponseResult();
+        GoodsOrder goodsOrder = orderMapper.selectByPrimaryKey(orderId);
+        Express express = expressMapper.selectByPrimaryKey(goodsOrder.getExpressId());
+        try {
+            String orderTracesByJson = kdniaoTrackQueryAPI.getOrderTracesByJson(express.getExpressAbbreviation(), goodsOrder.getTrackNumber());
+            JSONObject jsonObject = JSON.parseObject(orderTracesByJson);
+            result.setData(jsonObject);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setCode(600);
+            result.setError(e.getMessage());
+            result.setError_description("物流查询失败，请稍后重试");
+            return result;
         }
         return result;
     }
