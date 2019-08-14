@@ -4,6 +4,7 @@ import com.ch.base.ResponseResult;
 import com.ch.base.UploadName;
 import com.ch.service.UploadService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping(value = "base")
-@Api(value = "基础")
+@Api(tags = "数据导入")
 public class UploadController {
 
     @Autowired
@@ -39,6 +40,43 @@ public class UploadController {
             result.setCode(500);
             result.setError(e.getMessage());
             result.setError_description("图片上传失败");
+        }
+        return result;
+    }
+
+
+    @PostMapping(value = "uploadExcel")
+    @CrossOrigin
+    @ApiOperation("导入商品数据")
+    public ResponseResult uploadGoods(HttpServletResponse response, MultipartFile file) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        ResponseResult result = new ResponseResult();
+        try {
+            result = uploadService.uploadGoods(file);
+            result.setCode(410);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("excel导入失败");
+        }
+        return result;
+    }
+
+    @PostMapping(value = "uploadExcel")
+    @CrossOrigin
+    @ApiOperation("导入规格数据")
+    public ResponseResult uploadSpecification(HttpServletResponse response, MultipartFile file) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        ResponseResult result = new ResponseResult();
+        try {
+            result = uploadService.uploadSpecification(file);
+            result.setCode(410);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setCode(500);
+            result.setError(e.getMessage());
+            result.setError_description("excel导入失败");
         }
         return result;
     }

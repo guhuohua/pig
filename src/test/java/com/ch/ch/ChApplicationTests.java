@@ -6,7 +6,10 @@
 //
 //import com.alibaba.fastjson.JSON;
 //import com.ch.base.ResponseResult;
+//import com.ch.dao.SpecificationAttributeMapper;
+//import com.ch.dao.SpecificationMapper;
 //import com.ch.entity.GoodsSolrSchema;
+//import com.ch.entity.Specification;
 //import com.ch.service.SolrService;
 //import com.ch.service.ViewOrderService;
 //import org.apache.solr.client.solrj.SolrClient;
@@ -32,6 +35,10 @@
 //    SolrClient solrClient;
 //    @Autowired
 //    SolrService solrService;
+//    @Autowired
+//    SpecificationMapper specificationMapper;
+//    @Autowired
+//    SpecificationAttributeMapper specificationAttributeMapper;
 //
 //
 //
@@ -39,11 +46,15 @@
 //
 //    @Test
 //    public void testUploadImage() {
-//        solrService.lowerShelf(20);
+//        Specification specification = new Specification();
+//        specification.setTitle("测试规格");
+//        specificationMapper.insert(specification);
+//        System.out.println(specification.getId());
+//
 //    }
 //
 //
 //}
-//
-//
+
+
 //

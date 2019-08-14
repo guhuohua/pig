@@ -99,7 +99,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.ch.entity.Sign" >
+  <insert id="insert" parameterType="com.ch.entity.Sign" useGeneratedKeys="true" keyProperty="id">
     insert into sign (id, sign_date, sign_satus, 
       user_id)
     values (#{id,jdbcType=INTEGER}, #{signDate,jdbcType=TIMESTAMP}, #{signSatus,jdbcType=VARCHAR}, 
