@@ -15,4 +15,8 @@ public interface UploadService {
     UploadName upload(MultipartFile file);
 
     ResponseResult uploadFile(MultipartFile file);
+
+    ResponseResult uploadGoods(MultipartFile file);
+
+    ResponseResult uploadSpecification(MultipartFile file);
 }

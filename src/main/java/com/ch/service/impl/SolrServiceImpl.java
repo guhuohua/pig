@@ -56,18 +56,7 @@ public class SolrServiceImpl implements SolrService {
         List<Goods> goodsList = goodsMapper.selectByExample(goodsExample);
         if (goodsList.stream().findFirst().isPresent()) {
             Goods goods = goodsList.stream().findFirst().get();
-            GoodsSkuExample example = new GoodsSkuExample();
-            GoodsSkuExample.Criteria criteria1 = example.createCriteria();
-            criteria1.andGoodsIdEqualTo(goodsId);
-            List<GoodsSku> goodsSkus = goodsSkuMapper.selectByExample(example);
-            List<SpikeGoods> spikeGoods = new ArrayList<>();
-            for (GoodsSku skus : goodsSkus) {
-                SpikeGoodsExample spExample = new SpikeGoodsExample();
-                SpikeGoodsExample.Criteria exampleCriteria = spExample.createCriteria();
-                exampleCriteria.andSkuIdEqualTo(skus.getId());
-                spikeGoods = spikeGoodsMapper.selectByExample(spExample);
-            }
-            if (0 == spikeGoods.size() && 1 == goods.getStatus()) {
+            if (1 == goods.getStatus()) {
                 GoodsSolrSchema goodsSolrSchema = new GoodsSolrSchema();
                 modelMapper.map(goods, goodsSolrSchema);
                 GoodsEvaluationExample evaluationExample = new GoodsEvaluationExample();
