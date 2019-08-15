@@ -274,12 +274,10 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
             MemberRankExample.Criteria criteria = example.createCriteria();
             criteria.andMemberTypeEqualTo(userInfo.getMember());
             List<MemberRank> memberRanks = memberRankMapper.selectByExample(example);
-            System.out.println("userInfo:" + JSON.toJSONString(userInfo));
             userInfoMapper.updateByPrimaryKey(userInfo);
             LoginDTO loginDTO = new LoginDTO();
             modelMapper.map(userInfo, loginDTO);
             loginDTO.setDiscount(memberRanks.get(0).getDiscount());
-            System.out.println("loginDTO:" + JSON.toJSONString(userInfo));
             if (userInfo.getIntegral() >= dia) {
                 loginDTO.setNextMemberIntegral(dia);
                 loginDTO.setNextMember("DIAMONDS");
