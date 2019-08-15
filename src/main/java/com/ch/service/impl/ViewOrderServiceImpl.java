@@ -934,7 +934,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                     BigDecimal orderPrice = new BigDecimal(orderItem.getNumber() * orderItem.getPrice());
                     BigDecimal pp = new BigDecimal("100.00");
                     BigDecimal divide = orderPrice.divide(pp);
-                    double d = baseIntegral.getPerfect();
+                    double d = baseIntegral.getPaymentIntegral();
                     double s = baseIntegral.getSuperintendence();
                     double e = 100;
                     double f = d / e;
@@ -953,7 +953,6 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                     flowUtil.addFlowTel(floor1, "payment", "INTEGRAL", 0, userInfo.getId());
                     sysMemberService.synchronizedIntegral(userInfo.getId());
                    if( BeanUtils.isNotEmpty(userInfo.getSuperiorInvitationCode())){
-
                        UserInfoExample example1 = new UserInfoExample();
                        UserInfoExample.Criteria criteria1 = example1.createCriteria();
                        criteria1.andSuperiorInvitationCodeEqualTo(userInfo.getSuperiorInvitationCode());
