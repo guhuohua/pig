@@ -233,7 +233,7 @@ public class SysOrderServiceImpl implements SysOrderService {
     @Override
     public ResponseResult deliver(String oderId) {
         ResponseResult result = new ResponseResult();
-        BaseIntegral baseIntegral = baseIntegralMapper.selectByPrimaryKey(1);
+        BaseIntegral baseIntegral = baseIntegralMapper.selectByExample(null).stream().findFirst().get();
         GoodsOrder goodsOrder = orderMapper.selectByPrimaryKey(oderId);
         if (BeanUtils.isNotEmpty(goodsOrder) && Integer.valueOf(OderStatusEnum.UNRECEIVED.code) == goodsOrder.getOrderStatus()) {
             goodsOrder.setOrderStatus(Integer.valueOf(OderStatusEnum.UNEVALUATED.code));
