@@ -212,7 +212,7 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
             userInfo.setUseIntegral(userInfo.getUseIntegral() + baseIntegral.getSign());
             userInfo.setSignStatus(1);
             userInfoMapper.updateByPrimaryKey(userInfo);
-            flowUtil.addFlowTel(baseIntegral.getPerfect().longValue(), "sign", "INTEGRAL", 0, userInfo.getId());
+            flowUtil.addFlowTel(baseIntegral.getSign().longValue(), "sign", "INTEGRAL", 0, userInfo.getId());
             sysMemberService.synchronizedIntegral(userInfo.getId());
         }
         return result;

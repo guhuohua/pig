@@ -9,6 +9,7 @@ import com.ch.dao.SysUserMapper;
 import com.ch.dto.GoodsAreaParam;
 import com.ch.dto.RecommendGoodsDTO;
 import com.ch.entity.*;
+import com.ch.enums.GoodsTypeEnum;
 import com.ch.model.SysRecommendParam;
 import com.ch.service.SolrService;
 import com.ch.service.SysRecommendService;
@@ -55,6 +56,12 @@ public class SysRecommendServiceImpl implements SysRecommendService {
             List<Goods> goodsList = goodsMapper.selectByExample(goodsExample);
             if (goodsList.stream().findFirst().isPresent()) {
                 Goods goods = goodsList.stream().findFirst().get();
+                if (GoodsTypeEnum.SPIKE.name().equals(goods.getGoodsType())) {
+                    result.setCode(600);
+                    result.setError("积分商品不允许设置热门推荐");
+                    result.setError_description("积分商品不允许设置热门推荐");
+                    return result;
+                }
                 GoodsArea goodsArea = new GoodsArea();
                 goodsArea.setGoodsClassification(param.getRecommend());
                 goodsArea.setGoodsId(goods.getId());

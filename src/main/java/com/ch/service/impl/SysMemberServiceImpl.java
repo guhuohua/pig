@@ -8,6 +8,7 @@ import com.ch.dao.UserInfoMapper;
 import com.ch.entity.BaseIntegral;
 import com.ch.entity.MemberRank;
 import com.ch.entity.UserInfo;
+import com.ch.enums.MemberEnum;
 import com.ch.model.MemberModel;
 import com.ch.model.SysBaseSettingParam;
 import com.ch.service.SysMemberService;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.From;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,7 +76,7 @@ public class SysMemberServiceImpl implements SysMemberService {
     @Override
     public ResponseResult synchronizedIntegral(Integer userId) {
         ResponseResult result = new ResponseResult();
-       /* List<UserInfo> userInfos = new ArrayList<>();
+        List<UserInfo> userInfos = new ArrayList<>();
         if (null != userId) {
             UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
             userInfos.add(userInfo);
@@ -82,28 +84,39 @@ public class SysMemberServiceImpl implements SysMemberService {
             userInfos = userInfoMapper.selectByExample(null);
         }
         List<MemberRank> memberRanks = memberRankMapper.selectByExample(null);
-        for (UserInfo userInfo:userInfos) {
-            for (MemberRank memberRank:memberRanks) {
-                if (userInfo.getIntegral() >= memberRank.getIntegral()) {
-                    userInfo.setMember(memberRank.getMemberType());
-                    userInfoMapper.updateByPrimaryKey(userInfo);
-                }
+        int gold = 0;
+        int plat = 0;
+        int dia = 0;
+        int tour = 0;
+        for (MemberRank memberRank:memberRanks) {
+            if ("GOLD".equals(memberRank.getMemberType())) {
+                gold = memberRank.getIntegral();
             }
-        }*/
-        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
-        if (userInfo.getIntegral() >= 4800) {
-            userInfo.setMember("DIAMONDS");
+            if ("PLATINUM".equals(memberRank.getMemberType())) {
+                plat = memberRank.getIntegral();
+            }
+            if ("DIAMONDS".equals(memberRank.getMemberType())) {
+                dia = memberRank.getIntegral();
+            }
+            if ("TOURIST".equals(memberRank.getMemberType())) {
+                tour = memberRank.getIntegral();
+            }
         }
-        if (userInfo.getIntegral() >= 2400 && userInfo.getIntegral() < 4800) {
-            userInfo.setMember("PLATINUM");
+        for (UserInfo userInfo : userInfos) {
+            if (userInfo.getIntegral() >= dia) {
+                userInfo.setMember("DIAMONDS");
+            }
+            if (userInfo.getIntegral() >= plat && userInfo.getIntegral() < dia) {
+                userInfo.setMember("PLATINUM");
+            }
+            if (userInfo.getIntegral() >= gold && userInfo.getIntegral() < plat) {
+                userInfo.setMember("GOLD");
+            }
+            if (userInfo.getIntegral() >= 0 && userInfo.getIntegral() < gold) {
+                userInfo.setMember("TOURIST");
+            }
+            userInfoMapper.updateByPrimaryKey(userInfo);
         }
-        if (userInfo.getIntegral() >= 1200 && userInfo.getIntegral() < 2400) {
-            userInfo.setMember("GOLD");
-        }
-        if (userInfo.getIntegral() >= 0 && userInfo.getIntegral() < 1200) {
-            userInfo.setMember("TOURIST");
-        }
-        userInfoMapper.updateByPrimaryKey(userInfo);
         return result;
     }
 

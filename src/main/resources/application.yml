@@ -1,5 +1,9 @@
 server:
   port: 8081
+  tomcat:
+    min-spare-threads: 20
+    max-threads: 100
+  connection-timeout: 5000
 
 ## �����ýڵ�Ϊ�����Ľڵ㣬�кܶ�ͬѧ���׽�������÷���spring�Ľڵ��£����������޷���ʶ��
 mybatis:
@@ -57,8 +61,8 @@ spring:
     timeout: 10000
   data:
     solr:
-#      host: http://127.0.0.1:8088/solr
-      host: http://192.168.31.227:8088/solr
+      host: http://127.0.0.1:8088/solr
+#      host: http://192.168.31.227:8088/solr
 
 
 
