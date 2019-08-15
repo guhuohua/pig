@@ -137,7 +137,8 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                                 order.setOrderPrice(orderFee + Collections.max(feeList));
                                 order.setGoodsFee(orderFee);
                                 order.setFreight(Collections.max(feeList));
-                                spikeGoods1.setMaxNum(spikeGoods1.getMaxNum() - orderDto.getNum());
+                                //spikeGoods1.setMaxNum(spikeGoods1.getMaxNum() - orderDto.getNum());
+                                spikeGoods1.setSpikeNum(spikeGoods1.getSpikeNum() - orderDto.getNum());
                                 spikeGoodsMapper.updateByPrimaryKey(spikeGoods1);
                             } else {
                                 result.setCode(500);
@@ -188,12 +189,12 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                             SpikeGoodsExample.Criteria exampleCriteria = spExample.createCriteria();
                             exampleCriteria.andSkuIdEqualTo(goodsSku.getId());
                             List<SpikeGoods> spikeGoods2 = spikeGoodsMapper.selectByExample(spExample);
-                            if (spikeGoods2.size()>0){
+                            if (spikeGoods2.size() > 0) {
                                 result.setCode(500);
                                 result.setError_description("秒杀商品不能抵扣积分");
                                 return result;
 
-                            }else {
+                            } else {
                                 if (i <= order.getOrderPrice()) {
                                     addOrderDTO.setMoney(i / 100);
                                     addOrderDTO.setUseIntegral(userInfo.getUseIntegral());
@@ -952,20 +953,20 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                     long floors1 = floors;
                     flowUtil.addFlowTel(floor1, "payment", "INTEGRAL", 0, userInfo.getId());
                     sysMemberService.synchronizedIntegral(userInfo.getId());
-                   if( BeanUtils.isNotEmpty(userInfo.getSuperiorInvitationCode())){
-                       UserInfoExample example1 = new UserInfoExample();
-                       UserInfoExample.Criteria criteria1 = example1.createCriteria();
-                       criteria1.andSuperiorInvitationCodeEqualTo(userInfo.getSuperiorInvitationCode());
-                       List<UserInfo> userInfos = userInfoMapper.selectByExample(example1);
-                       if (userInfos.size()>0){
-                           UserInfo userInfo1 = userInfos.get(0);
-                           userInfo1.setIntegral(userInfo1.getIntegral() + floors);
-                           userInfo1.setUseIntegral(userInfo1.getUseIntegral() + floors);
-                           userInfoMapper.updateByPrimaryKey(userInfo);
-                           flowUtil.addFlowTel(floors1, "super", "INTEGRAL", 0, userInfo.getId());
-                           sysMemberService.synchronizedIntegral(userInfo.getId());
-                       }
-                   }
+                    if (BeanUtils.isNotEmpty(userInfo.getSuperiorInvitationCode())) {
+                        UserInfoExample example1 = new UserInfoExample();
+                        UserInfoExample.Criteria criteria1 = example1.createCriteria();
+                        criteria1.andSuperiorInvitationCodeEqualTo(userInfo.getSuperiorInvitationCode());
+                        List<UserInfo> userInfos = userInfoMapper.selectByExample(example1);
+                        if (userInfos.size() > 0) {
+                            UserInfo userInfo1 = userInfos.get(0);
+                            userInfo1.setIntegral(userInfo1.getIntegral() + floors);
+                            userInfo1.setUseIntegral(userInfo1.getUseIntegral() + floors);
+                            userInfoMapper.updateByPrimaryKey(userInfo);
+                            flowUtil.addFlowTel(floors1, "super", "INTEGRAL", 0, userInfo.getId());
+                            sysMemberService.synchronizedIntegral(userInfo.getId());
+                        }
+                    }
 
 
                 }
