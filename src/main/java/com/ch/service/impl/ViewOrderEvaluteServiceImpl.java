@@ -49,7 +49,7 @@ public class ViewOrderEvaluteServiceImpl implements ViewOrderEvaluteService {
         if (userInfos.size() > 0) {
             userInfo = userInfos.get(0);
         }
-        BaseIntegral baseIntegral = baseIntegralMapper.selectByPrimaryKey(1);
+        BaseIntegral baseIntegral = baseIntegralMapper.selectByExample(null).stream().findFirst().get();
         userInfo.setIntegral(userInfo.getIntegral() + baseIntegral.getComment());
         userInfo.setUseIntegral(userInfo.getUseIntegral() + baseIntegral.getComment());
         userInfoMapper.updateByPrimaryKey(userInfo);
