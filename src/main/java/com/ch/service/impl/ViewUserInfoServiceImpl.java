@@ -6,6 +6,7 @@
 
 package com.ch.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.ch.base.BeanUtils;
 import com.ch.base.ResponseResult;
 import com.ch.dao.*;
@@ -254,29 +255,46 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
                 userInfo.setSignStatus(0);
 
             }
+            List<MemberRank> memberRankss = memberRankMapper.selectByExample(null);
+            int gold = 0;
+            int plat = 0;
+            int dia = 0;
+            for (MemberRank memberRank : memberRankss) {
+                if ("GOLD".equals(memberRank.getMemberType())) {
+                    gold = memberRank.getIntegral();
+                }
+                if ("PLATINUM".equals(memberRank.getMemberType())) {
+                    plat = memberRank.getIntegral();
+                }
+                if ("DIAMONDS".equals(memberRank.getMemberType())) {
+                    dia = memberRank.getIntegral();
+                }
+            }
             MemberRankExample example = new MemberRankExample();
             MemberRankExample.Criteria criteria = example.createCriteria();
             criteria.andMemberTypeEqualTo(userInfo.getMember());
             List<MemberRank> memberRanks = memberRankMapper.selectByExample(example);
+            System.out.println("userInfo:" + JSON.toJSONString(userInfo));
             userInfoMapper.updateByPrimaryKey(userInfo);
             LoginDTO loginDTO = new LoginDTO();
             modelMapper.map(userInfo, loginDTO);
             loginDTO.setDiscount(memberRanks.get(0).getDiscount());
-            if (userInfo.getIntegral() >= 4800) {
-                loginDTO.setNextMemberIntegral(4800);
+            System.out.println("loginDTO:" + JSON.toJSONString(userInfo));
+            if (userInfo.getIntegral() >= dia) {
+                loginDTO.setNextMemberIntegral(dia);
                 loginDTO.setNextMember("DIAMONDS");
             }
-            if (userInfo.getIntegral() >= 2400 && userInfo.getIntegral() < 4800) {
-                loginDTO.setNextMemberIntegral(4800);
+            if (userInfo.getIntegral() >= gold && userInfo.getIntegral() < plat) {
+                loginDTO.setNextMemberIntegral(dia);
                 loginDTO.setNextMember("DIAMONDS");
 
             }
-            if (userInfo.getIntegral() >= 1200 && userInfo.getIntegral() < 2400) {
-                loginDTO.setNextMemberIntegral(2400);
+            if (userInfo.getIntegral() >= gold && userInfo.getIntegral() < plat) {
+                loginDTO.setNextMemberIntegral(plat);
                 loginDTO.setNextMember("PLATINUM");
             }
-            if (userInfo.getIntegral() >= 0 && userInfo.getIntegral() < 1200) {
-                loginDTO.setNextMemberIntegral(1200);
+            if (userInfo.getIntegral() >= 0 && userInfo.getIntegral() < gold) {
+                loginDTO.setNextMemberIntegral(gold);
                 loginDTO.setNextMember("GOLD");
             }
             result.setData(loginDTO);
