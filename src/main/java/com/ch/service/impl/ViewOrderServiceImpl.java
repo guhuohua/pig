@@ -13,12 +13,14 @@ import com.ch.dto.AddOrderDTO;
 import com.ch.dto.OrderDto;
 import com.ch.entity.*;
 import com.ch.service.SolrService;
+import com.ch.service.SysMemberService;
 import com.ch.service.ViewOrderService;
 import com.ch.util.FlowUtil;
 import com.ch.util.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -55,6 +57,8 @@ public class ViewOrderServiceImpl implements ViewOrderService {
     FlowUtil flowUtil;
     @Autowired
     MemberRankMapper memberRankMapper;
+    @Autowired
+    SysMemberService sysMemberService;
 
     @Override
     public ResponseResult addOrder(OrderDto[] orderDtoList, String openId, Integer shopId) {
@@ -910,6 +914,66 @@ public class ViewOrderServiceImpl implements ViewOrderService {
         goodsOrder.setOrderStatus(9);
         goodsOrder.setDeliveryDate(new Date());
         orderMapper.updateByPrimaryKey(goodsOrder);
+        //消费返积分
+        BaseIntegral baseIntegral = baseIntegralMapper.selectByExample(null).stream().findFirst().get();
+        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(goodsOrder.getUserId());
+        OrderItemExample example = new OrderItemExample();
+        OrderItemExample.Criteria criteria = example.createCriteria();
+        criteria.andOrderIdEqualTo(orderId);
+        List<OrderItem> orderItems = orderItemMapper.selectByExample(example);
+        for (OrderItem orderItem : orderItems) {
+            Goods goods = goodsMapper.selectByPrimaryKey(orderItem.getGoodsId());
+            if (goodsOrder.getIntegralStatus() == 1) {
+                int i = userInfo.getUseIntegral() / baseIntegral.getCashIntegral();
+                int integral = i * baseIntegral.getCashIntegral();
+                userInfo.setUseIntegral(userInfo.getUseIntegral() - integral);
+                userInfoMapper.updateByPrimaryKey(userInfo);
+                flowUtil.addFlowTel(integral, "INTEGRAL_MONEY", "INTEGRAL", 1, userInfo.getId());
+            } else {
+                if ("ORDINARY".equals(goods.getGoodsType())) {
+                    BigDecimal orderPrice = new BigDecimal(orderItem.getNumber() * orderItem.getPrice());
+                    BigDecimal pp = new BigDecimal("100.00");
+                    BigDecimal divide = orderPrice.divide(pp);
+                    double d = baseIntegral.getPerfect();
+                    double s = baseIntegral.getSuperintendence();
+                    double e = 100;
+                    double f = d / e;
+                    double z = s / e;
+                    BigDecimal multiply = divide.multiply(new BigDecimal(f));
+                    BigDecimal multiply1 = divide.multiply(new BigDecimal(z));
+                    double v = multiply.doubleValue();
+                    double v1 = multiply1.doubleValue();
+                    int floor = (int) Math.floor(v);
+                    int floors = (int) Math.floor(v1);
+                    userInfo.setUseIntegral(userInfo.getUseIntegral() + floor);
+                    userInfo.setIntegral(userInfo.getIntegral() + floor);
+                    userInfoMapper.updateByPrimaryKey(userInfo);
+                    long floor1 = floor;
+                    long floors1 = floors;
+                    flowUtil.addFlowTel(floor1, "payment", "INTEGRAL", 0, userInfo.getId());
+                    sysMemberService.synchronizedIntegral(userInfo.getId());
+                   if( BeanUtils.isNotEmpty(userInfo.getSuperiorInvitationCode())){
+
+                       UserInfoExample example1 = new UserInfoExample();
+                       UserInfoExample.Criteria criteria1 = example1.createCriteria();
+                       criteria1.andSuperiorInvitationCodeEqualTo(userInfo.getSuperiorInvitationCode());
+                       List<UserInfo> userInfos = userInfoMapper.selectByExample(example1);
+                       if (userInfos.size()>0){
+                           UserInfo userInfo1 = userInfos.get(0);
+                           userInfo1.setIntegral(userInfo1.getIntegral() + floors);
+                           userInfo1.setUseIntegral(userInfo1.getUseIntegral() + floors);
+                           userInfoMapper.updateByPrimaryKey(userInfo);
+                           flowUtil.addFlowTel(floors1, "super", "INTEGRAL", 0, userInfo.getId());
+                           sysMemberService.synchronizedIntegral(userInfo.getId());
+                       }
+                   }
+
+
+                }
+            }
+
+
+        }
         ResponseResult result = new ResponseResult();
         return result;
     }
