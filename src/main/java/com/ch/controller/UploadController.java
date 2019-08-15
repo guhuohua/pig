@@ -3,6 +3,7 @@ package com.ch.controller;
 import com.ch.base.ResponseResult;
 import com.ch.base.UploadName;
 import com.ch.service.UploadService;
+import com.ch.util.TokenUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -45,14 +47,16 @@ public class UploadController {
     }
 
 
-    @PostMapping(value = "uploadExcel")
+    @PostMapping(value = "uploadGoods")
     @CrossOrigin
     @ApiOperation("导入商品数据")
-    public ResponseResult uploadGoods(HttpServletResponse response, MultipartFile file) {
+    public ResponseResult uploadGoods(HttpServletRequest req, HttpServletResponse response, MultipartFile file) {
         response.setHeader("Access-Control-Allow-Origin", "*");
         ResponseResult result = new ResponseResult();
         try {
-            result = uploadService.uploadGoods(file);
+            String token = req.getHeader("Authorization");
+            Integer userId = TokenUtil.getUserId(token);
+            result = uploadService.uploadGoods(file, userId);
             result.setCode(410);
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,14 +67,16 @@ public class UploadController {
         return result;
     }
 
-    @PostMapping(value = "uploadExcel")
+    @PostMapping(value = "uploadSpecification")
     @CrossOrigin
     @ApiOperation("导入规格数据")
-    public ResponseResult uploadSpecification(HttpServletResponse response, MultipartFile file) {
+    public ResponseResult uploadSpecification(HttpServletRequest req, HttpServletResponse response, MultipartFile file) {
         response.setHeader("Access-Control-Allow-Origin", "*");
         ResponseResult result = new ResponseResult();
         try {
-            result = uploadService.uploadSpecification(file);
+            String token = req.getHeader("Authorization");
+            Integer userId = TokenUtil.getUserId(token);
+            result = uploadService.uploadSpecification(file, userId);
             result.setCode(410);
         } catch (Exception e) {
             e.printStackTrace();

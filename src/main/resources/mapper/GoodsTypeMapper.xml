@@ -107,7 +107,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.ch.entity.GoodsType" >
+  <insert id="insert" parameterType="com.ch.entity.GoodsType"  useGeneratedKeys="true" keyProperty="id">
     insert into goods_type (id, shop_id, status, 
       create_time, update_time, del_flag, 
       title, icon, parent_id, 

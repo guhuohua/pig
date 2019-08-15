@@ -316,6 +316,7 @@ public class SysGoodsServiceImpl implements SysGoodsService {
                 goods.setKeyWords(model.getKeyWords());
                 goods.setDesc(model.getDesc());
                 goods.setUpdateTime(new Date());
+                goods.setGoodsType(model.getGoodsType());
                 goods.setOriginalPrice(max);
                 goods.setIntegral((int)integral);
                 goods.setPresentPrice(min);

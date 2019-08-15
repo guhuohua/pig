@@ -116,7 +116,7 @@ public class SysSpikeServiceImpl implements SysSpikeService {
         int i = spikeGoodsMapper.deleteByPrimaryKey(id);
         if (i > 0) {
             Goods goods = goodsMapper.selectByPrimaryKey(goodsId);
-            goods.setGoodsType(GoodsTypeEnum.ORDINARY.name());
+            goods.setGoodsType(GoodsTypeEnum.SPIKE.name());
             goodsMapper.updateByPrimaryKey(goods);
         }
         return result;
