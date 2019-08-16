@@ -134,6 +134,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                                 orderFee += totalFee;
                                 orderItem.setPrice(spikeGoods1.getSpikePrice());
                                 order.setOrderStatus(1);
+                                order.setPayType("WXPAY");
                                 order.setOrderPrice(orderFee + Collections.max(feeList));
                                 order.setGoodsFee(orderFee);
                                 order.setFreight(Collections.max(feeList));
@@ -161,6 +162,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                             order.setOrderPrice(0l);
                             order.setOrderStatus(1);
                             order.setFreight(0l);
+                            order.setPayType("INTEGRAL");
                             order.setIntegral(goodsSku.getConsumptionIntegral());
 
                         } else {
@@ -272,7 +274,9 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             }*/
         }
         GoodsOrder order = orderMapper.selectByPrimaryKey(orderId);
+        order.setDeliveryId(userAddresses1.get(0).getId());
         order.setFormartDate(order.getCreateDate().getTime());
+        orderMapper.updateByPrimaryKey(order);
         OrderItemExample example = new OrderItemExample();
         OrderItemExample.Criteria criteria = example.createCriteria();
         criteria.andOrderIdEqualTo(orderId);
@@ -329,7 +333,6 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                 for (GoodsOrder goodsOrder : goodsOrders1) {
                     orderIds1.add(goodsOrder.getId());
                 }
-
                 System.out.println(condition);
                 if (BeanUtils.isNotEmpty(condition)) {
                     OrderItemExample orderExample1 = new OrderItemExample();

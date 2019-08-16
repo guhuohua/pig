@@ -15,6 +15,16 @@ public class ForRecord {
 
     private Integer userId;
 
+    private Long formartCreateTime;
+
+    public Long getFormartCreateTime() {
+        return formartCreateTime;
+    }
+
+    public void setFormartCreateTime(Long formartCreateTime) {
+        this.formartCreateTime = formartCreateTime;
+    }
+
     public Integer getId() {
         return id;
     }
