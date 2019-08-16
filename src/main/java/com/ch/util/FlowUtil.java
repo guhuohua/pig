@@ -30,7 +30,7 @@ public class FlowUtil {
                     userAccountFlow.setFlowReason("评论获得积分");
                 }
                 if ("first".equals(flowReason)) {
-                    userAccountFlow.setFlowReason("绑定上级获得积分");
+                    userAccountFlow.setFlowReason("绑定下级获得积分");
                 }
 
                 if ("payment".equals(flowReason)) {

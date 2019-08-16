@@ -959,7 +959,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                     if (BeanUtils.isNotEmpty(userInfo.getSuperiorInvitationCode())) {
                         UserInfoExample example1 = new UserInfoExample();
                         UserInfoExample.Criteria criteria1 = example1.createCriteria();
-                        criteria1.andSuperiorInvitationCodeEqualTo(userInfo.getSuperiorInvitationCode());
+                        criteria1.andInvitationCodeEqualTo(userInfo.getSuperiorInvitationCode());
                         List<UserInfo> userInfos = userInfoMapper.selectByExample(example1);
                         if (userInfos.size() > 0) {
                             UserInfo userInfo1 = userInfos.get(0);
