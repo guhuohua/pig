@@ -6,20 +6,16 @@
 
 package com.ch.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.ch.base.BeanUtils;
 import com.ch.base.ResponseResult;
 import com.ch.dao.*;
 import com.ch.dto.LoginDTO;
 import com.ch.dto.UserInfos;
 import com.ch.entity.*;
-import com.ch.model.TelParam;
 import com.ch.service.SysMemberService;
 import com.ch.service.ViewUserInfoService;
 import com.ch.util.FlowUtil;
 import com.ch.util.RandomUtil;
-import com.sun.org.apache.regexp.internal.RE;
-import org.apache.commons.math3.analysis.function.Sin;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,6 +58,23 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
     @Autowired
     MemberRankMapper memberRankMapper;
 
+    public static Date getEndOfDay(Date date) {
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault());
+        ;
+        LocalDateTime endOfDay = localDateTime.with(LocalTime.MAX);
+        return Date.from(endOfDay.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    public static Date getStartOfDay(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Date zero = calendar.getTime();
+        return zero;
+
+    }
 
     @Override
     public UserInfos findByOpenId(String openId) {
@@ -167,17 +180,22 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
         List<UserInfo> userInfos = userInfoMapper.selectByExample(example);
         UserInfo userInfo1 = userInfos.get(0);
         UserInfo userInfo = findOneByOpenId(openId);
+        if (userInfo.getInvitationCode().equals(invitationCode)) {
+            result.setCode(500);
+            result.setError_description("不能绑定本人邀请码");
+            return result;
+        }
         if ("".equals(userInfo.getSuperiorInvitationCode()) || null == userInfo.getSuperiorInvitationCode()) {
             userInfo.setSuperiorInvitationCode(invitationCode);
-            userInfo1.setIntegral(userInfo.getIntegral() + baseIntegral.getFirstShare());
-            userInfo1.setUseIntegral(userInfo.getUseIntegral() + baseIntegral.getFirstShare());
+            userInfo1.setIntegral(userInfo1.getIntegral() + baseIntegral.getFirstShare());
+            userInfo1.setUseIntegral(userInfo1.getUseIntegral() + baseIntegral.getFirstShare());
             flowUtil.addFlowTel(baseIntegral.getFirstShare().longValue(), "first", "INTEGRAL", 0, userInfo1.getId());
         } else {
             result.setCode(500);
             result.setError_description("已绑定上级分销商");
             return result;
         }
-       userInfoMapper.updateByPrimaryKey(userInfo1);
+        userInfoMapper.updateByPrimaryKey(userInfo1);
         userInfoMapper.updateByPrimaryKey(userInfo);
         sysMemberService.synchronizedIntegral(userInfo.getId());
 
@@ -301,24 +319,6 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
             result.setError_description("openId不能为空");
             return result;
         }
-
-    }
-
-    public static Date getEndOfDay(Date date) {
-        LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault());
-        ;
-        LocalDateTime endOfDay = localDateTime.with(LocalTime.MAX);
-        return Date.from(endOfDay.atZone(ZoneId.systemDefault()).toInstant());
-    }
-
-    public static Date getStartOfDay(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        Date zero = calendar.getTime();
-        return zero;
 
     }
 

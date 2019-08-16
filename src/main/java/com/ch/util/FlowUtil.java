@@ -38,7 +38,7 @@ public class FlowUtil {
                 }
 
                 if ("super".equals(flowReason)) {
-                    userAccountFlow.setFlowReason("下级分销商消费获得积分");
+                    userAccountFlow.setFlowReason("上贡消费获得积分");
                 }
             }
 

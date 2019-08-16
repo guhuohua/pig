@@ -965,8 +965,8 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                             UserInfo userInfo1 = userInfos.get(0);
                             userInfo1.setIntegral(userInfo1.getIntegral() + floors);
                             userInfo1.setUseIntegral(userInfo1.getUseIntegral() + floors);
-                            userInfoMapper.updateByPrimaryKey(userInfo);
-                            flowUtil.addFlowTel(floors1, "super", "INTEGRAL", 0, userInfo.getId());
+                            userInfoMapper.updateByPrimaryKey(userInfo1);
+                            flowUtil.addFlowTel(floors1, "super", "INTEGRAL", 0, userInfo1.getId());
                             sysMemberService.synchronizedIntegral(userInfo.getId());
                         }
                     }
