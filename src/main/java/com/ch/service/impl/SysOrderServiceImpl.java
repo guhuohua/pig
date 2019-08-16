@@ -223,9 +223,16 @@ public class SysOrderServiceImpl implements SysOrderService {
         GoodsOrder goodsOrder = orderMapper.selectByPrimaryKey(orderId);
         Express express = expressMapper.selectByPrimaryKey(goodsOrder.getExpressId());
         try {
-            String orderTracesByJson = kdniaoTrackQueryAPI.getOrderTracesByJson(express.getExpressAbbreviation(), goodsOrder.getTrackNumber());
-            JSONObject jsonObject = JSON.parseObject(orderTracesByJson);
-            result.setData(jsonObject);
+            if (null != express && null != goodsOrder.getTrackNumber()){
+                String orderTracesByJson = kdniaoTrackQueryAPI.getOrderTracesByJson(express.getExpressAbbreviation(), goodsOrder.getTrackNumber());
+                JSONObject jsonObject = JSON.parseObject(orderTracesByJson);
+                result.setData(jsonObject);
+            }else {
+                result.setCode(600);
+                result.setError_description("暂无物流信息");
+                return result;
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             result.setCode(600);

@@ -172,7 +172,6 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
             userInfo1.setIntegral(userInfo.getIntegral() + baseIntegral.getFirstShare());
             userInfo1.setUseIntegral(userInfo.getUseIntegral() + baseIntegral.getFirstShare());
             flowUtil.addFlowTel(baseIntegral.getFirstShare().longValue(), "first", "INTEGRAL", 0, userInfo1.getId());
-
         } else {
             result.setCode(500);
             result.setError_description("已绑定上级分销商");
@@ -282,7 +281,7 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
                 loginDTO.setNextMemberIntegral(dia);
                 loginDTO.setNextMember("DIAMONDS");
             }
-            if (userInfo.getIntegral() >= gold && userInfo.getIntegral() < plat) {
+            if (userInfo.getIntegral() >= plat && userInfo.getIntegral() < dia) {
                 loginDTO.setNextMemberIntegral(dia);
                 loginDTO.setNextMember("DIAMONDS");
 

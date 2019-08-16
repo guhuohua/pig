@@ -50,8 +50,10 @@ public class IntegralPayController {
         String openId = req.getHeader("openId");
         UserInfo userInfo = viewUserInfoService.findOneByOpenId(openId);
         GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderId);
+
         try {
-            goodsOrder.setOrderStatus(7);
+            goodsOrder.setOrderStatus(3);
+            goodsOrder.setUserId(userInfo.getId());
             goodsOrderMapper.updateByPrimaryKey(goodsOrder);
             userInfo.setUseIntegral(userInfo.getUseIntegral() - goodsOrder.getIntegral());
             userInfoMapper.updateByPrimaryKey(userInfo);

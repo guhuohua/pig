@@ -38,6 +38,7 @@ public class ForRecordServiceImpl implements ForRecordService {
         List<ForRecord> forRecords = forRecordMapper.selectByExample(example);
         if (forRecords.size() > 0) {
             for (ForRecord forRecord : forRecords) {
+                forRecord.setFormartCreateTime(forRecord.getCreateTime().getTime());
                 Map map = new HashMap();
                 Goods goods = goodsMapper.selectByPrimaryKey(forRecord.getGoosId());
                 if (BeanUtils.isNotEmpty(goods)) {
