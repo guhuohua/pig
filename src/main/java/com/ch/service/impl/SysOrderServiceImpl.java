@@ -10,6 +10,7 @@ import com.ch.dto.SysDeliveryInfoDTO;
 import com.ch.dto.SysOrderDetailDTO;
 import com.ch.dto.SysOrderParam;
 import com.ch.entity.*;
+import com.ch.enums.GoodsTypeEnum;
 import com.ch.enums.OderStatusEnum;
 import com.ch.handler.ActiveMQHandler;
 import com.ch.service.SysMemberService;
@@ -154,7 +155,12 @@ public class SysOrderServiceImpl implements SysOrderService {
                 sysOrderDetailDTO.setUserName(info.getNickname());
             }
             if (order.getOrderStatus() != 1) {
-                sysOrderDetailDTO.setPayName("微信支付");
+                if ("WXPAY".equals(order.getPayType())) {
+                    sysOrderDetailDTO.setPayName("微信支付");
+                }
+                if (GoodsTypeEnum.INTEGRAL.name().equals(order.getPayType())) {
+                    sysOrderDetailDTO.setPayName("积分支付");
+                }
                 sysOrderDetailDTO.setTotal(order.getOrderPrice());
                 sysOrderDetailDTO.setPayDate(order.getPayDate());
             }
