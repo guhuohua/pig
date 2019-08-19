@@ -12,11 +12,8 @@ public class OrderRefundProvider {
         String refundId = (String) map.get("refundId");
         Integer refundStatus = (Integer) map.get("refundStatus");
         Integer shopId = (Integer) map.get("shopId");
-        StringBuilder sb = new StringBuilder("select orr.id as refund_id," +
-                "     go.id as order_id," +
-                "    ua.name as user_name," +
-                "   orr.price as refund_price," +
-                " go.track_number as logistics_number" +
+        StringBuilder sb = new StringBuilder("select orr.id as refund_id, go.id as order_id, ua.name ,orr.price as refund_price,  " +
+                "orr.real_price, go.pay_date, go.track_number as logistics_number , orr.create_date as refund_date, orr.refund_status"+
                 "   from order_refund orr" +
                 "   left join goods_order go on orr.order_id = go.id" +
                 "   left join user_address ua on go.delivery_id = ua.id where 1=1");
