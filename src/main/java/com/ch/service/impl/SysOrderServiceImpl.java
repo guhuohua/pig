@@ -106,7 +106,7 @@ public class SysOrderServiceImpl implements SysOrderService {
     }
 
     @Override
-    public ResponseResult detail(String oderId, Integer userId) {
+    public ResponseResult detail(String oderId, Integer userId, String refundId) {
         ResponseResult result = new ResponseResult();
         SysOrderDetailDTO sysOrderDetailDTO = new SysOrderDetailDTO();
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
@@ -129,9 +129,9 @@ public class SysOrderServiceImpl implements SysOrderService {
                     sysOrderDetailDTO.setPhone(userAddress.getTel());
                 }
             }
-            if (BeanUtils.isNotEmpty(order.getRefundId())) {
+            if (BeanUtils.isNotEmpty(refundId)) {
                 OrderRefundExample orderRefundExample = new OrderRefundExample();
-                orderRefundExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andIdEqualTo(order.getRefundId());
+                orderRefundExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andIdEqualTo(refundId);
                 List<OrderRefund> orderRefunds = orderRefundMapper.selectByExample(orderRefundExample);
                 if (orderRefunds.stream().findFirst().isPresent()) {
                     OrderRefund orderRefund = orderRefunds.stream().findFirst().get();
