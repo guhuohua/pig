@@ -50,12 +50,12 @@ public class ViewOrderRefundServiceImpl implements ViewOrderRefundService {
         OrderRefundExample.Criteria criteria1 = example1.createCriteria();
         criteria1.andOrderIdEqualTo(orderRefunds.stream().findFirst().get().getOrderId());
         List<OrderRefund> orderRefundList = orderRefundMapper.selectByExample(example1);
-        if (orderRefundList.size()>0){
+        if (orderRefundList.size() > 0) {
             result.setCode(500);
             result.setError_description("当前订单已申请售后，请勿重复添加");
-            return  result;
-        }else {
-            for (OrderRefund orderRefund:orderRefunds) {
+            return result;
+        } else {
+            for (OrderRefund orderRefund : orderRefunds) {
                 UserInfoExample example = new UserInfoExample();
                 UserInfoExample.Criteria criteria = example.createCriteria();
                 criteria.andOpenIdEqualTo(openId);
@@ -92,79 +92,64 @@ public class ViewOrderRefundServiceImpl implements ViewOrderRefundService {
         }
         List list = new ArrayList();
         //售后中
-        if (status != null) {
-            if (status == 1) {
-                OrderRefundExample example1 = new OrderRefundExample();
-                OrderRefundExample.Criteria criteria1 = example1.createCriteria();
-                criteria1.andUserIdEqualTo(userInfo.getId());
-                criteria1.andShopIdEqualTo(shopId);
-                criteria1.andRefundStatusEqualTo(1);
-                List<OrderRefund> orderRefunds = orderRefundMapper.selectByExample(example1);
-                for (OrderRefund orderRefund : orderRefunds) {
-                    GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderRefund.getOrderId());
-                    OrderItemExample orderExample1 = new OrderItemExample();
-                    OrderItemExample.Criteria criteria2 = orderExample1.createCriteria();
-                    if (BeanUtils.isNotEmpty(goodsOrder)){
-                        criteria2.andOrderIdEqualTo(goodsOrder.getId());
-                    }
-                    List<OrderItem> orderItems = orderItemMapper.selectByExample(orderExample1);
-                    List list1 = new ArrayList();
-                    for (OrderItem orderItem : orderItems) {
-                        GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderItem.getSkuAttrId());
-                        Goods goods = goodsMapper.selectByPrimaryKey(orderItem.getGoodsId());
-                        Map map1 = new HashMap();
-                        map1.put("goodsSku1", goodsSku);
-                        map1.put("goods1", goods);
-                        map1.put("orderItem", orderItem);
-                        list1.add(map1);
-                    }
-                    Map map = new HashMap();
-                    map.put("orderItems", list1);
-                    map.put("orderRefund", orderRefund);
-                    list.add(map);
-
+        if (status == 1) {
+            OrderRefundExample example1 = new OrderRefundExample();
+            OrderRefundExample.Criteria criteria1 = example1.createCriteria();
+            criteria1.andUserIdEqualTo(userInfo.getId());
+            criteria1.andShopIdEqualTo(shopId);
+            criteria1.andRefundStatusEqualTo(1);
+            List<OrderRefund> orderRefunds = orderRefundMapper.selectByExample(example1);
+            for (OrderRefund orderRefund : orderRefunds) {
+                GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderRefund.getOrderId());
+                OrderItemExample orderExample1 = new OrderItemExample();
+                OrderItemExample.Criteria criteria2 = orderExample1.createCriteria();
+                if (BeanUtils.isNotEmpty(goodsOrder)) {
+                    criteria2.andOrderIdEqualTo(goodsOrder.getId());
+                    criteria2.andGoodsIdEqualTo(orderRefund.getGoodsId());
+                    criteria2.andSkuAttrIdEqualTo(orderRefund.getSkuId());
                 }
-
+                List<OrderItem> orderItems = orderItemMapper.selectByExample(orderExample1);
+                OrderItem orderItem = orderItems.stream().findFirst().get();
+                GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderItem.getSkuAttrId());
+                Goods goods = goodsMapper.selectByPrimaryKey(orderItem.getGoodsId());
+                Map map = new HashMap();
+                map.put("orderRefund", orderRefund);
+                map.put("goodsSku1", goodsSku);
+                map.put("goods1", goods);
+                map.put("orderItem", orderItem);
+                list.add(map);
             }
-
-
-            //售后通过
-            if (status == 2) {
-                OrderRefundExample example1 = new OrderRefundExample();
-                OrderRefundExample.Criteria criteria1 = example1.createCriteria();
-                criteria1.andUserIdEqualTo(userInfo.getId());
-                criteria1.andShopIdEqualTo(shopId);
-                criteria1.andRefundStatusEqualTo(2);
-                List<OrderRefund> orderRefunds = orderRefundMapper.selectByExample(example1);
-                for (OrderRefund orderRefund : orderRefunds) {
-                    GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderRefund.getOrderId());
-                    OrderItemExample orderExample1 = new OrderItemExample();
-                    OrderItemExample.Criteria criteria2 = orderExample1.createCriteria();
-                    if (BeanUtils.isNotEmpty(goodsOrder)){
-                        criteria2.andOrderIdEqualTo(goodsOrder.getId());
-                    }
-                    List<OrderItem> orderItems = orderItemMapper.selectByExample(orderExample1);
-                    List list1 = new ArrayList();
-                    for (OrderItem orderItem : orderItems) {
-                        GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderItem.getSkuAttrId());
-                        Goods goods = goodsMapper.selectByPrimaryKey(orderItem.getGoodsId());
-                        Map map1 = new HashMap();
-                        map1.put("goodsSku1", goodsSku);
-                        map1.put("goods1", goods);
-                        map1.put("orderItem", orderItem);
-                        list1.add(map1);
-                    }
-                    Map map = new HashMap();
-                    map.put("orderItems", list1);
-                    map.put("orderRefund", orderRefund);
-                    list.add(map);
-
-                }
-
-            }
-            result.setData(list);
         }
 
+        //售后通过
+        if (status == 2) {
+            OrderRefundExample example1 = new OrderRefundExample();
+            OrderRefundExample.Criteria criteria1 = example1.createCriteria();
+            criteria1.andUserIdEqualTo(userInfo.getId());
+            criteria1.andShopIdEqualTo(shopId);
+            criteria1.andRefundStatusEqualTo(2);
+            List<OrderRefund> orderRefunds = orderRefundMapper.selectByExample(example1);
+            for (OrderRefund orderRefund : orderRefunds) {
+                GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderRefund.getOrderId());
+                OrderItemExample orderExample1 = new OrderItemExample();
+                OrderItemExample.Criteria criteria2 = orderExample1.createCriteria();
+                if (BeanUtils.isNotEmpty(goodsOrder)) {
+                    criteria2.andOrderIdEqualTo(goodsOrder.getId());
+                    criteria2.andGoodsIdEqualTo(orderRefund.getGoodsId());
+                    criteria2.andSkuAttrIdEqualTo(orderRefund.getSkuId());
+                }
+                List<OrderItem> orderItems = orderItemMapper.selectByExample(orderExample1);
+                OrderItem orderItem = orderItems.stream().findFirst().get();
+                GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderItem.getSkuAttrId());
+                Goods goods = goodsMapper.selectByPrimaryKey(orderItem.getGoodsId());
+                Map map = new HashMap();
+                map.put("orderRefund", orderRefund);
+                map.put("goodsSku1", goodsSku);
+                map.put("goods1", goods);
+                map.put("orderItem", orderItem);
+                list.add(map);
+            }
+        }
         //售后拒绝
         if (status == 3) {
             OrderRefundExample example1 = new OrderRefundExample();
@@ -177,29 +162,26 @@ public class ViewOrderRefundServiceImpl implements ViewOrderRefundService {
                 GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderRefund.getOrderId());
                 OrderItemExample orderExample1 = new OrderItemExample();
                 OrderItemExample.Criteria criteria2 = orderExample1.createCriteria();
-                if (BeanUtils.isNotEmpty(goodsOrder)){
+                if (BeanUtils.isNotEmpty(goodsOrder)) {
                     criteria2.andOrderIdEqualTo(goodsOrder.getId());
+                    criteria2.andGoodsIdEqualTo(orderRefund.getGoodsId());
+                    criteria2.andSkuAttrIdEqualTo(orderRefund.getSkuId());
                 }
                 List<OrderItem> orderItems = orderItemMapper.selectByExample(orderExample1);
-                List list1 = new ArrayList();
-                for (OrderItem orderItem : orderItems) {
-                    GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderItem.getSkuAttrId());
-                    Goods goods = goodsMapper.selectByPrimaryKey(orderItem.getGoodsId());
-                    Map map1 = new HashMap();
-                    map1.put("goodsSku1", goodsSku);
-                    map1.put("goods1", goods);
-                    map1.put("orderItem", orderItem);
-                    list1.add(map1);
-                }
+                OrderItem orderItem = orderItems.stream().findFirst().get();
+                GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderItem.getSkuAttrId());
+                Goods goods = goodsMapper.selectByPrimaryKey(orderItem.getGoodsId());
                 Map map = new HashMap();
-                map.put("orderItems", list1);
                 map.put("orderRefund", orderRefund);
+                map.put("goodsSku1", goodsSku);
+                map.put("goods1", goods);
+                map.put("orderItem", orderItem);
                 list.add(map);
             }
         }
+        result.setData(list);
         return result;
     }
-
     @Override
     public ResponseResult refundCount(String openId, Integer shopId) {
         ResponseResult result = new ResponseResult();
@@ -216,7 +198,7 @@ public class ViewOrderRefundServiceImpl implements ViewOrderRefundService {
         OrderRefundExample.Criteria criteria1 = example1.createCriteria();
         criteria1.andUserIdEqualTo(userInfo.getId());
         criteria1.andShopIdEqualTo(shopId);
-         criteria1.andRefundStatusEqualTo(1);
+        criteria1.andRefundStatusEqualTo(1);
         List<OrderRefund> orderRefunds = orderRefundMapper.selectByExample(example1);
         result.setData(orderRefunds.size());
         return result;
