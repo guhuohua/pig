@@ -27,6 +27,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SysOrderServiceImpl implements SysOrderService {
@@ -168,6 +169,15 @@ public class SysOrderServiceImpl implements SysOrderService {
             OrderItemExample orderItemExample = new OrderItemExample();
             orderItemExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andOrderIdEqualTo(order.getId());
             List<OrderItem> orderItems = orderItemMapper.selectByExample(orderItemExample);
+            if (BeanUtils.isNotEmpty(refundId)) {
+                OrderRefundExample orderRefundExample = new OrderRefundExample();
+                orderRefundExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andIdEqualTo(refundId);
+                List<OrderRefund> orderRefunds = orderRefundMapper.selectByExample(orderRefundExample);
+                if (orderRefunds.stream().findFirst().isPresent()) {
+                    OrderRefund orderRefund = orderRefunds.stream().findFirst().get();
+                    orderItems.stream().filter(item -> item.getGoodsId().equals(orderRefund.getGoodsId()) && item.getSkuAttrId().equals(orderRefund.getSkuId())).collect(Collectors.toList());
+                }
+            }
             for (OrderItem orderItem : orderItems) {
                 SysDeliveryInfoDTO sysDeliveryInfoDTO = new SysDeliveryInfoDTO();
                 sysDeliveryInfoDTO.setGoodsId(orderItem.getGoodsId());
