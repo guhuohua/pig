@@ -46,12 +46,12 @@ public class SysOrderController {
     }
 
     @GetMapping("detail")
-    public ResponseResult detail(HttpServletRequest req, String orderId) {
+    public ResponseResult detail(HttpServletRequest req, String orderId, String refundId) {
         ResponseResult result = new ResponseResult();
         try {
             String token = req.getHeader("Authorization");
             Integer userId = TokenUtil.getUserId(token);
-            result = sysOrderService.detail(orderId, userId);
+            result = sysOrderService.detail(orderId, userId, refundId);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());
