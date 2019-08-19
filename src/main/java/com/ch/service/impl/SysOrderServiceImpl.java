@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -175,7 +176,13 @@ public class SysOrderServiceImpl implements SysOrderService {
                 List<OrderRefund> orderRefunds = orderRefundMapper.selectByExample(orderRefundExample);
                 if (orderRefunds.stream().findFirst().isPresent()) {
                     OrderRefund orderRefund = orderRefunds.stream().findFirst().get();
-                    orderItems.stream().filter(item -> item.getGoodsId().equals(orderRefund.getGoodsId()) && item.getSkuAttrId().equals(orderRefund.getSkuId())).collect(Collectors.toList());
+                    Iterator<OrderItem> iterator = orderItems.iterator();
+                    while (iterator.hasNext()) {
+                        OrderItem item = iterator.next();
+                        if (!item.getGoodsId().equals(orderRefund.getGoodsId()) && !item.getSkuAttrId().equals(orderRefund.getSkuId())) {
+                            iterator.remove();
+                        }
+                    }
                 }
             }
             for (OrderItem orderItem : orderItems) {

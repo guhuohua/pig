@@ -94,7 +94,7 @@ public class SysOrderRefundServiceImpl implements SysOrderRefundService {
             OrderRefund orderRefund = orderRefunds.stream().findFirst().get();
             if (param.getRefundStatus() == 2) {
                 GoodsOrderExample goodsOrderExample = new GoodsOrderExample();
-                goodsOrderExample.createCriteria().andRefundIdEqualTo(orderRefund.getId()).andShopIdEqualTo(sysUser.getShopId());
+                goodsOrderExample.createCriteria().andIdEqualTo(param.getOrderId()).andShopIdEqualTo(sysUser.getShopId());
                 boolean present = goodsOrderMapper.selectByExample(goodsOrderExample).stream().findFirst().isPresent();
                 if (present) {
                     GoodsOrder goodsOrder = goodsOrderMapper.selectByExample(goodsOrderExample).stream().findFirst().get();

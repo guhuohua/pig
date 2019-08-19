@@ -12,4 +12,6 @@ public class SysRefundThroughParam {
     private String refuse;
 
     private Integer refundStatus;
+
+    private String orderId;
 }
