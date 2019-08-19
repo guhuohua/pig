@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping("order")
@@ -31,7 +32,7 @@ public class ViewOrderRefundController {
 
     @PostMapping("applyRefund")
     @ApiOperation("售后")
-    public ResponseResult refund(HttpServletRequest req, @RequestBody OrderRefund orderRefund) {
+    public ResponseResult refund(HttpServletRequest req, @RequestBody List<OrderRefund> orderRefund) {
         ResponseResult result = new ResponseResult();
         String openId = req.getHeader("openId");
         String token = req.getHeader("Authorization");
