@@ -274,7 +274,9 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             }*/
         }
         GoodsOrder order = orderMapper.selectByPrimaryKey(orderId);
-        order.setDeliveryId(userAddresses1.get(0).getId());
+        if (userAddresses1.size()>0){
+            order.setDeliveryId(userAddresses1.get(0).getId());
+        }
         order.setFormartDate(order.getCreateDate().getTime());
         orderMapper.updateByPrimaryKey(order);
         OrderItemExample example = new OrderItemExample();
@@ -289,7 +291,6 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             /*Goods goods = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
             order.setFreight(goods.getFreight());
             order.setGoodsFee(orderItem.getPrice() * orderItem.getNumber());*/
-
         }
         map.put("userAddresses1", userAddresses1);
         //map.put("userAddress", userAddress);
