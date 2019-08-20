@@ -35,7 +35,8 @@ public class ViewGoodsCarServiceImpl implements ViewGoodsCarService {
     SpikeGoodsMapper spikeGoodsMapper;
     @Autowired
     ViewUserInfoService viewUserInfoService;
-
+    @Autowired
+    MemberRankMapper memberRankMapper;
 
 
     @Override
@@ -57,7 +58,14 @@ public class ViewGoodsCarServiceImpl implements ViewGoodsCarService {
         criteria1.andShopIdEqualTo(shopId);
         criteria1.andUserIdEqualTo(userInfo.getId());
         List<GoodsCar> goodsCars = goodsCarMapper.selectByExample(example1);
-
+        MemberRankExample exampleRank = new MemberRankExample();
+        MemberRankExample.Criteria criteria2 = exampleRank.createCriteria();
+        criteria2.andMemberTypeEqualTo(userInfo.getMember());
+        List<MemberRank> memberRanks = memberRankMapper.selectByExample(exampleRank);
+        Integer discount = null;
+        if (memberRanks.size() > 0) {
+            discount = memberRanks.get(0).getDiscount();
+        }
         SpikeGoodsExample spikeGoodsExample = new SpikeGoodsExample();
         SpikeGoodsExample.Criteria exampleCriteria = spikeGoodsExample.createCriteria();
         exampleCriteria.andSkuIdEqualTo(skuId);
@@ -70,7 +78,7 @@ public class ViewGoodsCarServiceImpl implements ViewGoodsCarService {
                     goodsCar.setNum(goodsCar.getNum() + num);
                     if (spikeGoods.size() > 0) {
                         totalFee = spikeGoods.get(0).getSpikePrice() * goodsCar.getNum();
-                    }else {
+                    } else {
                         totalFee = goodsSku.getPresentPrice() * goodsCar.getNum();
                     }
                     goodsCar.setTotalFee(totalFee);
@@ -86,7 +94,7 @@ public class ViewGoodsCarServiceImpl implements ViewGoodsCarService {
                         goodsCar2.setNum(goodsCar2.getNum() + num);
                         if (spikeGoods.size() > 0) {
                             totalFee = spikeGoods.get(0).getSpikePrice() * goodsCar2.getNum();
-                        }else {
+                        } else {
                             totalFee = goodsSku.getPresentPrice() * goodsCar2.getNum();
                         }
 
@@ -100,7 +108,7 @@ public class ViewGoodsCarServiceImpl implements ViewGoodsCarService {
                         goodsCar1.setSkuId(skuId);
                         if (spikeGoods.size() > 0) {
                             totalFee = spikeGoods.get(0).getSpikePrice() * num;
-                        }else {
+                        } else {
                             totalFee = goodsSku.getPresentPrice() * num;
                         }
                         goodsCar1.setTotalFee(totalFee);
@@ -117,14 +125,13 @@ public class ViewGoodsCarServiceImpl implements ViewGoodsCarService {
             goodsCar1.setSkuId(skuId);
             if (spikeGoods.size() > 0) {
                 totalFee = spikeGoods.get(0).getSpikePrice() * num;
-            }else {
+            } else {
                 totalFee = goodsSku.getPresentPrice() * num;
             }
             goodsCar1.setTotalFee(totalFee);
             goodsCar1.setUserId(userInfo.getId());
             goodsCarMapper.insert(goodsCar1);
         }
-
         ResponseResult result = new ResponseResult();
         return result;
 
@@ -147,40 +154,38 @@ public class ViewGoodsCarServiceImpl implements ViewGoodsCarService {
         criteria1.andShopIdEqualTo(shopId);
         List<GoodsCar> goodsCars = goodsCarMapper.selectByExample(example1);
         List list = new ArrayList<>();
-
-
         for (GoodsCar goodsCar : goodsCars) {
             CarDto carDto = new CarDto();
             GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(goodsCar.getSkuId());
-            goodsSku.setPresentPrice(goodsSku.getPresentPrice()*discount/100);
+            if (1 == goodsSku.getPresentPrice()) {
+                goodsSku.setPresentPrice(goodsSku.getPresentPrice());
+            } else {
+                goodsSku.setPresentPrice(goodsSku.getPresentPrice() * discount / 100);
+            }
             Goods goods = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
-
             SpikeGoodsExample spikeGoodsExample = new SpikeGoodsExample();
             SpikeGoodsExample.Criteria exampleCriteria = spikeGoodsExample.createCriteria();
             exampleCriteria.andSkuIdEqualTo(goodsSku.getId());
             exampleCriteria.andBeginDateLessThan(new Date());
             exampleCriteria.andEndDateGreaterThan(new Date());
             List<SpikeGoods> spikeGoods = spikeGoodsMapper.selectByExample(spikeGoodsExample);
-
             if (goods != null) {
                 if (1 == goods.getStatus()) {
                     carDto.setGoodsSku(goodsSku);
                     carDto.setNum(goodsCar.getNum());
                     carDto.setName(goods.getName());
-                    if (spikeGoods.size()>0){
+                    if (spikeGoods.size() > 0) {
                         carDto.setSpikeGoods(spikeGoods.get(0));
                     }
                     carDto.setFlag(1);
                     list.add(carDto);
                 }
-
-
                 if (0 == goods.getStatus()) {
                     carDto.setGoodsSku(goodsSku);
                     carDto.setNum(goodsCar.getNum());
                     carDto.setName(goods.getName());
                     carDto.setFlag(0);
-                    if (spikeGoods.size()>0){
+                    if (spikeGoods.size() > 0) {
                         carDto.setSpikeGoods(spikeGoods.get(0));
                     }
                     list.add(carDto);
