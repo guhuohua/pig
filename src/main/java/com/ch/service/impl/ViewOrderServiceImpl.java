@@ -19,6 +19,7 @@ import com.ch.util.FlowUtil;
 import com.ch.util.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -61,6 +62,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
     SysMemberService sysMemberService;
 
     @Override
+    @Transactional
     public ResponseResult addOrder(OrderDto[] orderDtoList, String openId, Integer shopId) {
         ResponseResult result = new ResponseResult();
         Long totalFee = 0l;
@@ -263,7 +265,6 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             criteria.andUserIdEqualTo(userInfo.getId());
             criteria.andStatusEqualTo(1);
             userAddresses1 = userAddressMapper.selectByExample(exampleAddress);
-
            /* UserAddressExample exampleAddress1 = new UserAddressExample();
             UserAddressExample.Criteria criteria2 = exampleAddress.createCriteria();
             criteria2.andUserIdEqualTo(userInfo.getId());
@@ -274,7 +275,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             }*/
         }
         GoodsOrder order = orderMapper.selectByPrimaryKey(orderId);
-        if (userAddresses1.size()>0){
+        if (userAddresses1.size() > 0) {
             order.setDeliveryId(userAddresses1.get(0).getId());
         }
         order.setFormartDate(order.getCreateDate().getTime());
