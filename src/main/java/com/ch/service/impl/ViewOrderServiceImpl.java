@@ -176,19 +176,26 @@ public class ViewOrderServiceImpl implements ViewOrderService {
                        /* userInfo.setUseIntegral(userInfo.getUseIntegral() - integral);
                         userInfoMapper.updateByPrimaryKey(userInfo);
                         flowUtil.addFlowTel(integral,"INTEGRAL_MONEY","INTEGRAL",1,userInfo.getId());*/
+
                             totalFee = (goodsSku.getPresentPrice() * orderDto.getNum());
                             orderFee += totalFee;
-
                             order.setOrderStatus(1);
                             MemberRankExample exampleRank = new MemberRankExample();
                             MemberRankExample.Criteria criteria1 = exampleRank.createCriteria();
                             criteria1.andMemberTypeEqualTo(userInfo.getMember());
                             List<MemberRank> memberRanks = memberRankMapper.selectByExample(exampleRank);
                             MemberRank memberRank = memberRanks.get(0);
-                            orderItem.setPrice(goodsSku.getPresentPrice() * memberRank.getDiscount() / 100);
-                            order.setGoodsFee(orderFee * memberRank.getDiscount() / 100);
-                            order.setOrderPrice(order.getGoodsFee() + Collections.max(feeList));
-                            order.setFreight(Collections.max(feeList));
+                            if (1 == goodsSku.getPresentPrice()) {
+                                orderItem.setPrice(goodsSku.getPresentPrice());
+                                order.setGoodsFee(orderFee);
+                                order.setOrderPrice(order.getGoodsFee() + Collections.max(feeList));
+                                order.setFreight(Collections.max(feeList));
+                            } else {
+                                orderItem.setPrice(goodsSku.getPresentPrice() * memberRank.getDiscount() / 100);
+                                order.setGoodsFee(orderFee * memberRank.getDiscount() / 100);
+                                order.setOrderPrice(order.getGoodsFee() + Collections.max(feeList));
+                                order.setFreight(Collections.max(feeList));
+                            }
                             SpikeGoodsExample spExample = new SpikeGoodsExample();
                             SpikeGoodsExample.Criteria exampleCriteria = spExample.createCriteria();
                             exampleCriteria.andSkuIdEqualTo(goodsSku.getId());
@@ -906,7 +913,6 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             solrService.releaseGoods(goods.getId(), shopId);
         }
         orderMapper.deleteByPrimaryKey(orderId);
-
         ResponseResult result = new ResponseResult();
         return result;
     }
