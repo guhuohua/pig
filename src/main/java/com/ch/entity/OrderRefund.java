@@ -35,6 +35,16 @@ public class OrderRefund {
 
     private Integer userId;
 
+    private Long viewCreateDate;
+
+    public Long getViewCreateDate() {
+        return viewCreateDate;
+    }
+
+    public void setViewCreateDate(Long viewCreateDate) {
+        this.viewCreateDate = viewCreateDate;
+    }
+
     public Integer getUserId() {
         return userId;
     }

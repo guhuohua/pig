@@ -2,12 +2,14 @@ package com.ch.model;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 public class SysRefundThroughParam {
 
     private String refundId;
 
-    private Long price;
+    private BigDecimal price;
 
     private String refuse;
 
