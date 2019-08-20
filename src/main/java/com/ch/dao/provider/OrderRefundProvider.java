@@ -27,6 +27,7 @@ public class OrderRefundProvider {
             sb.append(" and orr.refund_status = ").append(refundStatus);
         }
         sb.append(" and orr.shop_id =").append(shopId);
+        sb.append(" order by orr.create_date desc");
         return sb.toString();
     }
 }

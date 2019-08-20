@@ -39,6 +39,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.security.KeyStore;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
@@ -86,6 +87,7 @@ public class SysOrderRefundServiceImpl implements SysOrderRefundService {
     @Transactional
     public ResponseResult refundHandle(SysRefundThroughParam param, Integer userId) {
         ResponseResult result = new ResponseResult();
+        BigDecimal multiply = param.getPrice().multiply(new BigDecimal("100.00"));
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
         OrderRefundExample orderRefundExample = new OrderRefundExample();
         orderRefundExample.createCriteria().andShopIdEqualTo(sysUser.getShopId()).andIdEqualTo(param.getRefundId());
@@ -99,10 +101,10 @@ public class SysOrderRefundServiceImpl implements SysOrderRefundService {
                 if (present) {
                     GoodsOrder goodsOrder = goodsOrderMapper.selectByExample(goodsOrderExample).stream().findFirst().get();
                     orderRefund.setRefundStatus(2);
-                    orderRefund.setRealPrice(param.getPrice());
+                    orderRefund.setRealPrice(multiply.longValue());
                     orderRefund.setModifyDate(new Date());
                     // 调用微信退款
-                    wxRefund(goodsOrder.getId(), sysUser.getShopId(), param.getPrice(), orderRefund.getId());
+                    wxRefund(goodsOrder.getId(), sysUser.getShopId(), multiply.longValue(), orderRefund.getId());
                     orderRefundMapper.updateByPrimaryKey(orderRefund);
                     goodsOrder.setOrderStatus(Integer.valueOf(OderStatusEnum.EVALUATED.getCode()));
                     goodsOrderMapper.updateByPrimaryKey(goodsOrder);
@@ -163,7 +165,7 @@ public class SysOrderRefundServiceImpl implements SysOrderRefundService {
         params.put("out_refund_no", refoundDto.getOut_refund_no());
         params.put("total_fee", refoundDto.getTotal_fee());
         params.put("refund_fee", refoundDto.getRefund_fee());
-        //params.put("refund_account", "REFUND_SOURCE_UNSETTLED_FUNDS");
+//        params.put("refund_account", "REFUND_SOURCE_RECHARGE_FUNDS");
         // 除去数组中的空值和签名参数
         Map sPara = PayUtil.paraFilter(params);
         String prestr = PayUtil.createLinkString(sPara); // 把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串

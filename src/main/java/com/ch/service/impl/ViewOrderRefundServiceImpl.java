@@ -100,6 +100,7 @@ public class ViewOrderRefundServiceImpl implements ViewOrderRefundService {
             criteria1.andRefundStatusEqualTo(1);
             List<OrderRefund> orderRefunds = orderRefundMapper.selectByExample(example1);
             for (OrderRefund orderRefund : orderRefunds) {
+                orderRefund.setViewCreateDate(orderRefund.getCreateDate().getTime());
                 GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderRefund.getOrderId());
                 OrderItemExample orderExample1 = new OrderItemExample();
                 OrderItemExample.Criteria criteria2 = orderExample1.createCriteria();
@@ -130,6 +131,7 @@ public class ViewOrderRefundServiceImpl implements ViewOrderRefundService {
             criteria1.andRefundStatusEqualTo(2);
             List<OrderRefund> orderRefunds = orderRefundMapper.selectByExample(example1);
             for (OrderRefund orderRefund : orderRefunds) {
+                orderRefund.setViewCreateDate(orderRefund.getCreateDate().getTime());
                 GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderRefund.getOrderId());
                 OrderItemExample orderExample1 = new OrderItemExample();
                 OrderItemExample.Criteria criteria2 = orderExample1.createCriteria();
@@ -159,6 +161,7 @@ public class ViewOrderRefundServiceImpl implements ViewOrderRefundService {
             criteria1.andRefundStatusEqualTo(3);
             List<OrderRefund> orderRefunds = orderRefundMapper.selectByExample(example1);
             for (OrderRefund orderRefund : orderRefunds) {
+                orderRefund.setViewCreateDate(orderRefund.getCreateDate().getTime());
                 GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(orderRefund.getOrderId());
                 OrderItemExample orderExample1 = new OrderItemExample();
                 OrderItemExample.Criteria criteria2 = orderExample1.createCriteria();
