@@ -186,7 +186,7 @@ public class OSSUtil {
                         if (isImage) {//如果是图片，则图片的URL为：....
                             FILE_URL = "https://" + ossProperties.getBucketName() + "." + ossProperties.getOssaddress() + "/" + fileUrl;
                         } else {
-                            FILE_URL = "非图片，不可预览。文件路径为：" + fileUrl;
+                            FILE_URL = "https://" + ossProperties.getBucketName() + "." + ossProperties.getOssaddress() + "/" + fileUrl;
                         }
 
                         // 上传文件
