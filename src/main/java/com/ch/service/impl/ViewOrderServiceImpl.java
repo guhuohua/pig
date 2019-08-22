@@ -61,6 +61,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
     @Autowired
     SysMemberService sysMemberService;
 
+
     @Override
     @Transactional
     public ResponseResult addOrder(OrderDto[] orderDtoList, String openId, Integer shopId) {
@@ -89,6 +90,7 @@ public class ViewOrderServiceImpl implements ViewOrderService {
         if (userAddresses.size() > 0) {
             userAddress = userAddresses.get(0);
         }
+
         order.setId(System.currentTimeMillis() + RandomUtils.getRandomNumber(6));
         List<Long> feeList = new ArrayList<>();
         AddOrderDTO addOrderDTO = new AddOrderDTO();
@@ -905,6 +907,14 @@ public class ViewOrderServiceImpl implements ViewOrderService {
             GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(orderItem.getSkuAttrId());
             goodsSku.setInventory(goodsSku.getInventory() + orderItem.getNumber());
             goodsSku.setSale(goodsSku.getSale() - orderItem.getNumber());
+            SpikeGoodsExample speikeExample = new SpikeGoodsExample();
+            SpikeGoodsExample.Criteria exampleCriteria = speikeExample.createCriteria();
+            exampleCriteria.andSkuIdEqualTo(goodsSku.getId());
+            List<SpikeGoods> spikeGoods = spikeGoodsMapper.selectByExample(speikeExample);
+            SpikeGoods spikeGoods1 = spikeGoods.stream().findFirst().get();
+            //spikeGoods1.setMaxNum(spikeGoods1.getMaxNum() + orderItem.getNumber());
+            spikeGoods1.setSpikeNum(spikeGoods1.getSpikeNum() + orderItem.getNumber());
+            spikeGoodsMapper.updateByPrimaryKey(spikeGoods1);
             goodsSkuMapper.updateByPrimaryKey(goodsSku);
             Goods goods = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
             goods.setInventory(goods.getInventory() + orderItem.getNumber());

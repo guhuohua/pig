@@ -117,7 +117,6 @@ public class WeiXinPaymentController {
             result1.setError_description("请重新登录");
             return result1;
         }
-
         //获取店铺信息
         ShopMiniProgram shopMiniProgram = viewShopNameService.shopPayInfo(shopId);
         GoodsOrder goodsOrder = goodsOrderMapper.selectByPrimaryKey(weiXinParam.getOrderId());
