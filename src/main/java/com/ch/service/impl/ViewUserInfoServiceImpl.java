@@ -12,7 +12,9 @@ import com.ch.dao.*;
 import com.ch.dto.LoginDTO;
 import com.ch.dto.UserInfos;
 import com.ch.entity.*;
+import com.ch.enums.RedPacketEnum;
 import com.ch.service.SysMemberService;
+import com.ch.service.ViewRedPacketService;
 import com.ch.service.ViewUserInfoService;
 import com.ch.util.FlowUtil;
 import com.ch.util.RandomUtil;
@@ -57,6 +59,8 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
     ModelMapper modelMapper;
     @Autowired
     MemberRankMapper memberRankMapper;
+    @Autowired
+    ViewRedPacketService viewRedPacketService;
 
     public static Date getEndOfDay(Date date) {
         LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault());
@@ -179,6 +183,9 @@ public class ViewUserInfoServiceImpl implements ViewUserInfoService {
         criteria.andInvitationCodeEqualTo(invitationCode);
         List<UserInfo> userInfos = userInfoMapper.selectByExample(example);
         UserInfo userInfo1 = userInfos.get(0);
+
+        viewRedPacketService.sendRedPacket(userInfo1.getId(), RedPacketEnum.RECOMMEND.name());
+
         UserInfo userInfo = findOneByOpenId(openId);
         if (userInfo.getInvitationCode().equals(invitationCode)) {
             result.setCode(500);

@@ -22,6 +22,8 @@ import com.ch.entity.MemberRank;
 import com.ch.entity.MemberRankExample;
 import com.ch.entity.UserInfo;
 import com.ch.entity.UserInfoExample;
+import com.ch.enums.RedPacketEnum;
+import com.ch.service.ViewRedPacketService;
 import com.ch.service.ViewShopInfoService;
 import com.ch.service.ViewUserInfoService;
 import com.ch.util.HttpRequestUtil;
@@ -57,6 +59,8 @@ public class ViewUserConstantController {
     MemberRankMapper memberRankMapper;
     @Autowired
     ModelMapper modelMapper;
+    @Autowired
+    ViewRedPacketService viewRedPacketService;
 
     public static Date getEndOfDay(Date date) {
         LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault());
@@ -113,6 +117,7 @@ public class ViewUserConstantController {
             userInfo.setSignStatus(0);
             userInfo.setUseIntegral(0);
             userInfoMapper.insert(userInfo);
+            viewRedPacketService.sendRedPacket(userInfo.getId(), RedPacketEnum.REGISTER.name());
         }
         MemberRankExample example1 = new MemberRankExample();
         MemberRankExample.Criteria criteria1 = example1.createCriteria();

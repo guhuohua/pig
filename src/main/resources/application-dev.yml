@@ -1,0 +1,37 @@
+spring:
+  datasource:
+    username: root
+    password: CHANGhan208
+    url: jdbc:mysql://rm-bp1qbr1a08374nn3bpo.mysql.rds.aliyuncs.com/pig?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true&useSSL=false
+    continue-on-error: true
+    sql-script-encoding: UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+      # 间隔多久进行一次检测，检测需要关闭的空闲连接
+      time-between-eviction-runs-millis: 60000
+      # 一个连接在池中最小生存的时间
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      use-global-data-source-stat: true
+      filters: stat,wall,log4j2
+
+ip2region:
+  path: C:/jar/db/ip2region.db
+
+wxrefund:
+  certificate: /Users/changhan/Downloads/aes-sample.eae1f364/apiclient_cert.p12
+
+activemq:
+  cancel: 180000
+  delivery: 360000

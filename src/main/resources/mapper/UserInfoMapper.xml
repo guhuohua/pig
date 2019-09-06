@@ -117,7 +117,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.ch.entity.UserInfo" >
+  <insert id="insert" parameterType="com.ch.entity.UserInfo"  useGeneratedKeys="true" keyProperty="id">
     insert into user_info (id, shop_id, status, 
       create_time, update_time, del_flag, 
       tel, nickname, realname, 
