@@ -6,8 +6,10 @@ import com.ch.base.ResponseResult;
 import com.ch.dao.*;
 import com.ch.dto.PaymentDto;
 import com.ch.entity.*;
+import com.ch.model.UserUseRedPacketParam;
 import com.ch.model.WeiXinParam;
 import com.ch.service.ForRecordService;
+import com.ch.service.ViewRedPacketService;
 import com.ch.service.ViewShopNameService;
 import com.ch.service.ViewUserInfoService;
 import com.ch.util.*;
@@ -27,10 +29,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @RestController
@@ -71,6 +70,12 @@ public class WeiXinPaymentController {
     BaseIntegralMapper baseIntegralMapper;
     @Autowired
     UserAddressMapper userAddressMapper;
+    @Autowired
+    ViewRedPacketService viewRedPacketService;
+    @Autowired
+    OrderRedPacketMapper orderRedPacketMapper;
+    @Autowired
+    UserRedPacketMapper userRedPacketMapper;
 
 
     public static String md5Password(String key) {
@@ -135,6 +140,22 @@ public class WeiXinPaymentController {
             result1.setError_description("请选择收货地址");
             return result1;
         }
+
+        Long redPacketPrice = 0L;
+        OrderItemExample orderItemExample = new OrderItemExample();
+        orderItemExample.createCriteria().andOrderIdEqualTo(goodsOrder.getId());
+        List<OrderItem> orderItems = orderItemMapper.selectByExample(orderItemExample);
+        List<Integer> skuIds = new ArrayList<>();
+        for (OrderItem orderItem:orderItems) {
+            skuIds.add(orderItem.getSkuAttrId());
+        }
+        UserUseRedPacketParam userUseRedPacketParam = new UserUseRedPacketParam();
+        userUseRedPacketParam.setSkuIds(skuIds);
+        userUseRedPacketParam.setRedPacketId(weiXinParam.getRedPacketId());
+        userUseRedPacketParam.setOrderPrice(goodsOrder.getOrderPrice());
+        ResponseResult result2 = viewRedPacketService.userUseRedPacket(userUseRedPacketParam, userInfo.getId());
+        redPacketPrice = (Long) result2.getData();
+
         /*  goodsOrder.setOrderStatus(integralStatus);
         goodsOrderMapper.updateByPrimaryKey(goodsOrder);*/
         List<BaseIntegral> baseIntegrals = baseIntegralMapper.selectByExample(null);
@@ -187,6 +208,16 @@ public class WeiXinPaymentController {
 
         }
 
+        Long total_fee = Long.valueOf(paymentPo.getTotal_fee());
+        Long payPrice = total_fee - redPacketPrice;
+        paymentPo.setTotal_fee(payPrice.toString());
+        OrderRedPacket orderRedPacket = new OrderRedPacket();
+        orderRedPacket.setCreateDate(new Date());
+        orderRedPacket.setRedPacketId(weiXinParam.getRedPacketId());
+        orderRedPacket.setOrderId(goodsOrder.getId());
+        orderRedPacket.setUserId(userInfo.getId());
+        orderRedPacket.setStatus(0);
+        orderRedPacketMapper.insert(orderRedPacket);
 
         paymentPo.setSpbill_create_ip(spbill_create_ip);
         paymentPo.setNotify_url(shopMiniProgram.getBackUrl());
@@ -302,6 +333,22 @@ public class WeiXinPaymentController {
                         GoodsCarExample.Criteria criteria1 = example1.createCriteria();
                         criteria1.andSkuIdEqualTo(orderItem.getSkuAttrId());
                         goodsCarMapper.deleteByExample(example1);
+
+                        OrderRedPacketExample orderRedPacketExample = new OrderRedPacketExample();
+                        orderRedPacketExample.createCriteria().andOrderIdEqualTo(goodsOrder.getId());
+                        List<OrderRedPacket> orderRedPackets = orderRedPacketMapper.selectByExample(orderRedPacketExample);
+                        if (orderRedPackets.stream().findFirst().isPresent()) {
+                            OrderRedPacket orderRedPacket = orderRedPackets.stream().findFirst().get();
+                            UserRedPacketExample userRedPacketExample = new UserRedPacketExample();
+                            userRedPacketExample.createCriteria().andRedPacketIdEqualTo(orderRedPacket.getRedPacketId())
+                                    .andUserIdEqualTo(orderRedPacket.getUserId());
+                            List<UserRedPacket> userRedPackets = userRedPacketMapper.selectByExample(userRedPacketExample);
+                            if (userRedPackets.stream().findFirst().isPresent()) {
+                                UserRedPacket userRedPacket = userRedPackets.stream().findFirst().get();
+                                userRedPacket.setStatus(1);
+                                userRedPacketMapper.updateByPrimaryKey(userRedPacket);
+                            }
+                        }
                     }
 
                 }

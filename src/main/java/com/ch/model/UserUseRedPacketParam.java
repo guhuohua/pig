@@ -7,7 +7,7 @@ import java.util.List;
 @Data
 public class UserUseRedPacketParam {
 
-    private List<Integer> goodsIds;
+    private List<Integer> skuIds;
 
     private Integer redPacketId;
 

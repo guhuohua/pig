@@ -6,6 +6,16 @@ public class WeiXinParam {
     private double money;
     private int useIntegral;
 
+    private Integer redPacketId;
+
+    public Integer getRedPacketId() {
+        return redPacketId;
+    }
+
+    public void setRedPacketId(Integer redPacketId) {
+        this.redPacketId = redPacketId;
+    }
+
     public String getOrderId() {
         return orderId;
     }

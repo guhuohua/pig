@@ -2,9 +2,7 @@ package com.ch.service.impl;
 
 import com.ch.base.BeanUtils;
 import com.ch.base.ResponseResult;
-import com.ch.dao.GoodsTypeMapper;
-import com.ch.dao.RedPacketMapper;
-import com.ch.dao.UserRedPacketMapper;
+import com.ch.dao.*;
 import com.ch.dto.MyRedPacketDTO;
 import com.ch.entity.*;
 import com.ch.enums.RedPacketEnum;
@@ -16,8 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.criteria.From;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -38,6 +34,16 @@ public class ViewRedPacketServiceImpl implements ViewRedPacketService {
 
     @Autowired
     GoodsTypeMapper goodsTypeMapper;
+
+    @Autowired
+    GoodsSkuMapper goodsSkuMapper;
+
+    @Autowired
+    SpikeGoodsMapper spikeGoodsMapper;
+
+    @Autowired
+    GoodsMapper goodsMapper;
+
 
     @Override
     public ResponseResult judgeRedPacket(Integer userId) {
@@ -223,18 +229,67 @@ public class ViewRedPacketServiceImpl implements ViewRedPacketService {
             RedPacket redPacket = redPacketMapper.selectByPrimaryKey(userRedPacket.getRedPacketId());
             if (isEffectiveDate(new Date(), redPacket.getUseBeginDate(), redPacket.getUseEndDate())) {
                 if (packetParam.getOrderPrice() >= redPacket.getMinPrice()) {
-                    if (redPacket.getGoodsRange() == 0) {
-
+                    if (redPacket.getSuperposition() == 0) {
+                        for (Integer skuId:packetParam.getSkuIds()) {
+                            GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(skuId);
+                            SpikeGoodsExample spikeGoodsExample = new SpikeGoodsExample();
+                            spikeGoodsExample.createCriteria().andSkuIdEqualTo(skuId).andGoodsIdEqualTo(goodsSku.getGoodsId());
+                            List<SpikeGoods> spikeGoodsList = spikeGoodsMapper.selectByExample(spikeGoodsExample);
+                            if (spikeGoodsList.stream().findFirst().isPresent()) {
+                                SpikeGoods spikeGoods = spikeGoodsList.stream().findFirst().get();
+                                if (isEffectiveDate(new Date(), spikeGoods.getBeginDate(), spikeGoods.getEndDate())) {
+                                    result.setCode(600);
+                                    result.setError_description("该红包不可与其他活动同时参与，请选择其他红包");
+                                } else {
+                                    price = redPacket.getFaceValue();
+                                }
+                            }
+                        }
                     } else {
-
+                        if (redPacket.getGoodsRange() == 0) {
+                            price = redPacket.getFaceValue();
+                        } else {
+                            Long accordPrice = 0L;
+                            List<Integer> goodsTypeIdList = new ArrayList<>();
+                            goodsTypeIdList.add(redPacket.getGoodsRange());
+                            GoodsType goodsType = goodsTypeMapper.selectByPrimaryKey(redPacket.getGoodsRange());
+                            if (BeanUtils.isNotEmpty(goodsType)) {
+                                if (goodsType.getParentId() == 0) {
+                                    GoodsTypeExample goodsTypeExample = new GoodsTypeExample();
+                                    goodsTypeExample.createCriteria().andParentIdEqualTo(goodsType.getId());
+                                    List<GoodsType> goodsTypes = goodsTypeMapper.selectByExample(goodsTypeExample);
+                                    for (GoodsType type:goodsTypes) {
+                                        goodsTypeIdList.add(type.getId());
+                                    }
+                                }
+                            }
+                            for (Integer skuId:packetParam.getSkuIds()) {
+                                GoodsSku goodsSku = goodsSkuMapper.selectByPrimaryKey(skuId);
+                                Goods goods = goodsMapper.selectByPrimaryKey(goodsSku.getGoodsId());
+                                for (Integer goodsTypeId:goodsTypeIdList) {
+                                    if (goods.getCatrgoryId().equals(goodsTypeId)) {
+                                        accordPrice += goodsSku.getPresentPrice();
+                                    }
+                                }
+                            }
+                            if (accordPrice >= redPacket.getMinPrice()) {
+                                price = redPacket.getFaceValue();
+                            } else {
+                                result.setCode(600);
+                                result.setError_description("该品类商品未达到红包使用要求，请选择其他红包");
+                            }
+                        }
                     }
                 } else {
+                    result.setCode(600);
                     result.setError_description("订单总额未达到红包要求，请选择其他红包");
                 }
             } else {
+                result.setCode(600);
                 result.setError_description("该红包不在使用时间范围内，请选择其他红包");
             }
         } else {
+            result.setCode(600);
             result.setError_description("该红包已被使用，请选择其他红包");
         }
         result.setData(price);

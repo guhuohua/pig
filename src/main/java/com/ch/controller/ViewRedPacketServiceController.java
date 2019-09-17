@@ -4,16 +4,14 @@ import com.ch.base.BeanUtils;
 import com.ch.base.ResponseResult;
 import com.ch.entity.UserInfo;
 import com.ch.model.RedPacketParam;
+import com.ch.model.UserUseRedPacketParam;
 import com.ch.service.ViewRedPacketService;
 import com.ch.service.ViewUserInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -118,6 +116,31 @@ public class ViewRedPacketServiceController {
             }
             UserInfo userInfo = viewUserInfoService.findOneByOpenId(openId);
             result = viewRedPacketService.myRedPacketList(userInfo.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+            result.setCode(600);
+            result.setError(e.getMessage());
+            result.setError_description("获取我的红包列表，请稍后重试");
+            return result;
+        }
+        return result;
+    }
+
+    @GetMapping("userUseRedPacket")
+    @ApiOperation("订单页选择红包")
+    public ResponseResult userUseRedPacket(HttpServletRequest req, @RequestBody UserUseRedPacketParam packetParam) {
+        ResponseResult result = new ResponseResult();
+        try {
+            String openId = req.getHeader("openId");
+            if (BeanUtils.isEmpty(openId)) {
+                result.setCode(600);
+                result.setError("请重新登录");
+                result.setError_description("请重新登录");
+                return result;
+            }
+            UserInfo userInfo = viewUserInfoService.findOneByOpenId(openId);
+            result = viewRedPacketService.userUseRedPacket(packetParam, userInfo.getId());
         } catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage());

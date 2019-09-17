@@ -44,9 +44,7 @@
 <!--        <table tableName="goods_details" domainObjectName="GoodsDetails" enableCountByExample="true" enableUpdateByExample="true"-->
 <!--               enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true"/>-->
 
-        <table tableName="red_packet" domainObjectName="RedPacket" enableCountByExample="true" enableUpdateByExample="true"
-               enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true"/>
-        <table tableName="user_red_packet" domainObjectName="UserRedPacket" enableCountByExample="true" enableUpdateByExample="true"
+        <table tableName="order_red_packet" domainObjectName="OrderRedPacket" enableCountByExample="true" enableUpdateByExample="true"
                enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true"/>
     </context>
 </generatorConfiguration>
