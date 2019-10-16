@@ -89,7 +89,7 @@ public class ViewGoodsListController {
 
     @GetMapping("spikeGoodsList")
     @ApiOperation("秒杀列表")
-    public ResponseResult spikeGoodsList(HttpServletRequest req, Integer pageNum, Integer pageSize) {
+    public ResponseResult spikeGoodsList(HttpServletRequest req, @RequestParam Integer pageNum,@RequestParam Integer pageSize) {
         ResponseResult result = new ResponseResult();
         try {
             result = viewGoodsListService.spikeGoodsList(pageNum, pageSize);

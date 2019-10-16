@@ -36,12 +36,7 @@ public class ViewShopInfoServiceImpl implements ViewShopInfoService {
         System.out.println("ShopMiniProgram:" + JSON.toJSON(shopMiniProgram));
         shopInfo.setSecret(shopMiniProgram.getSecret());
         Integer shopId = shopMiniProgram.getShopId();
-        Shop shop = shopMapper.selectByPrimaryKey(shopId);
-        if (shop.getStartTime().getTime() <= new Date().getTime() && shop.getEndTime().getTime() >= new Date().getTime()) {
-            shopInfo.setShopId(shop.getId());
-            System.out.println("登录获取shopId:" + shopInfo.getShopId());
-
-        }
+        shopInfo.setShopId(shopId);
         return shopInfo;
     }
 }
